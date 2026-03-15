@@ -12,3 +12,13 @@ SOURCE_HOSTS = {
     "www.sarkariresults.com",
 }
 REDIRECT_PATH = "/go.html"
+PRETTY_ROUTE_MAP = {
+    "index.html": "/",
+    "latest-jobs.html": "/latest-jobs",
+    "results.html": "/results",
+    "admit-cards.html": "/admit-cards",
+    "resources.html": "/resources",
+    "previous-papers.html": "/previous-papers",
+    "eligibility-calculator.html": "/eligibility-calculator",
+    "study-planner.html": "/study-planner",
+}

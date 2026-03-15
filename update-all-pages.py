@@ -37,7 +37,7 @@ from pathlib import Path
 from datetime import date, datetime
 from html import escape
 
-from site_config import SITE_NAME, SITE_URL
+from site_config import PRETTY_ROUTE_MAP, SITE_NAME, SITE_URL
 
 SITE_ROOT = Path(__file__).parent
 TODAY = date.today().isoformat()
@@ -212,8 +212,8 @@ def extract_from_html(content):
 def get_canonical_url(filepath):
     """Get canonical URL for a file."""
     rel = str(filepath.relative_to(SITE_ROOT)).replace('\\', '/')
-    if rel == 'index.html':
-        return SITE_URL + '/'
+    if rel in PRETTY_ROUTE_MAP:
+        return SITE_URL + PRETTY_ROUTE_MAP[rel]
     return SITE_URL + '/' + rel
 
 
@@ -231,6 +231,49 @@ def get_js_path(filepath, jsfile):
     if depth == 0:
         return f'js/{jsfile}'
     return f'../../js/{jsfile}'
+
+
+def pretty_root_path(filename):
+    return PRETTY_ROUTE_MAP.get(filename, '/' + filename)
+
+
+def site_route(filename):
+    return SITE_URL + pretty_root_path(filename)
+
+
+def normalize_root_links(content):
+    """Convert top-level .html links to deployed extensionless routes."""
+    filename_to_path = {name: pretty_root_path(name) for name in PRETTY_ROUTE_MAP if name != 'index.html'}
+    filename_to_path['index.html'] = '/'
+
+    def repl(match):
+        attr = match.group('attr')
+        quote = match.group('quote')
+        url = match.group('url')
+        suffix = match.group('suffix') or ''
+        parsed = url
+        prefix = ''
+
+        if parsed.startswith(SITE_URL + '/'):
+            prefix = SITE_URL
+            parsed = parsed[len(SITE_URL):]
+
+        filename = parsed.split('/')[-1]
+        if filename not in filename_to_path:
+            return match.group(0)
+
+        new_url = filename_to_path[filename] + suffix
+        if prefix:
+            new_url = prefix + new_url
+        return f'{attr}={quote}{new_url}{quote}'
+
+    pattern = re.compile(
+        r'(?P<attr>href|src)=(?P<quote>["\'])(?P<url>(?:https://naukridhaba\.in/)?(?:/|(?:\.\./)*)'
+        r'(?:index|latest-jobs|results|admit-cards|resources|previous-papers|eligibility-calculator|study-planner)\.html)'
+        r'(?P<suffix>[?#][^"\']*)?(?P=quote)',
+        flags=re.IGNORECASE
+    )
+    return pattern.sub(repl, content)
 
 
 def is_placeholder(value, placeholders):
@@ -640,25 +683,25 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
         json_ld_blocks = build_job_json_ld(title, dept, last_date, canonical_url)
         # Add breadcrumb
         json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-            (SITE_NAME, SITE_URL + '/'),
-            ('Jobs', SITE_URL + '/latest-jobs.html'),
-            (dept, SITE_URL + '/latest-jobs.html'),
+            (SITE_NAME, site_route('index.html')),
+            ('Jobs', site_route('latest-jobs.html')),
+            (dept, site_route('latest-jobs.html')),
             (title, canonical_url)
         ])
     elif page_type == 'result':
         json_ld_blocks = build_result_json_ld(title, dept, canonical_url)
         json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-            (SITE_NAME, SITE_URL + '/'),
-            ('Results', SITE_URL + '/results.html'),
-            (dept, SITE_URL + '/results.html'),
+            (SITE_NAME, site_route('index.html')),
+            ('Results', site_route('results.html')),
+            (dept, site_route('results.html')),
             (title, canonical_url)
         ])
     elif page_type == 'admit_card':
         json_ld_blocks = build_admit_json_ld(title, dept, canonical_url)
         json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-            (SITE_NAME, SITE_URL + '/'),
-            ('Admit Cards', SITE_URL + '/admit-cards.html'),
-            (dept, SITE_URL + '/admit-cards.html'),
+            (SITE_NAME, site_route('index.html')),
+            ('Admit Cards', site_route('admit-cards.html')),
+            (dept, site_route('admit-cards.html')),
             (title, canonical_url)
         ])
 
@@ -707,6 +750,9 @@ def update_page(filepath, dry_run=False):
 
     # Step 4: Update ad slots
     content = update_ad_slots(content)
+
+    # Step 4b: Normalize top-level internal links to deployed pretty URLs
+    content = normalize_root_links(content)
 
     # Step 5: Extract existing data
     data = extract_from_html(content)

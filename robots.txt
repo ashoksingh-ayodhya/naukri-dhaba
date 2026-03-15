@@ -10,6 +10,10 @@ Disallow: /previous-papers.html
 Allow: /jobs/
 Allow: /results/
 Allow: /admit-cards/
+Allow: /latest-jobs
+Allow: /results
+Allow: /admit-cards
+Allow: /resources
 Allow: /latest-jobs.html
 Allow: /results.html
 Allow: /admit-cards.html

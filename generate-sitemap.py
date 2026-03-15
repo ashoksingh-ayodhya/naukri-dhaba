@@ -21,7 +21,7 @@ import glob
 import os
 from datetime import date, datetime
 
-from site_config import SITE_URL
+from site_config import PRETTY_ROUTE_MAP, SITE_URL
 
 BASE_URL = SITE_URL
 SITE_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -115,9 +115,10 @@ def generate_sitemap() -> int:
     root_count = 0
 
     for rel_path, filepath in html_files:
-        url = f"{BASE_URL}/{rel_path}"
-        if rel_path == "index.html":
-            url = f"{BASE_URL}/"
+        if rel_path in PRETTY_ROUTE_MAP:
+            url = f"{BASE_URL}{PRETTY_ROUTE_MAP[rel_path]}"
+        else:
+            url = f"{BASE_URL}/{rel_path}"
 
         lastmod = get_last_modified(filepath)
         rules = get_page_rules(rel_path)
