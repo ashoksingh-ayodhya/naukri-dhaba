@@ -37,6 +37,7 @@ import logging
 import hashlib
 import argparse
 from datetime import datetime, date
+from html import escape
 from pathlib import Path
 from urllib.parse import quote, urljoin, urlparse
 
@@ -68,6 +69,7 @@ SITE_ROOT   = Path(__file__).parent.parent
 SCRAPER_DIR = Path(__file__).parent
 LOG_DIR     = SCRAPER_DIR / 'logs'
 SEEN_FILE   = SCRAPER_DIR / 'seen_items.json'
+TRACKING_CONFIG_FILE = SITE_ROOT / 'tracking-config.json'
 
 LOG_DIR.mkdir(exist_ok=True)
 
@@ -130,7 +132,7 @@ SEO_KW = {
     'banking':  'Bank Jobs, IBPS, SBI, RBI, PO, Clerk, Banking Vacancy',
     'police':   'Police Jobs, Constable, SI, Sub Inspector, CRPF, BSF, CISF',
     'defence':  'Defence Jobs, Army, Navy, Air Force, NDA, CDS, Agniveer',
-    'government': 'Sarkari Naukri 2026, Govt Jobs India, Online Form 2026',
+    'government': 'Government jobs India, online form updates, result updates, admit card updates, Naukri Dhaba',
 }
 
 
@@ -248,30 +250,22 @@ def build_source_redirect(url: str) -> str:
 
 def to_public_url(url: str) -> str:
     if is_public_redirect(url):
-        return url.strip()
+        return ''
     normalized = normalize_url(url)
     if normalized == '#':
-        return '#'
+        return ''
     if is_public_redirect(normalized):
-        return normalized
-    if is_source_url(normalized):
-        return build_source_redirect(normalized)
-    return normalized
+        return ''
+    return official_url_or_empty(normalized)
 
 
 def primary_cta_url(url: str, source_detail_url: str) -> str:
     if is_public_redirect(url):
-        return url.strip()
+        return ''
     normalized = normalize_url(url)
     if is_public_redirect(normalized):
-        return normalized
-    if is_official_url(normalized):
-        return normalized
-    if is_source_url(normalized):
-        return build_source_redirect(normalized)
-    if source_detail_url:
-        return build_source_redirect(source_detail_url)
-    return ''
+        return ''
+    return official_url_or_empty(normalized)
 
 
 def normalize_title(text: str) -> str:
@@ -296,6 +290,114 @@ def to_iso_date(text: str) -> str | None:
         except ValueError:
             continue
     return None
+
+
+DATE_VALUE_RE = re.compile(
+    r'(\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|today|tomorrow|declared|released|available|schedule|soon)',
+    re.I,
+)
+FEE_VALUE_RE = re.compile(r'(free|no application|rs\.?|inr|/-|₹|\d)', re.I)
+
+
+def looks_like_date_value(text: str) -> bool:
+    return bool(DATE_VALUE_RE.search(clean(text)))
+
+
+def looks_like_fee_value(text: str) -> bool:
+    return bool(FEE_VALUE_RE.search(clean(text)))
+
+
+def first_value_cell(cells: list[Tag]) -> str:
+    values = []
+    for cell in cells[1:]:
+        value = clean(cell.get_text(" ", strip=True))
+        if value:
+            values.append(value)
+    return values[0] if values else ''
+
+
+def official_url_or_empty(url: str) -> str:
+    if is_public_redirect(url):
+        return ''
+    normalized = normalize_url(url)
+    if is_official_url(normalized):
+        return normalized
+    return ''
+
+
+def summary_sentence(parts: list[str]) -> str:
+    return ' '.join(part for part in parts if part)
+
+
+def build_job_overview(d: dict) -> str:
+    title = normalize_title(d.get('title', ''))
+    dept = clean(d.get('dept', 'Government'))
+    posts = str(d.get('total_posts') or '').strip()
+    parts = [
+        f"{title} is listed under {dept} recruitment updates on {SITE_NAME}.",
+        f"The current application deadline is {d.get('last_date', 'Check Notification')}.",
+        f"Total advertised posts: {posts}." if posts else '',
+        f"Baseline age range in the extracted notice is {d.get('age_min', 18)} to {d.get('age_max', 35)} years.",
+        "Use the official notification and authority portal below to verify the latest eligibility, category relaxation, and document rules before applying.",
+    ]
+    bullets = [
+        f"<li><strong>Department:</strong> {dept}</li>",
+        f"<li><strong>Application window:</strong> {d.get('app_begin', 'Check Notification')} to {d.get('last_date', 'Check Notification')}</li>",
+        f"<li><strong>Qualification:</strong> {d.get('qualification', 'Check Notification')}</li>",
+        f"<li><strong>Selection context:</strong> Track updates here, but submit only on the official authority site.</li>",
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Role Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{summary_sentence(parts)}</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(bullets)}</ul>'
+        '</div>'
+    )
+
+
+def build_result_overview(d: dict) -> str:
+    title = normalize_title(d.get('title', ''))
+    dept = clean(d.get('dept', 'Government'))
+    parts = [
+        f"{title} has been added to the {SITE_NAME} result tracker for {dept}.",
+        f"The extracted result update date is {d.get('result_date', 'Check Notification')}.",
+        "Use the official result portal or scorecard link below to validate roll number lookup, cutoff, and final selection status.",
+    ]
+    bullets = [
+        f"<li><strong>Authority:</strong> {dept}</li>",
+        f"<li><strong>Result date:</strong> {d.get('result_date', 'Check Notification')}</li>",
+        f"<li><strong>Best next step:</strong> keep your registration details ready before opening the official result portal.</li>",
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Result Summary</h3>'
+        f'<p style="line-height:1.9;color:#444;">{summary_sentence(parts)}</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(bullets)}</ul>'
+        '</div>'
+    )
+
+
+def build_admit_overview(d: dict) -> str:
+    title = normalize_title(d.get('title', ''))
+    dept = clean(d.get('dept', 'Government'))
+    parts = [
+        f"{title} is available in the {SITE_NAME} admit-card tracker for {dept}.",
+        f"The extracted release date is {d.get('admit_release', 'Check Notification')}.",
+        f"The current exam schedule reference is {d.get('exam_date', 'As per Schedule')}.",
+        "Verify reporting time, exam city, and document rules on the official authority page before travelling.",
+    ]
+    bullets = [
+        f"<li><strong>Authority:</strong> {dept}</li>",
+        f"<li><strong>Release date:</strong> {d.get('admit_release', 'Check Notification')}</li>",
+        f"<li><strong>Exam schedule:</strong> {d.get('exam_date', 'As per Schedule')}</li>",
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Exam Access Summary</h3>'
+        f'<p style="line-height:1.9;color:#444;">{summary_sentence(parts)}</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(bullets)}</ul>'
+        '</div>'
+    )
 
 
 def dedupe_keywords(*parts: str) -> str:
@@ -334,6 +436,91 @@ def load_seen() -> set:
 
 def save_seen(seen: set):
     SEEN_FILE.write_text(json.dumps(sorted(seen), indent=2))
+
+
+TRACKING_PLACEHOLDERS = {
+    'googleAnalytics4': {'G-XXXXXXXXXX'},
+    'googleTagManager': {'GTM-XXXXXXX'},
+    'googleSearchConsole': {'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'},
+}
+
+
+def load_tracking_config() -> dict:
+    if not TRACKING_CONFIG_FILE.exists():
+        return {}
+    try:
+        return json.loads(TRACKING_CONFIG_FILE.read_text(encoding='utf-8'))
+    except Exception:
+        return {}
+
+
+TRACKING_CONFIG = load_tracking_config()
+
+
+def tracking_value(section: str, field: str) -> str:
+    return clean((TRACKING_CONFIG.get(section) or {}).get(field, ''))
+
+
+def tracking_enabled(section: str, field: str) -> bool:
+    value = tracking_value(section, field)
+    enabled = bool((TRACKING_CONFIG.get(section) or {}).get('enabled'))
+    return enabled and value not in TRACKING_PLACEHOLDERS.get(section, set())
+
+
+def detail_head_tracking_markup() -> str:
+    serialized_config = json.dumps(
+        TRACKING_CONFIG,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).replace("</", "<\\/")
+    lines = [
+        f'    <script>window.NAUKRI_DHABA_TRACKING_CONFIG = {serialized_config};</script>'
+    ]
+
+    if tracking_enabled('googleSearchConsole', 'verificationCode'):
+        lines.append(
+            f'    <meta name="google-site-verification" content="{escape(tracking_value("googleSearchConsole", "verificationCode"), quote=True)}">'
+        )
+
+    if tracking_enabled('googleTagManager', 'containerId'):
+        container_id = escape(tracking_value('googleTagManager', 'containerId'), quote=True)
+        lines.extend([
+            '    <!-- Google Tag Manager -->',
+            '    <script>',
+            '      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":',
+            '      new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],',
+            '      j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=',
+            '      "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);',
+            f'      }})(window,document,"script","dataLayer","{container_id}");',
+            '    </script>',
+            '    <!-- End Google Tag Manager -->',
+        ])
+    elif tracking_enabled('googleAnalytics4', 'measurementId'):
+        measurement_id = escape(tracking_value('googleAnalytics4', 'measurementId'), quote=True)
+        lines.extend([
+            f'    <script async src="https://www.googletagmanager.com/gtag/js?id={measurement_id}"></script>',
+            '    <script>',
+            '      window.dataLayer = window.dataLayer || [];',
+            '      function gtag(){dataLayer.push(arguments);}',
+            '      gtag("js", new Date());',
+            f'      gtag("config", "{measurement_id}");',
+            '    </script>',
+        ])
+
+    lines.append('    <script src="../../js/tracking.js"></script>')
+    return '\n'.join(lines)
+
+
+def detail_body_tracking_markup() -> str:
+    if not tracking_enabled('googleTagManager', 'containerId'):
+        return ''
+    container_id = escape(tracking_value('googleTagManager', 'containerId'), quote=True)
+    return (
+        '    <!-- Google Tag Manager (noscript) -->\n'
+        f'    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={container_id}" '
+        'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\n'
+        '    <!-- End Google Tag Manager (noscript) -->'
+    )
 
 
 # ══════════════════════════════════════════════════════════
@@ -465,6 +652,64 @@ def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
         })
 
     log.info(f'  Listing parser found {len(items)} raw rows')
+    if len(items) <= 3:
+        items = parse_listing_from_anchors(soup, page_type)
+        log.info(f'  Anchor fallback found {len(items)} raw rows')
+    return items
+
+
+def listing_text_matches(title: str, page_type: str) -> bool:
+    text = title.lower()
+    if page_type == 'job':
+        return bool(re.search(r'online form|recruitment|vacancy|admission|registration|apply|correction|edit form', text))
+    if page_type == 'result':
+        return bool(re.search(r'result|merit|score\s*card|marks|cutoff|selection list', text))
+    if page_type == 'admit':
+        return bool(re.search(r'admit card|exam city|hall ticket|call letter|exam date', text))
+    return False
+
+
+def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict]:
+    items = []
+    seen = set()
+    max_items = 150
+    skip_paths = {
+        'latestjob', 'result', 'admitcard', 'syllabus', 'answerkey', 'admission',
+        'boardall', 'contactus', 'search', 'videozone', 'archive', 'top10',
+    }
+
+    for anchor in soup.find_all('a', href=True):
+        title = clean(anchor.get_text(" ", strip=True))
+        if len(title) < 8 or not listing_text_matches(title, page_type):
+            continue
+
+        detail_url = normalize_url(anchor.get('href', ''))
+        if detail_url == '#':
+            continue
+
+        parsed = urlparse(detail_url)
+        path_parts = [part for part in parsed.path.split('/') if part]
+        if parsed.netloc.lower() not in SOURCE_HOSTS or len(path_parts) < 2:
+            continue
+        if path_parts[0].lower() in skip_paths:
+            continue
+
+        dedupe_key = (title.lower(), detail_url.lower())
+        if dedupe_key in seen:
+            continue
+        seen.add(dedupe_key)
+
+        items.append({
+            'title': normalize_title(title),
+            'dept': infer_dept(title),
+            'date_str': 'Check Notification',
+            'detail_url': detail_url,
+            'source_detail_url': detail_url,
+            'page_type': page_type,
+        })
+        if len(items) >= max_items:
+            break
+
     return items
 
 
@@ -555,29 +800,29 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
             continue
 
         label = clean(cells[0].get_text()).lower()
-        val   = clean(cells[1].get_text()) if len(cells) > 1 else ''
+        val = first_value_cell(cells)
 
         # ── Important Dates ──────────────────────────────
-        if re.search(r'application\s*begin|apply\s*start', label):
+        if re.search(r'application\s*begin|apply\s*start', label) and looks_like_date_value(val):
             d['app_begin'] = sanitize(val) or d['app_begin']
 
-        elif re.search(r'last\s*date|closing\s*date', label):
+        elif re.search(r'last\s*date|closing\s*date', label) and looks_like_date_value(val):
             d['last_date'] = sanitize(val) or d['last_date']
 
-        elif re.search(r'exam\s*date|examination\s*date', label):
+        elif re.search(r'exam\s*date|examination\s*date', label) and looks_like_date_value(val):
             d['exam_date'] = sanitize(val) or d['exam_date']
 
-        elif re.search(r'result\s*date|declaration\s*date', label):
+        elif re.search(r'result\s*date|declaration\s*date', label) and looks_like_date_value(val):
             d['result_date'] = sanitize(val) or d['result_date']
 
-        elif re.search(r'admit\s*card\s*date|hall\s*ticket\s*date', label):
+        elif re.search(r'admit\s*card\s*date|hall\s*ticket\s*date', label) and looks_like_date_value(val):
             d['admit_release'] = sanitize(val) or d['admit_release']
 
         # ── Application Fee ──────────────────────────────
-        elif re.search(r'general|obc|ews|unreserved', label) and re.search(r'\d', val):
+        elif re.search(r'general|obc|ews|unreserved', label) and looks_like_fee_value(val):
             d['fee_general'] = sanitize(val)
 
-        elif re.search(r'sc\s*/\s*st|scheduled', label) and re.search(r'\d', val):
+        elif re.search(r'sc\s*/\s*st|scheduled', label) and looks_like_fee_value(val):
             d['fee_sc_st'] = sanitize(val)
 
         # ── Age Limit ────────────────────────────────────
@@ -777,7 +1022,7 @@ def _footer() -> str:
     <div class="footer__grid">
       <div>
         <h3 class="footer__title">📋 {SITE_NAME}</h3>
-        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Your gateway to Sarkari Naukri. Latest govt jobs, results and admit cards.</p>
+        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
         <a href="https://t.me/naukridhaba" class="share-btn share-btn--telegram" style="margin-top:1rem;display:inline-block;">Join Telegram</a>
       </div>
       <div>
@@ -849,7 +1094,7 @@ def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: 
     <meta name="geo.region" content="IN">
     <meta name="geo.placename" content="India">
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/tracking.js"></script>'''
+{detail_head_tracking_markup()}'''
 
 
 # ── Job Page ───────────────────────────────────────────────
@@ -861,7 +1106,6 @@ def build_job_page(d: dict) -> tuple[str, str]:
     rel    = f'jobs/{cat}/{slug}.html'
     canon  = f'{SITE_URL}/{rel}'
     year   = date.today().year
-    source_detail_url = d.get('source_detail_url', d.get('detail_url', ''))
 
     posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
     desc = (
@@ -945,6 +1189,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
+{detail_body_tracking_markup()}
 {_header('jobs')}
 
 <div class="content-wrapper container" style="margin-top:2rem;">
@@ -1003,6 +1248,8 @@ def build_job_page(d: dict) -> tuple[str, str]:
 
       {fee_section}
 
+      {build_job_overview(d)}
+
       <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
 
       <div class="calculator">
@@ -1030,12 +1277,12 @@ def build_job_page(d: dict) -> tuple[str, str]:
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
         <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply / आवेदन कैसे करें</h3>
         <ol style="line-height:2.2;">
-          <li>Click on <strong>"Apply Online"</strong> button above</li>
-          <li>Register on official website with email and mobile number</li>
+          <li>Use the official authority portal linked above, not third-party mirrors.</li>
+          <li>Verify district, category, and document rules before you create an account.</li>
           <li>Fill the application form carefully / फॉर्म ध्यानपूर्वक भरें</li>
-          <li>Upload required documents (Photo, Signature, Certificates)</li>
-          <li>Pay application fee online (if applicable)</li>
-          <li>Submit and save/print the confirmation page</li>
+          <li>Upload only the files and dimensions allowed in the official notice.</li>
+          <li>Pay the fee only after you confirm the form preview and eligibility details.</li>
+          <li>Save the final application number, preview, and receipt for later stages.</li>
         </ol>
       </div>
 
@@ -1128,6 +1375,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
+{detail_body_tracking_markup()}
 {_header('results')}
 
 <div class="content-wrapper container" style="margin-top:2rem;">
@@ -1156,11 +1404,11 @@ def build_result_page(d: dict) -> tuple[str, str]:
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
         <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result / परिणाम कैसे देखें</h3>
         <ol style="line-height:2.2;">
-          <li>Click on <strong>"Check Result"</strong> button above</li>
-          <li>Enter your Roll Number / Registration ID</li>
-          <li>Enter Date of Birth if required</li>
-          <li>View your result and download / save it</li>
-          <li>Take a printout for future reference</li>
+          <li>Open the official result portal linked above.</li>
+          <li>Keep your roll number or registration number ready before loading the page.</li>
+          <li>Match your name, category, and stage of exam carefully after login.</li>
+          <li>Download the result or scorecard PDF from the authority site when available.</li>
+          <li>Keep a saved copy for document verification, counselling, or joining steps.</li>
         </ol>
       </div>
 
@@ -1246,6 +1494,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
+{detail_body_tracking_markup()}
 {_header('admit-cards')}
 
 <div class="content-wrapper container" style="margin-top:2rem;">
@@ -1274,11 +1523,11 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
         <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions / महत्वपूर्ण निर्देश</h3>
         <ul style="line-height:1.8;">
-          <li>Carry <strong>printed admit card</strong> (colour preferred)</li>
-          <li>Bring valid <strong>photo ID</strong> (Aadhar / PAN / Voter ID)</li>
-          <li>Reach centre <strong>1 hour before</strong> reporting time</li>
-          <li>Verify exam date, time and centre address carefully</li>
-          <li>No electronic devices allowed (mobile, smartwatch, calculator)</li>
+          <li>Carry a printed admit card exactly as required in the official instructions.</li>
+          <li>Bring a valid photo ID that matches the admit-card identity details.</li>
+          <li>Check reporting time, gate closing time, and city or centre code before travel.</li>
+          <li>Verify exam date, shift timing, and venue address one more time on the official page.</li>
+          <li>Avoid restricted items such as phones, smartwatches, calculators, or loose papers.</li>
         </ul>
       </div>
 

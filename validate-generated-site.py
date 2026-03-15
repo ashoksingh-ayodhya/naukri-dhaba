@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
-from site_config import REDIRECT_PATH, SITE_URL
+from site_config import REDIRECT_PATH, SITE_URL, SOURCE_HOSTS
 
 ROOT = Path(__file__).parent
 TRACKING_CONFIG_PATH = ROOT / "tracking-config.json"
@@ -54,6 +54,8 @@ def validate_redirect_target(target: str) -> str | None:
         return f"redirect target host contains spaces: {target}"
     if "naukri%20dhaba" in target.lower() or "naukri dhaba.com" in target.lower():
         return f"redirect target contains malformed host: {target}"
+    if parsed.netloc.lower() in SOURCE_HOSTS:
+        return f"redirect target still points to source host: {target}"
     return None
 
 
@@ -89,6 +91,10 @@ def validate_html(path: Path) -> list[str]:
 
     if re.search(r"www\.Naukri Dhaba\.com|Naukri Dhaba\.com|naukri%20dhaba", content, flags=re.IGNORECASE):
         errors.append(f"{rel}: contains malformed host text")
+
+    for source_host in SOURCE_HOSTS:
+        if re.search(rf'''(?:href|src)=["'][^"']*{re.escape(source_host)}''', content, flags=re.IGNORECASE):
+            errors.append(f"{rel}: contains direct source host link: {source_host}")
 
     if path.name != "go.html":
         if '<meta name="description"' not in content:
