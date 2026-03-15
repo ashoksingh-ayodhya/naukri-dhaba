@@ -468,6 +468,52 @@ def tracking_enabled(section: str, field: str) -> bool:
     return enabled and value not in TRACKING_PLACEHOLDERS.get(section, set())
 
 
+def detail_consent_bootstrap_markup() -> str:
+    consent = TRACKING_CONFIG.get('consentMode', {})
+    if not consent.get('enabled'):
+        return ''
+
+    storage_key = escape(clean(consent.get('storageKey', 'nd_consent_v1')), quote=True)
+    wait_for_update = int(consent.get('waitForUpdateMs', 500) or 500)
+    return '\n'.join([
+        '    <script>',
+        '      (function(w){',
+        f'        var consentKey = "{storage_key}";',
+        f'        var waitForUpdate = {wait_for_update};',
+        '        var denied = {ad_storage: "denied", analytics_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted", personalization_storage: "denied"};',
+        '        var analyticsGranted = {ad_storage: "denied", analytics_storage: "granted", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted", personalization_storage: "denied"};',
+        '        var allGranted = {ad_storage: "granted", analytics_storage: "granted", ad_user_data: "granted", ad_personalization: "granted", functionality_storage: "granted", security_storage: "granted", personalization_storage: "granted"};',
+        '        function cloneState(state){ return JSON.parse(JSON.stringify(state)); }',
+        '        function readStoredMode(){',
+        '          try {',
+        '            var raw = w.localStorage.getItem(consentKey);',
+        '            if (!raw) { return ""; }',
+        '            var parsed = JSON.parse(raw);',
+        '            return parsed && parsed.mode ? parsed.mode : "";',
+        '          } catch (err) {',
+        '            return "";',
+        '          }',
+        '        }',
+        '        function modeToState(mode){',
+        '          if (mode === "all") return cloneState(allGranted);',
+        '          if (mode === "analytics") return cloneState(analyticsGranted);',
+        '          return cloneState(denied);',
+        '        }',
+        '        w.dataLayer = w.dataLayer || [];',
+        '        w.gtag = w.gtag || function(){w.dataLayer.push(arguments);};',
+        '        var initialMode = readStoredMode();',
+        '        var initialState = modeToState(initialMode);',
+        '        initialState.wait_for_update = waitForUpdate;',
+        '        w.NAUKRI_DHABA_CONSENT_KEY = consentKey;',
+        '        w.NAUKRI_DHABA_CONSENT_STATE = modeToState(initialMode);',
+        '        w.gtag("consent", "default", initialState);',
+        '        w.gtag("set", "ads_data_redaction", true);',
+        '        w.gtag("set", "url_passthrough", true);',
+        '      })(window);',
+        '    </script>',
+    ])
+
+
 def detail_head_tracking_markup() -> str:
     serialized_config = json.dumps(
         TRACKING_CONFIG,
@@ -482,6 +528,10 @@ def detail_head_tracking_markup() -> str:
         lines.append(
             f'    <meta name="google-site-verification" content="{escape(tracking_value("googleSearchConsole", "verificationCode"), quote=True)}">'
         )
+
+    consent_markup = detail_consent_bootstrap_markup()
+    if consent_markup:
+        lines.append(consent_markup)
 
     if tracking_enabled('googleTagManager', 'containerId'):
         container_id = escape(tracking_value('googleTagManager', 'containerId'), quote=True)

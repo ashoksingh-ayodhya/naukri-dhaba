@@ -145,6 +145,10 @@ def validate_html(path: Path) -> list[str]:
         if "googletagmanager.com/ns.html" not in content:
             errors.append(f"{rel}: missing GTM noscript iframe")
 
+    if path.name != "go.html" and bool((TRACKING_CONFIG.get("consentMode") or {}).get("enabled")):
+        if 'consent", "default"' not in content and "consent', 'default'" not in content:
+            errors.append(f"{rel}: missing consent mode default command")
+
     if (
         path.name != "go.html"
         and not is_enabled_with_value("googleTagManager", "containerId")

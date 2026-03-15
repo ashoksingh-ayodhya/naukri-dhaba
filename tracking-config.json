@@ -7,6 +7,12 @@
     "enabled": true,
     "containerId": "GTM-5L4D9C9M"
   },
+  "consentMode": {
+    "enabled": true,
+    "storageKey": "nd_consent_v1",
+    "waitForUpdateMs": 500,
+    "bannerEnabled": true
+  },
   "googleSearchConsole": {
     "enabled": false,
     "verificationCode": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"

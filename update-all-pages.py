@@ -70,6 +70,7 @@ SEO_KEYWORDS_MAP = {
 DEFAULT_TRACKING_CONFIG = {
     'googleAnalytics4': {'enabled': False, 'measurementId': 'G-XXXXXXXXXX'},
     'googleTagManager': {'enabled': False, 'containerId': 'GTM-XXXXXXX'},
+    'consentMode': {'enabled': False, 'storageKey': 'nd_consent_v1', 'waitForUpdateMs': 500, 'bannerEnabled': True},
     'googleSearchConsole': {'enabled': False, 'verificationCode': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'},
     'googleAdSense': {'enabled': False, 'publisherId': 'ca-pub-XXXXXXXXXXXXXXXX'},
     'microsoftClarity': {'enabled': False, 'projectId': 'XXXXXXXXXX'},
@@ -287,6 +288,76 @@ def serialize_tracking_config():
     return payload.replace('</', '<\\/')
 
 
+def build_consent_bootstrap_markup():
+    consent = TRACKING_CONFIG.get('consentMode', {})
+    if not consent.get('enabled'):
+        return ''
+
+    storage_key = escape(consent.get('storageKey', 'nd_consent_v1'), quote=True)
+    wait_for_update = int(consent.get('waitForUpdateMs', 500) or 500)
+    return '\n'.join([
+        '    <script>',
+        '      (function(w){',
+        '        var consentKey = "' + storage_key + '";',
+        '        var waitForUpdate = ' + str(wait_for_update) + ';',
+        '        var denied = {',
+        '          ad_storage: "denied",',
+        '          analytics_storage: "denied",',
+        '          ad_user_data: "denied",',
+        '          ad_personalization: "denied",',
+        '          functionality_storage: "granted",',
+        '          security_storage: "granted",',
+        '          personalization_storage: "denied"',
+        '        };',
+        '        var analyticsGranted = {',
+        '          ad_storage: "denied",',
+        '          analytics_storage: "granted",',
+        '          ad_user_data: "denied",',
+        '          ad_personalization: "denied",',
+        '          functionality_storage: "granted",',
+        '          security_storage: "granted",',
+        '          personalization_storage: "denied"',
+        '        };',
+        '        var allGranted = {',
+        '          ad_storage: "granted",',
+        '          analytics_storage: "granted",',
+        '          ad_user_data: "granted",',
+        '          ad_personalization: "granted",',
+        '          functionality_storage: "granted",',
+        '          security_storage: "granted",',
+        '          personalization_storage: "granted"',
+        '        };',
+        '        function cloneState(state){ return JSON.parse(JSON.stringify(state)); }',
+        '        function readStoredMode(){',
+        '          try {',
+        '            var raw = w.localStorage.getItem(consentKey);',
+        '            if (!raw) { return ""; }',
+        '            var parsed = JSON.parse(raw);',
+        '            return parsed && parsed.mode ? parsed.mode : "";',
+        '          } catch (err) {',
+        '            return "";',
+        '          }',
+        '        }',
+        '        function modeToState(mode){',
+        '          if (mode === "all") return cloneState(allGranted);',
+        '          if (mode === "analytics") return cloneState(analyticsGranted);',
+        '          return cloneState(denied);',
+        '        }',
+        '        w.dataLayer = w.dataLayer || [];',
+        '        w.gtag = w.gtag || function(){w.dataLayer.push(arguments);};',
+        '        var initialMode = readStoredMode();',
+        '        var initialState = modeToState(initialMode);',
+        '        initialState.wait_for_update = waitForUpdate;',
+        '        w.NAUKRI_DHABA_CONSENT_KEY = consentKey;',
+        '        w.NAUKRI_DHABA_CONSENT_STATE = modeToState(initialMode);',
+        '        w.gtag("consent", "default", initialState);',
+        '        w.gtag("set", "ads_data_redaction", true);',
+        '        w.gtag("set", "url_passthrough", true);',
+        '      })(window);',
+        '    </script>',
+    ])
+
+
 def build_head_tracking_markup(filepath):
     tracking_path = get_js_path(filepath, 'tracking.js')
     lines = [
@@ -309,6 +380,9 @@ def build_head_tracking_markup(filepath):
     )
     if gtm_enabled:
         container_id = escape(gtm['containerId'], quote=True)
+        consent_markup = build_consent_bootstrap_markup()
+        if consent_markup:
+            lines.append(consent_markup)
         lines.append('    <!-- Google Tag Manager -->')
         lines.append('    <script>')
         lines.append('      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":')
@@ -325,6 +399,9 @@ def build_head_tracking_markup(filepath):
             {'G-XXXXXXXXXX'}
         ):
             measurement_id = escape(ga4['measurementId'], quote=True)
+            consent_markup = build_consent_bootstrap_markup()
+            if consent_markup:
+                lines.append(consent_markup)
             lines.append('    <!-- Google Analytics 4 -->')
             lines.append(f'    <script async src="https://www.googletagmanager.com/gtag/js?id={measurement_id}"></script>')
             lines.append('    <script>')
