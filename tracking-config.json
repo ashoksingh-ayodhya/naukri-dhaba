@@ -1,0 +1,30 @@
+{
+  "googleAnalytics4": {
+    "enabled": false,
+    "measurementId": "G-XXXXXXXXXX"
+  },
+  "googleTagManager": {
+    "enabled": false,
+    "containerId": "GTM-XXXXXXX"
+  },
+  "googleSearchConsole": {
+    "enabled": false,
+    "verificationCode": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  },
+  "googleAdSense": {
+    "enabled": false,
+    "publisherId": "ca-pub-XXXXXXXXXXXXXXXX"
+  },
+  "microsoftClarity": {
+    "enabled": false,
+    "projectId": "XXXXXXXXXX"
+  },
+  "facebookPixel": {
+    "enabled": false,
+    "pixelId": "XXXXXXXXXXXXXXXXXX"
+  },
+  "customHeadCode": {
+    "enabled": false,
+    "code": "<code goes here>"
+  }
+}

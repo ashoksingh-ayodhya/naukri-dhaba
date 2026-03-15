@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -11,6 +12,12 @@ from urllib.parse import parse_qs, unquote, urlparse
 from site_config import REDIRECT_PATH, SITE_URL
 
 ROOT = Path(__file__).parent
+TRACKING_CONFIG_PATH = ROOT / "tracking-config.json"
+PLACEHOLDERS = {
+    "GTM-XXXXXXX",
+    "G-XXXXXXXXXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+}
 
 
 def html_files() -> list[Path]:
@@ -50,6 +57,24 @@ def validate_redirect_target(target: str) -> str | None:
     return None
 
 
+def load_tracking_config() -> dict:
+    if not TRACKING_CONFIG_PATH.exists():
+        return {}
+    try:
+        return json.loads(TRACKING_CONFIG_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+TRACKING_CONFIG = load_tracking_config()
+
+
+def is_enabled_with_value(section: str, field: str) -> bool:
+    value = ((TRACKING_CONFIG.get(section) or {}).get(field) or "").strip()
+    enabled = bool((TRACKING_CONFIG.get(section) or {}).get("enabled"))
+    return enabled and value not in PLACEHOLDERS
+
+
 def validate_html(path: Path) -> list[str]:
     content = path.read_text(encoding="utf-8", errors="replace")
     rel = path.relative_to(ROOT).as_posix()
@@ -65,6 +90,20 @@ def validate_html(path: Path) -> list[str]:
     if re.search(r"www\.Naukri Dhaba\.com|Naukri Dhaba\.com|naukri%20dhaba", content, flags=re.IGNORECASE):
         errors.append(f"{rel}: contains malformed host text")
 
+    if path.name != "go.html":
+        if '<meta name="description"' not in content:
+            errors.append(f"{rel}: missing meta description")
+        if 'property="og:title"' not in content:
+            errors.append(f"{rel}: missing og:title")
+        if 'property="og:description"' not in content:
+            errors.append(f"{rel}: missing og:description")
+        if 'property="og:url"' not in content:
+            errors.append(f"{rel}: missing og:url")
+        if 'name="twitter:title"' not in content:
+            errors.append(f"{rel}: missing twitter:title")
+        if 'name="twitter:description"' not in content:
+            errors.append(f"{rel}: missing twitter:description")
+
     if not skip_redirect_checks:
         for match in re.finditer(r'''(?:href|src)=["']([^"']+)["']''', content, flags=re.IGNORECASE):
             url = match.group(1)
@@ -78,10 +117,35 @@ def validate_html(path: Path) -> list[str]:
             if problem:
                 errors.append(f"{rel}: {problem}")
 
-    for match in re.finditer(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)["\']', content, flags=re.IGNORECASE):
+    canonical_matches = list(
+        re.finditer(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)["\']', content, flags=re.IGNORECASE)
+    )
+    if not canonical_matches:
+        errors.append(f"{rel}: missing canonical link")
+    for match in canonical_matches:
         canonical = match.group(1)
         if not canonical.startswith(SITE_URL):
             errors.append(f"{rel}: canonical does not use {SITE_URL}: {canonical}")
+
+    if any(part in rel for part in ("jobs/", "results/", "admit-cards/")) and 'application/ld+json' not in content:
+        errors.append(f"{rel}: missing JSON-LD")
+
+    if is_enabled_with_value("googleSearchConsole", "verificationCode") and 'name="google-site-verification"' not in content:
+        errors.append(f"{rel}: missing Google Search Console verification meta")
+
+    if path.name != "go.html" and is_enabled_with_value("googleTagManager", "containerId"):
+        if "googletagmanager.com/gtm.js" not in content:
+            errors.append(f"{rel}: missing GTM head script")
+        if "googletagmanager.com/ns.html" not in content:
+            errors.append(f"{rel}: missing GTM noscript iframe")
+
+    if (
+        path.name != "go.html"
+        and not is_enabled_with_value("googleTagManager", "containerId")
+        and is_enabled_with_value("googleAnalytics4", "measurementId")
+        and "googletagmanager.com/gtag/js" not in content
+    ):
+        errors.append(f"{rel}: missing GA4 gtag script")
 
     return errors
 

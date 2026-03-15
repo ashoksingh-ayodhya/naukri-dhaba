@@ -15,7 +15,7 @@ Allow: /results.html
 Allow: /admit-cards.html
 
 # Sitemap location
-Sitemap: https://www.naukridhaba.in/sitemap.xml
+Sitemap: https://naukridhaba.in/sitemap.xml
 
 # Crawl delay (be polite to server)
 Crawl-delay: 1

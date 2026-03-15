@@ -31,14 +31,17 @@ import os
 import re
 import sys
 import glob
+import json
 import argparse
 from pathlib import Path
 from datetime import date, datetime
+from html import escape
 
 from site_config import SITE_NAME, SITE_URL
 
 SITE_ROOT = Path(__file__).parent
 TODAY = date.today().isoformat()
+TRACKING_CONFIG_PATH = SITE_ROOT / 'tracking-config.json'
 
 # Banned URL patterns (sarkariresult)
 BANNED_URL_PATTERNS = [
@@ -64,6 +67,38 @@ SEO_KEYWORDS_MAP = {
     'government': 'Sarkari Naukri 2026, Govt Jobs India, Government Jobs Online Form',
 }
 
+DEFAULT_TRACKING_CONFIG = {
+    'googleAnalytics4': {'enabled': False, 'measurementId': 'G-XXXXXXXXXX'},
+    'googleTagManager': {'enabled': False, 'containerId': 'GTM-XXXXXXX'},
+    'googleSearchConsole': {'enabled': False, 'verificationCode': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'},
+    'googleAdSense': {'enabled': False, 'publisherId': 'ca-pub-XXXXXXXXXXXXXXXX'},
+    'microsoftClarity': {'enabled': False, 'projectId': 'XXXXXXXXXX'},
+    'facebookPixel': {'enabled': False, 'pixelId': 'XXXXXXXXXXXXXXXXXX'},
+    'customHeadCode': {'enabled': False, 'code': '<code goes here>'},
+}
+
+
+def load_tracking_config():
+    config = json.loads(json.dumps(DEFAULT_TRACKING_CONFIG))
+    if not TRACKING_CONFIG_PATH.exists():
+        return config
+
+    try:
+        loaded = json.loads(TRACKING_CONFIG_PATH.read_text(encoding='utf-8'))
+    except Exception as exc:
+        log(f"WARNING: Failed to parse {TRACKING_CONFIG_PATH.name}: {exc}")
+        return config
+
+    for key, default_value in DEFAULT_TRACKING_CONFIG.items():
+        if isinstance(default_value, dict):
+            config[key].update(loaded.get(key, {}))
+        else:
+            config[key] = loaded.get(key, default_value)
+    return config
+
+
+TRACKING_CONFIG = load_tracking_config()
+
 def log(msg):
     print(msg)
 
@@ -84,6 +119,9 @@ def normalize_title_text(title):
     title = re.sub(r'\s*\|\s*' + re.escape(SITE_NAME) + r'.*$', '', title, flags=re.I)
     title = re.sub(r'\b(\d{4})\s+\1\b', r'\1', title)
     title = re.sub(r'([A-Za-z])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    title = re.sub(r'\bResult\s*-\s*Check Result\b', 'Result', title, flags=re.I)
+    title = re.sub(r'\bAdmit Card\s*-\s*Download Admit Card\b', 'Admit Card', title, flags=re.I)
+    title = re.sub(r'\bApply Online\s*-\s*Apply Online\b', 'Apply Online', title, flags=re.I)
     return clean_text(title)
 
 
@@ -195,6 +233,87 @@ def get_js_path(filepath, jsfile):
     return f'../../js/{jsfile}'
 
 
+def is_placeholder(value, placeholders):
+    normalized = clean_text(value)
+    return (not normalized) or normalized in placeholders
+
+
+def serialize_tracking_config():
+    payload = json.dumps(TRACKING_CONFIG, separators=(',', ':'), ensure_ascii=False)
+    return payload.replace('</', '<\\/')
+
+
+def build_head_tracking_markup(filepath):
+    tracking_path = get_js_path(filepath, 'tracking.js')
+    lines = [
+        f'    <script>window.NAUKRI_DHABA_TRACKING_CONFIG = {serialize_tracking_config()};</script>'
+    ]
+
+    gsc = TRACKING_CONFIG.get('googleSearchConsole', {})
+    if gsc.get('enabled') and not is_placeholder(
+        gsc.get('verificationCode'),
+        {'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'}
+    ):
+        lines.append(
+            f'    <meta name="google-site-verification" content="{escape(gsc["verificationCode"], quote=True)}">'
+        )
+
+    gtm = TRACKING_CONFIG.get('googleTagManager', {})
+    gtm_enabled = gtm.get('enabled') and not is_placeholder(
+        gtm.get('containerId'),
+        {'GTM-XXXXXXX'}
+    )
+    if gtm_enabled:
+        container_id = escape(gtm['containerId'], quote=True)
+        lines.append('    <!-- Google Tag Manager -->')
+        lines.append('    <script>')
+        lines.append('      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":')
+        lines.append('      new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],')
+        lines.append('      j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=')
+        lines.append('      "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);')
+        lines.append(f'      }})(window,document,"script","dataLayer","{container_id}");')
+        lines.append('    </script>')
+        lines.append('    <!-- End Google Tag Manager -->')
+    else:
+        ga4 = TRACKING_CONFIG.get('googleAnalytics4', {})
+        if ga4.get('enabled') and not is_placeholder(
+            ga4.get('measurementId'),
+            {'G-XXXXXXXXXX'}
+        ):
+            measurement_id = escape(ga4['measurementId'], quote=True)
+            lines.append('    <!-- Google Analytics 4 -->')
+            lines.append(f'    <script async src="https://www.googletagmanager.com/gtag/js?id={measurement_id}"></script>')
+            lines.append('    <script>')
+            lines.append('      window.dataLayer = window.dataLayer || [];')
+            lines.append('      function gtag(){dataLayer.push(arguments);}')
+            lines.append('      gtag("js", new Date());')
+            lines.append(f'      gtag("config", "{measurement_id}");')
+            lines.append('    </script>')
+
+    custom_head = TRACKING_CONFIG.get('customHeadCode', {})
+    if custom_head.get('enabled') and custom_head.get('code') and custom_head.get('code') != '<code goes here>':
+        lines.append(f'    {custom_head["code"]}')
+
+    lines.append(f'    <script src="{tracking_path}"></script>')
+    return '\n'.join(lines)
+
+
+def build_body_tracking_markup():
+    gtm = TRACKING_CONFIG.get('googleTagManager', {})
+    if not (
+        gtm.get('enabled')
+        and not is_placeholder(gtm.get('containerId'), {'GTM-XXXXXXX'})
+    ):
+        return ''
+    container_id = escape(gtm['containerId'], quote=True)
+    return (
+        '    <!-- Google Tag Manager (noscript) -->\n'
+        f'    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={container_id}" '
+        'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\n'
+        '    <!-- End Google Tag Manager (noscript) -->'
+    )
+
+
 def get_keywords(page_type, title, dept):
     """Auto-generate SEO keywords."""
     dept_lower = dept.lower()
@@ -212,6 +331,17 @@ def get_keywords(page_type, title, dept):
         SITE_NAME,
     ]
     return dedupe_csv(base_kws, ', '.join(extra_kws))
+
+
+def title_already_has_intent(title, page_type):
+    lower_title = title.lower()
+    intent_patterns = {
+        'job': r'(apply online|online form|recruitment|vacancy|registration|application form)',
+        'result': r'(result|score ?card|merit list|cut ?off|selection list)',
+        'admit_card': r'(admit card|hall ticket|exam city|call letter)',
+    }
+    pattern = intent_patterns.get(page_type)
+    return bool(pattern and re.search(pattern, lower_title))
 
 
 def build_meta_block(data, page_type, filepath, canonical_url):
@@ -273,7 +403,13 @@ def build_meta_block(data, page_type, filepath, canonical_url):
             'other': 'Sarkari Naukri'
         }.get(page_type, 'Sarkari Naukri')
 
-        full_title = f"{title} | {SITE_NAME}" if type_suffix.lower() in title.lower() else f"{title} - {type_suffix} | {SITE_NAME}"
+        full_title = (
+            f"{title} | {SITE_NAME}"
+            if title_already_has_intent(title, page_type) or type_suffix.lower() in title.lower()
+            else f"{title} - {type_suffix} | {SITE_NAME}"
+        )
+
+    og_type = 'article' if page_type in {'job', 'result', 'admit_card'} else 'website'
 
     return f'''    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -284,7 +420,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
     <meta name="author" content="{SITE_NAME}">
     <link rel="canonical" href="{canonical_url}">
     <!-- Open Graph -->
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{og_type}">
     <meta property="og:title" content="{og_title}">
     <meta property="og:description" content="{og_desc}">
     <meta property="og:url" content="{canonical_url}">
@@ -486,9 +622,9 @@ def update_ad_slots(content):
 def rebuild_head(content, data, page_type, filepath, canonical_url):
     """Replace the <head> content with upgraded SEO version."""
     meta_block = build_meta_block(data, page_type, filepath, canonical_url)
-    tracking_path = get_js_path(filepath, 'tracking.js')
     ads_path = get_js_path(filepath, 'ads-manager.js')
     css_path = get_css_path(filepath)
+    tracking_block = build_head_tracking_markup(filepath)
 
     # Build JSON-LD
     json_ld_blocks = ''
@@ -530,7 +666,7 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
     new_head = f'''<head>
 {meta_block}
     <link rel="stylesheet" href="{css_path}">
-    <script src="{tracking_path}"></script>
+{tracking_block}
 {json_ld_blocks}
     <script src="{ads_path}" defer></script>
 </head>'''
@@ -538,6 +674,16 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
     # Replace old head block
     content = re.sub(r'<head>.*?</head>', new_head, content, count=1, flags=re.DOTALL)
     return content
+
+
+def inject_body_tracking(content):
+    """Inject body-start tracking markup such as GTM noscript."""
+    body_markup = build_body_tracking_markup()
+    if not body_markup:
+        return content
+    if 'googletagmanager.com/ns.html' in content:
+        return content
+    return re.sub(r'(<body[^>]*>)', r'\1' + '\n' + body_markup, content, count=1, flags=re.IGNORECASE)
 
 
 def update_page(filepath, dry_run=False):
@@ -569,6 +715,7 @@ def update_page(filepath, dry_run=False):
 
     # Step 6: Rebuild head with complete SEO
     content = rebuild_head(content, data, page_type, filepath, canonical_url)
+    content = inject_body_tracking(content)
 
     if content == original:
         return False  # No changes
