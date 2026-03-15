@@ -272,7 +272,8 @@ def normalize_title(text: str) -> str:
     title = clean(sanitize(text))
     title = re.sub(rf'\s*\|\s*{re.escape(SITE_NAME)}.*$', '', title, flags=re.I)
     title = re.sub(r'\b(\d{4})\s+\1\b', r'\1', title)
-    title = re.sub(r'([A-Za-z])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    title = re.sub(r'([A-Za-z0-9])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    title = re.sub(r'\b(20\d{2})\s+(Apply Online|Result|Admit Card)\s+\1\b', r'\1 \2', title)
     return clean(title)
 
 
@@ -667,6 +668,21 @@ def listing_text_matches(title: str, page_type: str) -> bool:
     if page_type == 'admit':
         return bool(re.search(r'admit card|exam city|hall ticket|call letter|exam date', text))
     return False
+
+
+def kind_matches_title(title: str, kind: str) -> bool:
+    text = normalize_title(title)
+    if kind == 'job':
+        return (
+            listing_text_matches(text, 'job')
+            and not listing_text_matches(text, 'result')
+            and not listing_text_matches(text, 'admit')
+        )
+    if kind == 'result':
+        return listing_text_matches(text, 'result')
+    if kind == 'admit':
+        return listing_text_matches(text, 'admit')
+    return True
 
 
 def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict]:
@@ -1636,9 +1652,10 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
 
 
 def build_listing_markup(entries: list[dict], kind: str, limit: int | None = None) -> tuple[str, str]:
+    entries = prepare_listing_entries(entries, kind, limit)
     rows = []
     cards = []
-    iterable = entries[:limit] if limit else entries
+    iterable = entries
 
     for e in iterable:
         title = normalize_title(e.get('title', ''))
@@ -1684,6 +1701,29 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
     return '\n'.join(rows), '\n'.join(cards)
 
 
+def prepare_listing_entries(entries: list[dict], kind: str, limit: int | None = None) -> list[dict]:
+    cleaned = []
+    seen = set()
+    for entry in entries:
+        title = normalize_title(entry.get('title', ''))
+        if not title or not kind_matches_title(title, kind):
+            continue
+
+        dept = clean(entry.get('dept', 'Government')) or 'Government'
+        key = (title.lower(), dept.lower())
+        if key in seen:
+            continue
+        seen.add(key)
+
+        normalized = dict(entry)
+        normalized['title'] = title
+        normalized['dept'] = dept
+        cleaned.append(normalized)
+        if limit and len(cleaned) >= limit:
+            break
+    return cleaned
+
+
 def replace_listing_sections(listing_file: Path, entries: list[dict], kind: str, limit: int | None = None):
     if not listing_file.exists():
         return
@@ -1714,6 +1754,83 @@ def replace_listing_sections(listing_file: Path, entries: list[dict], kind: str,
         f'  Rebuilt {listing_file.name} '
         f'(tbody={"yes" if tbody_count else "no"}, cards={"yes" if cards_count else "no"})'
     )
+
+
+def replace_home_jobs_section(index_file: Path, entries: list[dict], limit: int = 10):
+    if not index_file.exists():
+        return
+
+    cleaned = prepare_listing_entries(entries, 'job', limit)
+    rows_str, cards_str = build_listing_markup(cleaned, 'job')
+    section = f'''<!-- Latest Jobs -->
+<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin-bottom:2rem;">
+<h2 style="color:var(--primary);margin-top:0;display:flex;align-items:center;gap:0.5rem;">
+<span>📋</span> Latest Jobs
+                </h2>
+<div class="table-wrapper">
+<table class="table">
+<thead>
+<tr>
+<th>Department</th>
+<th>Exam/Post Name</th>
+<th>Last Date</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>{rows_str}</tbody>
+</table>
+</div>
+<div class="cards">{cards_str}</div>
+<div style="text-align:center;margin-top:1.5rem;">
+<a class="btn btn--primary" href="/latest-jobs">View All Jobs →</a>
+</div>
+</div>'''
+
+    content = index_file.read_text(encoding='utf-8')
+    content, count = re.subn(
+        r'<!-- Latest Jobs -->.*?<!-- Results & Admit Cards Grid -->',
+        section + '\n<!-- Results & Admit Cards Grid -->',
+        content,
+        count=1,
+        flags=re.DOTALL,
+    )
+    if count:
+        index_file.write_text(content, encoding='utf-8')
+        log.info('  Rebuilt index.html latest jobs section cleanly')
+
+
+def load_existing_detail_entries(kind: str) -> list[dict]:
+    if kind == 'job':
+        base = SITE_ROOT / 'jobs'
+    elif kind == 'result':
+        base = SITE_ROOT / 'results'
+    else:
+        base = SITE_ROOT / 'admit-cards'
+
+    entries = []
+    for path in sorted(base.rglob('*.html'), key=lambda p: p.stat().st_mtime, reverse=True):
+        rel = path.relative_to(SITE_ROOT).as_posix()
+        html = path.read_text(encoding='utf-8', errors='replace')
+        title_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.I | re.S)
+        title = clean(re.sub(r'<[^>]+>', '', title_match.group(1))) if title_match else normalize_title(path.stem.replace('-', ' '))
+        dept_match = re.search(r'info-item__label">[^<]*Department</span>\s*<span class="info-item__value">([^<]+)', html, re.I)
+        dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
+        date_label = 'Check Notification'
+
+        if kind == 'job':
+            match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
+            date_label = clean(match.group(1)) if match else 'Check Notification'
+            entries.append({'title': title, 'dept': dept, 'last_date': date_label})
+        elif kind == 'result':
+            match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
+            date_label = clean(match.group(1)) if match else 'Check Notification'
+            entries.append({'title': title, 'dept': dept, 'result_date': date_label})
+        else:
+            match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
+            date_label = clean(match.group(1)) if match else 'Check Notification'
+            entries.append({'title': title, 'dept': dept, 'exam_date': date_label})
+
+    return entries
 
 
 # ══════════════════════════════════════════════════════════
@@ -1800,7 +1917,7 @@ def run(refresh_existing: bool = False) -> int:
     if refresh_existing:
         if generated['job']:
             replace_listing_sections(SITE_ROOT / 'latest-jobs.html', generated['job'], 'job')
-            replace_listing_sections(SITE_ROOT / 'index.html', generated['job'], 'job', limit=10)
+            replace_home_jobs_section(SITE_ROOT / 'index.html', generated['job'], limit=10)
         if generated['result']:
             replace_listing_sections(SITE_ROOT / 'results.html', generated['result'], 'result')
         if generated['admit']:

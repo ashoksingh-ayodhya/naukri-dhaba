@@ -64,7 +64,7 @@ SEO_KEYWORDS_MAP = {
     'banking': 'Bank Jobs, IBPS, SBI, RBI, PO, Clerk, Banking Vacancy 2026',
     'police': 'Police Jobs, Constable, SI, CRPF, BSF, CISF, Police Bharti 2026',
     'defence': 'Defence Jobs, Army, Navy, Air Force, NDA, CDS, Defence Bharti 2026',
-    'government': 'Sarkari Naukri 2026, Govt Jobs India, Government Jobs Online Form',
+    'government': 'Government jobs India, government recruitment updates, online form alerts, Naukri Dhaba',
 }
 
 DEFAULT_TRACKING_CONFIG = {
@@ -118,7 +118,8 @@ def normalize_title_text(title):
     title = clean_text(title)
     title = re.sub(r'\s*\|\s*' + re.escape(SITE_NAME) + r'.*$', '', title, flags=re.I)
     title = re.sub(r'\b(\d{4})\s+\1\b', r'\1', title)
-    title = re.sub(r'([A-Za-z])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    title = re.sub(r'([A-Za-z0-9])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    title = re.sub(r'\b(20\d{2})\s+(Apply Online|Result|Admit Card)\s+\1\b', r'\1 \2', title)
     title = re.sub(r'\bResult\s*-\s*Check Result\b', 'Result', title, flags=re.I)
     title = re.sub(r'\bAdmit Card\s*-\s*Download Admit Card\b', 'Admit Card', title, flags=re.I)
     title = re.sub(r'\bApply Online\s*-\s*Apply Online\b', 'Apply Online', title, flags=re.I)
@@ -370,7 +371,6 @@ def get_keywords(page_type, title, dept):
         normalize_title_text(title),
         f"{dept} Jobs",
         "Government Jobs India",
-        "Sarkari Naukri",
         SITE_NAME,
     ]
     return dedupe_csv(base_kws, ', '.join(extra_kws))
