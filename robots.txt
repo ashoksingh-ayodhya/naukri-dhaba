@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Disallow admin/tool pages
+Disallow: /eligibility-calculator.html
+Disallow: /study-planner.html
+Disallow: /previous-papers.html
+
+# Allow important crawlable paths
+Allow: /jobs/
+Allow: /results/
+Allow: /admit-cards/
+Allow: /latest-jobs.html
+Allow: /results.html
+Allow: /admit-cards.html
+
+# Sitemap location
+Sitemap: https://www.naukridhaba.in/sitemap.xml
+
+# Crawl delay (be polite to server)
+Crawl-delay: 1
