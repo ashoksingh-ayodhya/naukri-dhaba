@@ -156,16 +156,29 @@ def sanitize(text: str) -> str:
 
 
 def sanitize_url(url: str) -> str:
-    """Keep official govt URLs; replace any SarkariResult URL with '#'."""
+    """
+    Preserve official govt URLs exactly.
+    For sarkariresult.com URLs → replace domain with naukridhaba.in,
+    keeping the full path so our pages are reachable at the same slug.
+    Relative paths → resolve against naukridhaba.in.
+    """
     if not url:
         return '#'
     u = url.strip()
-    if re.search(r'(?i)sarkariresult', u):
-        return '#'
+
+    # Relative path from sarkariresult → prefix our domain
     if u.startswith('/'):
-        return '#'                 # Relative SR links → drop
+        return f'https://www.naukridhaba.in{u}'
+
     if not u.startswith('http'):
         return '#'
+
+    # Replace sarkariresult domain, keep full path intact
+    u = re.sub(
+        r'(?i)https?://(?:www\.)?sarkariresults?\.(?:com|org|in)',
+        'https://www.naukridhaba.in',
+        u
+    )
     return u
 
 
@@ -490,17 +503,34 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
             unique_links.append(lnk)
     d['extra_links'] = unique_links
 
-    # ── Also scrape any PDF / document links anywhere ─────
+    # ── Full-page anchor scan as fallback ─────────────────
+    # Catches Apply / Notification links that are not in orange rows,
+    # plus all PDF / .gov.in documents anywhere on the page.
     for a in soup.find_all('a', href=True):
-        href = a['href']
-        if href and not re.search(r'(?i)sarkariresult', href):
-            if re.search(r'\.(pdf|PDF)$', href) or re.search(r'\.gov\.in', href):
-                href_clean = sanitize_url(urljoin(BASE, href))
-                if href_clean != '#':
-                    lbl = sanitize(clean(a.get_text())) or 'Official Document'
-                    if href_clean not in seen_urls:
-                        seen_urls.add(href_clean)
-                        d['extra_links'].append({'label': lbl, 'url': href_clean})
+        raw_href = a.get('href', '')
+        if not raw_href:
+            continue
+        href_clean = sanitize_url(urljoin(BASE, raw_href))
+        if href_clean == '#':
+            continue
+        link_text = clean(a.get_text())
+
+        # Fill missing primary buttons from any <a> on the page
+        if d['apply_url'] == '#' and re.search(r'apply\s*(online|now|here)', link_text, re.I):
+            d['apply_url'] = href_clean
+        if d['notification_url'] == '#' and re.search(r'notif|advt|official\s*notice', link_text, re.I):
+            d['notification_url'] = href_clean
+        if d['result_url'] == '#' and re.search(r'result|merit\s*list', link_text, re.I):
+            d['result_url'] = href_clean
+        if d['admit_url'] == '#' and re.search(r'admit\s*card|hall\s*ticket', link_text, re.I):
+            d['admit_url'] = href_clean
+
+        # Collect all external official / PDF links
+        if re.search(r'\.(pdf|PDF)$', raw_href) or re.search(r'\.gov\.in|\.nic\.in', raw_href):
+            lbl = sanitize(link_text) or 'Official Document'
+            if href_clean not in seen_urls:
+                seen_urls.add(href_clean)
+                d['extra_links'].append({'label': lbl, 'url': href_clean})
 
     return d
 
