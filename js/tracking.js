@@ -168,7 +168,7 @@
       + '  </div>'
       + '  <div style="display:flex;gap:8px;flex-wrap:wrap">'
       + '    <button type="button" data-consent-mode="reject" style="border:1px solid #4b5563;background:transparent;color:#f9fafb;padding:10px 12px;border-radius:999px;cursor:pointer">Reject</button>'
-      + '    <button type="button" data-consent-mode="analytics" style="border:1px solid #2563eb;background:#1d4ed8;color:#fff;padding:10px 12px;border-radius:999px;cursor:pointer">Accept analytics</button>'
+      + '    <button type="button" data-consent-mode="analytics" style="border:1px solid #2563eb;background:#1d4ed8;color:#fff;padding:10px 12px;border-radius:999px;cursor:pointer">Accept</button>'
       + '    <button type="button" data-consent-mode="all" style="border:1px solid #059669;background:#047857;color:#fff;padding:10px 12px;border-radius:999px;cursor:pointer">Accept all</button>'
       + '  </div>'
       + '</div>';
