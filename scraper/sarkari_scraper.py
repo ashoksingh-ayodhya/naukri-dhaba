@@ -1,35 +1,30 @@
 #!/usr/bin/env python3
 """
 ============================================================
-NAUKRI DHABA - DAILY SCRAPER BOT
+NAUKRI DHABA - SARKARIRESULT.COM SCRAPER
 File: scraper/sarkari_scraper.py
 ============================================================
 
-Scrapes official Indian government job portals daily and
-generates HTML pages for Naukri Dhaba website.
+Scrapes sarkariresult.com daily and generates HTML pages
+for Naukri Dhaba — replacing all SarkariResult branding
+with Naukri Dhaba.
 
-SOURCES SCRAPED:
-  - Employment News India (employmentnews.gov.in)
-  - UPSC (upsc.gov.in)
-  - SSC (ssc.gov.in)
-  - IBPS (ibps.in)
-  - NTA (nta.ac.in)
-  - RRB / Indian Railways (indianrailways.gov.in)
+SOURCES:
+  Homepage  : https://www.sarkariresult.com
+  Jobs      : https://www.sarkariresult.com/latestjob.php
+  Results   : https://www.sarkariresult.com/result.php
+  Admit Cards: https://www.sarkariresult.com/admitcard.php
 
-FEATURES:
-  - Removes all SarkariResult references, replaces with Naukri Dhaba
-  - Generates proper SEO-optimised HTML pages
-  - Adds Rich JSON-LD structured data
-  - Updates listing pages (latest-jobs.html, results.html, admit-cards.html)
-  - Regenerates sitemap after scraping
-  - Logs all activity to scraper/logs/scraper.log
+SCHEDULE:
+  Runs daily at 10:00 AM IST (04:30 UTC) via cron.
+  See scraper/setup_cron.sh to install the cron job.
 
-USAGE:
-  python3 scraper/sarkari_scraper.py          # Run once
-  python3 scraper/sarkari_scraper.py --daemon  # Run as scheduler (daily)
+MANUAL RUN:
+  python3 scraper/sarkari_scraper.py
 
-SETUP CRON (alternative):
-  0 6 * * * cd /path/to/naukri-dhaba && python3 scraper/sarkari_scraper.py >> scraper/logs/cron.log 2>&1
+LOGS:
+  scraper/logs/scraper.log
+
 ============================================================
 """
 
@@ -41,240 +36,496 @@ import time
 import logging
 import hashlib
 import argparse
-import schedule
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 from pathlib import Path
-from urllib.parse import urljoin, urlparse, quote
+from urllib.parse import urljoin, urlparse
 
+# ─── Check dependencies ────────────────────────────────────
 try:
     import requests
-    from bs4 import BeautifulSoup
-    from dateutil import parser as dateparser
+    from bs4 import BeautifulSoup, Tag
 except ImportError:
-    print("ERROR: Missing dependencies. Run: pip3 install -r scraper/requirements.txt")
-    sys.exit(1)
+    print("Missing dependencies. Installing...")
+    os.system(f"{sys.executable} -m pip install requests beautifulsoup4 lxml -q")
+    import requests
+    from bs4 import BeautifulSoup, Tag
 
-# ══════════════════════════════════════════════════════════════
-# CONFIGURATION
-# ══════════════════════════════════════════════════════════════
-SITE_ROOT = Path(__file__).parent.parent
-SITE_URL = 'https://www.naukridhaba.in'
-SITE_NAME = 'Naukri Dhaba'
+# ══════════════════════════════════════════════════════════
+# PATHS & CONSTANTS
+# ══════════════════════════════════════════════════════════
+SITE_ROOT   = Path(__file__).parent.parent
 SCRAPER_DIR = Path(__file__).parent
-LOG_DIR = SCRAPER_DIR / 'logs'
-SEEN_JOBS_FILE = SCRAPER_DIR / 'seen_jobs.json'
+LOG_DIR     = SCRAPER_DIR / 'logs'
+SEEN_FILE   = SCRAPER_DIR / 'seen_items.json'
 
 LOG_DIR.mkdir(exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[
         logging.FileHandler(LOG_DIR / 'scraper.log', encoding='utf-8'),
-        logging.StreamHandler(sys.stdout)
+        logging.StreamHandler(sys.stdout),
     ]
 )
-log = logging.getLogger('NaukriScraper')
+log = logging.getLogger('NaukriDhaba')
 
-# Request headers - polite browser-like headers
+# ── Source site ────────────────────────────────────────────
+BASE          = 'https://www.sarkariresult.com'
+URL_JOBS      = f'{BASE}/latestjob.php'
+URL_RESULTS   = f'{BASE}/result.php'
+URL_ADMITS    = f'{BASE}/admitcard.php'
+URL_HOME      = BASE
+
+# ── Our site ───────────────────────────────────────────────
+SITE_URL  = 'https://www.naukridhaba.in'
+SITE_NAME = 'Naukri Dhaba'
+
+# ── Request settings ───────────────────────────────────────
 HEADERS = {
     'User-Agent': (
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
         'AppleWebKit/537.36 (KHTML, like Gecko) '
-        'Chrome/121.0.0.0 Safari/537.36'
+        'Chrome/122.0.0.0 Safari/537.36'
     ),
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Accept-Language': 'en-IN,en;q=0.9,hi;q=0.8',
     'Accept-Encoding': 'gzip, deflate, br',
+    'Referer': BASE,
     'Connection': 'keep-alive',
 }
+DELAY   = 2.5   # seconds between requests (polite)
+TIMEOUT = 20
 
-REQUEST_DELAY = 3  # Seconds between requests (polite crawling)
-REQUEST_TIMEOUT = 15
-
-# Banned terms to replace in all content
-BANNED_TERMS = [
-    'sarkariresult', 'sarkari result', 'SarkariResult',
-    'SarkariResults', 'sarkariresults',
-    'www.sarkariresult.com', 'sarkariresult.com',
-    'doc.sarkariresults.org.in', 'sarkariresults.org.in',
-]
-
-# Department category mappings
-DEPT_CATEGORY = {
-    'UPSC': 'upsc', 'SSC': 'ssc', 'RAILWAY': 'railway', 'RRB': 'railway',
-    'RRC': 'railway', 'IBPS': 'banking', 'SBI': 'banking', 'RBI': 'banking',
-    'POLICE': 'police', 'CISF': 'police', 'BSF': 'police', 'CRPF': 'police',
-    'ARMY': 'defence', 'NAVY': 'defence', 'AIR FORCE': 'defence', 'NDA': 'defence',
-    'CDS': 'defence', 'DRDO': 'defence', 'NTA': 'government', 'NEET': 'government',
-    'JEE': 'government', 'CUET': 'government',
+# ── Department → category folder mapping ──────────────────
+DEPT_MAP = {
+    'UPSC': 'upsc', 'IAS': 'upsc', 'IPS': 'upsc', 'IFS': 'upsc',
+    'SSC': 'ssc', 'CHSL': 'ssc', 'CGL': 'ssc', 'MTS': 'ssc',
+    'UPSSSC': 'ssc', 'BSSC': 'ssc', 'JSSC': 'ssc', 'HSSC': 'ssc',
+    'RRB': 'railway', 'RRC': 'railway', 'RAILWAY': 'railway',
+    'IBPS': 'banking', 'SBI': 'banking', 'RBI': 'banking',
+    'NABARD': 'banking', 'BANK': 'banking',
+    'POLICE': 'police', 'CISF': 'police', 'BSF': 'police',
+    'CRPF': 'police', 'ITBP': 'police', 'SSB': 'police',
+    'ARMY': 'defence', 'NAVY': 'defence', 'AIRFORCE': 'defence',
+    'IAF': 'defence', 'NDA': 'defence', 'CDS': 'defence',
+    'DRDO': 'defence', 'HAL': 'defence',
 }
 
-# SEO Keywords for government jobs in India
-SEO_KEYWORDS = {
-    'upsc': ['UPSC', 'Civil Services', 'IAS', 'IPS', 'IFS', 'UPSC exam 2026'],
-    'ssc': ['SSC', 'Staff Selection Commission', 'CGL', 'CHSL', 'MTS', 'GD Constable'],
-    'railway': ['Railway Jobs', 'RRB', 'Group D', 'NTPC', 'ALP', 'Loco Pilot', 'Indian Railways'],
-    'banking': ['Bank Jobs', 'IBPS', 'SBI', 'RBI', 'PO', 'Clerk', 'Bank Bharti'],
-    'police': ['Police Jobs', 'Constable', 'SI', 'Inspector', 'CRPF', 'BSF', 'CISF'],
-    'defence': ['Defence Jobs', 'Army', 'Navy', 'Air Force', 'NDA', 'CDS'],
-    'government': ['Sarkari Naukri', 'Govt Jobs', 'Government Jobs India 2026', 'Online Form'],
+# ── SEO keyword map by dept category ──────────────────────
+SEO_KW = {
+    'upsc':     'UPSC, Civil Services, IAS, IPS, IFS, Union Public Service Commission',
+    'ssc':      'SSC, Staff Selection Commission, CGL, CHSL, MTS, GD Constable',
+    'railway':  'Railway Jobs, RRB, NTPC, Group D, ALP, Loco Pilot, Indian Railways',
+    'banking':  'Bank Jobs, IBPS, SBI, RBI, PO, Clerk, Banking Vacancy',
+    'police':   'Police Jobs, Constable, SI, Sub Inspector, CRPF, BSF, CISF',
+    'defence':  'Defence Jobs, Army, Navy, Air Force, NDA, CDS, Agniveer',
+    'government': 'Sarkari Naukri 2026, Govt Jobs India, Online Form 2026',
 }
 
 
-# ══════════════════════════════════════════════════════════════
-# UTILITY FUNCTIONS
-# ══════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
+# UTILITY HELPERS
+# ══════════════════════════════════════════════════════════
 
-def clean_text(text):
-    """Clean and normalize text."""
+def slugify(text: str) -> str:
+    t = str(text).lower().strip()
+    t = re.sub(r'[^\w\s-]', '', t)
+    t = re.sub(r'[\s_]+', '-', t)
+    t = re.sub(r'-{2,}', '-', t).strip('-')
+    return t[:80]
+
+
+def clean(text: str) -> str:
+    """Strip whitespace and collapse spaces."""
     if not text:
         return ''
-    text = str(text).strip()
-    text = re.sub(r'\s+', ' ', text)
-    # Replace banned terms
-    for term in BANNED_TERMS:
-        text = re.sub(re.escape(term), SITE_NAME, text, flags=re.IGNORECASE)
+    return re.sub(r'\s+', ' ', str(text)).strip()
+
+
+def sanitize(text: str) -> str:
+    """Remove/replace all SarkariResult mentions."""
+    if not text:
+        return ''
+    text = str(text)
+    text = re.sub(r'(?i)sarkari\s*results?(?:\.(?:com|org|in))?', SITE_NAME, text)
+    text = re.sub(r'(?i)www\.sarkariresults?\.(?:com|org|in)', 'www.naukridhaba.in', text)
+    text = re.sub(r'(?i)doc\.sarkariresults?\.org\.in', 'doc.naukridhaba.in', text)
     return text
 
 
-def clean_url(url):
-    """Remove/replace sarkariresult URLs."""
+def sanitize_url(url: str) -> str:
+    """Keep official govt URLs; replace any SarkariResult URL with '#'."""
     if not url:
         return '#'
-    for term in BANNED_TERMS:
-        if term.lower() in url.lower():
-            return '#'
-    return url
+    u = url.strip()
+    if re.search(r'(?i)sarkariresult', u):
+        return '#'
+    if u.startswith('/'):
+        return '#'                 # Relative SR links → drop
+    if not u.startswith('http'):
+        return '#'
+    return u
 
 
-def slugify(text):
-    """Convert text to URL-friendly slug."""
-    text = str(text).lower().strip()
-    text = re.sub(r'[^\w\s-]', '', text)
-    text = re.sub(r'[\s_-]+', '-', text)
-    text = re.sub(r'^-+|-+$', '', text)
-    return text[:80]  # Max 80 chars for URL
+def item_id(title: str, dept: str) -> str:
+    return hashlib.md5(f"{title.lower().strip()}|{dept.lower().strip()}".encode()).hexdigest()[:14]
 
 
-def get_dept_category(dept_name):
-    """Get category folder for a department."""
-    dept_upper = str(dept_name).upper()
-    for key, cat in DEPT_CATEGORY.items():
-        if key in dept_upper:
+def get_category(text: str) -> str:
+    tu = str(text).upper()
+    for key, cat in DEPT_MAP.items():
+        if key in tu:
             return cat
     return 'government'
 
 
-def get_job_id(title, dept):
-    """Generate unique ID for deduplication."""
-    return hashlib.md5(f"{title}|{dept}".encode()).hexdigest()[:12]
-
-
-def load_seen_jobs():
-    """Load set of already processed job IDs."""
-    if SEEN_JOBS_FILE.exists():
+def load_seen() -> set:
+    if SEEN_FILE.exists():
         try:
-            with open(SEEN_JOBS_FILE, 'r') as f:
-                return set(json.load(f))
+            return set(json.loads(SEEN_FILE.read_text()))
         except Exception:
             pass
     return set()
 
 
-def save_seen_jobs(seen):
-    """Save set of processed job IDs."""
-    with open(SEEN_JOBS_FILE, 'w') as f:
-        json.dump(list(seen), f)
+def save_seen(seen: set):
+    SEEN_FILE.write_text(json.dumps(sorted(seen), indent=2))
 
 
-def fetch_page(url, retries=3):
-    """Fetch a URL with retries and polite delay."""
-    for attempt in range(retries):
+# ══════════════════════════════════════════════════════════
+# HTTP FETCHER
+# ══════════════════════════════════════════════════════════
+
+_session = requests.Session()
+_session.headers.update(HEADERS)
+
+def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
+    for attempt in range(1, retries + 1):
         try:
-            log.info(f"Fetching: {url}")
-            resp = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
-            resp.raise_for_status()
-            time.sleep(REQUEST_DELAY)
-            return resp.text
-        except requests.RequestException as e:
-            log.warning(f"Attempt {attempt+1} failed for {url}: {e}")
-            if attempt < retries - 1:
-                time.sleep(REQUEST_DELAY * (attempt + 1))
-    log.error(f"Failed to fetch {url} after {retries} attempts")
+            log.debug(f'GET {url}')
+            r = _session.get(url, timeout=TIMEOUT)
+            r.raise_for_status()
+            time.sleep(DELAY)
+            return BeautifulSoup(r.content, 'lxml')
+        except Exception as exc:
+            log.warning(f'Attempt {attempt}/{retries} failed for {url}: {exc}')
+            if attempt < retries:
+                time.sleep(DELAY * attempt)
+    log.error(f'Giving up on {url}')
     return None
 
 
-# ══════════════════════════════════════════════════════════════
-# HTML PAGE GENERATORS
-# ══════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
+# SARKARIRESULT.COM — LISTING PAGE PARSER
+# ══════════════════════════════════════════════════════════
+# sarkariresult.com listing table structure:
+#
+#   <div id="post-list"> or <div class="TableLi">
+#     <table>
+#       <tr>
+#         <td>                               ← col 0: "New" badge + title link
+#           <b style="color:red">New</b>
+#           <a href="/path/to/detail/">Post Title Here</a>
+#         </td>
+#         <td>28/02/2026</td>               ← col 1: date
+#       </tr>
+#     </table>
+#   </div>
+#
+# Sometimes there is a 3-column layout with dept in col 0,
+# title+link in col 1, date in col 2.
 
-def build_seo_meta(page_type, title, dept, location, description, canonical_url, date_str='', keywords_extra=''):
-    """Build comprehensive SEO meta tags for a page."""
-    # Auto-generate keywords from job title + dept + location
-    dept_kws = SEO_KEYWORDS.get(get_dept_category(dept), SEO_KEYWORDS['government'])
-    base_keywords = [
-        title, dept, location,
-        f"{dept} Jobs 2026", f"{title} 2026",
-        f"Sarkari Naukri {dept}", f"{dept} {page_type} 2026",
-        "Government Jobs India", "Sarkari Result 2026",
-        "Naukri Dhaba"
-    ] + dept_kws[:3]
-    if keywords_extra:
-        base_keywords.extend(keywords_extra.split(','))
+def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
+    """Extract all rows from a sarkariresult listing page."""
+    items = []
 
-    keywords_str = ', '.join([k for k in base_keywords if k and k != 'nan'])
+    # Try several known wrapper selectors in priority order
+    containers = (
+        soup.select('#post-list table tr') or
+        soup.select('.TableLi table tr') or
+        soup.select('div.latestnews table tr') or
+        soup.select('table.latestnews tr') or
+        soup.select('table tr')          # Fallback: all tables
+    )
 
-    og_title = f"{title} | {SITE_NAME}"
-    og_description = description[:160] if description else f"{title} - Apply online at {SITE_NAME}"
+    for tr in containers:
+        tds = tr.find_all('td')
+        if not tds:
+            continue
 
-    return f'''    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} - {page_type.replace('-', ' ').title()} | {SITE_NAME}</title>
-    <meta name="description" content="{og_description}">
-    <meta name="keywords" content="{keywords_str}">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-    <meta name="author" content="{SITE_NAME}">
-    <link rel="canonical" href="{canonical_url}">
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="{og_title}">
-    <meta property="og:description" content="{og_description}">
-    <meta property="og:url" content="{canonical_url}">
-    <meta property="og:site_name" content="{SITE_NAME}">
-    <meta property="og:locale" content="hi_IN">
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{og_title}">
-    <meta name="twitter:description" content="{og_description}">
-    <!-- Geo Tags for India -->
-    <meta name="geo.region" content="IN">
-    <meta name="geo.placename" content="{location if location and location != 'nan' else 'India'}">
-    <link rel="stylesheet" href="{'/css/style.css' if '/' not in canonical_url.replace(SITE_URL+'/', '') else '../../css/style.css'}">
-    <script src="{'/js/tracking.js' if '/' not in canonical_url.replace(SITE_URL+'/', '') else '../../js/tracking.js'}"></script>'''
+        link_tag = None
+        title    = ''
+        date_str = ''
+        dept     = ''
+
+        # 3-col: dept | title+link | date
+        if len(tds) >= 3:
+            dept     = clean(tds[0].get_text())
+            link_tag = tds[1].find('a')
+            title    = clean(link_tag.get_text()) if link_tag else clean(tds[1].get_text())
+            date_str = clean(tds[2].get_text())
+
+        # 2-col: title+link | date
+        elif len(tds) == 2:
+            link_tag = tds[0].find('a')
+            title    = clean(link_tag.get_text()) if link_tag else clean(tds[0].get_text())
+            date_str = clean(tds[1].get_text())
+            dept     = infer_dept(title)
+
+        # 1-col: title+link (date embedded or missing)
+        elif len(tds) == 1:
+            link_tag = tds[0].find('a')
+            if not link_tag:
+                continue
+            title    = clean(link_tag.get_text())
+            dept     = infer_dept(title)
+            # Try to find a date in the cell text
+            m = re.search(r'\d{1,2}/\d{1,2}/\d{4}', tds[0].get_text())
+            date_str = m.group(0) if m else ''
+
+        if not title or len(title) < 8:
+            continue
+        if not link_tag or not link_tag.get('href'):
+            continue
+
+        detail_url = urljoin(BASE, link_tag['href'])
+
+        # Skip header rows / navigation rows
+        if title.lower() in ('post name', 'latest jobs', 'results', 'admit card', '#', ''):
+            continue
+
+        items.append({
+            'title':      sanitize(title),
+            'dept':       sanitize(dept) if dept else infer_dept(title),
+            'date_str':   sanitize(date_str),
+            'detail_url': detail_url,
+            'page_type':  page_type,
+        })
+
+    log.info(f'  Listing parser found {len(items)} raw rows')
+    return items
 
 
-def build_header(active_nav='jobs'):
-    """Build common site header."""
-    nav_items = [
+def infer_dept(title: str) -> str:
+    """Guess department from post title."""
+    tu = title.upper()
+    for key, cat in DEPT_MAP.items():
+        if key in tu:
+            return key
+    return 'Government'
+
+
+# ══════════════════════════════════════════════════════════
+# SARKARIRESULT.COM — DETAIL PAGE PARSER
+# ══════════════════════════════════════════════════════════
+# Detail page table structure (orange-theme boxes):
+#
+#   <table>
+#     <tr><td colspan="2"><b>Post Name</b></td></tr>
+#     <!-- Important Dates -->
+#     <tr><td>Application Begin</td><td>DD/MM/YYYY</td></tr>
+#     <tr><td>Last Date for Apply Online</td><td>DD/MM/YYYY</td></tr>
+#     <tr><td>Last Date Fee Payment</td><td>DD/MM/YYYY</td></tr>
+#     <tr><td>Correction Date</td><td>DD/MM/YYYY</td></tr>
+#     <tr><td>Exam Date</td><td>DD/MM/YYYY</td></tr>
+#     <tr><td>Admit Card</td><td>DD/MM/YYYY</td></tr>
+#     <tr><td>Result Date</td><td>DD/MM/YYYY</td></tr>
+#     <!-- Application Fee -->
+#     <tr><td>General / OBC / EWS</td><td>₹XXX/-</td></tr>
+#     <tr><td>SC / ST</td><td>₹XXX/-</td></tr>
+#     <!-- Age Limit -->
+#     <tr><td>Minimum Age</td><td>XX Years</td></tr>
+#     <tr><td>Maximum Age</td><td>XX Years</td></tr>
+#     <!-- Vacancy Details -->
+#     <tr><td>Total Post</td><td>XXXX</td></tr>
+#     <!-- Important Links -->
+#     <tr><td bgcolor="#FF6600">Apply Online</td><td><a href="...">Click Here</a></td></tr>
+#     <tr><td bgcolor="#FF6600">Download Notification</td><td><a href="...">Click Here</a></td></tr>
+#     <tr><td bgcolor="#FF6600">Check Result</td><td><a href="...">Click Here</a></td></tr>
+#     <tr><td bgcolor="#FF6600">Download Admit Card</td><td><a href="...">Click Here</a></td></tr>
+#   </table>
+
+def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
+    """
+    Scrape full detail from a sarkariresult.com detail page.
+    Returns enriched item dict.
+    """
+    d = dict(item)   # copy base item
+    d.setdefault('apply_url',         '#')
+    d.setdefault('notification_url',  '#')
+    d.setdefault('result_url',        '#')
+    d.setdefault('scorecard_url',     '#')
+    d.setdefault('admit_url',         '#')
+    d.setdefault('app_begin',         'Check Notification')
+    d.setdefault('last_date',         d.get('date_str', 'Check Notification'))
+    d.setdefault('exam_date',         'As per Schedule')
+    d.setdefault('result_date',       d.get('date_str', date.today().strftime('%d/%m/%Y')))
+    d.setdefault('admit_release',     d.get('date_str', date.today().strftime('%d/%m/%Y')))
+    d.setdefault('total_posts',       '')
+    d.setdefault('age_min',           18)
+    d.setdefault('age_max',           35)
+    d.setdefault('fee_general',       '')
+    d.setdefault('fee_sc_st',         '')
+    d.setdefault('qualification',     'Check Notification')
+    d.setdefault('salary',            'As per Government Norms')
+    d.setdefault('extra_links',       [])    # [{label, url}]
+
+    if not soup:
+        return d
+
+    # ── Extract all tables ─────────────────────────────────
+    tables = soup.find_all('table')
+    all_rows = []
+    for tbl in tables:
+        for tr in tbl.find_all('tr'):
+            cells = tr.find_all(['td', 'th'])
+            all_rows.append(cells)
+
+    # ── Walk all rows and parse key-value pairs ────────────
+    for cells in all_rows:
+        if len(cells) < 1:
+            continue
+
+        label = clean(cells[0].get_text()).lower()
+        val   = clean(cells[1].get_text()) if len(cells) > 1 else ''
+
+        # ── Important Dates ──────────────────────────────
+        if re.search(r'application\s*begin|apply\s*start', label):
+            d['app_begin'] = sanitize(val) or d['app_begin']
+
+        elif re.search(r'last\s*date|closing\s*date', label):
+            d['last_date'] = sanitize(val) or d['last_date']
+
+        elif re.search(r'exam\s*date|examination\s*date', label):
+            d['exam_date'] = sanitize(val) or d['exam_date']
+
+        elif re.search(r'result\s*date|declaration\s*date', label):
+            d['result_date'] = sanitize(val) or d['result_date']
+
+        elif re.search(r'admit\s*card\s*date|hall\s*ticket\s*date', label):
+            d['admit_release'] = sanitize(val) or d['admit_release']
+
+        # ── Application Fee ──────────────────────────────
+        elif re.search(r'general|obc|ews|unreserved', label) and re.search(r'\d', val):
+            d['fee_general'] = sanitize(val)
+
+        elif re.search(r'sc\s*/\s*st|scheduled', label) and re.search(r'\d', val):
+            d['fee_sc_st'] = sanitize(val)
+
+        # ── Age Limit ────────────────────────────────────
+        elif re.search(r'minimum\s*age|min\.\s*age', label):
+            m = re.search(r'\d+', val)
+            if m:
+                d['age_min'] = int(m.group())
+
+        elif re.search(r'maximum\s*age|max\.\s*age', label):
+            m = re.search(r'\d+', val)
+            if m:
+                d['age_max'] = int(m.group())
+
+        elif re.search(r'age\s*limit', label) and re.search(r'\d+', val):
+            nums = re.findall(r'\d+', val)
+            if len(nums) >= 2:
+                d['age_min'] = int(nums[0])
+                d['age_max'] = int(nums[1])
+            elif len(nums) == 1:
+                d['age_max'] = int(nums[0])
+
+        # ── Vacancy / Posts ──────────────────────────────
+        elif re.search(r'total\s*post|vacancy|vacancies|total\s*vacancy', label):
+            m = re.search(r'[\d,]+', val)
+            if m:
+                d['total_posts'] = m.group().replace(',', '')
+
+        # ── Qualification ────────────────────────────────
+        elif re.search(r'qualification|education|eligibility', label):
+            d['qualification'] = sanitize(val) or d['qualification']
+
+        # ── Salary / Pay ─────────────────────────────────
+        elif re.search(r'salary|pay\s*scale|pay\s*band|ctc|stipend', label):
+            d['salary'] = sanitize(val) or d['salary']
+
+        # ── Important Links (orange cells) ───────────────
+        # SarkariResult marks link rows with bgcolor="#FF6600" or background orange
+        bg = cells[0].get('bgcolor', '').lower() if hasattr(cells[0], 'get') else ''
+        style_str = cells[0].get('style', '').lower() if hasattr(cells[0], 'get') else ''
+        is_link_row = (
+            '#ff6600' in bg or 'ff6600' in style_str or
+            'orange' in style_str or
+            re.search(r'apply\s*online|download\s*notif|check\s*result|admit\s*card|score\s*card|merit\s*list', label)
+        )
+
+        if is_link_row and len(cells) > 1:
+            # Extract all anchor tags from the value cell
+            link_cell = cells[1]
+            anchors = link_cell.find_all('a')
+            for a in anchors:
+                href = sanitize_url(a.get('href', ''))
+                link_text = clean(a.get_text())
+
+                if re.search(r'apply\s*online|register', label + ' ' + link_text, re.I):
+                    d['apply_url'] = href
+                elif re.search(r'notification|official\s*notice|advt', label + ' ' + link_text, re.I):
+                    d['notification_url'] = href
+                elif re.search(r'result|merit\s*list', label + ' ' + link_text, re.I):
+                    d['result_url'] = href
+                elif re.search(r'score\s*card|scorecard|mark\s*sheet', label + ' ' + link_text, re.I):
+                    d['scorecard_url'] = href
+                elif re.search(r'admit\s*card|hall\s*ticket|call\s*letter', label + ' ' + link_text, re.I):
+                    d['admit_url'] = href
+
+                # Collect as extra link
+                if href and href != '#':
+                    lbl = sanitize(label or link_text) or 'Official Link'
+                    d['extra_links'].append({'label': lbl.title(), 'url': href})
+
+    # ── Deduplicate extra_links ────────────────────────────
+    seen_urls = set()
+    unique_links = []
+    for lnk in d['extra_links']:
+        if lnk['url'] not in seen_urls:
+            seen_urls.add(lnk['url'])
+            unique_links.append(lnk)
+    d['extra_links'] = unique_links
+
+    # ── Also scrape any PDF / document links anywhere ─────
+    for a in soup.find_all('a', href=True):
+        href = a['href']
+        if href and not re.search(r'(?i)sarkariresult', href):
+            if re.search(r'\.(pdf|PDF)$', href) or re.search(r'\.gov\.in', href):
+                href_clean = sanitize_url(urljoin(BASE, href))
+                if href_clean != '#':
+                    lbl = sanitize(clean(a.get_text())) or 'Official Document'
+                    if href_clean not in seen_urls:
+                        seen_urls.add(href_clean)
+                        d['extra_links'].append({'label': lbl, 'url': href_clean})
+
+    return d
+
+
+# ══════════════════════════════════════════════════════════
+# HTML PAGE BUILDERS
+# ══════════════════════════════════════════════════════════
+
+def _header(active: str) -> str:
+    tabs = [
         ('latest-jobs.html', '💼 Latest Jobs', 'jobs'),
-        ('results.html', '📊 Results', 'results'),
-        ('admit-cards.html', '🎫 Admit Cards', 'admit-cards'),
-        ('resources.html', '📚 Resources', 'resources'),
+        ('results.html',     '📊 Results',      'results'),
+        ('admit-cards.html', '🎫 Admit Cards',  'admit-cards'),
+        ('resources.html',   '📚 Resources',    'resources'),
     ]
-    desktop_nav = '\n      '.join([
-        f'<a href="/{url}" class="{"active" if key == active_nav else ""}">{label}</a>'
-        for url, label, key in nav_items
-    ])
-    mobile_nav = '\n'.join([
-        f'<a href="/{url}">{label}</a>'
-        for url, label, key in nav_items
-    ])
+    desktop = '\n      '.join(
+        f'<a href="/{u}" class="{"active" if k == active else ""}">{lbl}</a>'
+        for u, lbl, k in tabs
+    )
+    mobile = '\n    '.join(f'<a href="/{u}">{lbl}</a>' for u, lbl, _ in tabs)
     return f'''<header class="header">
   <div class="container header__container">
     <a href="/" class="logo">📋 {SITE_NAME}</a>
     <nav class="nav nav--desktop">
-      {desktop_nav}
+      {desktop}
     </nav>
     <div style="display:flex;gap:1rem;align-items:center;">
       <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌓</button>
@@ -284,15 +535,14 @@ def build_header(active_nav='jobs'):
   </div>
   <nav class="nav--mobile">
     <label for="menu-toggle" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;">✕</label>
-    <a href="/index.html">🏠 Home</a>
-    {mobile_nav}
+    <a href="/">🏠 Home</a>
+    {mobile}
   </nav>
   <style>.menu-toggle{{display:none!important}}@media(max-width:768px){{.nav--desktop{{display:none}}.menu-toggle{{display:block!important}}}}</style>
 </header>'''
 
 
-def build_sidebar():
-    """Build common sidebar widget."""
+def _sidebar() -> str:
     return '''<aside class="sidebar">
   <div class="widget widget--telegram">
     <h3 class="widget__title">📢 Join Telegram</h3>
@@ -300,32 +550,29 @@ def build_sidebar():
     <a href="https://t.me/naukridhaba" target="_blank" class="btn" style="background:#fff;color:#0088cc;width:100%;">Join Channel</a>
   </div>
   <div class="widget">
-    <h3 class="widget__title">🛠️ Quick Tools</h3>
+    <h3 class="widget__title">🔗 Quick Links</h3>
     <div class="footer__links">
-      <a href="/eligibility-calculator.html">🎯 Eligibility Calculator</a>
       <a href="/latest-jobs.html">💼 Latest Jobs</a>
       <a href="/results.html">📊 Results</a>
       <a href="/admit-cards.html">🎫 Admit Cards</a>
+      <a href="/eligibility-calculator.html">🎯 Eligibility Check</a>
     </div>
   </div>
   <div class="nd-ad ad-slot" data-ad-slot="sidebar-top" style="min-height:250px;">
-    <p>Advertisement</p><p style="font-size:0.75rem;">300x250</p>
+    <p>Advertisement</p><p style="font-size:.75rem">300×250</p>
   </div>
 </aside>'''
 
 
-def build_footer():
-    """Build common site footer."""
-    year = date.today().year
+def _footer() -> str:
+    y = date.today().year
     return f'''<footer class="footer">
   <div class="container">
     <div class="footer__grid">
       <div>
         <h3 class="footer__title">📋 {SITE_NAME}</h3>
-        <p style="color:#ccc;font-size:0.9rem;line-height:1.6;">Your gateway to Sarkari Naukri. Latest government jobs, results, and admit cards.</p>
-        <div style="margin-top:1rem;">
-          <a href="https://t.me/naukridhaba" class="share-btn share-btn--telegram" style="margin:0;">Join Telegram</a>
-        </div>
+        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Your gateway to Sarkari Naukri. Latest govt jobs, results and admit cards.</p>
+        <a href="https://t.me/naukridhaba" class="share-btn share-btn--telegram" style="margin-top:1rem;display:inline-block;">Join Telegram</a>
       </div>
       <div>
         <h3 class="footer__title">Quick Links</h3>
@@ -333,7 +580,7 @@ def build_footer():
           <a href="/latest-jobs.html">Latest Jobs</a>
           <a href="/results.html">Results</a>
           <a href="/admit-cards.html">Admit Cards</a>
-          <a href="/resources.html">Resources &amp; Tools</a>
+          <a href="/resources.html">Resources</a>
         </div>
       </div>
       <div>
@@ -360,1142 +607,691 @@ def build_footer():
       </div>
     </div>
     <div class="footer__bottom">
-      <p>&copy; {year} {SITE_NAME}. All rights reserved.</p>
-      <p>Disclaimer: We are not affiliated with any government organization. We only provide information.</p>
+      <p>&copy; {y} {SITE_NAME}. All rights reserved.</p>
+      <p>Disclaimer: We are not affiliated with any government body. Information only.</p>
     </div>
   </div>
 </footer>
 <script src="/js/app.js"></script>
-<script src="/js/ads-manager.js"></script>'''
+<script src="/js/ads-manager.js" defer></script>'''
 
 
-def build_job_json_ld(job):
-    """Build JobPosting schema.org structured data."""
-    title = clean_text(job.get('title', ''))
-    dept = clean_text(job.get('dept', ''))
-    last_date = job.get('last_date', '')
-    date_posted = job.get('date_posted', date.today().isoformat())
-    location = clean_text(job.get('location', 'India'))
-    posts = job.get('total_posts', '')
-    apply_url = clean_url(job.get('apply_url', ''))
-    notification_url = clean_url(job.get('notification_url', ''))
+def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: str = '') -> str:
+    cat  = get_category(dept)
+    base_kw = SEO_KW.get(cat, SEO_KW['government'])
+    kw = f"{base_kw}, {title}, {dept} 2026, Sarkari Naukri, {SITE_NAME}"
+    if keywords_extra:
+        kw += ', ' + keywords_extra
+    og_title = f"{title} | {SITE_NAME}"
+    desc_safe = (desc or og_title)[:160]
+    return f'''    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} | {SITE_NAME}</title>
+    <meta name="description" content="{desc_safe}">
+    <meta name="keywords" content="{kw}">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="author" content="{SITE_NAME}">
+    <link rel="canonical" href="{canonical}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{og_title}">
+    <meta property="og:description" content="{desc_safe}">
+    <meta property="og:url" content="{canonical}">
+    <meta property="og:site_name" content="{SITE_NAME}">
+    <meta property="og:locale" content="hi_IN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{og_title}">
+    <meta name="twitter:description" content="{desc_safe}">
+    <meta name="geo.region" content="IN">
+    <meta name="geo.placename" content="India">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/tracking.js"></script>'''
 
-    schema = {
+
+# ── Job Page ───────────────────────────────────────────────
+def build_job_page(d: dict) -> tuple[str, str]:
+    title  = d['title']
+    dept   = d.get('dept', 'Government')
+    cat    = get_category(dept)
+    slug   = slugify(title)
+    rel    = f'jobs/{cat}/{slug}.html'
+    canon  = f'{SITE_URL}/{rel}'
+    year   = date.today().year
+
+    posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
+    desc = (
+        f"{title}: {dept} has released notification. "
+        f"Last date: {d['last_date']}. Apply online at {SITE_NAME}."
+    )
+
+    apply_btn = (
+        f'<a href="{d["apply_url"]}" target="_blank" rel="noopener" '
+        f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
+        if d.get('apply_url') and d['apply_url'] != '#'
+        else '<span class="btn btn--primary btn--large" style="opacity:.6;cursor:default;">🚀 Apply Link Coming Soon</span>'
+    )
+    notif_btn = (
+        f'<a href="{d["notification_url"]}" target="_blank" rel="noopener" '
+        f'class="btn btn--secondary btn--large">📄 Download Notification</a>'
+        if d.get('notification_url') and d['notification_url'] != '#'
+        else ''
+    )
+
+    # Extra links section
+    extra_html = ''
+    if d.get('extra_links'):
+        rows = '\n'.join(
+            f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener">'
+            f'{clean(lnk["label"])}</a></li>'
+            for lnk in d['extra_links'] if lnk.get('url') and lnk['url'] != '#'
+        )
+        if rows:
+            extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links / महत्वपूर्ण लिंक</h3>
+          <ul style="line-height:2.4;">{rows}</ul>
+        </div>'''
+
+    # Fee info
+    fee_rows = ''
+    if d.get('fee_general'):
+        fee_rows += f'<tr><td style="padding:8px 0;color:#666;">General / OBC / EWS</td><td style="padding:8px 0;font-weight:bold;">{d["fee_general"]}</td></tr>'
+    if d.get('fee_sc_st'):
+        fee_rows += f'<tr><td style="padding:8px 0;color:#666;">SC / ST / PH</td><td style="padding:8px 0;font-weight:bold;">{d["fee_sc_st"]}</td></tr>'
+    fee_section = ''
+    if fee_rows:
+        fee_section = f'''<div style="border-left:4px solid var(--warning);background:#fff8e1;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
+          <h3 style="color:var(--primary);margin-top:0;">💳 Application Fee</h3>
+          <table style="width:100%;">{fee_rows}</table>
+        </div>'''
+
+    # JSON-LD
+    ld_job = json.dumps({
         "@context": "https://schema.org",
         "@type": "JobPosting",
         "title": title,
-        "description": f"{title} - {dept} - Apply online at {SITE_NAME}. Last date: {last_date}",
-        "datePosted": date_posted,
-        "validThrough": last_date,
+        "description": desc,
+        "datePosted": date.today().isoformat(),
+        "validThrough": d['last_date'],
         "employmentType": "FULL_TIME",
-        "hiringOrganization": {
-            "@type": "Organization",
-            "name": dept,
-            "sameAs": f"https://www.naukridhaba.in/latest-jobs.html"
-        },
-        "jobLocation": {
-            "@type": "Place",
-            "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "IN",
-                "addressLocality": location if location != 'India' else None
-            }
-        },
-        "identifier": {
-            "@type": "PropertyValue",
-            "name": dept,
-            "value": job.get('job_id', slugify(title))
-        },
-        "url": f"{SITE_URL}/jobs/{get_dept_category(dept)}/{slugify(title)}.html"
-    }
+        "hiringOrganization": {"@type": "Organization", "name": dept},
+        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressCountry": "IN"}},
+        "url": canon
+    }, ensure_ascii=False)
 
-    if posts and posts != 'nan' and posts != '':
-        try:
-            schema["totalJobOpenings"] = int(re.sub(r'[^\d]', '', str(posts)) or 0)
-        except ValueError:
-            pass
+    ld_bc = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
+            {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE_URL + '/latest-jobs.html'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/latest-jobs.html'},
+            {"@type": "ListItem", "position": 4, "name": title, "item": canon},
+        ]
+    }, ensure_ascii=False)
 
-    if apply_url and apply_url != '#':
-        schema["applicationContact"] = {
-            "@type": "ContactPoint",
-            "contactType": "Apply Online",
-            "url": apply_url
-        }
+    html = f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+{_seo_head(title, desc, canon, dept)}
+    <script type="application/ld+json">{ld_job}</script>
+    <script type="application/ld+json">{ld_bc}</script>
+    <script src="../../js/ads-manager.js" defer></script>
+</head>
+<body>
+{_header('jobs')}
 
-    # Remove None values
-    def remove_none(obj):
-        if isinstance(obj, dict):
-            return {k: remove_none(v) for k, v in obj.items() if v is not None}
-        return obj
+<div class="content-wrapper container" style="margin-top:2rem;">
+  <main>
+    <article class="job-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="/latest-jobs.html">Jobs</a> &gt; <span>{title}</span>
+      </nav>
 
-    return json.dumps(remove_none(schema), ensure_ascii=False, indent=2)
+      <h1 style="color:var(--primary);margin-bottom:.5rem;">
+        {title} <span style="background:var(--secondary);color:#fff;padding:4px 12px;border-radius:4px;font-size:1rem;">{year}</span>
+      </h1>
+
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-item__label">📅 Last Date</span>
+          <span class="info-item__value" style="color:var(--danger);">{d["last_date"]}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">🏢 Department</span>
+          <span class="info-item__value">{dept}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">📊 Total Posts</span>
+          <span class="info-item__value">{posts_disp}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">👤 Age Limit</span>
+          <span class="info-item__value">{d["age_min"]}–{d["age_max"]} Years</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">🎓 Qualification</span>
+          <span class="info-item__value" style="font-size:.95rem;">{d["qualification"]}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">💰 Salary / Pay Scale</span>
+          <span class="info-item__value" style="font-size:.95rem;">{d["salary"]}</span>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        {apply_btn}
+        {notif_btn}
+      </div>
+
+      <div style="border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;margin:1.5rem 0;">
+        <h2 style="color:var(--primary);margin-top:0;">📋 Important Dates / महत्वपूर्ण तिथियां</h2>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;width:55%;">Application Begin</td><td style="font-weight:bold;">{d["app_begin"]}</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Last Date to Apply Online</td><td style="font-weight:bold;color:var(--danger);">{d["last_date"]}</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Exam Date</td><td style="font-weight:bold;">{d["exam_date"]}</td></tr>
+        </table>
+      </div>
+
+      {fee_section}
+
+      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
+
+      <div class="calculator">
+        <h3 style="margin-top:0;">🎯 Age Eligibility Calculator / आयु कैलकुलेटर</h3>
+        <p style="color:#666;font-size:.875rem;">Age limit: {d["age_min"]}–{d["age_max"]} years. OBC +3 yrs, SC/ST +5 yrs relaxation.</p>
+        <div class="form-group">
+          <label>Date of Birth / जन्म तिथि:</label>
+          <input type="date" id="dob-input">
+        </div>
+        <div class="form-group">
+          <label>Category / वर्ग:</label>
+          <select id="category-select">
+            <option value="general">General / सामान्य</option>
+            <option value="obc">OBC (+3 years)</option>
+            <option value="sc">SC (+5 years)</option>
+            <option value="st">ST (+5 years)</option>
+          </select>
+        </div>
+        <button onclick="checkEligibility({d['age_min']}, {d['age_max']})" class="btn btn--primary">Check Eligibility / योग्यता जांचें</button>
+        <div id="eligibility-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:4px;"></div>
+      </div>
+
+      {extra_html}
+
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply / आवेदन कैसे करें</h3>
+        <ol style="line-height:2.2;">
+          <li>Click on <strong>"Apply Online"</strong> button above</li>
+          <li>Register on official website with email and mobile number</li>
+          <li>Fill the application form carefully / फॉर्म ध्यानपूर्वक भरें</li>
+          <li>Upload required documents (Photo, Signature, Certificates)</li>
+          <li>Pay application fee online (if applicable)</li>
+          <li>Submit and save/print the confirmation page</li>
+        </ol>
+      </div>
+
+      <div class="share-section">
+        <h3>📢 Share with Friends / दोस्तों को शेयर करें</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title.replace(chr(39),'')}') " class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title.replace(chr(39),'')}') " class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+    </article>
+  </main>
+  {_sidebar()}
+</div>
+
+{_footer()}
+</body>
+</html>'''
+
+    return rel, html
 
 
-def build_result_json_ld(result):
-    """Build structured data for result pages."""
-    title = clean_text(result.get('title', ''))
-    dept = clean_text(result.get('dept', ''))
-    result_date = result.get('result_date', date.today().isoformat())
+# ── Result Page ────────────────────────────────────────────
+def build_result_page(d: dict) -> tuple[str, str]:
+    title = d['title']
+    dept  = d.get('dept', 'Government')
+    cat   = get_category(dept)
+    slug  = slugify(title)
+    if 'result' not in slug:
+        slug += '-result'
+    rel   = f'results/{cat}/{slug}.html'
+    canon = f'{SITE_URL}/{rel}'
+    desc  = f"{title}: Result declared. Check your result at {SITE_NAME}. Result date: {d['result_date']}."
 
-    schema = {
+    check_btn = (
+        f'<a href="{d["result_url"]}" target="_blank" rel="noopener" '
+        f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
+        f'🎯 Check Result / परिणाम देखें</a>'
+        if d.get('result_url') and d['result_url'] != '#'
+        else '<a href="#" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;">🎯 Result Link Coming Soon</a>'
+    )
+    scorecard_btn = (
+        f'<a href="{d["scorecard_url"]}" target="_blank" rel="noopener" '
+        f'class="btn btn--secondary btn--large" style="display:inline-block;margin-bottom:1rem;">📄 Download Scorecard</a>'
+        if d.get('scorecard_url') and d['scorecard_url'] != '#'
+        else ''
+    )
+
+    extra_html = ''
+    if d.get('extra_links'):
+        rows = '\n'.join(
+            f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener">{clean(lnk["label"])}</a></li>'
+            for lnk in d['extra_links'] if lnk.get('url') and lnk['url'] != '#'
+        )
+        if rows:
+            extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
+          <ul style="line-height:2.4;">{rows}</ul>
+        </div>'''
+
+    ld_ev = json.dumps({
         "@context": "https://schema.org",
         "@type": "Event",
         "name": title,
-        "description": f"{title} result declared. Check your result at {SITE_NAME}.",
-        "startDate": result_date,
-        "endDate": result_date,
-        "eventStatus": "https://schema.org/EventScheduled",
-        "organizer": {
-            "@type": "Organization",
-            "name": dept,
-        },
-        "location": {
-            "@type": "VirtualLocation",
-            "url": f"{SITE_URL}/results.html"
-        }
-    }
-    return json.dumps(schema, ensure_ascii=False, indent=2)
+        "description": desc,
+        "startDate": date.today().isoformat(),
+        "organizer": {"@type": "Organization", "name": dept},
+        "location": {"@type": "VirtualLocation", "url": canon}
+    }, ensure_ascii=False)
 
-
-def build_admit_card_json_ld(admit):
-    """Build structured data for admit card pages."""
-    title = clean_text(admit.get('title', ''))
-    dept = clean_text(admit.get('dept', ''))
-    exam_date = admit.get('exam_date', '')
-    release_date = admit.get('release_date', date.today().isoformat())
-
-    schema = {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": f"{title} - Exam",
-        "description": f"Download {title} admit card at {SITE_NAME}.",
-        "startDate": exam_date or release_date,
-        "organizer": {
-            "@type": "Organization",
-            "name": dept
-        },
-        "location": {
-            "@type": "VirtualLocation",
-            "url": f"{SITE_URL}/admit-cards.html"
-        },
-        "offers": {
-            "@type": "Offer",
-            "name": "Admit Card Download",
-            "url": f"{SITE_URL}/admit-cards.html",
-            "price": "0",
-            "priceCurrency": "INR"
-        }
-    }
-    return json.dumps(schema, ensure_ascii=False, indent=2)
-
-
-def build_breadcrumb_json_ld(items):
-    """Build BreadcrumbList structured data."""
-    elements = []
-    for i, (name, url) in enumerate(items, 1):
-        elements.append({
-            "@type": "ListItem",
-            "position": i,
-            "name": name,
-            "item": url
-        })
-    schema = {
+    ld_bc = json.dumps({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        "itemListElement": elements
-    }
-    return json.dumps(schema, ensure_ascii=False)
-
-
-# ══════════════════════════════════════════════════════════════
-# JOB PAGE GENERATOR
-# ══════════════════════════════════════════════════════════════
-
-def generate_job_page(job):
-    """Generate complete HTML page for a job posting."""
-    title = clean_text(job.get('title', ''))
-    dept = clean_text(job.get('dept', ''))
-    last_date = job.get('last_date', 'Check Notification')
-    date_posted = job.get('date_posted', date.today().strftime('%d/%m/%Y'))
-    total_posts = job.get('total_posts', '')
-    age_min = job.get('age_min', 18)
-    age_max = job.get('age_max', 35)
-    location = clean_text(job.get('location', 'India'))
-    qualification = clean_text(job.get('qualification', 'Check Notification'))
-    apply_url = clean_url(job.get('apply_url', ''))
-    notification_url = clean_url(job.get('notification_url', ''))
-    exam_date = job.get('exam_date', 'As per Schedule')
-    salary = clean_text(job.get('salary', 'As per Government Norms'))
-    additional_links = job.get('additional_links', [])
-
-    category = get_dept_category(dept)
-    filename = slugify(title) + '.html'
-    rel_path = f'jobs/{category}/{filename}'
-    canonical = f'{SITE_URL}/{rel_path}'
-
-    # SEO description
-    posts_str = f"{total_posts} Posts" if total_posts and str(total_posts) not in ('nan', '', '0') else ''
-    description = (
-        f"{title}: {dept} has released notification for {posts_str}. "
-        f"Last date to apply: {last_date}. "
-        f"Apply online at {SITE_NAME}."
-    ).strip(' .')
-
-    # Build page
-    year = date.today().year
-
-    posts_display = str(total_posts) if total_posts and str(total_posts) not in ('nan', '', 'None') else 'Check Notification'
-    apply_btn = (
-        f'<a href="{apply_url}" target="_blank" rel="noopener" class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
-        if apply_url and apply_url != '#'
-        else '<span class="btn btn--primary btn--large" style="opacity:0.6;cursor:default;">🚀 Apply Link Coming Soon</span>'
-    )
-    notif_btn = (
-        f'<a href="{notification_url}" target="_blank" rel="noopener" class="btn btn--secondary btn--large">📄 Download Notification</a>'
-        if notification_url and notification_url != '#'
-        else ''
-    )
-
-    # Additional resources/links from scraper
-    extra_links_html = ''
-    if additional_links:
-        links_items = '\n'.join([
-            f'<li><a href="{clean_url(lnk.get("url","#"))}" target="_blank" rel="noopener">{clean_text(lnk.get("label","Link"))}</a></li>'
-            for lnk in additional_links if lnk.get('url')
-        ])
-        extra_links_html = f'''
-        <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links / महत्वपूर्ण लिंक</h3>
-          <ul style="line-height:2.2;">
-            {links_items}
-          </ul>
-        </div>'''
-
-    html = f'''<!DOCTYPE html>
-<html lang="hi">
-<head>
-{build_seo_meta('Apply Online', title, dept, location, description, canonical, last_date)}
-    <script type="application/ld+json">
-{build_job_json_ld(job)}
-    </script>
-    <script type="application/ld+json">
-{build_breadcrumb_json_ld([
-    (SITE_NAME, SITE_URL + '/'),
-    ('Latest Jobs', SITE_URL + '/latest-jobs.html'),
-    (dept.upper(), SITE_URL + '/latest-jobs.html'),
-    (title, canonical)
-])}
-    </script>
-</head>
-<body>
-{build_header('jobs')}
-    <div class="content-wrapper container" style="margin-top:2rem;">
-        <main>
-            <article class="job-detail">
-                <nav class="breadcrumb" aria-label="Breadcrumb">
-                    <a href="/">Home</a> &gt;
-                    <a href="/latest-jobs.html">Jobs</a> &gt;
-                    <a href="/latest-jobs.html">{dept}</a> &gt;
-                    <span>{title}</span>
-                </nav>
-
-                <h1 style="color:var(--primary);margin-bottom:0.5rem;">
-                    {title}
-                    <span style="background:var(--secondary);color:#fff;padding:4px 12px;border-radius:4px;font-size:1rem;">{year}</span>
-                </h1>
-
-                <!-- Ad: content-top -->
-                <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
-
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-item__label">📅 Last Date</span>
-                        <span class="info-item__value">{last_date}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item__label">🏢 Department</span>
-                        <span class="info-item__value">{dept}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item__label">📊 Total Posts</span>
-                        <span class="info-item__value">{posts_display}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item__label">👤 Age Limit</span>
-                        <span class="info-item__value">{age_min}-{age_max} Years</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item__label">🎓 Qualification</span>
-                        <span class="info-item__value" style="font-size:1rem;">{qualification}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item__label">💰 Salary/Pay Scale</span>
-                        <span class="info-item__value" style="font-size:1rem;">{salary}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item__label">📍 Location</span>
-                        <span class="info-item__value">{location}</span>
-                    </div>
-                </div>
-
-                <div class="action-bar">
-                    {apply_btn}
-                    {notif_btn}
-                </div>
-
-                <div style="border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;margin:1.5rem 0;">
-                    <h2 style="color:var(--primary);margin-top:0;">📋 Important Dates / महत्वपूर्ण तिथियां</h2>
-                    <table style="width:100%;margin-top:1rem;border-collapse:collapse;">
-                        <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;width:50%;">Notification Released</td><td style="padding:10px 0;font-weight:bold;">{date_posted}</td></tr>
-                        <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Last Date to Apply</td><td style="padding:10px 0;font-weight:bold;color:var(--danger);">{last_date}</td></tr>
-                        <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Exam Date</td><td style="padding:10px 0;font-weight:bold;">{exam_date}</td></tr>
-                    </table>
-                </div>
-
-                <!-- Ad: content-mid -->
-                <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
-
-                <div class="calculator">
-                    <h3 style="margin-top:0;">🎯 Age Eligibility Calculator / आयु कैलकुलेटर</h3>
-                    <p style="color:#666;font-size:0.875rem;">Age limit: {age_min}-{age_max} years (as on cutoff date). OBC: +3 yrs, SC/ST: +5 yrs relaxation.</p>
-                    <div class="form-group">
-                        <label>Date of Birth / जन्म तिथि:</label>
-                        <input type="date" id="dob-input">
-                    </div>
-                    <div class="form-group">
-                        <label>Category / वर्ग:</label>
-                        <select id="category-select">
-                            <option value="general">General / सामान्य</option>
-                            <option value="obc">OBC / अन्य पिछड़ा वर्ग (+3 years)</option>
-                            <option value="sc">SC / अनुसूचित जाति (+5 years)</option>
-                            <option value="st">ST / अनुसूचित जनजाति (+5 years)</option>
-                        </select>
-                    </div>
-                    <button onclick="checkEligibility({age_min}, {age_max})" class="btn btn--primary">Check Eligibility / योग्यता जांचें</button>
-                    <div id="eligibility-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:4px;"></div>
-                </div>
-
-                <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-                    <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply / आवेदन कैसे करें</h3>
-                    <ol style="line-height:2.2;">
-                        <li>Click on <strong>"Apply Online"</strong> button above</li>
-                        <li>Register on official website with email and mobile number</li>
-                        <li>Fill the application form carefully / फॉर्म ध्यानपूर्वक भरें</li>
-                        <li>Upload required documents (Photo, Signature, Certificates)</li>
-                        <li>Pay application fee (if applicable) online</li>
-                        <li>Submit form and save/print confirmation page</li>
-                    </ol>
-                </div>
-
-                {extra_links_html}
-
-                <div class="share-section">
-                    <h3>📢 Share with Friends / दोस्तों को शेयर करें</h3>
-                    <button onclick="shareWhatsApp(window.location.href, '{title.replace(chr(39), '')}')" class="share-btn share-btn--whatsapp">WhatsApp</button>
-                    <button onclick="shareTelegram(window.location.href, '{title.replace(chr(39), '')}')" class="share-btn share-btn--telegram">Telegram</button>
-                    <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
-                </div>
-
-                <!-- Ad: content-bottom -->
-                <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
-            </article>
-        </main>
-        {build_sidebar()}
-    </div>
-{build_footer()}
-</body>
-</html>'''
-
-    return rel_path, html
-
-
-# ══════════════════════════════════════════════════════════════
-# RESULT PAGE GENERATOR
-# ══════════════════════════════════════════════════════════════
-
-def generate_result_page(result):
-    """Generate HTML page for a result."""
-    title = clean_text(result.get('title', ''))
-    dept = clean_text(result.get('dept', ''))
-    result_date = result.get('result_date', date.today().strftime('%d/%m/%Y'))
-    result_url = clean_url(result.get('result_url', ''))
-    scorecard_url = clean_url(result.get('scorecard_url', ''))
-    additional_links = result.get('additional_links', [])
-
-    category = get_dept_category(dept)
-    filename = slugify(title) + '-result.html'
-    # Avoid double "result" in filename
-    if filename.count('result') > 1:
-        filename = slugify(title) + '.html'
-    rel_path = f'results/{category}/{filename}'
-    canonical = f'{SITE_URL}/{rel_path}'
-
-    description = f"{title}: Result declared. Check your result online at {SITE_NAME}. Result date: {result_date}."
-
-    check_result_btn = (
-        f'<a href="{result_url}" target="_blank" rel="noopener" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">🎯 Check Result / परिणाम देखें</a>'
-        if result_url and result_url != '#'
-        else '<a href="#" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:0.7;">🎯 Result Link Coming Soon</a>'
-    )
-
-    scorecard_btn = (
-        f'<a href="{scorecard_url}" target="_blank" rel="noopener" class="btn btn--secondary btn--large" style="display:inline-block;margin-bottom:1rem;">📄 Download Scorecard</a>'
-        if scorecard_url and scorecard_url != '#'
-        else ''
-    )
-
-    # Additional resources
-    extra_links_html = ''
-    if additional_links:
-        links_items = '\n'.join([
-            f'<li><a href="{clean_url(lnk.get("url","#"))}" target="_blank" rel="noopener">{clean_text(lnk.get("label","Link"))}</a></li>'
-            for lnk in additional_links if lnk.get('url')
-        ])
-        extra_links_html = f'''
-        <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
-          <ul style="line-height:2.2;">{links_items}</ul>
-        </div>'''
-
-    html = f'''<!DOCTYPE html>
-<html lang="hi">
-<head>
-{build_seo_meta('Result', title, dept, 'India', description, canonical, result_date)}
-    <script type="application/ld+json">
-{build_result_json_ld(result)}
-    </script>
-    <script type="application/ld+json">
-{build_breadcrumb_json_ld([
-    (SITE_NAME, SITE_URL + '/'),
-    ('Results', SITE_URL + '/results.html'),
-    (dept, SITE_URL + '/results.html'),
-    (title, canonical)
-])}
-    </script>
-</head>
-<body>
-{build_header('results')}
-    <div class="content-wrapper container" style="margin-top:2rem;">
-        <main>
-            <article class="result-detail">
-                <nav class="breadcrumb" aria-label="Breadcrumb">
-                    <a href="/">Home</a> &gt;
-                    <a href="/results.html">Results</a> &gt;
-                    <a href="/results.html">{dept}</a> &gt;
-                    <span>{title}</span>
-                </nav>
-
-                <h1 style="color:var(--primary);">📊 {title}</h1>
-
-                <!-- Ad: content-top -->
-                <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
-
-                <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-                    <div style="display:inline-block;background:var(--success);color:#fff;padding:0.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared / घोषित</div>
-                    <p style="color:#666;margin-bottom:1.5rem;">Result Date: {result_date}</p>
-
-                    {check_result_btn}
-                    {scorecard_btn}
-
-                    <div style="margin-top:1rem;">
-                        <a href="/latest-jobs.html" class="btn btn--secondary">🔍 Browse Latest Jobs</a>
-                    </div>
-                </div>
-
-                <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-                    <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result / परिणाम कैसे देखें</h3>
-                    <ol style="line-height:2.2;">
-                        <li>Click on <strong>"Check Result"</strong> button above</li>
-                        <li>Enter your Roll Number / Registration ID</li>
-                        <li>Enter Date of Birth if required</li>
-                        <li>Click on Submit / View Result</li>
-                        <li>Download and save your result / scorecard</li>
-                        <li>Take printout for future reference</li>
-                    </ol>
-                </div>
-
-                {extra_links_html}
-
-                <!-- Ad: content-bottom -->
-                <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
-
-                <div class="share-section">
-                    <h3>📢 Share with Friends</h3>
-                    <button onclick="shareWhatsApp(window.location.href, '{title.replace(chr(39), '')} Result Declared')" class="share-btn share-btn--whatsapp">WhatsApp</button>
-                    <button onclick="shareTelegram(window.location.href, '{title.replace(chr(39), '')} Result')" class="share-btn share-btn--telegram">Telegram</button>
-                    <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
-                </div>
-            </article>
-        </main>
-        {build_sidebar()}
-    </div>
-{build_footer()}
-</body>
-</html>'''
-
-    return rel_path, html
-
-
-# ══════════════════════════════════════════════════════════════
-# ADMIT CARD PAGE GENERATOR
-# ══════════════════════════════════════════════════════════════
-
-def generate_admit_card_page(admit):
-    """Generate HTML page for an admit card."""
-    title = clean_text(admit.get('title', ''))
-    dept = clean_text(admit.get('dept', ''))
-    release_date = admit.get('release_date', date.today().strftime('%d/%m/%Y'))
-    exam_date = admit.get('exam_date', 'Check Admit Card')
-    download_url = clean_url(admit.get('download_url', ''))
-    additional_links = admit.get('additional_links', [])
-
-    category = get_dept_category(dept)
-    filename = slugify(title)
-    if 'admit' not in filename and 'hall' not in filename:
-        filename += '-admit-card'
-    filename += '.html'
-    rel_path = f'admit-cards/{category}/{filename}'
-    canonical = f'{SITE_URL}/{rel_path}'
-
-    description = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {exam_date}. Direct official link."
-
-    download_btn = (
-        f'<a href="{download_url}" target="_blank" rel="noopener" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">📥 Download Admit Card / हॉल टिकट डाउनलोड करें</a>'
-        if download_url and download_url != '#'
-        else '<a href="#" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:0.7;">📥 Admit Card Link Coming Soon</a>'
-    )
-
-    extra_links_html = ''
-    if additional_links:
-        links_items = '\n'.join([
-            f'<li><a href="{clean_url(lnk.get("url","#"))}" target="_blank" rel="noopener">{clean_text(lnk.get("label","Link"))}</a></li>'
-            for lnk in additional_links if lnk.get('url')
-        ])
-        extra_links_html = f'''
-        <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
-          <ul style="line-height:2.2;">{links_items}</ul>
-        </div>'''
-
-    html = f'''<!DOCTYPE html>
-<html lang="hi">
-<head>
-{build_seo_meta('Admit Card', title, dept, 'India', description, canonical, exam_date)}
-    <script type="application/ld+json">
-{build_admit_card_json_ld(admit)}
-    </script>
-    <script type="application/ld+json">
-{build_breadcrumb_json_ld([
-    (SITE_NAME, SITE_URL + '/'),
-    ('Admit Cards', SITE_URL + '/admit-cards.html'),
-    (dept, SITE_URL + '/admit-cards.html'),
-    (title, canonical)
-])}
-    </script>
-</head>
-<body>
-{build_header('admit-cards')}
-    <div class="content-wrapper container" style="margin-top:2rem;">
-        <main>
-            <article class="admit-detail">
-                <nav class="breadcrumb" aria-label="Breadcrumb">
-                    <a href="/">Home</a> &gt;
-                    <a href="/admit-cards.html">Admit Cards</a> &gt;
-                    <a href="/admit-cards.html">{dept}</a> &gt;
-                    <span>{title}</span>
-                </nav>
-
-                <h1 style="color:var(--primary);">🎫 {title}</h1>
-
-                <!-- Ad: content-top -->
-                <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
-
-                <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-                    <div style="display:inline-block;background:var(--success);color:#fff;padding:0.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Available / उपलब्ध</div>
-                    <p style="color:#666;margin-bottom:0.5rem;">Released: {release_date}</p>
-                    <p style="color:#666;margin-bottom:1.5rem;font-weight:bold;">📅 Exam Date: {exam_date}</p>
-
-                    {download_btn}
-
-                    <div style="margin-top:1rem;">
-                        <a href="/results.html" class="btn btn--secondary">📊 Check Results</a>
-                    </div>
-                </div>
-
-                <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
-                    <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions / महत्वपूर्ण निर्देश</h3>
-                    <ul style="line-height:1.8;">
-                        <li>Carry <strong>printed admit card</strong> to exam center (color printout preferred)</li>
-                        <li>Bring valid <strong>photo ID proof</strong> (Aadhar/PAN/Voter ID)</li>
-                        <li>Reach exam center <strong>1 hour before</strong> reporting time</li>
-                        <li>Check exam date, time, and center address carefully</li>
-                        <li>No electronic devices allowed (mobile, calculator, smartwatch)</li>
-                    </ul>
-                </div>
-
-                <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-                    <h3 style="color:var(--primary);margin-top:0;">📋 Exam Day Checklist / परीक्षा दिन चेकलिस्ट</h3>
-                    <ul style="list-style:none;padding:0;">
-                        <li style="padding:0.5rem 0;">✅ Printed Admit Card (Color)</li>
-                        <li style="padding:0.5rem 0;">✅ Valid Photo ID Proof (Aadhar/PAN/Voter ID)</li>
-                        <li style="padding:0.5rem 0;">✅ Passport Size Photos (2-3 copies)</li>
-                        <li style="padding:0.5rem 0;">✅ Black Ball Point Pen (2 pens)</li>
-                        <li style="padding:0.5rem 0;">✅ Water Bottle (Transparent, without label)</li>
-                    </ul>
-                </div>
-
-                {extra_links_html}
-
-                <!-- Ad: content-bottom -->
-                <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
-
-                <div class="share-section">
-                    <h3>📢 Share with Friends</h3>
-                    <button onclick="shareWhatsApp(window.location.href, '{title.replace(chr(39), '')} Admit Card Available')" class="share-btn share-btn--whatsapp">WhatsApp</button>
-                    <button onclick="shareTelegram(window.location.href, '{title.replace(chr(39), '')} Admit Card')" class="share-btn share-btn--telegram">Telegram</button>
-                    <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
-                </div>
-            </article>
-        </main>
-        {build_sidebar()}
-    </div>
-{build_footer()}
-</body>
-</html>'''
-
-    return rel_path, html
-
-
-# ══════════════════════════════════════════════════════════════
-# SCRAPERS - OFFICIAL GOVERNMENT PORTALS
-# ══════════════════════════════════════════════════════════════
-
-class EmploymentNewsScraper:
-    """Scrape Employment News India - employmentnews.gov.in"""
-    BASE_URL = 'https://www.employmentnews.gov.in'
-
-    def scrape_jobs(self):
-        """Scrape latest job notifications."""
-        jobs = []
-        url = f'{self.BASE_URL}/EN/NewItems.aspx'
-        html = fetch_page(url)
-        if not html:
-            return jobs
-
-        soup = BeautifulSoup(html, 'lxml')
-        # Parse job listings table
-        rows = soup.select('table tr')
-        for row in rows[1:]:  # Skip header
-            cells = row.find_all('td')
-            if len(cells) < 3:
-                continue
-            try:
-                title_cell = cells[0] if cells else None
-                dept_cell = cells[1] if len(cells) > 1 else None
-                date_cell = cells[2] if len(cells) > 2 else None
-
-                if not title_cell:
-                    continue
-
-                title = clean_text(title_cell.get_text())
-                dept = clean_text(dept_cell.get_text()) if dept_cell else 'Government'
-                last_date = clean_text(date_cell.get_text()) if date_cell else ''
-
-                link = title_cell.find('a')
-                notification_url = urljoin(self.BASE_URL, link['href']) if link and link.get('href') else ''
-                notification_url = clean_url(notification_url)
-
-                if title and len(title) > 5:
-                    jobs.append({
-                        'title': title,
-                        'dept': dept,
-                        'last_date': last_date,
-                        'date_posted': date.today().strftime('%d/%m/%Y'),
-                        'notification_url': notification_url,
-                        'source': 'Employment News',
-                        'additional_links': [
-                            {'label': 'Official Notification PDF', 'url': notification_url}
-                        ] if notification_url else []
-                    })
-                    log.info(f"  Found job: {title[:60]}")
-            except Exception as e:
-                log.debug(f"Error parsing row: {e}")
-                continue
-
-        log.info(f"Employment News: Found {len(jobs)} jobs")
-        return jobs
-
-
-class UPSCScraper:
-    """Scrape UPSC - upsc.gov.in"""
-    BASE_URL = 'https://upsc.gov.in'
-
-    def scrape_jobs(self):
-        jobs = []
-        urls = [
-            f'{self.BASE_URL}/examinations/active-examinations',
-            f'{self.BASE_URL}/examinations/examination-notifications',
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
+            {"@type": "ListItem", "position": 2, "name": "Results", "item": SITE_URL + '/results.html'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/results.html'},
+            {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
-        for url in urls:
-            html = fetch_page(url)
-            if not html:
-                continue
-            soup = BeautifulSoup(html, 'lxml')
-            items = soup.select('.views-row, .exam-item, li a, table tr')
-            for item in items:
-                try:
-                    link = item.find('a') if item.name != 'a' else item
-                    if not link or not link.get('href'):
-                        continue
-                    title = clean_text(link.get_text())
-                    if len(title) < 10:
-                        continue
-                    href = urljoin(self.BASE_URL, link['href'])
-                    href = clean_url(href)
+    }, ensure_ascii=False)
 
-                    jobs.append({
-                        'title': title,
-                        'dept': 'UPSC',
-                        'last_date': 'Check Notification',
-                        'date_posted': date.today().strftime('%d/%m/%Y'),
-                        'location': 'All India',
-                        'notification_url': href,
-                        'source': 'UPSC',
-                        'additional_links': [
-                            {'label': 'Official UPSC Notification', 'url': href}
-                        ]
-                    })
-                    log.info(f"  Found UPSC: {title[:60]}")
-                except Exception as e:
-                    log.debug(f"UPSC parse error: {e}")
-        log.info(f"UPSC: Found {len(jobs)} items")
-        return jobs
+    html = f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+{_seo_head(title + ' - Result', desc, canon, dept)}
+    <script type="application/ld+json">{ld_ev}</script>
+    <script type="application/ld+json">{ld_bc}</script>
+    <script src="../../js/ads-manager.js" defer></script>
+</head>
+<body>
+{_header('results')}
 
-    def scrape_results(self):
-        results = []
-        url = f'{self.BASE_URL}/examinations/results'
-        html = fetch_page(url)
-        if not html:
-            return results
-        soup = BeautifulSoup(html, 'lxml')
-        links = soup.select('a[href*="result"], a[href*="Result"]')
-        for link in links:
-            try:
-                title = clean_text(link.get_text())
-                if len(title) < 10:
-                    continue
-                href = urljoin(self.BASE_URL, link['href'])
-                href = clean_url(href)
-                results.append({
-                    'title': title,
-                    'dept': 'UPSC',
-                    'result_date': date.today().strftime('%d/%m/%Y'),
-                    'result_url': href,
-                    'source': 'UPSC',
-                    'additional_links': [
-                        {'label': 'Official UPSC Result', 'url': href}
-                    ]
-                })
-                log.info(f"  Found UPSC result: {title[:60]}")
-            except Exception as e:
-                log.debug(f"UPSC result parse error: {e}")
-        log.info(f"UPSC Results: Found {len(results)} items")
-        return results
+<div class="content-wrapper container" style="margin-top:2rem;">
+  <main>
+    <article class="result-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="/results.html">Results</a> &gt; <span>{title}</span>
+      </nav>
 
+      <h1 style="color:var(--primary);">📊 {title}</h1>
 
-class SSCScraper:
-    """Scrape SSC - ssc.gov.in"""
-    BASE_URL = 'https://ssc.gov.in'
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
 
-    def scrape_jobs(self):
-        jobs = []
-        url = f'{self.BASE_URL}/portal/latest-news'
-        html = fetch_page(url)
-        if not html:
-            return jobs
-        soup = BeautifulSoup(html, 'lxml')
-        items = soup.select('.news-item, .latest-news li, table tr, .notification-item')
-        for item in items:
-            try:
-                link = item.find('a')
-                if not link or not link.get('href'):
-                    continue
-                title = clean_text(link.get_text())
-                if len(title) < 10:
-                    continue
-                href = urljoin(self.BASE_URL, link['href'])
-                href = clean_url(href)
+      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared / घोषित</div>
+        <p style="color:#666;margin-bottom:1.5rem;">Result Date: {d["result_date"]}</p>
+        {check_btn}
+        {scorecard_btn}
+        <div style="margin-top:1rem;">
+          <a href="/latest-jobs.html" class="btn btn--secondary">🔍 Browse Latest Jobs</a>
+        </div>
+      </div>
 
-                is_result = any(w in title.lower() for w in ['result', 'merit list', 'final'])
-                is_admit = any(w in title.lower() for w in ['admit card', 'hall ticket', 'call letter'])
+      {extra_html}
 
-                entry = {
-                    'title': title,
-                    'dept': 'SSC',
-                    'date_posted': date.today().strftime('%d/%m/%Y'),
-                    'location': 'All India',
-                    'source': 'SSC',
-                    'notification_url': href,
-                    'additional_links': [
-                        {'label': 'Official SSC Notification', 'url': href}
-                    ]
-                }
-                if is_result:
-                    entry['result_url'] = href
-                    entry['result_date'] = date.today().strftime('%d/%m/%Y')
-                elif is_admit:
-                    entry['download_url'] = href
-                    entry['release_date'] = date.today().strftime('%d/%m/%Y')
-                    entry['exam_date'] = 'Check Admit Card'
-                else:
-                    entry['last_date'] = 'Check Notification'
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result / परिणाम कैसे देखें</h3>
+        <ol style="line-height:2.2;">
+          <li>Click on <strong>"Check Result"</strong> button above</li>
+          <li>Enter your Roll Number / Registration ID</li>
+          <li>Enter Date of Birth if required</li>
+          <li>View your result and download / save it</li>
+          <li>Take a printout for future reference</li>
+        </ol>
+      </div>
 
-                jobs.append(entry)
-                log.info(f"  Found SSC: {title[:60]}")
-            except Exception as e:
-                log.debug(f"SSC parse error: {e}")
-        log.info(f"SSC: Found {len(jobs)} items")
-        return jobs
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+
+      <div class="share-section">
+        <h3>📢 Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title.replace(chr(39),'')} Result Declared')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title.replace(chr(39),'')} Result')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+    </article>
+  </main>
+  {_sidebar()}
+</div>
+
+{_footer()}
+</body>
+</html>'''
+
+    return rel, html
 
 
-class IBPSScraper:
-    """Scrape IBPS - ibps.in"""
-    BASE_URL = 'https://www.ibps.in'
+# ── Admit Card Page ────────────────────────────────────────
+def build_admit_page(d: dict) -> tuple[str, str]:
+    title = d['title']
+    dept  = d.get('dept', 'Government')
+    cat   = get_category(dept)
+    slug  = slugify(title)
+    if 'admit' not in slug and 'hall' not in slug:
+        slug += '-admit-card'
+    rel   = f'admit-cards/{cat}/{slug}.html'
+    canon = f'{SITE_URL}/{rel}'
+    desc  = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {d['exam_date']}."
 
-    def scrape_jobs(self):
-        jobs = []
-        url = f'{self.BASE_URL}/common-recruitment-process/'
-        html = fetch_page(url)
-        if not html:
-            return jobs
-        soup = BeautifulSoup(html, 'lxml')
-        links = soup.select('a[href*="crp"], a[href*="ibps"], .notification a')
-        for link in links:
-            try:
-                title = clean_text(link.get_text())
-                if len(title) < 10:
-                    continue
-                href = urljoin(self.BASE_URL, link['href'])
-                href = clean_url(href)
+    dl_btn = (
+        f'<a href="{d["admit_url"]}" target="_blank" rel="noopener" '
+        f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
+        f'📥 Download Admit Card / हॉल टिकट डाउनलोड करें</a>'
+        if d.get('admit_url') and d['admit_url'] != '#'
+        else '<a href="#" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;">📥 Admit Card Link Coming Soon</a>'
+    )
 
-                jobs.append({
-                    'title': title,
-                    'dept': 'IBPS',
-                    'last_date': 'Check Notification',
-                    'date_posted': date.today().strftime('%d/%m/%Y'),
-                    'location': 'All India',
-                    'source': 'IBPS',
-                    'notification_url': href,
-                    'additional_links': [
-                        {'label': 'Official IBPS Notification', 'url': href}
-                    ]
-                })
-                log.info(f"  Found IBPS: {title[:60]}")
-            except Exception as e:
-                log.debug(f"IBPS parse error: {e}")
-        log.info(f"IBPS: Found {len(jobs)} items")
-        return jobs
+    extra_html = ''
+    if d.get('extra_links'):
+        rows = '\n'.join(
+            f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener">{clean(lnk["label"])}</a></li>'
+            for lnk in d['extra_links'] if lnk.get('url') and lnk['url'] != '#'
+        )
+        if rows:
+            extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
+          <ul style="line-height:2.4;">{rows}</ul>
+        </div>'''
+
+    ld_ev = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": title,
+        "description": desc,
+        "startDate": date.today().isoformat(),
+        "organizer": {"@type": "Organization", "name": dept},
+        "location": {"@type": "VirtualLocation", "url": canon}
+    }, ensure_ascii=False)
+
+    ld_bc = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
+            {"@type": "ListItem", "position": 2, "name": "Admit Cards", "item": SITE_URL + '/admit-cards.html'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/admit-cards.html'},
+            {"@type": "ListItem", "position": 4, "name": title, "item": canon},
+        ]
+    }, ensure_ascii=False)
+
+    html = f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+{_seo_head(title + ' - Admit Card', desc, canon, dept)}
+    <script type="application/ld+json">{ld_ev}</script>
+    <script type="application/ld+json">{ld_bc}</script>
+    <script src="../../js/ads-manager.js" defer></script>
+</head>
+<body>
+{_header('admit-cards')}
+
+<div class="content-wrapper container" style="margin-top:2rem;">
+  <main>
+    <article class="admit-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="/admit-cards.html">Admit Cards</a> &gt; <span>{title}</span>
+      </nav>
+
+      <h1 style="color:var(--primary);">🎫 {title}</h1>
+
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+
+      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Available / उपलब्ध</div>
+        <p style="color:#666;margin-bottom:.5rem;">Released: {d["admit_release"]}</p>
+        <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">📅 Exam Date: {d["exam_date"]}</p>
+        {dl_btn}
+        <div style="margin-top:1rem;">
+          <a href="/results.html" class="btn btn--secondary">📊 Check Results</a>
+        </div>
+      </div>
+
+      {extra_html}
+
+      <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
+        <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions / महत्वपूर्ण निर्देश</h3>
+        <ul style="line-height:1.8;">
+          <li>Carry <strong>printed admit card</strong> (colour preferred)</li>
+          <li>Bring valid <strong>photo ID</strong> (Aadhar / PAN / Voter ID)</li>
+          <li>Reach centre <strong>1 hour before</strong> reporting time</li>
+          <li>Verify exam date, time and centre address carefully</li>
+          <li>No electronic devices allowed (mobile, smartwatch, calculator)</li>
+        </ul>
+      </div>
+
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">📋 Exam Day Checklist</h3>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:.4rem 0;">✅ Printed Admit Card (colour)</li>
+          <li style="padding:.4rem 0;">✅ Valid Photo ID Proof</li>
+          <li style="padding:.4rem 0;">✅ 2–3 Passport Size Photos</li>
+          <li style="padding:.4rem 0;">✅ Black Ball Point Pen (2 pens)</li>
+          <li style="padding:.4rem 0;">✅ Water Bottle (transparent, no label)</li>
+        </ul>
+      </div>
+
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+
+      <div class="share-section">
+        <h3>📢 Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title.replace(chr(39),'')} Admit Card Available')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title.replace(chr(39),'')} Admit Card')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+    </article>
+  </main>
+  {_sidebar()}
+</div>
+
+{_footer()}
+</body>
+</html>'''
+
+    return rel, html
 
 
-class NTAScraper:
-    """Scrape NTA - nta.ac.in"""
-    BASE_URL = 'https://nta.ac.in'
+# ══════════════════════════════════════════════════════════
+# LISTING PAGE UPDATER  (latest-jobs.html / results.html / admit-cards.html)
+# ══════════════════════════════════════════════════════════
 
-    def scrape(self):
-        items = []
-        url = f'{self.BASE_URL}/en/pub_notice'
-        html = fetch_page(url)
-        if not html:
-            return items
-        soup = BeautifulSoup(html, 'lxml')
-        rows = soup.select('table tr, .pub-notice-item, .notice-item')
-        for row in rows:
-            try:
-                link = row.find('a')
-                if not link or not link.get('href'):
-                    continue
-                title = clean_text(link.get_text())
-                if len(title) < 10:
-                    continue
-                href = urljoin(self.BASE_URL, link['href'])
-                href = clean_url(href)
-
-                # Classify
-                title_lower = title.lower()
-                entry = {
-                    'title': title,
-                    'dept': 'NTA',
-                    'date_posted': date.today().strftime('%d/%m/%Y'),
-                    'location': 'All India',
-                    'source': 'NTA',
-                    'additional_links': [
-                        {'label': 'Official NTA Notification', 'url': href}
-                    ]
-                }
-
-                if any(w in title_lower for w in ['result', 'score card', 'merit']):
-                    entry['result_url'] = href
-                    entry['result_date'] = date.today().strftime('%d/%m/%Y')
-                elif any(w in title_lower for w in ['admit card', 'hall ticket']):
-                    entry['download_url'] = href
-                    entry['release_date'] = date.today().strftime('%d/%m/%Y')
-                    entry['exam_date'] = 'Check Admit Card'
-                else:
-                    entry['notification_url'] = href
-                    entry['last_date'] = 'Check Notification'
-
-                items.append(entry)
-                log.info(f"  Found NTA: {title[:60]}")
-            except Exception as e:
-                log.debug(f"NTA parse error: {e}")
-        log.info(f"NTA: Found {len(items)} items")
-        return items
-
-
-# ══════════════════════════════════════════════════════════════
-# FILE WRITER
-# ══════════════════════════════════════════════════════════════
-
-def write_page(rel_path, html_content):
-    """Write generated HTML to file."""
-    output_path = SITE_ROOT / rel_path
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(html_content)
-    log.info(f"  Written: {rel_path}")
-    return output_path
-
-
-def update_listing_page(listing_file, new_entries, entry_type='job'):
-    """Update listing pages (latest-jobs.html, results.html, admit-cards.html)."""
-    filepath = SITE_ROOT / listing_file
-    if not filepath.exists():
-        log.warning(f"Listing file not found: {filepath}")
+def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
+    """
+    Add new rows to the top of a listing HTML page.
+    kind: 'job' | 'result' | 'admit'
+    """
+    if not entries or not listing_file.exists():
         return
 
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(listing_file, encoding='utf-8') as f:
         content = f.read()
 
-    # Build new rows to prepend to table
-    new_rows_html = []
-    new_cards_html = []
+    new_rows   = []
+    new_cards  = []
 
-    for entry in new_entries[:20]:  # Add up to 20 new entries
-        title = clean_text(entry.get('title', ''))
-        dept = clean_text(entry.get('dept', ''))
+    for e in entries[:30]:   # max 30 new entries per run
+        title = e.get('title', '')
+        dept  = e.get('dept', 'Government').upper()
 
-        if entry_type == 'job':
-            category = get_dept_category(dept)
-            page_path = f"jobs/{category}/{slugify(title)}.html"
-            date_str = entry.get('last_date', 'Check Notification')
-            badge_label = dept.upper()
-            btn_label = 'Apply'
-            btn_link = page_path
-            display_date = date_str
+        if kind == 'job':
+            cat  = get_category(e.get('dept', ''))
+            path = f"jobs/{cat}/{slugify(title)}.html"
+            date_label = e.get('last_date', '')
+            btn  = 'Apply'
+        elif kind == 'result':
+            cat  = get_category(e.get('dept', ''))
+            s    = slugify(title)
+            if 'result' not in s:
+                s += '-result'
+            path = f"results/{cat}/{s}.html"
+            date_label = e.get('result_date', '')
+            btn  = 'View'
+        else:
+            cat  = get_category(e.get('dept', ''))
+            s    = slugify(title)
+            if 'admit' not in s and 'hall' not in s:
+                s += '-admit-card'
+            path = f"admit-cards/{cat}/{s}.html"
+            date_label = e.get('exam_date', '') or e.get('admit_release', '')
+            btn  = 'Download'
 
-        elif entry_type == 'result':
-            category = get_dept_category(dept)
-            fname = slugify(title)
-            if 'result' not in fname:
-                fname += '-result'
-            page_path = f"results/{category}/{fname}.html"
-            date_str = entry.get('result_date', date.today().strftime('%d/%m/%Y'))
-            badge_label = dept.upper()
-            btn_label = 'View'
-            btn_link = page_path
-            display_date = date_str
+        new_rows.append(
+            f'<tr><td>{dept}</td>'
+            f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
+            f'<td>{date_label}</td>'
+            f'<td><a href="{path}" class="btn btn--small btn--primary">{btn}</a></td></tr>'
+        )
+        new_cards.append(
+            f'<div class="card">'
+            f'<div class="card__header"><span class="badge">{dept}</span></div>'
+            f'<h3 class="card__title">{title}</h3>'
+            f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
+            f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{btn}</a>'
+            f'</div>'
+        )
 
-        else:  # admit-card
-            category = get_dept_category(dept)
-            fname = slugify(title)
-            if 'admit' not in fname and 'hall' not in fname:
-                fname += '-admit-card'
-            page_path = f"admit-cards/{category}/{fname}.html"
-            date_str = entry.get('exam_date', 'Check Admit Card')
-            badge_label = dept.upper()
-            btn_label = 'Download'
-            btn_link = page_path
-            display_date = date_str
+    rows_str  = '\n'.join(new_rows)
+    cards_str = '\n'.join(new_cards)
 
-        new_rows_html.append(f'''        <tr class="">
-            <td>{badge_label}</td>
-            <td><a href="{btn_link}" style="color:var(--primary);font-weight:600;">{title}</a></td>
-            <td>{display_date}</td>
-            <td><a href="{btn_link}" class="btn btn--small btn--primary">{btn_label}</a></td>
-        </tr>''')
-
-        new_cards_html.append(f'''                    <div class="card">
-                        <div class="card__header">
-                            <span class="badge">{badge_label}</span>
-                        </div>
-                        <h3 class="card__title">{title}</h3>
-                        <p style="color:#666;font-size:0.875rem;">📅 {display_date}</p>
-                        <a href="{btn_link}" class="btn btn--primary btn--block" style="margin-top:1rem;">{btn_label}</a>
-                    </div>''')
-
-    if not new_rows_html:
-        return
-
-    rows_str = '\n'.join(new_rows_html)
-    cards_str = '\n'.join(new_cards_html)
-
-    # Insert after <tbody>
+    # Insert rows right after <tbody>
     content = re.sub(r'(<tbody>)', r'\1\n' + rows_str, content, count=1)
-    # Insert after <div class="cards">
+    # Insert cards right after <div class="cards">
     content = re.sub(r'(<div class="cards">)', r'\1\n' + cards_str, content, count=1)
 
-    with open(filepath, 'w', encoding='utf-8') as f:
+    with open(listing_file, 'w', encoding='utf-8') as f:
         f.write(content)
 
-    log.info(f"Updated listing page: {listing_file} with {len(new_entries)} new entries")
+    log.info(f'  Updated {listing_file.name} with {len(entries)} new entries')
 
 
-# ══════════════════════════════════════════════════════════════
-# MAIN SCRAPER ORCHESTRATOR
-# ══════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
+# MAIN ORCHESTRATOR
+# ══════════════════════════════════════════════════════════
 
-def run_scraper():
-    """Main function - run all scrapers and generate pages."""
-    log.info("=" * 60)
-    log.info(f"NAUKRI DHABA SCRAPER - Run started at {datetime.now()}")
-    log.info("=" * 60)
+def run():
+    start = datetime.now()
+    log.info('=' * 60)
+    log.info(f'NAUKRI DHABA SCRAPER  started {start:%Y-%m-%d %H:%M:%S IST}')
+    log.info('Source: sarkariresult.com')
+    log.info('=' * 60)
 
-    seen_jobs = load_seen_jobs()
-    new_jobs = []
-    new_results = []
-    new_admits = []
+    seen = load_seen()
 
-    # Run all scrapers
-    scrapers = [
-        ('Employment News', EmploymentNewsScraper(), 'job'),
-        ('UPSC Jobs', UPSCScraper(), 'job'),
-        ('UPSC Results', UPSCScraper(), 'result'),
-        ('SSC', SSCScraper(), 'mixed'),
-        ('IBPS', IBPSScraper(), 'job'),
-        ('NTA', NTAScraper(), 'mixed'),
+    # ── 1. Scrape listing pages ────────────────────────────
+    listing_data = [
+        (URL_JOBS,    'job'),
+        (URL_RESULTS, 'result'),
+        (URL_ADMITS,  'admit'),
     ]
 
-    for name, scraper, stype in scrapers:
-        log.info(f"\nRunning {name} scraper...")
-        try:
-            if stype == 'job':
-                items = scraper.scrape_jobs() if hasattr(scraper, 'scrape_jobs') else []
-            elif stype == 'result':
-                items = scraper.scrape_results() if hasattr(scraper, 'scrape_results') else []
-            elif stype == 'mixed':
-                items = scraper.scrape() if hasattr(scraper, 'scrape') else scraper.scrape_jobs() if hasattr(scraper, 'scrape_jobs') else []
-            else:
-                items = []
+    all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
 
-            for item in items:
-                job_id = get_job_id(item.get('title', ''), item.get('dept', ''))
-                if job_id in seen_jobs:
-                    log.debug(f"  Skipping (already seen): {item.get('title', '')[:40]}")
-                    continue
+    for url, kind in listing_data:
+        log.info(f'\nFetching {kind.upper()} listing: {url}')
+        soup = fetch(url)
+        if not soup:
+            continue
+        raw = parse_listing(soup, kind)
+        log.info(f'  Raw items: {len(raw)}')
 
-                seen_jobs.add(job_id)
-                item['job_id'] = job_id
+        for item in raw:
+            iid = item_id(item['title'], item['dept'])
+            if iid in seen:
+                log.debug(f'  [skip] already seen: {item["title"][:50]}')
+                continue
+            seen.add(iid)
+            all_items[kind].append(item)
 
-                # Classify item
-                title_lower = item.get('title', '').lower()
-                has_result = 'result_url' in item or any(w in title_lower for w in ['result', 'merit list', 'score card'])
-                has_admit = 'download_url' in item or any(w in title_lower for w in ['admit card', 'hall ticket', 'call letter'])
+    total_new = sum(len(v) for v in all_items.values())
+    log.info(f'\nNew items to process: {total_new}  '
+             f'(jobs={len(all_items["job"])}, '
+             f'results={len(all_items["result"])}, '
+             f'admits={len(all_items["admit"])})')
 
-                if has_result:
-                    new_results.append(item)
-                elif has_admit:
-                    new_admits.append(item)
+    # ── 2. Scrape detail pages & generate HTML ─────────────
+    generated: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+
+    for kind, items in all_items.items():
+        for item in items:
+            log.info(f'\n[{kind.upper()}] {item["title"][:60]}')
+            log.info(f'  Detail URL: {item["detail_url"]}')
+
+            detail_soup = fetch(item['detail_url'])
+            rich = parse_detail(detail_soup, item) if detail_soup else item
+            rich['dept'] = rich.get('dept') or infer_dept(rich['title'])
+
+            try:
+                if kind == 'job':
+                    rel, html = build_job_page(rich)
+                elif kind == 'result':
+                    rel, html = build_result_page(rich)
                 else:
-                    new_jobs.append(item)
+                    rel, html = build_admit_page(rich)
 
-        except Exception as e:
-            log.error(f"Error in {name} scraper: {e}", exc_info=True)
+                out = SITE_ROOT / rel
+                out.parent.mkdir(parents=True, exist_ok=True)
+                out.write_text(html, encoding='utf-8')
+                log.info(f'  ✅ Written: {rel}')
+                generated[kind].append(rich)
 
-    # Generate pages
-    log.info(f"\nGenerating pages...")
-    log.info(f"  New jobs: {len(new_jobs)}")
-    log.info(f"  New results: {len(new_results)}")
-    log.info(f"  New admit cards: {len(new_admits)}")
+            except Exception as exc:
+                log.error(f'  ❌ Page build failed: {exc}', exc_info=True)
 
-    generated_jobs = []
-    generated_results = []
-    generated_admits = []
+    # ── 3. Update listing pages ────────────────────────────
+    log.info('\nUpdating listing pages…')
+    if generated['job']:
+        prepend_to_listing(SITE_ROOT / 'latest-jobs.html', generated['job'], 'job')
+        prepend_to_listing(SITE_ROOT / 'index.html',       generated['job'][:5], 'job')
 
-    for job in new_jobs:
+    if generated['result']:
+        prepend_to_listing(SITE_ROOT / 'results.html', generated['result'], 'result')
+
+    if generated['admit']:
+        prepend_to_listing(SITE_ROOT / 'admit-cards.html', generated['admit'], 'admit')
+
+    # ── 4. Save seen set ───────────────────────────────────
+    save_seen(seen)
+
+    # ── 5. Regenerate sitemap ──────────────────────────────
+    import subprocess
+    sitemap_py = SITE_ROOT / 'generate-sitemap.py'
+    if sitemap_py.exists():
         try:
-            rel_path, html = generate_job_page(job)
-            write_page(rel_path, html)
-            generated_jobs.append(job)
+            subprocess.run([sys.executable, str(sitemap_py)], check=True, capture_output=True)
+            log.info('Sitemap regenerated ✅')
         except Exception as e:
-            log.error(f"Error generating job page for {job.get('title', '')}: {e}")
+            log.warning(f'Sitemap generation failed: {e}')
 
-    for result in new_results:
-        try:
-            rel_path, html = generate_result_page(result)
-            write_page(rel_path, html)
-            generated_results.append(result)
-        except Exception as e:
-            log.error(f"Error generating result page: {e}")
-
-    for admit in new_admits:
-        try:
-            rel_path, html = generate_admit_card_page(admit)
-            write_page(rel_path, html)
-            generated_admits.append(admit)
-        except Exception as e:
-            log.error(f"Error generating admit card page: {e}")
-
-    # Update listing pages
-    if generated_jobs:
-        update_listing_page('latest-jobs.html', generated_jobs, 'job')
-        update_listing_page('index.html', generated_jobs[:5], 'job')
-
-    if generated_results:
-        update_listing_page('results.html', generated_results, 'result')
-
-    if generated_admits:
-        update_listing_page('admit-cards.html', generated_admits, 'admit-card')
-
-    # Save seen jobs
-    save_seen_jobs(seen_jobs)
-
-    # Regenerate sitemap
-    log.info("\nRegenerating sitemap...")
-    try:
-        import subprocess
-        subprocess.run(
-            ['python3', str(SITE_ROOT / 'generate-sitemap.py')],
-            check=True, capture_output=True
-        )
-        log.info("Sitemap regenerated successfully")
-    except Exception as e:
-        log.warning(f"Sitemap generation failed: {e}")
-
-    total = len(generated_jobs) + len(generated_results) + len(generated_admits)
-    log.info(f"\n{'=' * 60}")
-    log.info(f"SCRAPER COMPLETE - Generated {total} new pages")
-    log.info(f"  Jobs: {len(generated_jobs)}, Results: {len(generated_results)}, Admit Cards: {len(generated_admits)}")
-    log.info(f"{'=' * 60}\n")
+    # ── Done ───────────────────────────────────────────────
+    elapsed = (datetime.now() - start).seconds
+    total_gen = sum(len(v) for v in generated.values())
+    log.info('\n' + '=' * 60)
+    log.info(f'DONE in {elapsed}s  |  Generated {total_gen} pages  |  '
+             f'Jobs={len(generated["job"])}, Results={len(generated["result"])}, '
+             f'AdmitCards={len(generated["admit"])}')
+    log.info('=' * 60 + '\n')
 
 
-# ══════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
 # ENTRY POINT
-# ══════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Naukri Dhaba Daily Scraper Bot')
-    parser.add_argument('--daemon', action='store_true', help='Run as scheduler (every day at 6 AM)')
-    parser.add_argument('--time', default='06:00', help='Time to run daily (HH:MM, default: 06:00)')
+    parser = argparse.ArgumentParser(description='Naukri Dhaba – sarkariresult.com scraper')
+    parser.add_argument('--once', action='store_true', default=True,
+                        help='Run once and exit (default)')
     args = parser.parse_args()
-
-    if args.daemon:
-        log.info(f"Starting Naukri Dhaba Scraper in daemon mode. Scheduled at {args.time} daily.")
-        log.info("Press Ctrl+C to stop.")
-        schedule.every().day.at(args.time).do(run_scraper)
-        # Run immediately on start
-        run_scraper()
-        while True:
-            schedule.run_pending()
-            time.sleep(60)
-    else:
-        run_scraper()
+    run()

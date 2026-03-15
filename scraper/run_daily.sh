@@ -1,38 +1,43 @@
 #!/bin/bash
 # ============================================================
-# NAUKRI DHABA - DAILY SCRAPER RUNNER
+# NAUKRI DHABA - DAILY RUN SCRIPT
 # File: scraper/run_daily.sh
-# ============================================================
-# CRON SETUP (runs daily at 6 AM):
-#   crontab -e
-#   Add: 0 6 * * * /path/to/naukri-dhaba/scraper/run_daily.sh
+#
+# Called by cron at 10:00 AM IST every day.
+# Installs deps if missing, runs scraper, regenerates sitemap.
 # ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SITE_DIR="$(dirname "$SCRIPT_DIR")"
-LOG_FILE="$SCRIPT_DIR/logs/cron.log"
-PYTHON=$(which python3 || which python)
+LOG="$SCRIPT_DIR/logs/cron.log"
+PYTHON="$(command -v python3 || command -v python)"
 
 mkdir -p "$SCRIPT_DIR/logs"
 
-echo "=============================" >> "$LOG_FILE"
-echo "Run: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
-echo "=============================" >> "$LOG_FILE"
+echo "" >> "$LOG"
+echo "======================================" >> "$LOG"
+echo "RUN: $(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M:%S IST')" >> "$LOG"
+echo "======================================" >> "$LOG"
 
-# Install dependencies if needed
-if ! $PYTHON -c "import requests" 2>/dev/null; then
-    echo "Installing Python dependencies..." >> "$LOG_FILE"
-    $PYTHON -m pip install -r "$SCRIPT_DIR/requirements.txt" >> "$LOG_FILE" 2>&1
+# ── Auto-install deps if not present ──────────────────────
+$PYTHON -c "import requests, bs4" 2>/dev/null || {
+  echo "Installing deps…" >> "$LOG"
+  $PYTHON -m pip install -q requests beautifulsoup4 lxml >> "$LOG" 2>&1
+}
+
+# ── Run the scraper ────────────────────────────────────────
+echo "Starting scraper…" >> "$LOG"
+cd "$SITE_DIR"
+$PYTHON "$SCRIPT_DIR/sarkari_scraper.py" >> "$LOG" 2>&1
+STATUS=$?
+
+if [ $STATUS -eq 0 ]; then
+  echo "Scraper finished OK" >> "$LOG"
+else
+  echo "Scraper exited with code $STATUS" >> "$LOG"
 fi
 
-# Run scraper
-echo "Starting scraper..." >> "$LOG_FILE"
-cd "$SITE_DIR"
-$PYTHON "$SCRIPT_DIR/sarkari_scraper.py" >> "$LOG_FILE" 2>&1
-
-# Regenerate sitemap
-echo "Regenerating sitemap..." >> "$LOG_FILE"
-$PYTHON "$SITE_DIR/generate-sitemap.py" >> "$LOG_FILE" 2>&1
-
-echo "Done: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
-echo "" >> "$LOG_FILE"
+# ── Regenerate sitemap ─────────────────────────────────────
+$PYTHON "$SITE_DIR/generate-sitemap.py" >> "$LOG" 2>&1
+echo "Sitemap updated" >> "$LOG"
+echo "DONE: $(TZ='Asia/Kolkata' date '+%H:%M:%S IST')" >> "$LOG"
