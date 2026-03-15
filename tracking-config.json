@@ -4,8 +4,8 @@
     "measurementId": "G-E3C5CLPP6B"
   },
   "googleTagManager": {
-    "enabled": false,
-    "containerId": "GTM-XXXXXXX"
+    "enabled": true,
+    "containerId": "GTM-5L4D9C9M"
   },
   "googleSearchConsole": {
     "enabled": false,
