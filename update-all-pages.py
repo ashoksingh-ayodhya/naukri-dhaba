@@ -33,11 +33,11 @@ import sys
 import glob
 import argparse
 from pathlib import Path
-from datetime import date
+from datetime import date, datetime
+
+from site_config import SITE_NAME, SITE_URL
 
 SITE_ROOT = Path(__file__).parent
-SITE_URL = 'https://www.naukridhaba.in'
-SITE_NAME = 'Naukri Dhaba'
 TODAY = date.today().isoformat()
 
 # Banned URL patterns (sarkariresult)
@@ -75,6 +75,45 @@ def slugify_title(text):
     return text.strip('-')[:80]
 
 
+def clean_text(text):
+    return re.sub(r'\s+', ' ', str(text or '')).strip()
+
+
+def normalize_title_text(title):
+    title = clean_text(title)
+    title = re.sub(r'\s*\|\s*' + re.escape(SITE_NAME) + r'.*$', '', title, flags=re.I)
+    title = re.sub(r'\b(\d{4})\s+\1\b', r'\1', title)
+    title = re.sub(r'([A-Za-z])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    return clean_text(title)
+
+
+def dedupe_csv(*parts):
+    seen = set()
+    items = []
+    for part in parts:
+        if not part:
+            continue
+        for token in [clean_text(x) for x in str(part).split(',')]:
+            key = token.lower()
+            if not token or key in seen:
+                continue
+            seen.add(key)
+            items.append(token)
+    return ', '.join(items)
+
+
+def to_iso_date(text):
+    value = clean_text(text)
+    if not value:
+        return None
+    for fmt in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
+        try:
+            return datetime.strptime(value, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
+
+
 def detect_page_type(filepath, content):
     """Detect page type from filepath and content."""
     path = str(filepath).replace('\\', '/')
@@ -102,9 +141,7 @@ def extract_from_html(content):
     # Title
     m = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE | re.DOTALL)
     data['title'] = m.group(1).strip() if m else ''
-    # Clean title
-    data['title'] = re.sub(r'\s*\|\s*' + re.escape(SITE_NAME) + r'.*$', '', data['title']).strip()
-    data['title'] = re.sub(r'\s+\d{4}$', '', data['title']).strip()  # Remove trailing year
+    data['title'] = normalize_title_text(data['title'])
 
     # Description
     m = re.search(r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']', content, re.IGNORECASE)
@@ -167,42 +204,76 @@ def get_keywords(page_type, title, dept):
             base_kws = kws
             break
 
-    year = date.today().year
     extra_kws = [
-        title,
-        f"{dept} Jobs {year}",
-        f"{title} {year}",
+        normalize_title_text(title),
+        f"{dept} Jobs",
+        "Government Jobs India",
         "Sarkari Naukri",
-        "Govt Jobs Online Form",
-        SITE_NAME
+        SITE_NAME,
     ]
-    return base_kws + ', ' + ', '.join([k for k in extra_kws if k and 'nan' not in k.lower()])
+    return dedupe_csv(base_kws, ', '.join(extra_kws))
 
 
 def build_meta_block(data, page_type, filepath, canonical_url):
     """Build complete SEO meta tag block."""
-    title = data.get('title', SITE_NAME)
-    description = data.get('description', f"{title} - Check details at {SITE_NAME}")
+    title = normalize_title_text(data.get('title', SITE_NAME))
+    description = clean_text(data.get('description', f"{title} - Check details at {SITE_NAME}"))
     dept = data.get('dept', 'Government')
     location = data.get('location', 'India')
 
-    keywords = get_keywords(page_type, title, dept)
-    og_title = f"{title} | {SITE_NAME}"
-    og_desc = description[:160] if description else og_title
+    page_defaults = {
+        'home': {
+            'title': f'{SITE_NAME} | Govt Jobs, Results, Admit Cards',
+            'description': f'{SITE_NAME} brings the latest government jobs, exam results, admit cards, and official updates for India.',
+            'keywords': dedupe_csv(
+                'Government Jobs India, Sarkari Naukri, Latest Govt Jobs, Exam Results, Admit Card',
+                SITE_NAME,
+            ),
+        },
+        'jobs_list': {
+            'title': f'Latest Govt Jobs 2026 | {SITE_NAME}',
+            'description': f'Browse the latest government jobs, online forms, and recruitment updates across India on {SITE_NAME}.',
+            'keywords': dedupe_csv(
+                'Latest Govt Jobs 2026, Government Jobs India, Online Form, Sarkari Naukri',
+                SITE_NAME,
+            ),
+        },
+        'results_list': {
+            'title': f'Latest Results 2026 | {SITE_NAME}',
+            'description': f'Check the latest government exam results, merit lists, and score cards on {SITE_NAME}.',
+            'keywords': dedupe_csv(
+                'Latest Results 2026, Sarkari Result, Exam Result, Score Card, Merit List',
+                SITE_NAME,
+            ),
+        },
+        'admits_list': {
+            'title': f'Latest Admit Cards 2026 | {SITE_NAME}',
+            'description': f'Download the latest admit cards, hall tickets, and exam city slips for government exams on {SITE_NAME}.',
+            'keywords': dedupe_csv(
+                'Latest Admit Cards 2026, Hall Ticket, Exam City, Government Admit Card',
+                SITE_NAME,
+            ),
+        },
+    }
 
-    # Page type suffix for title
-    type_suffix = {
-        'job': 'Apply Online',
-        'result': 'Check Result',
-        'admit_card': 'Download Admit Card',
-        'jobs_list': 'Latest Government Jobs 2026',
-        'results_list': 'Exam Results 2026',
-        'admits_list': 'Admit Cards 2026',
-        'home': 'Sarkari Naukri 2026 | Govt Jobs, Results, Admit Cards',
-        'other': 'Sarkari Naukri'
-    }.get(page_type, 'Sarkari Naukri')
+    if page_type in page_defaults:
+        full_title = page_defaults[page_type]['title']
+        og_title = full_title
+        og_desc = page_defaults[page_type]['description']
+        keywords = page_defaults[page_type]['keywords']
+    else:
+        keywords = get_keywords(page_type, title, dept)
+        og_title = f"{title} | {SITE_NAME}"
+        og_desc = (description[:160] if description else og_title)
 
-    full_title = f"{title} - {type_suffix} | {SITE_NAME}" if type_suffix not in title else f"{title} | {SITE_NAME}"
+        type_suffix = {
+            'job': 'Apply Online',
+            'result': 'Check Result',
+            'admit_card': 'Download Admit Card',
+            'other': 'Sarkari Naukri'
+        }.get(page_type, 'Sarkari Naukri')
+
+        full_title = f"{title} | {SITE_NAME}" if type_suffix.lower() in title.lower() else f"{title} - {type_suffix} | {SITE_NAME}"
 
     return f'''    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -230,22 +301,23 @@ def build_meta_block(data, page_type, filepath, canonical_url):
 
 def build_job_json_ld(title, dept, last_date, canonical_url):
     """Build JobPosting JSON-LD."""
+    iso_last_date = to_iso_date(last_date) or TODAY
     return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"JobPosting","title":"{title}","datePosted":"{TODAY}","validThrough":"{last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
+    {{"@context":"https://schema.org","@type":"JobPosting","title":"{normalize_title_text(title)}","datePosted":"{TODAY}","validThrough":"{iso_last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
     </script>'''
 
 
 def build_result_json_ld(title, dept, canonical_url):
-    """Build Event JSON-LD for result pages."""
+    """Build WebPage JSON-LD for result pages."""
     return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"Event","name":"{title}","description":"{title} result declared. Check at {SITE_NAME}.","startDate":"{TODAY}","organizer":{{"@type":"Organization","name":"{dept}"}},"location":{{"@type":"VirtualLocation","url":"{canonical_url}"}}}}
+    {{"@context":"https://schema.org","@type":"WebPage","name":"{normalize_title_text(title)}","description":"{normalize_title_text(title)} result declared. Check at {SITE_NAME}.","url":"{canonical_url}","about":{{"@type":"Organization","name":"{dept}"}}}}
     </script>'''
 
 
 def build_admit_json_ld(title, dept, canonical_url):
-    """Build Event JSON-LD for admit card pages."""
+    """Build WebPage JSON-LD for admit card pages."""
     return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"Event","name":"{title}","description":"Download {title} admit card at {SITE_NAME}.","startDate":"{TODAY}","organizer":{{"@type":"Organization","name":"{dept}"}},"location":{{"@type":"VirtualLocation","url":"{canonical_url}"}}}}
+    {{"@context":"https://schema.org","@type":"WebPage","name":"{normalize_title_text(title)}","description":"Download {normalize_title_text(title)} admit card at {SITE_NAME}.","url":"{canonical_url}","about":{{"@type":"Organization","name":"{dept}"}}}}
     </script>'''
 
 
@@ -262,7 +334,7 @@ def build_breadcrumb_json_ld(items):
 
 def fix_broken_buttons(content):
     """Fix result/admit card buttons that show alert()."""
-    # Fix: onclick="alert('...')" → remove onclick, keep href="#" as is (handled per page type later)
+    # Remove alert handlers from buttons.
     content = re.sub(
         r'<a\s+href="#"\s+onclick="alert\([^)]+\)"([^>]*)>',
         r'<a href="#"\1>',
@@ -274,6 +346,19 @@ def fix_broken_buttons(content):
         '',
         content
     )
+    # Replace dead primary action anchors with spans so no page ships with href="#".
+    content = re.sub(
+        r'<a\s+href="#"\s+([^>]*class="btn[^"]*btn--primary[^"]*"[^>]*)>(.*?)</a>',
+        r'<span \1>\2</span>',
+        content,
+        flags=re.IGNORECASE | re.DOTALL
+    )
+    content = re.sub(
+        r'<a\s+href="#"\s+([^>]*class="btn[^"]*"[^>]*)>(.*?)</a>',
+        r'<span \1>\2</span>',
+        content,
+        flags=re.IGNORECASE | re.DOTALL
+    )
     return content
 
 
@@ -282,12 +367,12 @@ def fix_nan_links(content):
     # Fix Apply Online button with href="nan"
     content = re.sub(
         r'href="nan"([^>]*class="btn btn--primary[^"]*")',
-        r'href="#" style="opacity:0.7;cursor:default;"\1',
+        r'data-missing-link="true" style="opacity:0.7;cursor:default;"\1',
         content
     )
     content = re.sub(
         r'href="nan"',
-        r'href="#"',
+        r'data-missing-link="true"',
         content
     )
     # Fix "nan" in text content
@@ -303,18 +388,46 @@ def fix_nan_links(content):
 
 def remove_sarkariresult_urls(content):
     """Remove/replace all SarkariResult URLs."""
-    # Replace SarkariResult document URLs (PDFs etc.) with #
+    protected_attrs = {}
+
+    def protect_attr(match):
+        token = f"__ND_ATTR_{len(protected_attrs)}__"
+        protected_attrs[token] = match.group(0)
+        return token
+
+    # Protect existing href/src URLs so text cleanup does not corrupt redirect targets.
+    content = re.sub(
+        r'''(?:href|src)=(".*?"|'.*?')''',
+        protect_attr,
+        content,
+        flags=re.IGNORECASE | re.DOTALL
+    )
+
+    # Replace SarkariResult document URLs in visible text blocks.
     for pattern in BANNED_URL_PATTERNS:
         content = re.sub(pattern, '#', content, flags=re.IGNORECASE)
 
     # Replace SarkariResult text mentions
+    content = re.sub(r'sarkariresult(?:s)?\.(?:com|org|in|net)', 'naukridhaba.in', content, flags=re.IGNORECASE)
     content = re.sub(r'\bSarkariResult(?:s)?\b', SITE_NAME, content)
     content = re.sub(r'\bsarkariresult(?:s)?\b', SITE_NAME, content, flags=re.IGNORECASE)
-    content = re.sub(r'sarkariresult(?:s)?\.(?:com|org|in|net)', 'naukridhaba.in', content, flags=re.IGNORECASE)
     content = re.sub(r'sarkari\s+result(?:s)?', SITE_NAME, content, flags=re.IGNORECASE)
     content = re.sub(r'doc\.sarkariresults?\.org\.in', 'naukridhaba.in', content, flags=re.IGNORECASE)
 
+    for token, original in protected_attrs.items():
+        content = content.replace(token, original)
+
     return content
+
+
+def fix_malformed_redirect_hosts(content):
+    """Repair broken hostnames introduced by older text replacement passes."""
+    return re.sub(
+        r'(?:www\.)?naukri\s+dhaba\.com',
+        'www.sarkariresult.com',
+        content,
+        flags=re.IGNORECASE
+    )
 
 
 def add_tracking_scripts(content, filepath):
@@ -386,7 +499,7 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
         # Extract last_date from content
         m = re.search(r'info-item__value[^>]*>([^<]{5,20})</span>', content)
         last_date = m.group(1).strip() if m else TODAY
-        if not re.search(r'\d{2}[/-]\d{2}[/-]\d{4}', last_date):
+        if not to_iso_date(last_date):
             last_date = TODAY
         json_ld_blocks = build_job_json_ld(title, dept, last_date, canonical_url)
         # Add breadcrumb
@@ -397,23 +510,21 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
             (title, canonical_url)
         ])
     elif page_type == 'result':
-        if '<script type="application/ld+json">' not in content:
-            json_ld_blocks = build_result_json_ld(title, dept, canonical_url)
-            json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-                (SITE_NAME, SITE_URL + '/'),
-                ('Results', SITE_URL + '/results.html'),
-                (dept, SITE_URL + '/results.html'),
-                (title, canonical_url)
-            ])
+        json_ld_blocks = build_result_json_ld(title, dept, canonical_url)
+        json_ld_blocks += '\n' + build_breadcrumb_json_ld([
+            (SITE_NAME, SITE_URL + '/'),
+            ('Results', SITE_URL + '/results.html'),
+            (dept, SITE_URL + '/results.html'),
+            (title, canonical_url)
+        ])
     elif page_type == 'admit_card':
-        if '<script type="application/ld+json">' not in content:
-            json_ld_blocks = build_admit_json_ld(title, dept, canonical_url)
-            json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-                (SITE_NAME, SITE_URL + '/'),
-                ('Admit Cards', SITE_URL + '/admit-cards.html'),
-                (dept, SITE_URL + '/admit-cards.html'),
-                (title, canonical_url)
-            ])
+        json_ld_blocks = build_admit_json_ld(title, dept, canonical_url)
+        json_ld_blocks += '\n' + build_breadcrumb_json_ld([
+            (SITE_NAME, SITE_URL + '/'),
+            ('Admit Cards', SITE_URL + '/admit-cards.html'),
+            (dept, SITE_URL + '/admit-cards.html'),
+            (title, canonical_url)
+        ])
 
     # Build complete new head content
     new_head = f'''<head>
@@ -435,6 +546,9 @@ def update_page(filepath, dry_run=False):
         original = f.read()
 
     content = original
+
+    # Step 0: Repair malformed redirect targets from earlier rewrites
+    content = fix_malformed_redirect_hosts(content)
 
     # Step 1: Remove SarkariResult references
     content = remove_sarkariresult_urls(content)
@@ -486,7 +600,7 @@ def main():
     else:
         html_files = [
             f for f in SITE_ROOT.rglob('*.html')
-            if '.git' not in str(f) and 'scraper' not in str(f)
+            if '.git' not in str(f) and 'scraper' not in str(f) and f.name != 'go.html'
         ]
 
     log(f"Found {len(html_files)} HTML files to process")

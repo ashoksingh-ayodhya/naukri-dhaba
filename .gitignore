@@ -1,0 +1,4 @@
+__pycache__/
+scraper/__pycache__/
+output/playwright/
+.playwright-cli/

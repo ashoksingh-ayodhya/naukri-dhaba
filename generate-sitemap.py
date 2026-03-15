@@ -14,186 +14,146 @@ USAGE:
 RUN AUTOMATICALLY:
   Add to cron (runs daily at 2 AM):
   0 2 * * * cd /path/to/naukri-dhaba && python3 generate-sitemap.py
-
-CONFIGURATION:
-  Edit BASE_URL below to match your domain.
 ============================================================
 """
 
-import os
 import glob
-import re
-from datetime import datetime, date
-from pathlib import Path
+import os
+from datetime import date, datetime
 
-# ══════════════════════════════════════════════════════════
-# CONFIGURATION
-# ══════════════════════════════════════════════════════════
-BASE_URL = 'https://www.naukridhaba.in'  # Your website URL (no trailing slash)
+from site_config import SITE_URL
+
+BASE_URL = SITE_URL
 SITE_ROOT = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_FILE = os.path.join(SITE_ROOT, 'sitemap.xml')
+OUTPUT_FILE = os.path.join(SITE_ROOT, "sitemap.xml")
 
-# Priority and changefreq rules per page type
 PAGE_RULES = {
-    # Root pages - highest priority
-    'index.html': {'priority': '1.0', 'changefreq': 'daily'},
-    'latest-jobs.html': {'priority': '0.9', 'changefreq': 'daily'},
-    'results.html': {'priority': '0.9', 'changefreq': 'daily'},
-    'admit-cards.html': {'priority': '0.9', 'changefreq': 'daily'},
-    'resources.html': {'priority': '0.7', 'changefreq': 'weekly'},
-    # Job detail pages
-    'jobs/': {'priority': '0.8', 'changefreq': 'weekly'},
-    # Result detail pages
-    'results/': {'priority': '0.8', 'changefreq': 'weekly'},
-    # Admit card detail pages
-    'admit-cards/': {'priority': '0.8', 'changefreq': 'weekly'},
-    # Default for others
-    'default': {'priority': '0.5', 'changefreq': 'monthly'},
+    "index.html": {"priority": "1.0", "changefreq": "daily"},
+    "latest-jobs.html": {"priority": "0.9", "changefreq": "daily"},
+    "results.html": {"priority": "0.9", "changefreq": "daily"},
+    "admit-cards.html": {"priority": "0.9", "changefreq": "daily"},
+    "resources.html": {"priority": "0.7", "changefreq": "weekly"},
+    "jobs/": {"priority": "0.8", "changefreq": "weekly"},
+    "results/": {"priority": "0.8", "changefreq": "weekly"},
+    "admit-cards/": {"priority": "0.8", "changefreq": "weekly"},
+    "default": {"priority": "0.5", "changefreq": "monthly"},
 }
 
-# Pages to exclude from sitemap
 EXCLUDE_PATTERNS = [
-    'eligibility-calculator.html',
-    'study-planner.html',
-    'previous-papers.html',
+    "eligibility-calculator.html",
+    "study-planner.html",
+    "previous-papers.html",
+    "go.html",
 ]
 
 
-def get_last_modified(filepath):
-    """Get file last modified date in W3C format."""
+def get_last_modified(filepath: str) -> str:
     mtime = os.path.getmtime(filepath)
-    return datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
+    return datetime.fromtimestamp(mtime).strftime("%Y-%m-%d")
 
 
-def get_page_rules(rel_path):
-    """Determine priority and changefreq for a given page."""
-    # Check exact filename matches
+def get_page_rules(rel_path: str) -> dict[str, str]:
     filename = os.path.basename(rel_path)
     if filename in PAGE_RULES:
         return PAGE_RULES[filename]
 
-    # Check directory prefix matches
     for prefix, rules in PAGE_RULES.items():
-        if '/' in prefix and rel_path.startswith(prefix):
+        if "/" in prefix and rel_path.startswith(prefix):
             return rules
 
-    return PAGE_RULES['default']
+    return PAGE_RULES["default"]
 
 
-def should_exclude(rel_path):
-    """Check if a page should be excluded from sitemap."""
-    for pattern in EXCLUDE_PATTERNS:
-        if pattern in rel_path:
-            return True
-    return False
+def should_exclude(rel_path: str) -> bool:
+    return any(pattern in rel_path for pattern in EXCLUDE_PATTERNS)
 
 
-def extract_page_title(filepath):
-    """Extract page title for sitemap news tags if needed."""
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            content = f.read(2000)  # Only read first 2KB for speed
-        match = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE | re.DOTALL)
-        if match:
-            return match.group(1).strip()
-    except Exception:
-        pass
-    return ''
-
-
-def generate_sitemap():
-    """Scan all HTML files and generate sitemap.xml."""
+def generate_sitemap() -> int:
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Starting sitemap generation...")
     print(f"Site root: {SITE_ROOT}")
     print(f"Base URL: {BASE_URL}")
 
-    # Find all HTML files
-    html_files = []
-    for filepath in glob.iglob(os.path.join(SITE_ROOT, '**/*.html'), recursive=True):
-        # Skip files in .git directory
-        if '.git' in filepath:
+    html_files: list[tuple[str, str]] = []
+    for filepath in glob.iglob(os.path.join(SITE_ROOT, "**/*.html"), recursive=True):
+        if ".git" in filepath:
             continue
-        rel_path = os.path.relpath(filepath, SITE_ROOT).replace('\\', '/')
+        rel_path = os.path.relpath(filepath, SITE_ROOT).replace("\\", "/")
         if should_exclude(rel_path):
             continue
         html_files.append((rel_path, filepath))
 
-    # Sort: root pages first, then by directory, then alphabetically
-    def sort_key(item):
+    def sort_key(item: tuple[str, str]) -> tuple[int, str]:
         rel_path = item[0]
-        if '/' not in rel_path:
+        if "/" not in rel_path:
             return (0, rel_path)
-        elif rel_path.startswith('jobs/'):
+        if rel_path.startswith("jobs/"):
             return (1, rel_path)
-        elif rel_path.startswith('results/'):
+        if rel_path.startswith("results/"):
             return (2, rel_path)
-        elif rel_path.startswith('admit-cards/'):
+        if rel_path.startswith("admit-cards/"):
             return (3, rel_path)
         return (4, rel_path)
 
     html_files.sort(key=sort_key)
 
-    # Build XML
-    today = date.today().strftime('%Y-%m-%d')
+    today = date.today().strftime("%Y-%m-%d")
     xml_parts = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
         '        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"',
         '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
-        '',
-        f'  <!-- Generated by Naukri Dhaba Sitemap Generator on {today} -->',
-        f'  <!-- Total pages: {len(html_files)} -->',
-        '',
+        "",
+        f"  <!-- Generated by Naukri Dhaba Sitemap Generator on {today} -->",
+        f"  <!-- Total pages: {len(html_files)} -->",
+        "",
     ]
 
-    jobs_count = results_count = admits_count = root_count = 0
+    jobs_count = 0
+    results_count = 0
+    admits_count = 0
+    root_count = 0
 
     for rel_path, filepath in html_files:
-        url = BASE_URL + '/' + rel_path
-        # Fix index.html → base URL
-        if rel_path == 'index.html':
-            url = BASE_URL + '/'
+        url = f"{BASE_URL}/{rel_path}"
+        if rel_path == "index.html":
+            url = f"{BASE_URL}/"
 
         lastmod = get_last_modified(filepath)
         rules = get_page_rules(rel_path)
 
-        xml_parts.append('  <url>')
-        xml_parts.append(f'    <loc>{url}</loc>')
-        xml_parts.append(f'    <lastmod>{lastmod}</lastmod>')
-        xml_parts.append(f'    <changefreq>{rules["changefreq"]}</changefreq>')
-        xml_parts.append(f'    <priority>{rules["priority"]}</priority>')
-        xml_parts.append('  </url>')
-        xml_parts.append('')
+        xml_parts.append("  <url>")
+        xml_parts.append(f"    <loc>{url}</loc>")
+        xml_parts.append(f"    <lastmod>{lastmod}</lastmod>")
+        xml_parts.append(f"    <changefreq>{rules['changefreq']}</changefreq>")
+        xml_parts.append(f"    <priority>{rules['priority']}</priority>")
+        xml_parts.append("  </url>")
+        xml_parts.append("")
 
-        # Count by type
-        if rel_path.startswith('jobs/'):
+        if rel_path.startswith("jobs/"):
             jobs_count += 1
-        elif rel_path.startswith('results/'):
+        elif rel_path.startswith("results/"):
             results_count += 1
-        elif rel_path.startswith('admit-cards/'):
+        elif rel_path.startswith("admit-cards/"):
             admits_count += 1
         else:
             root_count += 1
 
-    xml_parts.append('</urlset>')
+    xml_parts.append("</urlset>")
 
-    # Write sitemap
-    sitemap_content = '\n'.join(xml_parts)
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        f.write(sitemap_content)
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write("\n".join(xml_parts))
 
-    print(f"\n✅ Sitemap generated successfully!")
+    print("\nSitemap generated successfully.")
     print(f"   Output: {OUTPUT_FILE}")
     print(f"   Total URLs: {len(html_files)}")
-    print(f"   ├─ Root/Listing pages: {root_count}")
-    print(f"   ├─ Job pages: {jobs_count}")
-    print(f"   ├─ Result pages: {results_count}")
-    print(f"   └─ Admit Card pages: {admits_count}")
+    print(f"   Root/Listing pages: {root_count}")
+    print(f"   Job pages: {jobs_count}")
+    print(f"   Result pages: {results_count}")
+    print(f"   Admit Card pages: {admits_count}")
     print(f"   Last updated: {today}")
-
     return len(html_files)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     generate_sitemap()

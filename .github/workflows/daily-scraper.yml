@@ -1,69 +1,75 @@
-name: Daily Scraper – 10 AM IST
+name: Daily Scraper - 10 AM IST
 
 on:
-  # ── Auto: every day at 10:00 AM IST (04:30 UTC) ────────
   schedule:
-    - cron: '30 4 * * *'
-
-  # ── Manual: tap "Run workflow" on GitHub from your phone ─
+    - cron: "30 4 * * *"
   workflow_dispatch:
     inputs:
       reason:
-        description: 'Why running manually?'
+        description: "Why running manually?"
         required: false
-        default: 'Manual trigger'
+        default: "Manual trigger"
+
+concurrency:
+  group: daily-scraper
+  cancel-in-progress: false
 
 permissions:
-  contents: write   # needed to push generated HTML back
+  contents: write
 
 jobs:
   scrape-and-publish:
-    name: Scrape sarkariresult.com → Generate HTML
+    name: Scrape sarkariresult.com -> Generate HTML
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      TZ: Asia/Kolkata
 
     steps:
-      # ── 1. Checkout repo ─────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # full history so git push works
+          fetch-depth: 0
 
-      # ── 2. Python setup ──────────────────────────────────
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
 
-      # ── 3. Install dependencies ───────────────────────────
       - name: Install Python dependencies
-        run: pip install requests beautifulsoup4 lxml
+        run: pip install -r scraper/requirements.txt
 
-      # ── 4. Run scraper ────────────────────────────────────
       - name: Run Naukri Dhaba scraper
         run: |
           echo "=== Naukri Dhaba Scraper ==="
-          echo "Time (IST): $(TZ='Asia/Kolkata' date)"
-          python3 scraper/sarkari_scraper.py
+          echo "Time (IST): $(date)"
+          python3 scraper/sarkari_scraper.py --refresh-existing
           echo "=== Scraper done ==="
 
-      # ── 5. Commit generated HTML ──────────────────────────
+      - name: Normalize generated pages
+        run: python3 update-all-pages.py
+
+      - name: Rebuild sitemap
+        run: python3 generate-sitemap.py
+
+      - name: Validate generated output
+        run: python3 validate-generated-site.py
+
       - name: Commit new pages
         run: |
-          git config user.name  "Naukri Dhaba Bot"
+          git config user.name "Naukri Dhaba Bot"
           git config user.email "bot@naukridhaba.in"
           git add -A
           if git diff --staged --quiet; then
             echo "No new pages generated today."
           else
             COUNT=$(git diff --staged --name-only | wc -l)
-            git commit -m "Auto-scrape $(TZ='Asia/Kolkata' date +'%d %b %Y %I:%M %p IST') – $COUNT files"
+            git commit -m "Auto-scrape $(date +'%d %b %Y %I:%M %p IST') - $COUNT files"
             git push
-            echo "✅ Pushed $COUNT new/updated files."
+            echo "Pushed $COUNT new/updated files."
           fi
 
-      # ── 6. Print summary ──────────────────────────────────
       - name: Show scraper log (last 50 lines)
         if: always()
         run: |
