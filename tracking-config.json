@@ -1,7 +1,7 @@
 {
   "googleAnalytics4": {
-    "enabled": false,
-    "measurementId": "G-XXXXXXXXXX"
+    "enabled": true,
+    "measurementId": "G-E3C5CLPP6B"
   },
   "googleTagManager": {
     "enabled": false,
