@@ -12,6 +12,7 @@
     consentMode: {
       enabled: false,
       storageKey: 'nd_consent_v1',
+      defaultMode: 'reject',
       waitForUpdateMs: 500,
       bannerEnabled: true
     },
@@ -123,6 +124,7 @@
   function applyConsentUpdate(mode) {
     ensureGtag();
     var state = consentStateFromMode(mode);
+    window.NAUKRI_DHABA_CONSENT_MODE = mode;
     window.NAUKRI_DHABA_CONSENT_STATE = state;
     window.gtag('consent', 'update', state);
     return state;
@@ -190,10 +192,13 @@
   if (config.consentMode && config.consentMode.enabled) {
     ensureGtag();
     var storedMode = readConsentMode(config.consentMode.storageKey);
+    var effectiveMode = storedMode || config.consentMode.defaultMode || 'reject';
     if (storedMode) {
       applyConsentUpdate(storedMode);
     }
     document.addEventListener('DOMContentLoaded', function () {
+      window.NAUKRI_DHABA_CONSENT_MODE = effectiveMode;
+      window.NAUKRI_DHABA_CONSENT_STATE = consentStateFromMode(effectiveMode);
       if (!storedMode) {
         renderConsentBanner(config.consentMode);
       }

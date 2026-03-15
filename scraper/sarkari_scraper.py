@@ -474,11 +474,13 @@ def detail_consent_bootstrap_markup() -> str:
         return ''
 
     storage_key = escape(clean(consent.get('storageKey', 'nd_consent_v1')), quote=True)
+    default_mode = escape(clean(consent.get('defaultMode', 'reject')), quote=True)
     wait_for_update = int(consent.get('waitForUpdateMs', 500) or 500)
     return '\n'.join([
         '    <script>',
         '      (function(w){',
         f'        var consentKey = "{storage_key}";',
+        f'        var defaultMode = "{default_mode}";',
         f'        var waitForUpdate = {wait_for_update};',
         '        var denied = {ad_storage: "denied", analytics_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted", personalization_storage: "denied"};',
         '        var analyticsGranted = {ad_storage: "denied", analytics_storage: "granted", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted", personalization_storage: "denied"};',
@@ -501,7 +503,7 @@ def detail_consent_bootstrap_markup() -> str:
         '        }',
         '        w.dataLayer = w.dataLayer || [];',
         '        w.gtag = w.gtag || function(){w.dataLayer.push(arguments);};',
-        '        var initialMode = readStoredMode();',
+        '        var initialMode = readStoredMode() || defaultMode;',
         '        var initialState = modeToState(initialMode);',
         '        initialState.wait_for_update = waitForUpdate;',
         '        w.NAUKRI_DHABA_CONSENT_KEY = consentKey;',

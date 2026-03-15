@@ -10,6 +10,7 @@
   "consentMode": {
     "enabled": true,
     "storageKey": "nd_consent_v1",
+    "defaultMode": "analytics",
     "waitForUpdateMs": 500,
     "bannerEnabled": true
   },

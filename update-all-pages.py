@@ -70,7 +70,7 @@ SEO_KEYWORDS_MAP = {
 DEFAULT_TRACKING_CONFIG = {
     'googleAnalytics4': {'enabled': False, 'measurementId': 'G-XXXXXXXXXX'},
     'googleTagManager': {'enabled': False, 'containerId': 'GTM-XXXXXXX'},
-    'consentMode': {'enabled': False, 'storageKey': 'nd_consent_v1', 'waitForUpdateMs': 500, 'bannerEnabled': True},
+    'consentMode': {'enabled': False, 'storageKey': 'nd_consent_v1', 'defaultMode': 'reject', 'waitForUpdateMs': 500, 'bannerEnabled': True},
     'googleSearchConsole': {'enabled': False, 'verificationCode': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'},
     'googleAdSense': {'enabled': False, 'publisherId': 'ca-pub-XXXXXXXXXXXXXXXX'},
     'microsoftClarity': {'enabled': False, 'projectId': 'XXXXXXXXXX'},
@@ -294,11 +294,13 @@ def build_consent_bootstrap_markup():
         return ''
 
     storage_key = escape(consent.get('storageKey', 'nd_consent_v1'), quote=True)
+    default_mode = escape(consent.get('defaultMode', 'reject'), quote=True)
     wait_for_update = int(consent.get('waitForUpdateMs', 500) or 500)
     return '\n'.join([
         '    <script>',
         '      (function(w){',
         '        var consentKey = "' + storage_key + '";',
+        '        var defaultMode = "' + default_mode + '";',
         '        var waitForUpdate = ' + str(wait_for_update) + ';',
         '        var denied = {',
         '          ad_storage: "denied",',
@@ -345,7 +347,7 @@ def build_consent_bootstrap_markup():
         '        }',
         '        w.dataLayer = w.dataLayer || [];',
         '        w.gtag = w.gtag || function(){w.dataLayer.push(arguments);};',
-        '        var initialMode = readStoredMode();',
+        '        var initialMode = readStoredMode() || defaultMode;',
         '        var initialState = modeToState(initialMode);',
         '        initialState.wait_for_update = waitForUpdate;',
         '        w.NAUKRI_DHABA_CONSENT_KEY = consentKey;',
