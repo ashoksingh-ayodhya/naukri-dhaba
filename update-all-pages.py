@@ -36,8 +36,14 @@ import argparse
 from pathlib import Path
 from datetime import date, datetime
 from html import escape
+from urllib.parse import urlparse
 
-from site_config import PRETTY_ROUTE_MAP, SITE_NAME, SITE_URL
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None
+
+from site_config import PRETTY_ROUTE_MAP, REDIRECT_PATH, SITE_NAME, SITE_URL
 
 SITE_ROOT = Path(__file__).parent
 TODAY = date.today().isoformat()
@@ -113,6 +119,12 @@ def slugify_title(text):
 
 def clean_text(text):
     return re.sub(r'\s+', ' ', str(text or '')).strip()
+
+
+def strip_icon_prefix(text):
+    value = clean_text(text)
+    value = re.sub(r'^(?:ð[^\s]*\s+|â[^\s]*\s+)+', '', value)
+    return re.sub(r'^[^A-Za-z0-9\u0900-\u097F]+', '', value)
 
 
 def normalize_title_text(title):
@@ -209,6 +221,423 @@ def extract_from_html(content):
     data['location'] = m.group(1).strip() if m else 'India'
 
     return data
+
+
+def label_key(text):
+    value = strip_icon_prefix(text).lower()
+    value = re.sub(r'[/|:()\-]+', ' ', value)
+    value = re.sub(r'\s+', ' ', value).strip()
+    return value
+
+
+def article_links_dedup(links):
+    rows_by_url = {}
+    for label, url in links:
+        clean_label_value = strip_icon_prefix(label)
+        clean_url_value = clean_text(url)
+        if not clean_label_value or not clean_url_value or clean_url_value == '#':
+            continue
+        current = rows_by_url.get(clean_url_value.lower())
+        if current is None or len(clean_label_value) < len(current[0]):
+            rows_by_url[clean_url_value.lower()] = (clean_label_value, clean_url_value)
+    return list(rows_by_url.values())
+
+
+def extract_detail_data(content, filepath, page_type):
+    if BeautifulSoup is None:
+        return None
+
+    soup = BeautifulSoup(content, 'html.parser')
+    main = soup.find('main')
+    if not main:
+        return None
+
+    data = extract_from_html(content)
+    h1 = main.find('h1')
+    title = normalize_title_text(strip_icon_prefix(h1.get_text(' ', strip=True) if h1 else data.get('title', '')))
+    year_match = re.search(r'\b(20\d{2})\b', title or '')
+    year = year_match.group(1) if year_match else str(date.today().year)
+
+    info = {}
+    for item in main.select('.info-item'):
+        label = item.select_one('.info-item__label')
+        value = item.select_one('.info-item__value')
+        if not label or not value:
+            continue
+        info[label_key(label.get_text(' ', strip=True))] = clean_text(value.get_text(' ', strip=True))
+
+    table_rows = {}
+    fee_rows = {}
+    for table in main.find_all('table'):
+        for row in table.find_all('tr'):
+            cells = row.find_all(['td', 'th'])
+            if len(cells) < 2:
+                continue
+            label = strip_icon_prefix(cells[0].get_text(' ', strip=True))
+            value = clean_text(cells[1].get_text(' ', strip=True))
+            key = label_key(label)
+            if not key or not value:
+                continue
+            if re.search(r'\b(general|obc|ews)\b', key):
+                fee_rows['general'] = value
+            elif re.search(r'\b(sc|st|ph|pwd)\b', key):
+                fee_rows['reserved'] = value
+            else:
+                table_rows[key] = value
+
+    headings = {}
+    for heading in main.find_all(['h2', 'h3']):
+        headings[label_key(heading.get_text(' ', strip=True))] = heading
+
+    links = []
+    for anchor in main.find_all('a', href=True):
+        href = clean_text(anchor.get('href'))
+        text = strip_icon_prefix(anchor.get_text(' ', strip=True))
+        if not href or href == '#':
+            continue
+        if href.startswith('/') and not href.startswith(REDIRECT_PATH):
+            continue
+        links.append((text or href, href))
+    links = article_links_dedup(links)
+
+    action_links = {}
+    for label, href in links:
+        lower = label.lower()
+        if 'notification' in lower and 'notification' not in action_links:
+            action_links['notification_url'] = href
+        if 'apply' in lower and 'apply_url' not in action_links:
+            action_links['apply_url'] = href
+        if 'result' in lower and 'scorecard' not in lower and 'result_url' not in action_links:
+            action_links['result_url'] = href
+        if ('scorecard' in lower or 'score card' in lower or 'marks' in lower) and 'scorecard_url' not in action_links:
+            action_links['scorecard_url'] = href
+        if 'admit' in lower and 'admit_url' not in action_links:
+            action_links['admit_url'] = href
+
+    article_text = main.get_text(' ', strip=True)
+    age_text = info.get('age limit') or table_rows.get('age limit') or table_rows.get('age') or ''
+    age_match = re.search(r'(\d{1,2})\D+(\d{1,2})\s*years?', age_text, re.I)
+    age_min = age_match.group(1) if age_match else '18'
+    age_max = age_match.group(2) if age_match else '40'
+
+    section_key = {
+        'job': 'jobs',
+        'result': 'results',
+        'admit_card': 'admit cards',
+    }[page_type]
+
+    detail = {
+        'title': title,
+        'year': year,
+        'dept': info.get('department') or data.get('dept', 'Government'),
+        'section_key': section_key,
+        'last_date': info.get('last date') or table_rows.get('last date to apply online') or table_rows.get('last date') or 'Check Notification',
+        'application_begin': table_rows.get('application begin') or table_rows.get('application start') or 'Check Notification',
+        'exam_date': table_rows.get('exam date') or 'As per Schedule',
+        'result_date': table_rows.get('result date') or info.get('result date') or 'Check Notification',
+        'admit_release': table_rows.get('released') or table_rows.get('admit card available') or 'Check Notification',
+        'total_posts': info.get('total posts') or info.get('total post') or table_rows.get('total posts') or 'Check Notification',
+        'age_text': age_text or f'{age_min}-{age_max} Years',
+        'age_min': age_min,
+        'age_max': age_max,
+        'qualification': info.get('qualification') or table_rows.get('eligibility') or table_rows.get('qualification') or 'Check Notification',
+        'salary': info.get('salary pay scale') or info.get('salary') or table_rows.get('salary') or table_rows.get('pay scale') or 'As per Government Norms',
+        'fee_general': fee_rows.get('general', ''),
+        'fee_reserved': fee_rows.get('reserved', ''),
+        'links': links,
+        'apply_url': action_links.get('apply_url', ''),
+        'notification_url': action_links.get('notification_url', ''),
+        'result_url': action_links.get('result_url', ''),
+        'scorecard_url': action_links.get('scorecard_url', ''),
+        'admit_url': action_links.get('admit_url', ''),
+        'article_text': article_text,
+        'filepath': filepath,
+    }
+
+    for fee_key in ('fee_general', 'fee_reserved'):
+        fee_value = detail[fee_key]
+        if not fee_value:
+            continue
+        if fee_value == detail['last_date'] or re.search(r'\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b', fee_value):
+            detail[fee_key] = ''
+
+    return detail
+
+
+def render_link_list(links, heading):
+    rows = ''.join(
+        f'<li><a href="{escape(url, quote=True)}" target="_blank" rel="nofollow noopener noreferrer">{escape(label)}</a></li>'
+        for label, url in links
+    )
+    if not rows:
+        return ''
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        f'<h3 style="color:var(--primary);margin-top:0;">{heading}</h3>'
+        f'<ul style="line-height:2.3;">{rows}</ul>'
+        '</div>'
+    )
+
+
+def build_job_snapshot(detail):
+    lines = [
+        f'<li><strong>Department:</strong> {escape(detail["dept"])}</li>',
+        f'<li><strong>Application window:</strong> {escape(detail["application_begin"])} to {escape(detail["last_date"])}</li>',
+        f'<li><strong>Qualification:</strong> {escape(detail["qualification"])}</li>',
+        '<li><strong>Official action:</strong> Always complete the form on the authority site linked below.</li>',
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Role Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{escape(detail["title"])} is listed under {escape(detail["dept"])} recruitment updates on Naukri Dhaba. '
+        f'The current application deadline is {escape(detail["last_date"])} and the extracted age range is {escape(detail["age_min"])} to {escape(detail["age_max"])} years. '
+        'Verify category relaxation, district-wise notice details, and final instructions on the official authority page before submission.</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(lines)}</ul>'
+        '</div>'
+    )
+
+
+def build_result_snapshot(detail):
+    lines = [
+        f'<li><strong>Department:</strong> {escape(detail["dept"])}</li>',
+        f'<li><strong>Result date:</strong> {escape(detail["result_date"])}</li>',
+        '<li><strong>Next step:</strong> Download the scorecard or shortlist notice from the official portal when available.</li>',
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Result Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{escape(detail["title"])} is tracked here as a result update. '
+        f'Use the official result or scorecard links below to confirm marks, qualifying status, and the next recruitment stage.</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(lines)}</ul>'
+        '</div>'
+    )
+
+
+def build_admit_snapshot(detail):
+    lines = [
+        f'<li><strong>Department:</strong> {escape(detail["dept"])}</li>',
+        f'<li><strong>Release status:</strong> {escape(detail["admit_release"])}</li>',
+        f'<li><strong>Exam date:</strong> {escape(detail["exam_date"])}</li>',
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Admit Card Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{escape(detail["title"])} is available as an admit-card update. '
+        'Download the hall ticket only from the official authority link and recheck exam city, shift timing, and ID-proof instructions before the exam day.</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(lines)}</ul>'
+        '</div>'
+    )
+
+
+def build_detail_article(detail, page_type):
+    title = escape(detail['title'])
+    dept = escape(detail['dept'])
+    breadcrumb_label = {
+        'job': 'Jobs',
+        'result': 'Results',
+        'admit_card': 'Admit Cards',
+    }[page_type]
+    breadcrumb_href = pretty_root_path({
+        'job': 'latest-jobs.html',
+        'result': 'results.html',
+        'admit_card': 'admit-cards.html',
+    }[page_type])
+    extra_links = render_link_list(detail['links'], 'Important Links')
+
+    if page_type == 'job':
+        apply_cta = (
+            f'<a href="{escape(detail["apply_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--primary btn--large">Apply Online</a>'
+            if detail['apply_url']
+            else '<span class="btn btn--primary btn--large" style="opacity:.65;cursor:default;">Official Apply Link Awaited</span>'
+        )
+        notify_cta = (
+            f'<a href="{escape(detail["notification_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--secondary btn--large">Download Notification</a>'
+            if detail['notification_url']
+            else ''
+        )
+        fee_section = ''
+        if detail['fee_general'] or detail['fee_reserved']:
+            fee_rows = ''
+            if detail['fee_general']:
+                fee_rows += f'<tr><td style="padding:8px 0;color:#666;">General / OBC / EWS</td><td style="padding:8px 0;font-weight:bold;">{escape(detail["fee_general"])}</td></tr>'
+            if detail['fee_reserved']:
+                fee_rows += f'<tr><td style="padding:8px 0;color:#666;">SC / ST / PH</td><td style="padding:8px 0;font-weight:bold;">{escape(detail["fee_reserved"])}</td></tr>'
+            fee_section = (
+                '<div style="border-left:4px solid var(--warning);background:#fff8e1;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">'
+                '<h3 style="color:var(--primary);margin-top:0;">Application Fee</h3>'
+                f'<table style="width:100%;border-collapse:collapse;">{fee_rows}</table>'
+                '</div>'
+            )
+        return f'''<main>
+    <article class="job-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="{breadcrumb_href}">{breadcrumb_label}</a> &gt; <span>{title}</span>
+      </nav>
+      <h1 style="color:var(--primary);margin-bottom:.5rem;">{title} <span style="background:var(--secondary);color:#fff;padding:4px 12px;border-radius:4px;font-size:1rem;">{escape(detail["year"])}</span></h1>
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-item__label">Last Date</span><span class="info-item__value" style="color:var(--danger);">{escape(detail["last_date"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Department</span><span class="info-item__value">{dept}</span></div>
+        <div class="info-item"><span class="info-item__label">Total Posts</span><span class="info-item__value">{escape(detail["total_posts"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Age Limit</span><span class="info-item__value">{escape(detail["age_text"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Qualification</span><span class="info-item__value" style="font-size:.95rem;">{escape(detail["qualification"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Salary / Pay Scale</span><span class="info-item__value" style="font-size:.95rem;">{escape(detail["salary"])}</span></div>
+      </div>
+      <div class="action-bar">{apply_cta}{notify_cta}</div>
+      <div style="border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;margin:1.5rem 0;">
+        <h2 style="color:var(--primary);margin-top:0;">Important Dates</h2>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;width:55%;">Application Begin</td><td style="font-weight:bold;">{escape(detail["application_begin"])}</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Last Date to Apply Online</td><td style="font-weight:bold;color:var(--danger);">{escape(detail["last_date"])}</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Exam Date</td><td style="font-weight:bold;">{escape(detail["exam_date"])}</td></tr>
+        </table>
+      </div>
+      {fee_section}
+      {build_job_snapshot(detail)}
+      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
+      <div class="calculator">
+        <h3 style="margin-top:0;">Age Eligibility Calculator</h3>
+        <p style="color:#666;font-size:.875rem;">Age limit: {escape(detail["age_min"])}-{escape(detail["age_max"])} years. OBC +3 yrs, SC/ST +5 yrs relaxation.</p>
+        <div class="form-group"><label>Date of Birth:</label><input type="date" id="dob-input"></div>
+        <div class="form-group"><label>Category:</label><select id="category-select"><option value="general">General</option><option value="obc">OBC (+3 years)</option><option value="sc">SC (+5 years)</option><option value="st">ST (+5 years)</option></select></div>
+        <button onclick="checkEligibility({escape(detail["age_min"])}, {escape(detail["age_max"])})" class="btn btn--primary">Check Eligibility</button>
+        <div id="eligibility-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:4px;"></div>
+      </div>
+      {extra_links}
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">How to Apply</h3>
+        <ol style="line-height:2.2;">
+          <li>Use the official authority portal linked above, not third-party mirrors.</li>
+          <li>Verify category, district, and document rules before you create an account.</li>
+          <li>Fill the application form carefully and review the preview before final submission.</li>
+          <li>Upload only the files and dimensions allowed in the official notice.</li>
+          <li>Save the application number, preview, and payment receipt for later stages.</li>
+        </ol>
+      </div>
+      <div class="share-section">
+        <h3>Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title}')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title}')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+    </article>
+  </main>'''
+
+    if page_type == 'result':
+        result_cta = (
+            f'<a href="{escape(detail["result_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">Check Result</a>'
+            if detail['result_url']
+            else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">Result Link Coming Soon</span>'
+        )
+        score_cta = (
+            f'<a href="{escape(detail["scorecard_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--secondary btn--large" style="display:inline-block;margin-bottom:1rem;">Download Scorecard</a>'
+            if detail['scorecard_url']
+            else ''
+        )
+        return f'''<main>
+    <article class="result-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="{breadcrumb_href}">{breadcrumb_label}</a> &gt; <span>{title}</span>
+      </nav>
+      <h1 style="color:var(--primary);">{title}</h1>
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-item__label">Department</span><span class="info-item__value">{dept}</span></div>
+        <div class="info-item"><span class="info-item__label">Result Date</span><span class="info-item__value">{escape(detail["result_date"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Stage</span><span class="info-item__value">Result Declared</span></div>
+        <div class="info-item"><span class="info-item__label">Official Status</span><span class="info-item__value">Check authority links below</span></div>
+      </div>
+      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">Declared</div>
+        <p style="color:#666;margin-bottom:1rem;">Result Date: {escape(detail["result_date"])}</p>
+        {result_cta}
+        {score_cta}
+      </div>
+      {build_result_snapshot(detail)}
+      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
+      {extra_links}
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">How to Check Result</h3>
+        <ol style="line-height:2.2;">
+          <li>Open the official result portal linked above.</li>
+          <li>Keep your roll number or registration number ready before login.</li>
+          <li>Check your name, category, marks, and qualifying stage carefully.</li>
+          <li>Download the official PDF or scorecard and keep a copy for verification.</li>
+        </ol>
+      </div>
+      <div class="share-section">
+        <h3>Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title} Result')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title} Result')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+    </article>
+  </main>'''
+
+    admit_cta = (
+        f'<a href="{escape(detail["admit_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">Download Admit Card</a>'
+        if detail['admit_url']
+        else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">Admit Card Link Coming Soon</span>'
+    )
+    return f'''<main>
+    <article class="admit-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="{breadcrumb_href}">{breadcrumb_label}</a> &gt; <span>{title}</span>
+      </nav>
+      <h1 style="color:var(--primary);">{title}</h1>
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-item__label">Department</span><span class="info-item__value">{dept}</span></div>
+        <div class="info-item"><span class="info-item__label">Release Status</span><span class="info-item__value">{escape(detail["admit_release"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Exam Date</span><span class="info-item__value">{escape(detail["exam_date"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Document Type</span><span class="info-item__value">Admit Card / Exam City</span></div>
+      </div>
+      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">Available</div>
+        <p style="color:#666;margin-bottom:.5rem;">Released: {escape(detail["admit_release"])}</p>
+        <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">Exam Date: {escape(detail["exam_date"])}</p>
+        {admit_cta}
+      </div>
+      {build_admit_snapshot(detail)}
+      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
+      {extra_links}
+      <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
+        <h3 style="color:var(--danger);margin-top:0;">Important Instructions</h3>
+        <ul style="line-height:1.8;">
+          <li>Carry a printed admit card exactly as required in the official instructions.</li>
+          <li>Bring a valid photo ID that matches the admit-card identity details.</li>
+          <li>Check reporting time, gate closing time, and venue address before travel.</li>
+          <li>Avoid restricted items such as phones, smartwatches, calculators, or loose papers.</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">Exam Day Checklist</h3>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:.4rem 0;">Printed admit card</li>
+          <li style="padding:.4rem 0;">Valid photo ID proof</li>
+          <li style="padding:.4rem 0;">Passport-size photos if required</li>
+          <li style="padding:.4rem 0;">Pens and transparent water bottle if allowed</li>
+        </ul>
+      </div>
+      <div class="share-section">
+        <h3>Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title} Admit Card')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title} Admit Card')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+    </article>
+  </main>'''
+
+
+def rebuild_detail_main(content, filepath, page_type):
+    detail = extract_detail_data(content, filepath, page_type)
+    if not detail:
+        return content
+    rebuilt_main = build_detail_article(detail, page_type)
+    return re.sub(r'<main>.*?</main>', rebuilt_main, content, count=1, flags=re.DOTALL)
 
 
 def get_canonical_url(filepath):
@@ -841,6 +1270,8 @@ def update_page(filepath, dry_run=False):
     # Step 6: Rebuild head with complete SEO
     content = rebuild_head(content, data, page_type, filepath, canonical_url)
     content = inject_body_tracking(content)
+    if page_type in {'job', 'result', 'admit_card'}:
+        content = rebuild_detail_main(content, filepath, page_type)
 
     if content == original:
         return False  # No changes

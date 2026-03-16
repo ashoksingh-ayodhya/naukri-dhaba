@@ -157,6 +157,18 @@ def validate_html(path: Path) -> list[str]:
     ):
         errors.append(f"{rel}: missing GA4 gtag script")
 
+    if '/jobs/' in rel and 'class="job-detail"' in content:
+        if 'Role Snapshot' not in content or 'How to Apply' not in content:
+            errors.append(f"{rel}: job detail page still uses incomplete legacy layout")
+
+    if '/results/' in rel and 'class="result-detail"' in content:
+        if 'Result Snapshot' not in content or 'How to Check Result' not in content:
+            errors.append(f"{rel}: result detail page still uses incomplete legacy layout")
+
+    if '/admit-cards/' in rel and 'class="admit-detail"' in content:
+        if 'Admit Card Snapshot' not in content or 'Exam Day Checklist' not in content:
+            errors.append(f"{rel}: admit-card detail page still uses incomplete legacy layout")
+
     return errors
 
 
