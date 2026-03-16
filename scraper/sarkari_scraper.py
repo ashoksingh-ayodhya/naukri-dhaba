@@ -645,8 +645,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
         soup.select('#post-list table tr') or
         soup.select('.TableLi table tr') or
         soup.select('div.latestnews table tr') or
-        soup.select('table.latestnews tr') or
-        soup.select('table tr')          # Fallback: all tables
+        soup.select('table.latestnews tr')
     )
 
     for tr in containers:
@@ -693,6 +692,9 @@ def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
 
         # Skip header rows / navigation rows
         if title.lower() in ('post name', 'latest jobs', 'results', 'admit card', '#', ''):
+            continue
+
+        if not kind_matches_title(title, page_type):
             continue
 
         items.append({
@@ -1636,8 +1638,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
 
 def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
     """
-    Add new rows to the top of a listing HTML page.
-    kind: 'job' | 'result' | 'admit'
+    Legacy helper for prepend-style updates.
+    Prefer replace_listing_sections() for deterministic full rebuilds.
     """
     if not entries or not listing_file.exists():
         return
@@ -1889,7 +1891,7 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
 # MAIN ORCHESTRATOR
 # ══════════════════════════════════════════════════════════
 
-def run(refresh_existing: bool = False) -> int:
+def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     start = datetime.now()
     log.info('=' * 60)
     log.info(f'NAUKRI DHABA SCRAPER  started {start:%Y-%m-%d %H:%M:%S IST}')
@@ -1897,6 +1899,23 @@ def run(refresh_existing: bool = False) -> int:
     log.info('=' * 60)
 
     seen = load_seen()
+
+    if rebuild_only:
+        log.info('Rebuild-only mode: skipping source fetch and rebuilding listings from local detail pages.')
+        existing_jobs = load_existing_detail_entries('job')
+        existing_results = load_existing_detail_entries('result')
+        existing_admits = load_existing_detail_entries('admit')
+
+        replace_listing_sections(SITE_ROOT / 'latest-jobs.html', existing_jobs, 'job')
+        replace_home_jobs_section(SITE_ROOT / 'index.html', existing_jobs, limit=10)
+        replace_listing_sections(SITE_ROOT / 'results.html', existing_results, 'result')
+        replace_listing_sections(SITE_ROOT / 'admit-cards.html', existing_admits, 'admit')
+
+        elapsed = (datetime.now() - start).seconds
+        log.info('\n' + '=' * 60)
+        log.info(f'DONE in {elapsed}s  |  Rebuilt listings only')
+        log.info('=' * 60 + '\n')
+        return 0
 
     # ── 1. Scrape listing pages ────────────────────────────
     listing_data = [
@@ -1918,6 +1937,8 @@ def run(refresh_existing: bool = False) -> int:
         log.info(f'  Raw items: {len(raw)}')
 
         for item in raw:
+            if not kind_matches_title(item.get('title', ''), kind):
+                continue
             iid = item_id(item['title'], item['dept'])
             if not refresh_existing and iid in seen:
                 log.debug(f'  [skip] already seen: {item["title"][:50]}')
@@ -1964,24 +1985,17 @@ def run(refresh_existing: bool = False) -> int:
             except Exception as exc:
                 log.error(f'  Page build failed: {exc}', exc_info=True)
 
-    # ── 3. Update listing pages ────────────────────────────
-    log.info('\nUpdating listing pages...')
-    if refresh_existing:
-        if generated['job']:
-            replace_listing_sections(SITE_ROOT / 'latest-jobs.html', generated['job'], 'job')
-            replace_home_jobs_section(SITE_ROOT / 'index.html', generated['job'], limit=10)
-        if generated['result']:
-            replace_listing_sections(SITE_ROOT / 'results.html', generated['result'], 'result')
-        if generated['admit']:
-            replace_listing_sections(SITE_ROOT / 'admit-cards.html', generated['admit'], 'admit')
-    else:
-        if generated['job']:
-            prepend_to_listing(SITE_ROOT / 'latest-jobs.html', generated['job'], 'job')
-            prepend_to_listing(SITE_ROOT / 'index.html',       generated['job'][:5], 'job')
-        if generated['result']:
-            prepend_to_listing(SITE_ROOT / 'results.html', generated['result'], 'result')
-        if generated['admit']:
-            prepend_to_listing(SITE_ROOT / 'admit-cards.html', generated['admit'], 'admit')
+    # ── 3. Rebuild listing pages from canonical detail pages ───────────
+    # This prevents list drift, missing items, and mixed-category bleed.
+    log.info('\nRebuilding listing pages from detail pages...')
+    existing_jobs = load_existing_detail_entries('job')
+    existing_results = load_existing_detail_entries('result')
+    existing_admits = load_existing_detail_entries('admit')
+
+    replace_listing_sections(SITE_ROOT / 'latest-jobs.html', existing_jobs, 'job')
+    replace_home_jobs_section(SITE_ROOT / 'index.html', existing_jobs, limit=10)
+    replace_listing_sections(SITE_ROOT / 'results.html', existing_results, 'result')
+    replace_listing_sections(SITE_ROOT / 'admit-cards.html', existing_admits, 'admit')
 
     # ── 4. Save seen set ───────────────────────────────────
     save_seen(seen)
@@ -2017,5 +2031,7 @@ if __name__ == '__main__':
                         help='Run once and exit (default)')
     parser.add_argument('--refresh-existing', action='store_true',
                         help='Rebuild pages for items currently present on the source listings')
+    parser.add_argument('--rebuild-only', action='store_true',
+                        help='Skip source scraping and rebuild listing pages from local detail pages')
     args = parser.parse_args()
-    raise SystemExit(run(refresh_existing=args.refresh_existing))
+    raise SystemExit(run(refresh_existing=args.refresh_existing, rebuild_only=args.rebuild_only))
