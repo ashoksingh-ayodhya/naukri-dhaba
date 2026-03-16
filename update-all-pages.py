@@ -130,6 +130,10 @@ def strip_icon_prefix(text):
 def normalize_title_text(title):
     title = clean_text(title)
     title = re.sub(r'\s*\|\s*' + re.escape(SITE_NAME) + r'.*$', '', title, flags=re.I)
+    title = re.sub(r'\bSarkari\s+Naukri\b', '', title, flags=re.I)
+    title = re.sub(r'\bSarkari\s+Result\b', '', title, flags=re.I)
+    title = re.sub(r'\s*[-|:]\s*$', '', title)
+    title = re.sub(r'\s*[-|:]\s*[-|:]\s*', ' - ', title)
     title = re.sub(r'\b(\d{4})\s+\1\b', r'\1', title)
     title = re.sub(r'([A-Za-z0-9])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
     title = re.sub(r'\b(20\d{2})\s+(Apply Online|Result|Admit Card)\s+\1\b', r'\1 \2', title)
@@ -432,6 +436,12 @@ def build_admit_snapshot(detail):
 def build_detail_article(detail, page_type):
     title = escape(detail['title'])
     dept = escape(detail['dept'])
+    year_badge = ''
+    if detail['year'] and not re.search(rf'\b{re.escape(detail["year"])}\b', detail['title']):
+        year_badge = (
+            f' <span style="background:var(--secondary);color:#fff;padding:4px 12px;'
+            f'border-radius:4px;font-size:1rem;">{escape(detail["year"])}</span>'
+        )
     breadcrumb_label = {
         'job': 'Jobs',
         'result': 'Results',
@@ -467,13 +477,13 @@ def build_detail_article(detail, page_type):
                 '<h3 style="color:var(--primary);margin-top:0;">Application Fee</h3>'
                 f'<table style="width:100%;border-collapse:collapse;">{fee_rows}</table>'
                 '</div>'
-            )
+        )
         return f'''<main>
     <article class="job-detail">
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/">Home</a> &gt; <a href="{breadcrumb_href}">{breadcrumb_label}</a> &gt; <span>{title}</span>
       </nav>
-      <h1 style="color:var(--primary);margin-bottom:.5rem;">{title} <span style="background:var(--secondary);color:#fff;padding:4px 12px;border-radius:4px;font-size:1rem;">{escape(detail["year"])}</span></h1>
+      <h1 style="color:var(--primary);margin-bottom:.5rem;">{title}{year_badge}</h1>
       <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
       <div class="info-grid">
         <div class="info-item"><span class="info-item__label">Last Date</span><span class="info-item__value" style="color:var(--danger);">{escape(detail["last_date"])}</span></div>
@@ -632,12 +642,91 @@ def build_detail_article(detail, page_type):
   </main>'''
 
 
+def build_standard_sidebar():
+    return '''<aside class="sidebar">
+  <div class="widget widget--telegram">
+    <h3 class="widget__title">Join Telegram</h3>
+    <p style="margin-bottom:1rem;">Get instant job alerts on your phone.</p>
+    <a href="https://t.me/naukridhaba" target="_blank" class="btn" style="background:#fff;color:#0088cc;width:100%;">Join Channel</a>
+  </div>
+  <div class="widget">
+    <h3 class="widget__title">Quick Links</h3>
+    <div class="footer__links">
+      <a href="/latest-jobs">Latest Jobs</a>
+      <a href="/results">Results</a>
+      <a href="/admit-cards">Admit Cards</a>
+      <a href="/eligibility-calculator">Eligibility Check</a>
+    </div>
+  </div>
+  <div class="nd-ad ad-slot" data-ad-slot="sidebar-top" style="min-height:250px;">
+    <p>Advertisement</p><p style="font-size:.75rem">300x250</p>
+  </div>
+</aside>'''
+
+
+def build_standard_footer():
+    return '''<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <h3 class="footer__title">Naukri Dhaba</h3>
+        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
+        <a href="https://t.me/naukridhaba" class="share-btn share-btn--telegram" style="margin-top:1rem;display:inline-block;">Join Telegram</a>
+      </div>
+      <div>
+        <h3 class="footer__title">Quick Links</h3>
+        <div class="footer__links">
+          <a href="/latest-jobs">Latest Jobs</a>
+          <a href="/results">Results</a>
+          <a href="/admit-cards">Admit Cards</a>
+          <a href="/resources">Resources</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer__title">Categories</h3>
+        <div class="footer__links">
+          <a href="/latest-jobs">UPSC Jobs</a>
+          <a href="/latest-jobs">SSC Jobs</a>
+          <a href="/latest-jobs">Railway Jobs</a>
+          <a href="/latest-jobs">Banking Jobs</a>
+          <a href="/latest-jobs">Defence Jobs</a>
+          <a href="/latest-jobs">Police Jobs</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer__title">State Jobs</h3>
+        <div class="state-list">
+          <a href="/state/uttar-pradesh.html">Uttar Pradesh</a>
+          <a href="/state/bihar.html">Bihar</a>
+          <a href="/state/rajasthan.html">Rajasthan</a>
+          <a href="/state/madhya-pradesh.html">Madhya Pradesh</a>
+          <a href="/state/delhi.html">Delhi</a>
+          <a href="/state/maharashtra.html">Maharashtra</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 Naukri Dhaba. All rights reserved.</p>
+      <p>Disclaimer: We are not affiliated with any government body. Information only.</p>
+    </div>
+  </div>
+</footer>'''
+
+
 def rebuild_detail_main(content, filepath, page_type):
     detail = extract_detail_data(content, filepath, page_type)
     if not detail:
         return content
     rebuilt_main = build_detail_article(detail, page_type)
-    return re.sub(r'<main>.*?</main>', rebuilt_main, content, count=1, flags=re.DOTALL)
+    shell = (
+        '<div class="content-wrapper container" style="margin-top:2rem;">\n'
+        f'{rebuilt_main}\n'
+        f'{build_standard_sidebar()}\n'
+        '</div>\n\n'
+        f'{build_standard_footer()}\n'
+        '<script src="/js/app.js"></script>\n'
+    )
+    return re.sub(r'<div class="content-wrapper container" style="margin-top:2rem;">.*?</body>', shell + '</body>', content, count=1, flags=re.DOTALL)
 
 
 def get_canonical_url(filepath):
@@ -907,7 +996,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
             'title': f'{SITE_NAME} | Govt Jobs, Results, Admit Cards',
             'description': f'{SITE_NAME} brings the latest government jobs, exam results, admit cards, and official updates for India.',
             'keywords': dedupe_csv(
-                'Government Jobs India, Sarkari Naukri, Latest Govt Jobs, Exam Results, Admit Card',
+                'Government Jobs India, Latest Govt Jobs, Exam Results, Admit Card, Govt Recruitment Updates',
                 SITE_NAME,
             ),
         },
@@ -915,7 +1004,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
             'title': f'Latest Govt Jobs 2026 | {SITE_NAME}',
             'description': f'Browse the latest government jobs, online forms, and recruitment updates across India on {SITE_NAME}.',
             'keywords': dedupe_csv(
-                'Latest Govt Jobs 2026, Government Jobs India, Online Form, Sarkari Naukri',
+                'Latest Govt Jobs 2026, Government Jobs India, Online Form, Govt Recruitment Updates',
                 SITE_NAME,
             ),
         },
@@ -923,7 +1012,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
             'title': f'Latest Results 2026 | {SITE_NAME}',
             'description': f'Check the latest government exam results, merit lists, and score cards on {SITE_NAME}.',
             'keywords': dedupe_csv(
-                'Latest Results 2026, Sarkari Result, Exam Result, Score Card, Merit List',
+                'Latest Results 2026, Government Exam Result, Score Card, Merit List, Result Updates India',
                 SITE_NAME,
             ),
         },
@@ -951,8 +1040,8 @@ def build_meta_block(data, page_type, filepath, canonical_url):
             'job': 'Apply Online',
             'result': 'Check Result',
             'admit_card': 'Download Admit Card',
-            'other': 'Sarkari Naukri'
-        }.get(page_type, 'Sarkari Naukri')
+            'other': 'Government Update'
+        }.get(page_type, 'Government Update')
 
         full_title = (
             f"{title} | {SITE_NAME}"
@@ -1261,6 +1350,12 @@ def update_page(filepath, dry_run=False):
 
     # Step 4b: Normalize top-level internal links to deployed pretty URLs
     content = normalize_root_links(content)
+    content = content.replace(
+        'Your gateway to Sarkari Naukri. Latest government jobs, results, and admit cards.',
+        'Independent government job updates, result tracking, and admit card alerts for India.'
+    )
+    content = content.replace(', Sarkari Naukri', '')
+    content = content.replace('Sarkari Naukri, ', '')
 
     # Step 5: Extract existing data
     data = extract_from_html(content)
