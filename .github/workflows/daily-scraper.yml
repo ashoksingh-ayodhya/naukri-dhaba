@@ -1,9 +1,9 @@
 name: Daily Scraper – 10 AM IST
 
 on:
-  # ── Auto: every day at 10:00 AM IST (04:30 UTC) ────────
+  # ── Auto: every 30 minutes ──────────────────────────────
   schedule:
-    - cron: '30 4 * * *'
+    - cron: '*/30 * * * *'
 
   # ── Manual: tap "Run workflow" on GitHub from your phone ─
   workflow_dispatch:
@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   scrape-and-publish:
-    name: Scrape sarkariresult.com → Generate HTML
+    name: Scrape all sources → Generate HTML
     runs-on: ubuntu-latest
     timeout-minutes: 30
 

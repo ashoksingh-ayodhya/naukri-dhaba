@@ -71,16 +71,82 @@ logging.basicConfig(
 )
 log = logging.getLogger('NaukriDhaba')
 
-# ── Source site ────────────────────────────────────────────
-BASE          = 'https://www.sarkariresult.com'
-URL_JOBS      = f'{BASE}/latestjob.php'
-URL_RESULTS   = f'{BASE}/result.php'
-URL_ADMITS    = f'{BASE}/admitcard.php'
-URL_HOME      = BASE
-
 # ── Our site ───────────────────────────────────────────────
 SITE_URL  = 'https://www.naukridhaba.in'
 SITE_NAME = 'Naukri Dhaba'
+
+# ── All scraping sources ────────────────────────────────────
+# Each source: base URL, listing URLs per type, branding patterns to strip
+SOURCES = [
+    {
+        'name':  'sarkariresult',
+        'base':  'https://www.sarkariresult.com',
+        'urls':  {
+            'job':    'https://www.sarkariresult.com/latestjob.php',
+            'result': 'https://www.sarkariresult.com/result.php',
+            'admit':  'https://www.sarkariresult.com/admitcard.php',
+        },
+        'branding': [
+            r'(?i)sarkari\s*results?(?:\.(?:com|org|in))?',
+            r'(?i)www\.sarkariresults?\.(?:com|org|in)',
+            r'(?i)doc\.sarkariresults?\.org\.in',
+        ],
+    },
+    {
+        'name':  'freejobalert',
+        'base':  'https://www.freejobalert.com',
+        'urls':  {
+            'job':    'https://www.freejobalert.com/latest-govt-jobs/',
+            'result': 'https://www.freejobalert.com/sarkari-result/',
+            'admit':  'https://www.freejobalert.com/admit-card/',
+        },
+        'branding': [
+            r'(?i)free\s*job\s*alert(?:\.com)?',
+            r'(?i)www\.freejobalert\.com',
+        ],
+    },
+    {
+        'name':  'rojgarresult',
+        'base':  'https://www.rojgarresult.com',
+        'urls':  {
+            'job':    'https://www.rojgarresult.com/latest-jobs/',
+            'result': 'https://www.rojgarresult.com/result/',
+            'admit':  'https://www.rojgarresult.com/admit-card/',
+        },
+        'branding': [
+            r'(?i)rojgar\s*result(?:\.com)?',
+            r'(?i)www\.rojgarresult\.com',
+        ],
+    },
+    {
+        'name':  'sarkariexam',
+        'base':  'https://www.sarkariexam.com',
+        'urls':  {
+            'job':    'https://www.sarkariexam.com/govt-jobs/',
+            'result': 'https://www.sarkariexam.com/results/',
+            'admit':  'https://www.sarkariexam.com/admit-card/',
+        },
+        'branding': [
+            r'(?i)sarkari\s*exam(?:\.com)?',
+            r'(?i)www\.sarkariexam\.com',
+        ],
+    },
+]
+
+# Keep BASE for backward-compat with any helpers that use it
+BASE = SOURCES[0]['base']
+
+# ── All source domains (for URL sanitisation) ──────────────
+_SOURCE_DOMAINS_RE = re.compile(
+    r'(?i)(' +
+    '|'.join([
+        r'sarkariresults?\.(?:com|org|in)',
+        r'freejobalert\.com',
+        r'rojgarresult\.com',
+        r'sarkariexam\.com',
+    ]) +
+    r')'
+)
 
 # ── Request settings ───────────────────────────────────────
 HEADERS = {
@@ -92,7 +158,6 @@ HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Accept-Language': 'en-IN,en;q=0.9,hi;q=0.8',
     'Accept-Encoding': 'gzip, deflate, br',
-    'Referer': BASE,
     'Connection': 'keep-alive',
 }
 DELAY   = 2.5   # seconds between requests (polite)
@@ -166,36 +231,40 @@ def clean(text: str) -> str:
     return re.sub(r'\s+', ' ', str(text)).strip()
 
 
-def sanitize(text: str) -> str:
-    """Remove/replace all SarkariResult mentions."""
+def sanitize(text: str, extra_patterns: list | None = None) -> str:
+    """Remove/replace all source-site branding mentions."""
     if not text:
         return ''
     text = str(text)
-    text = re.sub(r'(?i)sarkari\s*results?(?:\.(?:com|org|in))?', SITE_NAME, text)
-    text = re.sub(r'(?i)www\.sarkariresults?\.(?:com|org|in)', 'www.naukridhaba.in', text)
-    text = re.sub(r'(?i)doc\.sarkariresults?\.org\.in', 'doc.naukridhaba.in', text)
+    # Strip branding from all known sources
+    for src in SOURCES:
+        for pat in src['branding']:
+            text = re.sub(pat, SITE_NAME, text)
+    # Any caller-supplied extra patterns
+    if extra_patterns:
+        for pat in extra_patterns:
+            text = re.sub(pat, SITE_NAME, text)
+    text = re.sub(r'(?i)www\.naukridhaba\.in', 'www.naukridhaba.in', text)
     return text
 
 
 def sanitize_url(url: str) -> str:
     """
     Preserve official govt/third-party URLs exactly.
-    Sarkariresult.com internal URLs and relative paths are dropped (return '#')
-    because they either create broken links on our domain or are meaningless.
+    Source-site internal URLs and relative paths are dropped (return '#').
     """
     if not url:
         return '#'
     u = url.strip()
 
-    # Relative paths are from sarkariresult's own site — not useful to us
     if u.startswith('/'):
         return '#'
 
     if not u.startswith('http'):
         return '#'
 
-    # Drop any sarkariresult.com URL — we don't mirror their URL structure
-    if re.search(r'(?i)sarkariresults?\.(?:com|org|in)', u):
+    # Drop any URL from a known source site
+    if _SOURCE_DOMAINS_RE.search(u):
         return '#'
 
     return u
@@ -304,16 +373,21 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
 # Sometimes there is a 3-column layout with dept in col 0,
 # title+link in col 1, date in col 2.
 
-def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
-    """Extract all rows from a sarkariresult listing page."""
+def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) -> list[dict]:
+    """Extract all rows from a listing page. Works across all supported sources."""
     items = []
 
-    # Try several known wrapper selectors in priority order
+    # Try several known wrapper selectors in priority order.
+    # Covers sarkariresult (TableLi / post-list), freejobalert (entry-content tables),
+    # rojgarresult/sarkariexam (similar table-based layouts).
     containers = (
         soup.select('#post-list table tr') or
         soup.select('.TableLi table tr') or
         soup.select('div.latestnews table tr') or
         soup.select('table.latestnews tr') or
+        soup.select('article table tr') or
+        soup.select('.entry-content table tr') or
+        soup.select('.post-content table tr') or
         soup.select('table tr')          # Fallback: all tables
     )
 
@@ -357,7 +431,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
         if not link_tag or not link_tag.get('href'):
             continue
 
-        detail_url = urljoin(BASE, link_tag['href'])
+        detail_url = urljoin(source_base, link_tag['href'])
 
         # Skip header rows / navigation rows
         if title.lower() in ('post name', 'latest jobs', 'results', 'admit card', '#', ''):
@@ -1275,35 +1349,38 @@ def run():
     start = datetime.now()
     log.info('=' * 60)
     log.info(f'NAUKRI DHABA SCRAPER  started {start:%Y-%m-%d %H:%M:%S IST}')
-    log.info('Source: sarkariresult.com')
+    log.info(f'Sources: {", ".join(s["name"] for s in SOURCES)}')
     log.info('=' * 60)
 
     seen = load_seen()
 
-    # ── 1. Scrape listing pages ────────────────────────────
-    listing_data = [
-        (URL_JOBS,    'job'),
-        (URL_RESULTS, 'result'),
-        (URL_ADMITS,  'admit'),
-    ]
-
     all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
 
-    for url, kind in listing_data:
-        log.info(f'\nFetching {kind.upper()} listing: {url}')
-        soup = fetch(url)
-        if not soup:
-            continue
-        raw = parse_listing(soup, kind)
-        log.info(f'  Raw items: {len(raw)}')
+    # ── 1. Scrape listing pages from all sources ───────────
+    for source in SOURCES:
+        src_name = source['name']
+        src_base = source['base']
+        log.info(f'\n{"─"*40}')
+        log.info(f'SOURCE: {src_name}  ({src_base})')
+        log.info(f'{"─"*40}')
 
-        for item in raw:
-            iid = item_id(item['title'], item['dept'])
-            if iid in seen:
-                log.debug(f'  [skip] already seen: {item["title"][:50]}')
+        for kind, url in source['urls'].items():
+            log.info(f'\nFetching {kind.upper()} listing: {url}')
+            soup = fetch(url)
+            if not soup:
+                log.warning(f'  [{src_name}] Could not fetch {kind} listing — skipping')
                 continue
-            seen.add(iid)
-            all_items[kind].append(item)
+            raw = parse_listing(soup, kind, source_base=src_base)
+            log.info(f'  Raw items: {len(raw)}')
+
+            for item in raw:
+                iid = item_id(item['title'], item['dept'])
+                if iid in seen:
+                    log.debug(f'  [skip] already seen: {item["title"][:50]}')
+                    continue
+                seen.add(iid)
+                item['source'] = src_name
+                all_items[kind].append(item)
 
     total_new = sum(len(v) for v in all_items.values())
     log.info(f'\nNew items to process: {total_new}  '
@@ -1316,7 +1393,8 @@ def run():
 
     for kind, items in all_items.items():
         for item in items:
-            log.info(f'\n[{kind.upper()}] {item["title"][:60]}')
+            src_label = item.get('source', 'unknown')
+            log.info(f'\n[{kind.upper()}][{src_label}] {item["title"][:60]}')
             log.info(f'  Detail URL: {item["detail_url"]}')
 
             detail_soup = fetch(item['detail_url'])
