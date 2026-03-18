@@ -1,248 +1,267 @@
 /**
- * ============================================================
- * NAUKRI DHABA - TRACKING CODES MANAGER
- * File: js/tracking.js
- * ============================================================
+ * Naukri Dhaba tracking loader.
  *
- * HOW TO USE:
- * 1. Find each section below and paste your tracking code/ID
- * 2. Set enabled: true for any tracker you want to activate
- * 3. This file is already included in ALL pages via <head>
- *
- * TRACKING PLACEMENT: Header (default) - loaded on every page
- * ============================================================
+ * Configure IDs in /tracking-config.json. Build scripts expose that config as
+ * window.NAUKRI_DHABA_TRACKING_CONFIG on every page.
  */
 
 (function () {
   'use strict';
 
-  /* ═══════════════════════════════════════════════════════════
-   * CONFIGURATION - Edit values below
-   * ═══════════════════════════════════════════════════════════ */
-  var CONFIG = {
-
-    /* ----------------------------------------------------------
-     * 1. GOOGLE ANALYTICS 4 (GA4)
-     *    Get ID from: https://analytics.google.com/
-     *    Format: G-XXXXXXXXXX
-     * ---------------------------------------------------------- */
-    googleAnalytics4: {
+  var defaults = {
+    consentMode: {
       enabled: false,
-      measurementId: 'G-XXXXXXXXXX'  /* <-- Replace with your GA4 Measurement ID */
+      storageKey: 'nd_consent_v1',
+      defaultMode: 'reject',
+      waitForUpdateMs: 500,
+      bannerEnabled: true
     },
-
-    /* ----------------------------------------------------------
-     * 2. GOOGLE TAG MANAGER (GTM)
-     *    Get ID from: https://tagmanager.google.com/
-     *    Format: GTM-XXXXXXX
-     *    Note: If using GTM, you can manage GA4 through GTM instead
-     * ---------------------------------------------------------- */
-    googleTagManager: {
-      enabled: false,
-      containerId: 'GTM-XXXXXXX'  /* <-- Replace with your GTM Container ID */
-    },
-
-    /* ----------------------------------------------------------
-     * 3. GOOGLE ADSENSE (Auto Ads)
-     *    Get ID from: https://adsense.google.com/
-     *    Format: ca-pub-XXXXXXXXXXXXXXXX
-     *    Note: This enables Auto Ads sitewide. Use ads-manager.js
-     *          for manual ad slot placement per page.
-     * ---------------------------------------------------------- */
     googleAdSense: {
       enabled: false,
-      publisherId: 'ca-pub-XXXXXXXXXXXXXXXX'  /* <-- Replace with your AdSense Publisher ID */
+      publisherId: 'ca-pub-XXXXXXXXXXXXXXXX'
     },
-
-    /* ----------------------------------------------------------
-     * 4. FACEBOOK PIXEL
-     *    Get ID from: https://business.facebook.com/events/manager
-     *    Format: 16-digit number
-     * ---------------------------------------------------------- */
     facebookPixel: {
       enabled: false,
-      pixelId: 'XXXXXXXXXXXXXXXXXX'  /* <-- Replace with your Facebook Pixel ID */
+      pixelId: 'XXXXXXXXXXXXXXXXXX'
     },
-
-    /* ----------------------------------------------------------
-     * 5. MICROSOFT CLARITY (Heatmaps & Session Recordings - FREE)
-     *    Get ID from: https://clarity.microsoft.com/
-     *    Format: alphanumeric string (e.g. abc123def4)
-     * ---------------------------------------------------------- */
     microsoftClarity: {
       enabled: false,
-      projectId: 'XXXXXXXXXX'  /* <-- Replace with your Clarity Project ID */
-    },
-
-    /* ----------------------------------------------------------
-     * 6. GOOGLE SEARCH CONSOLE VERIFICATION
-     *    Get from: https://search.google.com/search-console
-     *    Add your verification meta tag content here
-     * ---------------------------------------------------------- */
-    googleSearchConsole: {
-      enabled: false,
-      verificationCode: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'  /* <-- GSC verification code */
-    },
-
-    /* ----------------------------------------------------------
-     * 7. CUSTOM ANALYTICS / OTHER TRACKING
-     *    Paste any other tracking snippet here
-     * ---------------------------------------------------------- */
-    customTracking: {
-      enabled: false,
-      /* Paste your custom tracking code here: */
-      code: ''  /* <code goes here> */
+      projectId: 'XXXXXXXXXX'
     }
-
   };
 
-  /* ═══════════════════════════════════════════════════════════
-   * LOADER FUNCTIONS - Do not edit below this line
-   * ═══════════════════════════════════════════════════════════ */
+  function mergeConfig(base, overrides) {
+    var result = {};
+    Object.keys(base).forEach(function (key) {
+      result[key] = Object.assign({}, base[key], overrides && overrides[key]);
+    });
+    return result;
+  }
 
   function loadScript(src, id, callback) {
-    if (document.getElementById(id)) return;
-    var s = document.createElement('script');
-    s.id = id;
-    s.async = true;
-    s.src = src;
-    if (callback) s.onload = callback;
-    document.head.appendChild(s);
+    if (document.getElementById(id)) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.id = id;
+    script.async = true;
+    script.src = src;
+    if (callback) {
+      script.onload = callback;
+    }
+    document.head.appendChild(script);
   }
 
-  function injectMeta(name, content) {
-    var m = document.createElement('meta');
-    m.name = name;
-    m.content = content;
-    document.head.appendChild(m);
+  function ensureGtag() {
+    window.dataLayer = window.dataLayer || [];
+    if (!window.gtag) {
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+    }
   }
 
-  /* ----------------------------------------------------------
-   * GOOGLE ANALYTICS 4
-   * ---------------------------------------------------------- */
-  if (CONFIG.googleAnalytics4.enabled && CONFIG.googleAnalytics4.measurementId !== 'G-XXXXXXXXXX') {
-    var GA_ID = CONFIG.googleAnalytics4.measurementId;
-    loadScript('https://www.googletagmanager.com/gtag/js?id=' + GA_ID, 'ga4-script', function () {
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { window.dataLayer.push(arguments); }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', GA_ID, {
-        page_title: document.title,
-        page_location: window.location.href,
-        send_page_view: true
-      });
+  function consentStateFromMode(mode) {
+    var denied = {
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      personalization_storage: 'denied'
+    };
+    if (mode === 'analytics') {
+      return {
+        ad_storage: 'denied',
+        analytics_storage: 'granted',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        personalization_storage: 'denied'
+      };
+    }
+    if (mode === 'all') {
+      return {
+        ad_storage: 'granted',
+        analytics_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        personalization_storage: 'granted'
+      };
+    }
+    return denied;
+  }
+
+  function readConsentMode(storageKey) {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      if (!raw) {
+        return '';
+      }
+      var parsed = JSON.parse(raw);
+      return parsed && parsed.mode ? parsed.mode : '';
+    } catch (err) {
+      return '';
+    }
+  }
+
+  function writeConsentMode(storageKey, mode) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify({
+        mode: mode,
+        updatedAt: new Date().toISOString()
+      }));
+    } catch (err) {
+      return;
+    }
+  }
+
+  function applyConsentUpdate(mode) {
+    ensureGtag();
+    var state = consentStateFromMode(mode);
+    window.NAUKRI_DHABA_CONSENT_MODE = mode;
+    window.NAUKRI_DHABA_CONSENT_STATE = state;
+    window.gtag('consent', 'update', state);
+    return state;
+  }
+
+  function removeConsentBanner() {
+    var banner = document.getElementById('nd-consent-banner');
+    if (banner) {
+      banner.remove();
+    }
+  }
+
+  function renderConsentBanner(consentConfig) {
+    if (!consentConfig.bannerEnabled || document.getElementById('nd-consent-banner')) {
+      return;
+    }
+
+    var banner = document.createElement('div');
+    banner.id = 'nd-consent-banner';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-live', 'polite');
+    banner.style.cssText = [
+      'position:fixed',
+      'left:16px',
+      'right:16px',
+      'bottom:16px',
+      'z-index:9999',
+      'background:#111827',
+      'color:#f9fafb',
+      'padding:16px',
+      'border-radius:12px',
+      'box-shadow:0 20px 40px rgba(0,0,0,.25)',
+      'max-width:720px',
+      'margin:0 auto'
+    ].join(';');
+    banner.innerHTML = ''
+      + '<div style="display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap">'
+      + '  <div style="max-width:480px">'
+      + '    <strong style="display:block;font-size:16px;margin-bottom:6px">Privacy choices</strong>'
+      + '    <p style="margin:0;line-height:1.6;font-size:14px;color:#d1d5db">We use Google tags to measure traffic and improve job pages. Choose whether analytics and advertising cookies can be used.</p>'
+      + '  </div>'
+      + '  <div style="display:flex;gap:8px;flex-wrap:wrap">'
+      + '    <button type="button" data-consent-mode="reject" style="border:1px solid #4b5563;background:transparent;color:#f9fafb;padding:10px 12px;border-radius:999px;cursor:pointer">Reject</button>'
+      + '    <button type="button" data-consent-mode="analytics" style="border:1px solid #2563eb;background:#1d4ed8;color:#fff;padding:10px 12px;border-radius:999px;cursor:pointer">Accept</button>'
+      + '    <button type="button" data-consent-mode="all" style="border:1px solid #059669;background:#047857;color:#fff;padding:10px 12px;border-radius:999px;cursor:pointer">Accept all</button>'
+      + '  </div>'
+      + '</div>';
+
+    banner.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-consent-mode]');
+      if (!button) {
+        return;
+      }
+      var mode = button.getAttribute('data-consent-mode');
+      writeConsentMode(consentConfig.storageKey, mode);
+      applyConsentUpdate(mode);
+      removeConsentBanner();
     });
+
+    document.body.appendChild(banner);
   }
 
-  /* ----------------------------------------------------------
-   * GOOGLE TAG MANAGER
-   * ---------------------------------------------------------- */
-  if (CONFIG.googleTagManager.enabled && CONFIG.googleTagManager.containerId !== 'GTM-XXXXXXX') {
-    var GTM_ID = CONFIG.googleTagManager.containerId;
-    (function (w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s),
-        dl = l != 'dataLayer' ? '&l=' + l : '';
-      j.async = true;
-      j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', GTM_ID);
+  var config = mergeConfig(defaults, window.NAUKRI_DHABA_TRACKING_CONFIG || {});
 
-    /* GTM noscript fallback - inject after body open */
+  if (config.consentMode && config.consentMode.enabled) {
+    ensureGtag();
+    var storedMode = readConsentMode(config.consentMode.storageKey);
+    var effectiveMode = storedMode || config.consentMode.defaultMode || 'reject';
+    if (storedMode) {
+      applyConsentUpdate(storedMode);
+    }
     document.addEventListener('DOMContentLoaded', function () {
-      var ns = document.createElement('noscript');
-      var iframe = document.createElement('iframe');
-      iframe.src = 'https://www.googletagmanager.com/ns.html?id=' + GTM_ID;
-      iframe.height = '0';
-      iframe.width = '0';
-      iframe.style.display = 'none';
-      iframe.style.visibility = 'hidden';
-      ns.appendChild(iframe);
-      document.body.insertBefore(ns, document.body.firstChild);
+      window.NAUKRI_DHABA_CONSENT_MODE = effectiveMode;
+      window.NAUKRI_DHABA_CONSENT_STATE = consentStateFromMode(effectiveMode);
+      if (!storedMode) {
+        renderConsentBanner(config.consentMode);
+      }
     });
   }
 
-  /* ----------------------------------------------------------
-   * GOOGLE ADSENSE AUTO ADS
-   * ---------------------------------------------------------- */
-  if (CONFIG.googleAdSense.enabled && CONFIG.googleAdSense.publisherId !== 'ca-pub-XXXXXXXXXXXXXXXX') {
-    var AS_PUB = CONFIG.googleAdSense.publisherId;
-    loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + AS_PUB, 'adsense-auto');
-    /* Auto Ads init */
+  if (
+    config.googleAdSense.enabled &&
+    config.googleAdSense.publisherId !== 'ca-pub-XXXXXXXXXXXXXXXX'
+  ) {
+    var publisherId = config.googleAdSense.publisherId;
+    loadScript(
+      'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + publisherId,
+      'adsense-auto'
+    );
     document.addEventListener('DOMContentLoaded', function () {
       (window.adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: AS_PUB,
+        google_ad_client: publisherId,
         enable_page_level_ads: true
       });
     });
   }
 
-  /* ----------------------------------------------------------
-   * FACEBOOK PIXEL
-   * ---------------------------------------------------------- */
-  if (CONFIG.facebookPixel.enabled && CONFIG.facebookPixel.pixelId !== 'XXXXXXXXXXXXXXXXXX') {
-    var FB_ID = CONFIG.facebookPixel.pixelId;
+  if (
+    config.facebookPixel.enabled &&
+    config.facebookPixel.pixelId !== 'XXXXXXXXXXXXXXXXXX'
+  ) {
+    var pixelId = config.facebookPixel.pixelId;
     !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return; n = f.fbq = function () {
-        n.callMethod ?
-          n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
       };
-      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-      n.queue = []; t = b.createElement(e); t.async = !0;
-      t.src = v; s = b.getElementsByTagName(e)[0];
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = true;
+      n.version = '2.0';
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = true;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t, s);
     }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-    window.fbq('init', FB_ID);
+    window.fbq('init', pixelId);
     window.fbq('track', 'PageView');
   }
 
-  /* ----------------------------------------------------------
-   * MICROSOFT CLARITY
-   * ---------------------------------------------------------- */
-  if (CONFIG.microsoftClarity.enabled && CONFIG.microsoftClarity.projectId !== 'XXXXXXXXXX') {
-    var CL_ID = CONFIG.microsoftClarity.projectId;
+  if (
+    config.microsoftClarity.enabled &&
+    config.microsoftClarity.projectId !== 'XXXXXXXXXX'
+  ) {
+    var clarityId = config.microsoftClarity.projectId;
     (function (c, l, a, r, i, t, y) {
       c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
-      t = l.createElement(r); t.async = 1;
+      t = l.createElement(r);
+      t.async = 1;
       t.src = 'https://www.clarity.ms/tag/' + i;
       y = l.getElementsByTagName(r)[0];
       y.parentNode.insertBefore(t, y);
-    })(window, document, 'clarity', 'script', CL_ID);
+    })(window, document, 'clarity', 'script', clarityId);
   }
 
-  /* ----------------------------------------------------------
-   * GOOGLE SEARCH CONSOLE VERIFICATION
-   * ---------------------------------------------------------- */
-  if (CONFIG.googleSearchConsole.enabled && CONFIG.googleSearchConsole.verificationCode !== 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') {
-    injectMeta('google-site-verification', CONFIG.googleSearchConsole.verificationCode);
-  }
-
-  /* ----------------------------------------------------------
-   * CUSTOM TRACKING CODE
-   * ---------------------------------------------------------- */
-  if (CONFIG.customTracking.enabled && CONFIG.customTracking.code) {
-    var div = document.createElement('div');
-    div.innerHTML = CONFIG.customTracking.code;
-    var scripts = div.querySelectorAll('script');
-    scripts.forEach(function (s) {
-      var newScript = document.createElement('script');
-      if (s.src) {
-        newScript.src = s.src;
-        newScript.async = true;
-      } else {
-        newScript.textContent = s.textContent;
-      }
-      document.head.appendChild(newScript);
-    });
-  }
-
-  /* ----------------------------------------------------------
-   * PAGE VIEW EVENT HELPER
-   * Used by other scripts to track events
-   * ---------------------------------------------------------- */
   window.NaukriTrack = function (category, action, label) {
     if (window.gtag) {
       window.gtag('event', action, {
@@ -254,5 +273,4 @@
       window.fbq('trackCustom', action, { category: category, label: label });
     }
   };
-
 })();

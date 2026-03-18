@@ -31,14 +31,23 @@ import os
 import re
 import sys
 import glob
+import json
 import argparse
 from pathlib import Path
-from datetime import date
+from datetime import date, datetime
+from html import escape
+from urllib.parse import urlparse
+
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None
+
+from site_config import PRETTY_ROUTE_MAP, REDIRECT_PATH, SITE_NAME, SITE_URL
 
 SITE_ROOT = Path(__file__).parent
-SITE_URL = 'https://www.naukridhaba.in'
-SITE_NAME = 'Naukri Dhaba'
 TODAY = date.today().isoformat()
+TRACKING_CONFIG_PATH = SITE_ROOT / 'tracking-config.json'
 
 # Banned URL patterns (sarkariresult)
 BANNED_URL_PATTERNS = [
@@ -61,8 +70,41 @@ SEO_KEYWORDS_MAP = {
     'banking': 'Bank Jobs, IBPS, SBI, RBI, PO, Clerk, Banking Vacancy 2026',
     'police': 'Police Jobs, Constable, SI, CRPF, BSF, CISF, Police Bharti 2026',
     'defence': 'Defence Jobs, Army, Navy, Air Force, NDA, CDS, Defence Bharti 2026',
-    'government': 'Sarkari Naukri 2026, Govt Jobs India, Government Jobs Online Form',
+    'government': 'Government jobs India, government recruitment updates, online form alerts, Naukri Dhaba',
 }
+
+DEFAULT_TRACKING_CONFIG = {
+    'googleAnalytics4': {'enabled': False, 'measurementId': 'G-XXXXXXXXXX'},
+    'googleTagManager': {'enabled': False, 'containerId': 'GTM-XXXXXXX'},
+    'consentMode': {'enabled': False, 'storageKey': 'nd_consent_v1', 'defaultMode': 'reject', 'waitForUpdateMs': 500, 'bannerEnabled': True},
+    'googleSearchConsole': {'enabled': False, 'verificationCode': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'},
+    'googleAdSense': {'enabled': False, 'publisherId': 'ca-pub-XXXXXXXXXXXXXXXX'},
+    'microsoftClarity': {'enabled': False, 'projectId': 'XXXXXXXXXX'},
+    'facebookPixel': {'enabled': False, 'pixelId': 'XXXXXXXXXXXXXXXXXX'},
+    'customHeadCode': {'enabled': False, 'code': '<code goes here>'},
+}
+
+
+def load_tracking_config():
+    config = json.loads(json.dumps(DEFAULT_TRACKING_CONFIG))
+    if not TRACKING_CONFIG_PATH.exists():
+        return config
+
+    try:
+        loaded = json.loads(TRACKING_CONFIG_PATH.read_text(encoding='utf-8'))
+    except Exception as exc:
+        log(f"WARNING: Failed to parse {TRACKING_CONFIG_PATH.name}: {exc}")
+        return config
+
+    for key, default_value in DEFAULT_TRACKING_CONFIG.items():
+        if isinstance(default_value, dict):
+            config[key].update(loaded.get(key, {}))
+        else:
+            config[key] = loaded.get(key, default_value)
+    return config
+
+
+TRACKING_CONFIG = load_tracking_config()
 
 def log(msg):
     print(msg)
@@ -73,6 +115,59 @@ def slugify_title(text):
     text = re.sub(r'[^\w\s-]', '', text)
     text = re.sub(r'[\s_-]+', '-', text)
     return text.strip('-')[:80]
+
+
+def clean_text(text):
+    return re.sub(r'\s+', ' ', str(text or '')).strip()
+
+
+def strip_icon_prefix(text):
+    value = clean_text(text)
+    value = re.sub(r'^(?:ð[^\s]*\s+|â[^\s]*\s+)+', '', value)
+    return re.sub(r'^[^A-Za-z0-9\u0900-\u097F]+', '', value)
+
+
+def normalize_title_text(title):
+    title = clean_text(title)
+    title = re.sub(r'\s*\|\s*' + re.escape(SITE_NAME) + r'.*$', '', title, flags=re.I)
+    title = re.sub(r'\bSarkari\s+Naukri\b', '', title, flags=re.I)
+    title = re.sub(r'\bSarkari\s+Result\b', '', title, flags=re.I)
+    title = re.sub(r'\s*[-|:]\s*$', '', title)
+    title = re.sub(r'\s*[-|:]\s*[-|:]\s*', ' - ', title)
+    title = re.sub(r'\b(\d{4})\s+\1\b', r'\1', title)
+    title = re.sub(r'([A-Za-z0-9])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    title = re.sub(r'\b(20\d{2})\s+(Apply Online|Result|Admit Card)\s+\1\b', r'\1 \2', title)
+    title = re.sub(r'\bResult\s*-\s*Check Result\b', 'Result', title, flags=re.I)
+    title = re.sub(r'\bAdmit Card\s*-\s*Download Admit Card\b', 'Admit Card', title, flags=re.I)
+    title = re.sub(r'\bApply Online\s*-\s*Apply Online\b', 'Apply Online', title, flags=re.I)
+    return clean_text(title)
+
+
+def dedupe_csv(*parts):
+    seen = set()
+    items = []
+    for part in parts:
+        if not part:
+            continue
+        for token in [clean_text(x) for x in str(part).split(',')]:
+            key = token.lower()
+            if not token or key in seen:
+                continue
+            seen.add(key)
+            items.append(token)
+    return ', '.join(items)
+
+
+def to_iso_date(text):
+    value = clean_text(text)
+    if not value:
+        return None
+    for fmt in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
+        try:
+            return datetime.strptime(value, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
 
 
 def detect_page_type(filepath, content):
@@ -102,9 +197,7 @@ def extract_from_html(content):
     # Title
     m = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE | re.DOTALL)
     data['title'] = m.group(1).strip() if m else ''
-    # Clean title
-    data['title'] = re.sub(r'\s*\|\s*' + re.escape(SITE_NAME) + r'.*$', '', data['title']).strip()
-    data['title'] = re.sub(r'\s+\d{4}$', '', data['title']).strip()  # Remove trailing year
+    data['title'] = normalize_title_text(data['title'])
 
     # Description
     m = re.search(r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']', content, re.IGNORECASE)
@@ -134,11 +227,513 @@ def extract_from_html(content):
     return data
 
 
+def label_key(text):
+    value = strip_icon_prefix(text).lower()
+    value = re.sub(r'[/|:()\-]+', ' ', value)
+    value = re.sub(r'\s+', ' ', value).strip()
+    return value
+
+
+def article_links_dedup(links):
+    rows_by_url = {}
+    for label, url in links:
+        clean_label_value = strip_icon_prefix(label)
+        clean_url_value = clean_text(url)
+        if not clean_label_value or not clean_url_value or clean_url_value == '#':
+            continue
+        current = rows_by_url.get(clean_url_value.lower())
+        if current is None or len(clean_label_value) < len(current[0]):
+            rows_by_url[clean_url_value.lower()] = (clean_label_value, clean_url_value)
+    return list(rows_by_url.values())
+
+
+def extract_detail_data(content, filepath, page_type):
+    if BeautifulSoup is None:
+        return None
+
+    soup = BeautifulSoup(content, 'html.parser')
+    main = soup.find('main')
+    if not main:
+        return None
+
+    data = extract_from_html(content)
+    h1 = main.find('h1')
+    title = normalize_title_text(strip_icon_prefix(h1.get_text(' ', strip=True) if h1 else data.get('title', '')))
+    year_match = re.search(r'\b(20\d{2})\b', title or '')
+    year = year_match.group(1) if year_match else str(date.today().year)
+
+    info = {}
+    for item in main.select('.info-item'):
+        label = item.select_one('.info-item__label')
+        value = item.select_one('.info-item__value')
+        if not label or not value:
+            continue
+        info[label_key(label.get_text(' ', strip=True))] = clean_text(value.get_text(' ', strip=True))
+
+    table_rows = {}
+    fee_rows = {}
+    for table in main.find_all('table'):
+        for row in table.find_all('tr'):
+            cells = row.find_all(['td', 'th'])
+            if len(cells) < 2:
+                continue
+            label = strip_icon_prefix(cells[0].get_text(' ', strip=True))
+            value = clean_text(cells[1].get_text(' ', strip=True))
+            key = label_key(label)
+            if not key or not value:
+                continue
+            if re.search(r'\b(general|obc|ews)\b', key):
+                fee_rows['general'] = value
+            elif re.search(r'\b(sc|st|ph|pwd)\b', key):
+                fee_rows['reserved'] = value
+            else:
+                table_rows[key] = value
+
+    headings = {}
+    for heading in main.find_all(['h2', 'h3']):
+        headings[label_key(heading.get_text(' ', strip=True))] = heading
+
+    links = []
+    for anchor in main.find_all('a', href=True):
+        href = clean_text(anchor.get('href'))
+        text = strip_icon_prefix(anchor.get_text(' ', strip=True))
+        if not href or href == '#':
+            continue
+        if href.startswith('/') and not href.startswith(REDIRECT_PATH):
+            continue
+        links.append((text or href, href))
+    links = article_links_dedup(links)
+
+    action_links = {}
+    for label, href in links:
+        lower = label.lower()
+        if 'notification' in lower and 'notification' not in action_links:
+            action_links['notification_url'] = href
+        if 'apply' in lower and 'apply_url' not in action_links:
+            action_links['apply_url'] = href
+        if 'result' in lower and 'scorecard' not in lower and 'result_url' not in action_links:
+            action_links['result_url'] = href
+        if ('scorecard' in lower or 'score card' in lower or 'marks' in lower) and 'scorecard_url' not in action_links:
+            action_links['scorecard_url'] = href
+        if 'admit' in lower and 'admit_url' not in action_links:
+            action_links['admit_url'] = href
+
+    article_text = main.get_text(' ', strip=True)
+    age_text = info.get('age limit') or table_rows.get('age limit') or table_rows.get('age') or ''
+    age_match = re.search(r'(\d{1,2})\D+(\d{1,2})\s*years?', age_text, re.I)
+    age_min = age_match.group(1) if age_match else '18'
+    age_max = age_match.group(2) if age_match else '40'
+
+    section_key = {
+        'job': 'jobs',
+        'result': 'results',
+        'admit_card': 'admit cards',
+    }[page_type]
+
+    detail = {
+        'title': title,
+        'year': year,
+        'dept': info.get('department') or data.get('dept', 'Government'),
+        'section_key': section_key,
+        'last_date': info.get('last date') or table_rows.get('last date to apply online') or table_rows.get('last date') or 'Check Notification',
+        'application_begin': table_rows.get('application begin') or table_rows.get('application start') or 'Check Notification',
+        'exam_date': table_rows.get('exam date') or 'As per Schedule',
+        'result_date': table_rows.get('result date') or info.get('result date') or 'Check Notification',
+        'admit_release': table_rows.get('released') or table_rows.get('admit card available') or 'Check Notification',
+        'total_posts': info.get('total posts') or info.get('total post') or table_rows.get('total posts') or 'Check Notification',
+        'age_text': age_text or f'{age_min}-{age_max} Years',
+        'age_min': age_min,
+        'age_max': age_max,
+        'qualification': info.get('qualification') or table_rows.get('eligibility') or table_rows.get('qualification') or 'Check Notification',
+        'salary': info.get('salary pay scale') or info.get('salary') or table_rows.get('salary') or table_rows.get('pay scale') or 'As per Government Norms',
+        'fee_general': fee_rows.get('general', ''),
+        'fee_reserved': fee_rows.get('reserved', ''),
+        'links': links,
+        'apply_url': action_links.get('apply_url', ''),
+        'notification_url': action_links.get('notification_url', ''),
+        'result_url': action_links.get('result_url', ''),
+        'scorecard_url': action_links.get('scorecard_url', ''),
+        'admit_url': action_links.get('admit_url', ''),
+        'article_text': article_text,
+        'filepath': filepath,
+    }
+
+    for fee_key in ('fee_general', 'fee_reserved'):
+        fee_value = detail[fee_key]
+        if not fee_value:
+            continue
+        if fee_value == detail['last_date'] or re.search(r'\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b', fee_value):
+            detail[fee_key] = ''
+
+    return detail
+
+
+def render_link_list(links, heading):
+    rows = ''.join(
+        f'<li><a href="{escape(url, quote=True)}" target="_blank" rel="nofollow noopener noreferrer">{escape(label)}</a></li>'
+        for label, url in links
+    )
+    if not rows:
+        return ''
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        f'<h3 style="color:var(--primary);margin-top:0;">{heading}</h3>'
+        f'<ul style="line-height:2.3;">{rows}</ul>'
+        '</div>'
+    )
+
+
+def build_job_snapshot(detail):
+    lines = [
+        f'<li><strong>Department:</strong> {escape(detail["dept"])}</li>',
+        f'<li><strong>Application window:</strong> {escape(detail["application_begin"])} to {escape(detail["last_date"])}</li>',
+        f'<li><strong>Qualification:</strong> {escape(detail["qualification"])}</li>',
+        '<li><strong>Official action:</strong> Always complete the form on the authority site linked below.</li>',
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Role Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{escape(detail["title"])} is listed under {escape(detail["dept"])} recruitment updates on Naukri Dhaba. '
+        f'The current application deadline is {escape(detail["last_date"])} and the extracted age range is {escape(detail["age_min"])} to {escape(detail["age_max"])} years. '
+        'Verify category relaxation, district-wise notice details, and final instructions on the official authority page before submission.</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(lines)}</ul>'
+        '</div>'
+    )
+
+
+def build_result_snapshot(detail):
+    lines = [
+        f'<li><strong>Department:</strong> {escape(detail["dept"])}</li>',
+        f'<li><strong>Result date:</strong> {escape(detail["result_date"])}</li>',
+        '<li><strong>Next step:</strong> Download the scorecard or shortlist notice from the official portal when available.</li>',
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Result Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{escape(detail["title"])} is tracked here as a result update. '
+        f'Use the official result or scorecard links below to confirm marks, qualifying status, and the next recruitment stage.</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(lines)}</ul>'
+        '</div>'
+    )
+
+
+def build_admit_snapshot(detail):
+    lines = [
+        f'<li><strong>Department:</strong> {escape(detail["dept"])}</li>',
+        f'<li><strong>Release status:</strong> {escape(detail["admit_release"])}</li>',
+        f'<li><strong>Exam date:</strong> {escape(detail["exam_date"])}</li>',
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Admit Card Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{escape(detail["title"])} is available as an admit-card update. '
+        'Download the hall ticket only from the official authority link and recheck exam city, shift timing, and ID-proof instructions before the exam day.</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(lines)}</ul>'
+        '</div>'
+    )
+
+
+def build_detail_article(detail, page_type):
+    title = escape(detail['title'])
+    dept = escape(detail['dept'])
+    year_badge = ''
+    if detail['year'] and not re.search(rf'\b{re.escape(detail["year"])}\b', detail['title']):
+        year_badge = (
+            f' <span style="background:var(--secondary);color:#fff;padding:4px 12px;'
+            f'border-radius:4px;font-size:1rem;">{escape(detail["year"])}</span>'
+        )
+    breadcrumb_label = {
+        'job': 'Jobs',
+        'result': 'Results',
+        'admit_card': 'Admit Cards',
+    }[page_type]
+    breadcrumb_href = pretty_root_path({
+        'job': 'latest-jobs.html',
+        'result': 'results.html',
+        'admit_card': 'admit-cards.html',
+    }[page_type])
+    extra_links = render_link_list(detail['links'], 'Important Links')
+
+    if page_type == 'job':
+        apply_cta = (
+            f'<a href="{escape(detail["apply_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--primary btn--large">Apply Online</a>'
+            if detail['apply_url']
+            else '<span class="btn btn--primary btn--large" style="opacity:.65;cursor:default;">Official Apply Link Awaited</span>'
+        )
+        notify_cta = (
+            f'<a href="{escape(detail["notification_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--secondary btn--large">Download Notification</a>'
+            if detail['notification_url']
+            else ''
+        )
+        fee_section = ''
+        if detail['fee_general'] or detail['fee_reserved']:
+            fee_rows = ''
+            if detail['fee_general']:
+                fee_rows += f'<tr><td style="padding:8px 0;color:#666;">General / OBC / EWS</td><td style="padding:8px 0;font-weight:bold;">{escape(detail["fee_general"])}</td></tr>'
+            if detail['fee_reserved']:
+                fee_rows += f'<tr><td style="padding:8px 0;color:#666;">SC / ST / PH</td><td style="padding:8px 0;font-weight:bold;">{escape(detail["fee_reserved"])}</td></tr>'
+            fee_section = (
+                '<div style="border-left:4px solid var(--warning);background:#fff8e1;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">'
+                '<h3 style="color:var(--primary);margin-top:0;">Application Fee</h3>'
+                f'<table style="width:100%;border-collapse:collapse;">{fee_rows}</table>'
+                '</div>'
+        )
+        return f'''<main>
+    <article class="job-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="{breadcrumb_href}">{breadcrumb_label}</a> &gt; <span>{title}</span>
+      </nav>
+      <h1 style="color:var(--primary);margin-bottom:.5rem;">{title}{year_badge}</h1>
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-item__label">Last Date</span><span class="info-item__value" style="color:var(--danger);">{escape(detail["last_date"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Department</span><span class="info-item__value">{dept}</span></div>
+        <div class="info-item"><span class="info-item__label">Total Posts</span><span class="info-item__value">{escape(detail["total_posts"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Age Limit</span><span class="info-item__value">{escape(detail["age_text"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Qualification</span><span class="info-item__value" style="font-size:.95rem;">{escape(detail["qualification"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Salary / Pay Scale</span><span class="info-item__value" style="font-size:.95rem;">{escape(detail["salary"])}</span></div>
+      </div>
+      <div class="action-bar">{apply_cta}{notify_cta}</div>
+      <div style="border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;margin:1.5rem 0;">
+        <h2 style="color:var(--primary);margin-top:0;">Important Dates</h2>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;width:55%;">Application Begin</td><td style="font-weight:bold;">{escape(detail["application_begin"])}</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Last Date to Apply Online</td><td style="font-weight:bold;color:var(--danger);">{escape(detail["last_date"])}</td></tr>
+          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Exam Date</td><td style="font-weight:bold;">{escape(detail["exam_date"])}</td></tr>
+        </table>
+      </div>
+      {fee_section}
+      {build_job_snapshot(detail)}
+      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
+      <div class="calculator">
+        <h3 style="margin-top:0;">Age Eligibility Calculator</h3>
+        <p style="color:#666;font-size:.875rem;">Age limit: {escape(detail["age_min"])}-{escape(detail["age_max"])} years. OBC +3 yrs, SC/ST +5 yrs relaxation.</p>
+        <div class="form-group"><label>Date of Birth:</label><input type="date" id="dob-input"></div>
+        <div class="form-group"><label>Category:</label><select id="category-select"><option value="general">General</option><option value="obc">OBC (+3 years)</option><option value="sc">SC (+5 years)</option><option value="st">ST (+5 years)</option></select></div>
+        <button onclick="checkEligibility({escape(detail["age_min"])}, {escape(detail["age_max"])})" class="btn btn--primary">Check Eligibility</button>
+        <div id="eligibility-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:4px;"></div>
+      </div>
+      {extra_links}
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">How to Apply</h3>
+        <ol style="line-height:2.2;">
+          <li>Use the official authority portal linked above, not third-party mirrors.</li>
+          <li>Verify category, district, and document rules before you create an account.</li>
+          <li>Fill the application form carefully and review the preview before final submission.</li>
+          <li>Upload only the files and dimensions allowed in the official notice.</li>
+          <li>Save the application number, preview, and payment receipt for later stages.</li>
+        </ol>
+      </div>
+      <div class="share-section">
+        <h3>Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title}')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title}')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+    </article>
+  </main>'''
+
+    if page_type == 'result':
+        result_cta = (
+            f'<a href="{escape(detail["result_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">Check Result</a>'
+            if detail['result_url']
+            else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">Result Link Coming Soon</span>'
+        )
+        score_cta = (
+            f'<a href="{escape(detail["scorecard_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--secondary btn--large" style="display:inline-block;margin-bottom:1rem;">Download Scorecard</a>'
+            if detail['scorecard_url']
+            else ''
+        )
+        return f'''<main>
+    <article class="result-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="{breadcrumb_href}">{breadcrumb_label}</a> &gt; <span>{title}</span>
+      </nav>
+      <h1 style="color:var(--primary);">{title}</h1>
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-item__label">Department</span><span class="info-item__value">{dept}</span></div>
+        <div class="info-item"><span class="info-item__label">Result Date</span><span class="info-item__value">{escape(detail["result_date"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Stage</span><span class="info-item__value">Result Declared</span></div>
+        <div class="info-item"><span class="info-item__label">Official Status</span><span class="info-item__value">Check authority links below</span></div>
+      </div>
+      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">Declared</div>
+        <p style="color:#666;margin-bottom:1rem;">Result Date: {escape(detail["result_date"])}</p>
+        {result_cta}
+        {score_cta}
+      </div>
+      {build_result_snapshot(detail)}
+      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
+      {extra_links}
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">How to Check Result</h3>
+        <ol style="line-height:2.2;">
+          <li>Open the official result portal linked above.</li>
+          <li>Keep your roll number or registration number ready before login.</li>
+          <li>Check your name, category, marks, and qualifying stage carefully.</li>
+          <li>Download the official PDF or scorecard and keep a copy for verification.</li>
+        </ol>
+      </div>
+      <div class="share-section">
+        <h3>Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title} Result')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title} Result')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+    </article>
+  </main>'''
+
+    admit_cta = (
+        f'<a href="{escape(detail["admit_url"], quote=True)}" target="_blank" rel="nofollow noopener noreferrer" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">Download Admit Card</a>'
+        if detail['admit_url']
+        else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">Admit Card Link Coming Soon</span>'
+    )
+    return f'''<main>
+    <article class="admit-detail">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a> &gt; <a href="{breadcrumb_href}">{breadcrumb_label}</a> &gt; <span>{title}</span>
+      </nav>
+      <h1 style="color:var(--primary);">{title}</h1>
+      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-item__label">Department</span><span class="info-item__value">{dept}</span></div>
+        <div class="info-item"><span class="info-item__label">Release Status</span><span class="info-item__value">{escape(detail["admit_release"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Exam Date</span><span class="info-item__value">{escape(detail["exam_date"])}</span></div>
+        <div class="info-item"><span class="info-item__label">Document Type</span><span class="info-item__value">Admit Card / Exam City</span></div>
+      </div>
+      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">Available</div>
+        <p style="color:#666;margin-bottom:.5rem;">Released: {escape(detail["admit_release"])}</p>
+        <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">Exam Date: {escape(detail["exam_date"])}</p>
+        {admit_cta}
+      </div>
+      {build_admit_snapshot(detail)}
+      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
+      {extra_links}
+      <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
+        <h3 style="color:var(--danger);margin-top:0;">Important Instructions</h3>
+        <ul style="line-height:1.8;">
+          <li>Carry a printed admit card exactly as required in the official instructions.</li>
+          <li>Bring a valid photo ID that matches the admit-card identity details.</li>
+          <li>Check reporting time, gate closing time, and venue address before travel.</li>
+          <li>Avoid restricted items such as phones, smartwatches, calculators, or loose papers.</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
+        <h3 style="color:var(--primary);margin-top:0;">Exam Day Checklist</h3>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:.4rem 0;">Printed admit card</li>
+          <li style="padding:.4rem 0;">Valid photo ID proof</li>
+          <li style="padding:.4rem 0;">Passport-size photos if required</li>
+          <li style="padding:.4rem 0;">Pens and transparent water bottle if allowed</li>
+        </ul>
+      </div>
+      <div class="share-section">
+        <h3>Share with Friends</h3>
+        <button onclick="shareWhatsApp(window.location.href,'{title} Admit Card')" class="share-btn share-btn--whatsapp">WhatsApp</button>
+        <button onclick="shareTelegram(window.location.href,'{title} Admit Card')" class="share-btn share-btn--telegram">Telegram</button>
+        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+      </div>
+      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+    </article>
+  </main>'''
+
+
+def build_standard_sidebar():
+    return '''<aside class="sidebar">
+  <div class="widget widget--telegram">
+    <h3 class="widget__title">Join Telegram</h3>
+    <p style="margin-bottom:1rem;">Get instant job alerts on your phone.</p>
+    <a href="https://t.me/naukridhaba" target="_blank" class="btn" style="background:#fff;color:#0088cc;width:100%;">Join Channel</a>
+  </div>
+  <div class="widget">
+    <h3 class="widget__title">Quick Links</h3>
+    <div class="footer__links">
+      <a href="/latest-jobs">Latest Jobs</a>
+      <a href="/results">Results</a>
+      <a href="/admit-cards">Admit Cards</a>
+      <a href="/eligibility-calculator">Eligibility Check</a>
+    </div>
+  </div>
+  <div class="nd-ad ad-slot" data-ad-slot="sidebar-top" style="min-height:250px;">
+    <p>Advertisement</p><p style="font-size:.75rem">300x250</p>
+  </div>
+</aside>'''
+
+
+def build_standard_footer():
+    return '''<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <h3 class="footer__title">Naukri Dhaba</h3>
+        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
+        <a href="https://t.me/naukridhaba" class="share-btn share-btn--telegram" style="margin-top:1rem;display:inline-block;">Join Telegram</a>
+      </div>
+      <div>
+        <h3 class="footer__title">Quick Links</h3>
+        <div class="footer__links">
+          <a href="/latest-jobs">Latest Jobs</a>
+          <a href="/results">Results</a>
+          <a href="/admit-cards">Admit Cards</a>
+          <a href="/resources">Resources</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer__title">Categories</h3>
+        <div class="footer__links">
+          <a href="/latest-jobs">UPSC Jobs</a>
+          <a href="/latest-jobs">SSC Jobs</a>
+          <a href="/latest-jobs">Railway Jobs</a>
+          <a href="/latest-jobs">Banking Jobs</a>
+          <a href="/latest-jobs">Defence Jobs</a>
+          <a href="/latest-jobs">Police Jobs</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer__title">State Jobs</h3>
+        <div class="state-list">
+          <a href="/state/uttar-pradesh.html">Uttar Pradesh</a>
+          <a href="/state/bihar.html">Bihar</a>
+          <a href="/state/rajasthan.html">Rajasthan</a>
+          <a href="/state/madhya-pradesh.html">Madhya Pradesh</a>
+          <a href="/state/delhi.html">Delhi</a>
+          <a href="/state/maharashtra.html">Maharashtra</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 Naukri Dhaba. All rights reserved.</p>
+      <p>Disclaimer: We are not affiliated with any government body. Information only.</p>
+    </div>
+  </div>
+</footer>'''
+
+
+def rebuild_detail_main(content, filepath, page_type):
+    detail = extract_detail_data(content, filepath, page_type)
+    if not detail:
+        return content
+    rebuilt_main = build_detail_article(detail, page_type)
+    shell = (
+        '<div class="content-wrapper container" style="margin-top:2rem;">\n'
+        f'{rebuilt_main}\n'
+        f'{build_standard_sidebar()}\n'
+        '</div>\n\n'
+        f'{build_standard_footer()}\n'
+        '<script src="/js/app.js"></script>\n'
+    )
+    return re.sub(r'<div class="content-wrapper container" style="margin-top:2rem;">.*?</body>', shell + '</body>', content, count=1, flags=re.DOTALL)
+
+
 def get_canonical_url(filepath):
     """Get canonical URL for a file."""
     rel = str(filepath.relative_to(SITE_ROOT)).replace('\\', '/')
-    if rel == 'index.html':
-        return SITE_URL + '/'
+    if rel in PRETTY_ROUTE_MAP:
+        return SITE_URL + PRETTY_ROUTE_MAP[rel]
     return SITE_URL + '/' + rel
 
 
@@ -158,6 +753,208 @@ def get_js_path(filepath, jsfile):
     return f'../../js/{jsfile}'
 
 
+def pretty_root_path(filename):
+    return PRETTY_ROUTE_MAP.get(filename, '/' + filename)
+
+
+def site_route(filename):
+    return SITE_URL + pretty_root_path(filename)
+
+
+def normalize_root_links(content):
+    """Convert top-level .html links to deployed extensionless routes."""
+    filename_to_path = {name: pretty_root_path(name) for name in PRETTY_ROUTE_MAP if name != 'index.html'}
+    filename_to_path['index.html'] = '/'
+
+    def repl(match):
+        attr = match.group('attr')
+        quote = match.group('quote')
+        url = match.group('url')
+        suffix = match.group('suffix') or ''
+        parsed = url
+        prefix = ''
+
+        if parsed.startswith(SITE_URL + '/'):
+            prefix = SITE_URL
+            parsed = parsed[len(SITE_URL):]
+
+        filename = parsed.split('/')[-1]
+        if filename not in filename_to_path:
+            return match.group(0)
+
+        new_url = filename_to_path[filename] + suffix
+        if prefix:
+            new_url = prefix + new_url
+        return f'{attr}={quote}{new_url}{quote}'
+
+    pattern = re.compile(
+        r'(?P<attr>href|src)=(?P<quote>["\'])(?P<url>(?:https://naukridhaba\.in/)?(?:/|(?:\.\./)*)'
+        r'(?:index|latest-jobs|results|admit-cards|resources|previous-papers|eligibility-calculator|study-planner)\.html)'
+        r'(?P<suffix>[?#][^"\']*)?(?P=quote)',
+        flags=re.IGNORECASE
+    )
+    return pattern.sub(repl, content)
+
+
+def is_placeholder(value, placeholders):
+    normalized = clean_text(value)
+    return (not normalized) or normalized in placeholders
+
+
+def serialize_tracking_config():
+    payload = json.dumps(TRACKING_CONFIG, separators=(',', ':'), ensure_ascii=False)
+    return payload.replace('</', '<\\/')
+
+
+def build_consent_bootstrap_markup():
+    consent = TRACKING_CONFIG.get('consentMode', {})
+    if not consent.get('enabled'):
+        return ''
+
+    storage_key = escape(consent.get('storageKey', 'nd_consent_v1'), quote=True)
+    default_mode = escape(consent.get('defaultMode', 'reject'), quote=True)
+    wait_for_update = int(consent.get('waitForUpdateMs', 500) or 500)
+    return '\n'.join([
+        '    <script>',
+        '      (function(w){',
+        '        var consentKey = "' + storage_key + '";',
+        '        var defaultMode = "' + default_mode + '";',
+        '        var waitForUpdate = ' + str(wait_for_update) + ';',
+        '        var denied = {',
+        '          ad_storage: "denied",',
+        '          analytics_storage: "denied",',
+        '          ad_user_data: "denied",',
+        '          ad_personalization: "denied",',
+        '          functionality_storage: "granted",',
+        '          security_storage: "granted",',
+        '          personalization_storage: "denied"',
+        '        };',
+        '        var analyticsGranted = {',
+        '          ad_storage: "denied",',
+        '          analytics_storage: "granted",',
+        '          ad_user_data: "denied",',
+        '          ad_personalization: "denied",',
+        '          functionality_storage: "granted",',
+        '          security_storage: "granted",',
+        '          personalization_storage: "denied"',
+        '        };',
+        '        var allGranted = {',
+        '          ad_storage: "granted",',
+        '          analytics_storage: "granted",',
+        '          ad_user_data: "granted",',
+        '          ad_personalization: "granted",',
+        '          functionality_storage: "granted",',
+        '          security_storage: "granted",',
+        '          personalization_storage: "granted"',
+        '        };',
+        '        function cloneState(state){ return JSON.parse(JSON.stringify(state)); }',
+        '        function readStoredMode(){',
+        '          try {',
+        '            var raw = w.localStorage.getItem(consentKey);',
+        '            if (!raw) { return ""; }',
+        '            var parsed = JSON.parse(raw);',
+        '            return parsed && parsed.mode ? parsed.mode : "";',
+        '          } catch (err) {',
+        '            return "";',
+        '          }',
+        '        }',
+        '        function modeToState(mode){',
+        '          if (mode === "all") return cloneState(allGranted);',
+        '          if (mode === "analytics") return cloneState(analyticsGranted);',
+        '          return cloneState(denied);',
+        '        }',
+        '        w.dataLayer = w.dataLayer || [];',
+        '        w.gtag = w.gtag || function(){w.dataLayer.push(arguments);};',
+        '        var initialMode = readStoredMode() || defaultMode;',
+        '        var initialState = modeToState(initialMode);',
+        '        initialState.wait_for_update = waitForUpdate;',
+        '        w.NAUKRI_DHABA_CONSENT_KEY = consentKey;',
+        '        w.NAUKRI_DHABA_CONSENT_STATE = modeToState(initialMode);',
+        '        w.gtag("consent", "default", initialState);',
+        '        w.gtag("set", "ads_data_redaction", true);',
+        '        w.gtag("set", "url_passthrough", true);',
+        '      })(window);',
+        '    </script>',
+    ])
+
+
+def build_head_tracking_markup(filepath):
+    tracking_path = get_js_path(filepath, 'tracking.js')
+    lines = [
+        f'    <script>window.NAUKRI_DHABA_TRACKING_CONFIG = {serialize_tracking_config()};</script>'
+    ]
+
+    gsc = TRACKING_CONFIG.get('googleSearchConsole', {})
+    if gsc.get('enabled') and not is_placeholder(
+        gsc.get('verificationCode'),
+        {'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'}
+    ):
+        lines.append(
+            f'    <meta name="google-site-verification" content="{escape(gsc["verificationCode"], quote=True)}">'
+        )
+
+    gtm = TRACKING_CONFIG.get('googleTagManager', {})
+    gtm_enabled = gtm.get('enabled') and not is_placeholder(
+        gtm.get('containerId'),
+        {'GTM-XXXXXXX'}
+    )
+    if gtm_enabled:
+        container_id = escape(gtm['containerId'], quote=True)
+        consent_markup = build_consent_bootstrap_markup()
+        if consent_markup:
+            lines.append(consent_markup)
+        lines.append('    <!-- Google Tag Manager -->')
+        lines.append('    <script>')
+        lines.append('      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":')
+        lines.append('      new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],')
+        lines.append('      j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=')
+        lines.append('      "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);')
+        lines.append(f'      }})(window,document,"script","dataLayer","{container_id}");')
+        lines.append('    </script>')
+        lines.append('    <!-- End Google Tag Manager -->')
+    else:
+        ga4 = TRACKING_CONFIG.get('googleAnalytics4', {})
+        if ga4.get('enabled') and not is_placeholder(
+            ga4.get('measurementId'),
+            {'G-XXXXXXXXXX'}
+        ):
+            measurement_id = escape(ga4['measurementId'], quote=True)
+            consent_markup = build_consent_bootstrap_markup()
+            if consent_markup:
+                lines.append(consent_markup)
+            lines.append('    <!-- Google Analytics 4 -->')
+            lines.append(f'    <script async src="https://www.googletagmanager.com/gtag/js?id={measurement_id}"></script>')
+            lines.append('    <script>')
+            lines.append('      window.dataLayer = window.dataLayer || [];')
+            lines.append('      function gtag(){dataLayer.push(arguments);}')
+            lines.append('      gtag("js", new Date());')
+            lines.append(f'      gtag("config", "{measurement_id}");')
+            lines.append('    </script>')
+
+    custom_head = TRACKING_CONFIG.get('customHeadCode', {})
+    if custom_head.get('enabled') and custom_head.get('code') and custom_head.get('code') != '<code goes here>':
+        lines.append(f'    {custom_head["code"]}')
+
+    lines.append(f'    <script src="{tracking_path}"></script>')
+    return '\n'.join(lines)
+
+
+def build_body_tracking_markup():
+    gtm = TRACKING_CONFIG.get('googleTagManager', {})
+    if not (
+        gtm.get('enabled')
+        and not is_placeholder(gtm.get('containerId'), {'GTM-XXXXXXX'})
+    ):
+        return ''
+    container_id = escape(gtm['containerId'], quote=True)
+    return (
+        '    <!-- Google Tag Manager (noscript) -->\n'
+        f'    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={container_id}" '
+        'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\n'
+        '    <!-- End Google Tag Manager (noscript) -->'
+    )
+
+
 def get_keywords(page_type, title, dept):
     """Auto-generate SEO keywords."""
     dept_lower = dept.lower()
@@ -167,42 +964,92 @@ def get_keywords(page_type, title, dept):
             base_kws = kws
             break
 
-    year = date.today().year
     extra_kws = [
-        title,
-        f"{dept} Jobs {year}",
-        f"{title} {year}",
-        "Sarkari Naukri",
-        "Govt Jobs Online Form",
-        SITE_NAME
+        normalize_title_text(title),
+        f"{dept} Jobs",
+        "Government Jobs India",
+        SITE_NAME,
     ]
-    return base_kws + ', ' + ', '.join([k for k in extra_kws if k and 'nan' not in k.lower()])
+    return dedupe_csv(base_kws, ', '.join(extra_kws))
+
+
+def title_already_has_intent(title, page_type):
+    lower_title = title.lower()
+    intent_patterns = {
+        'job': r'(apply online|online form|recruitment|vacancy|registration|application form)',
+        'result': r'(result|score ?card|merit list|cut ?off|selection list)',
+        'admit_card': r'(admit card|hall ticket|exam city|call letter)',
+    }
+    pattern = intent_patterns.get(page_type)
+    return bool(pattern and re.search(pattern, lower_title))
 
 
 def build_meta_block(data, page_type, filepath, canonical_url):
     """Build complete SEO meta tag block."""
-    title = data.get('title', SITE_NAME)
-    description = data.get('description', f"{title} - Check details at {SITE_NAME}")
+    title = normalize_title_text(data.get('title', SITE_NAME))
+    description = clean_text(data.get('description', f"{title} - Check details at {SITE_NAME}"))
     dept = data.get('dept', 'Government')
     location = data.get('location', 'India')
 
-    keywords = get_keywords(page_type, title, dept)
-    og_title = f"{title} | {SITE_NAME}"
-    og_desc = description[:160] if description else og_title
+    page_defaults = {
+        'home': {
+            'title': f'{SITE_NAME} | Govt Jobs, Results, Admit Cards',
+            'description': f'{SITE_NAME} brings the latest government jobs, exam results, admit cards, and official updates for India.',
+            'keywords': dedupe_csv(
+                'Government Jobs India, Latest Govt Jobs, Exam Results, Admit Card, Govt Recruitment Updates',
+                SITE_NAME,
+            ),
+        },
+        'jobs_list': {
+            'title': f'Latest Govt Jobs 2026 | {SITE_NAME}',
+            'description': f'Browse the latest government jobs, online forms, and recruitment updates across India on {SITE_NAME}.',
+            'keywords': dedupe_csv(
+                'Latest Govt Jobs 2026, Government Jobs India, Online Form, Govt Recruitment Updates',
+                SITE_NAME,
+            ),
+        },
+        'results_list': {
+            'title': f'Latest Results 2026 | {SITE_NAME}',
+            'description': f'Check the latest government exam results, merit lists, and score cards on {SITE_NAME}.',
+            'keywords': dedupe_csv(
+                'Latest Results 2026, Government Exam Result, Score Card, Merit List, Result Updates India',
+                SITE_NAME,
+            ),
+        },
+        'admits_list': {
+            'title': f'Latest Admit Cards 2026 | {SITE_NAME}',
+            'description': f'Download the latest admit cards, hall tickets, and exam city slips for government exams on {SITE_NAME}.',
+            'keywords': dedupe_csv(
+                'Latest Admit Cards 2026, Hall Ticket, Exam City, Government Admit Card',
+                SITE_NAME,
+            ),
+        },
+    }
 
-    # Page type suffix for title
-    type_suffix = {
-        'job': 'Apply Online',
-        'result': 'Check Result',
-        'admit_card': 'Download Admit Card',
-        'jobs_list': 'Latest Government Jobs 2026',
-        'results_list': 'Exam Results 2026',
-        'admits_list': 'Admit Cards 2026',
-        'home': 'Sarkari Naukri 2026 | Govt Jobs, Results, Admit Cards',
-        'other': 'Sarkari Naukri'
-    }.get(page_type, 'Sarkari Naukri')
+    if page_type in page_defaults:
+        full_title = page_defaults[page_type]['title']
+        og_title = full_title
+        og_desc = page_defaults[page_type]['description']
+        keywords = page_defaults[page_type]['keywords']
+    else:
+        keywords = get_keywords(page_type, title, dept)
+        og_title = f"{title} | {SITE_NAME}"
+        og_desc = (description[:160] if description else og_title)
 
-    full_title = f"{title} - {type_suffix} | {SITE_NAME}" if type_suffix not in title else f"{title} | {SITE_NAME}"
+        type_suffix = {
+            'job': 'Apply Online',
+            'result': 'Check Result',
+            'admit_card': 'Download Admit Card',
+            'other': 'Government Update'
+        }.get(page_type, 'Government Update')
+
+        full_title = (
+            f"{title} | {SITE_NAME}"
+            if title_already_has_intent(title, page_type) or type_suffix.lower() in title.lower()
+            else f"{title} - {type_suffix} | {SITE_NAME}"
+        )
+
+    og_type = 'article' if page_type in {'job', 'result', 'admit_card'} else 'website'
 
     return f'''    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -213,7 +1060,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
     <meta name="author" content="{SITE_NAME}">
     <link rel="canonical" href="{canonical_url}">
     <!-- Open Graph -->
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{og_type}">
     <meta property="og:title" content="{og_title}">
     <meta property="og:description" content="{og_desc}">
     <meta property="og:url" content="{canonical_url}">
@@ -230,22 +1077,23 @@ def build_meta_block(data, page_type, filepath, canonical_url):
 
 def build_job_json_ld(title, dept, last_date, canonical_url):
     """Build JobPosting JSON-LD."""
+    iso_last_date = to_iso_date(last_date) or TODAY
     return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"JobPosting","title":"{title}","datePosted":"{TODAY}","validThrough":"{last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
+    {{"@context":"https://schema.org","@type":"JobPosting","title":"{normalize_title_text(title)}","datePosted":"{TODAY}","validThrough":"{iso_last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
     </script>'''
 
 
 def build_result_json_ld(title, dept, canonical_url):
-    """Build Event JSON-LD for result pages."""
+    """Build WebPage JSON-LD for result pages."""
     return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"Event","name":"{title}","description":"{title} result declared. Check at {SITE_NAME}.","startDate":"{TODAY}","organizer":{{"@type":"Organization","name":"{dept}"}},"location":{{"@type":"VirtualLocation","url":"{canonical_url}"}}}}
+    {{"@context":"https://schema.org","@type":"WebPage","name":"{normalize_title_text(title)}","description":"{normalize_title_text(title)} result declared. Check at {SITE_NAME}.","url":"{canonical_url}","about":{{"@type":"Organization","name":"{dept}"}}}}
     </script>'''
 
 
 def build_admit_json_ld(title, dept, canonical_url):
-    """Build Event JSON-LD for admit card pages."""
+    """Build WebPage JSON-LD for admit card pages."""
     return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"Event","name":"{title}","description":"Download {title} admit card at {SITE_NAME}.","startDate":"{TODAY}","organizer":{{"@type":"Organization","name":"{dept}"}},"location":{{"@type":"VirtualLocation","url":"{canonical_url}"}}}}
+    {{"@context":"https://schema.org","@type":"WebPage","name":"{normalize_title_text(title)}","description":"Download {normalize_title_text(title)} admit card at {SITE_NAME}.","url":"{canonical_url}","about":{{"@type":"Organization","name":"{dept}"}}}}
     </script>'''
 
 
@@ -262,7 +1110,7 @@ def build_breadcrumb_json_ld(items):
 
 def fix_broken_buttons(content):
     """Fix result/admit card buttons that show alert()."""
-    # Fix: onclick="alert('...')" → remove onclick, keep href="#" as is (handled per page type later)
+    # Remove alert handlers from buttons.
     content = re.sub(
         r'<a\s+href="#"\s+onclick="alert\([^)]+\)"([^>]*)>',
         r'<a href="#"\1>',
@@ -274,6 +1122,19 @@ def fix_broken_buttons(content):
         '',
         content
     )
+    # Replace dead primary action anchors with spans so no page ships with href="#".
+    content = re.sub(
+        r'<a\s+href="#"\s+([^>]*class="btn[^"]*btn--primary[^"]*"[^>]*)>(.*?)</a>',
+        r'<span \1>\2</span>',
+        content,
+        flags=re.IGNORECASE | re.DOTALL
+    )
+    content = re.sub(
+        r'<a\s+href="#"\s+([^>]*class="btn[^"]*"[^>]*)>(.*?)</a>',
+        r'<span \1>\2</span>',
+        content,
+        flags=re.IGNORECASE | re.DOTALL
+    )
     return content
 
 
@@ -282,12 +1143,12 @@ def fix_nan_links(content):
     # Fix Apply Online button with href="nan"
     content = re.sub(
         r'href="nan"([^>]*class="btn btn--primary[^"]*")',
-        r'href="#" style="opacity:0.7;cursor:default;"\1',
+        r'data-missing-link="true" style="opacity:0.7;cursor:default;"\1',
         content
     )
     content = re.sub(
         r'href="nan"',
-        r'href="#"',
+        r'data-missing-link="true"',
         content
     )
     # Fix "nan" in text content
@@ -303,18 +1164,46 @@ def fix_nan_links(content):
 
 def remove_sarkariresult_urls(content):
     """Remove/replace all SarkariResult URLs."""
-    # Replace SarkariResult document URLs (PDFs etc.) with #
+    protected_attrs = {}
+
+    def protect_attr(match):
+        token = f"__ND_ATTR_{len(protected_attrs)}__"
+        protected_attrs[token] = match.group(0)
+        return token
+
+    # Protect existing href/src URLs so text cleanup does not corrupt redirect targets.
+    content = re.sub(
+        r'''(?:href|src)=(".*?"|'.*?')''',
+        protect_attr,
+        content,
+        flags=re.IGNORECASE | re.DOTALL
+    )
+
+    # Replace SarkariResult document URLs in visible text blocks.
     for pattern in BANNED_URL_PATTERNS:
         content = re.sub(pattern, '#', content, flags=re.IGNORECASE)
 
     # Replace SarkariResult text mentions
+    content = re.sub(r'sarkariresult(?:s)?\.(?:com|org|in|net)', 'naukridhaba.in', content, flags=re.IGNORECASE)
     content = re.sub(r'\bSarkariResult(?:s)?\b', SITE_NAME, content)
     content = re.sub(r'\bsarkariresult(?:s)?\b', SITE_NAME, content, flags=re.IGNORECASE)
-    content = re.sub(r'sarkariresult(?:s)?\.(?:com|org|in|net)', 'naukridhaba.in', content, flags=re.IGNORECASE)
     content = re.sub(r'sarkari\s+result(?:s)?', SITE_NAME, content, flags=re.IGNORECASE)
     content = re.sub(r'doc\.sarkariresults?\.org\.in', 'naukridhaba.in', content, flags=re.IGNORECASE)
 
+    for token, original in protected_attrs.items():
+        content = content.replace(token, original)
+
     return content
+
+
+def fix_malformed_redirect_hosts(content):
+    """Repair broken hostnames introduced by older text replacement passes."""
+    return re.sub(
+        r'(?:www\.)?naukri\s+dhaba\.com',
+        'www.sarkariresult.com',
+        content,
+        flags=re.IGNORECASE
+    )
 
 
 def add_tracking_scripts(content, filepath):
@@ -373,9 +1262,9 @@ def update_ad_slots(content):
 def rebuild_head(content, data, page_type, filepath, canonical_url):
     """Replace the <head> content with upgraded SEO version."""
     meta_block = build_meta_block(data, page_type, filepath, canonical_url)
-    tracking_path = get_js_path(filepath, 'tracking.js')
     ads_path = get_js_path(filepath, 'ads-manager.js')
     css_path = get_css_path(filepath)
+    tracking_block = build_head_tracking_markup(filepath)
 
     # Build JSON-LD
     json_ld_blocks = ''
@@ -386,40 +1275,38 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
         # Extract last_date from content
         m = re.search(r'info-item__value[^>]*>([^<]{5,20})</span>', content)
         last_date = m.group(1).strip() if m else TODAY
-        if not re.search(r'\d{2}[/-]\d{2}[/-]\d{4}', last_date):
+        if not to_iso_date(last_date):
             last_date = TODAY
         json_ld_blocks = build_job_json_ld(title, dept, last_date, canonical_url)
         # Add breadcrumb
         json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-            (SITE_NAME, SITE_URL + '/'),
-            ('Jobs', SITE_URL + '/latest-jobs.html'),
-            (dept, SITE_URL + '/latest-jobs.html'),
+            (SITE_NAME, site_route('index.html')),
+            ('Jobs', site_route('latest-jobs.html')),
+            (dept, site_route('latest-jobs.html')),
             (title, canonical_url)
         ])
     elif page_type == 'result':
-        if '<script type="application/ld+json">' not in content:
-            json_ld_blocks = build_result_json_ld(title, dept, canonical_url)
-            json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-                (SITE_NAME, SITE_URL + '/'),
-                ('Results', SITE_URL + '/results.html'),
-                (dept, SITE_URL + '/results.html'),
-                (title, canonical_url)
-            ])
+        json_ld_blocks = build_result_json_ld(title, dept, canonical_url)
+        json_ld_blocks += '\n' + build_breadcrumb_json_ld([
+            (SITE_NAME, site_route('index.html')),
+            ('Results', site_route('results.html')),
+            (dept, site_route('results.html')),
+            (title, canonical_url)
+        ])
     elif page_type == 'admit_card':
-        if '<script type="application/ld+json">' not in content:
-            json_ld_blocks = build_admit_json_ld(title, dept, canonical_url)
-            json_ld_blocks += '\n' + build_breadcrumb_json_ld([
-                (SITE_NAME, SITE_URL + '/'),
-                ('Admit Cards', SITE_URL + '/admit-cards.html'),
-                (dept, SITE_URL + '/admit-cards.html'),
-                (title, canonical_url)
-            ])
+        json_ld_blocks = build_admit_json_ld(title, dept, canonical_url)
+        json_ld_blocks += '\n' + build_breadcrumb_json_ld([
+            (SITE_NAME, site_route('index.html')),
+            ('Admit Cards', site_route('admit-cards.html')),
+            (dept, site_route('admit-cards.html')),
+            (title, canonical_url)
+        ])
 
     # Build complete new head content
     new_head = f'''<head>
 {meta_block}
     <link rel="stylesheet" href="{css_path}">
-    <script src="{tracking_path}"></script>
+{tracking_block}
 {json_ld_blocks}
     <script src="{ads_path}" defer></script>
 </head>'''
@@ -429,12 +1316,25 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
     return content
 
 
+def inject_body_tracking(content):
+    """Inject body-start tracking markup such as GTM noscript."""
+    body_markup = build_body_tracking_markup()
+    if not body_markup:
+        return content
+    if 'googletagmanager.com/ns.html' in content:
+        return content
+    return re.sub(r'(<body[^>]*>)', r'\1' + '\n' + body_markup, content, count=1, flags=re.IGNORECASE)
+
+
 def update_page(filepath, dry_run=False):
     """Apply all updates to a single HTML file."""
     with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
         original = f.read()
 
     content = original
+
+    # Step 0: Repair malformed redirect targets from earlier rewrites
+    content = fix_malformed_redirect_hosts(content)
 
     # Step 1: Remove SarkariResult references
     content = remove_sarkariresult_urls(content)
@@ -448,6 +1348,15 @@ def update_page(filepath, dry_run=False):
     # Step 4: Update ad slots
     content = update_ad_slots(content)
 
+    # Step 4b: Normalize top-level internal links to deployed pretty URLs
+    content = normalize_root_links(content)
+    content = content.replace(
+        'Your gateway to Sarkari Naukri. Latest government jobs, results, and admit cards.',
+        'Independent government job updates, result tracking, and admit card alerts for India.'
+    )
+    content = content.replace(', Sarkari Naukri', '')
+    content = content.replace('Sarkari Naukri, ', '')
+
     # Step 5: Extract existing data
     data = extract_from_html(content)
     page_type = detect_page_type(filepath, content)
@@ -455,6 +1364,9 @@ def update_page(filepath, dry_run=False):
 
     # Step 6: Rebuild head with complete SEO
     content = rebuild_head(content, data, page_type, filepath, canonical_url)
+    content = inject_body_tracking(content)
+    if page_type in {'job', 'result', 'admit_card'}:
+        content = rebuild_detail_main(content, filepath, page_type)
 
     if content == original:
         return False  # No changes
@@ -486,7 +1398,7 @@ def main():
     else:
         html_files = [
             f for f in SITE_ROOT.rglob('*.html')
-            if '.git' not in str(f) and 'scraper' not in str(f)
+            if '.git' not in str(f) and 'scraper' not in str(f) and f.name != 'go.html'
         ]
 
     log(f"Found {len(html_files)} HTML files to process")

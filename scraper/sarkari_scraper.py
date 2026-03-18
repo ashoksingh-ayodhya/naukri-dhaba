@@ -37,8 +37,13 @@ import logging
 import hashlib
 import argparse
 from datetime import datetime, date
+from html import escape
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import quote, urljoin, urlparse
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 # ─── Check dependencies ────────────────────────────────────
 try:
@@ -50,6 +55,13 @@ except ImportError:
     import requests
     from bs4 import BeautifulSoup, Tag
 
+try:
+    import cloudscraper
+except ImportError:
+    cloudscraper = None
+
+from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES
+
 # ══════════════════════════════════════════════════════════
 # PATHS & CONSTANTS
 # ══════════════════════════════════════════════════════════
@@ -57,6 +69,7 @@ SITE_ROOT   = Path(__file__).parent.parent
 SCRAPER_DIR = Path(__file__).parent
 LOG_DIR     = SCRAPER_DIR / 'logs'
 SEEN_FILE   = SCRAPER_DIR / 'seen_items.json'
+TRACKING_CONFIG_FILE = SITE_ROOT / 'tracking-config.json'
 
 LOG_DIR.mkdir(exist_ok=True)
 
@@ -71,82 +84,14 @@ logging.basicConfig(
 )
 log = logging.getLogger('NaukriDhaba')
 
+# ── Source site ────────────────────────────────────────────
+BASE          = SOURCE_BASE_URL
+URL_JOBS      = f'{BASE}/latestjob.php'
+URL_RESULTS   = f'{BASE}/result.php'
+URL_ADMITS    = f'{BASE}/admitcard.php'
+URL_HOME      = BASE
+
 # ── Our site ───────────────────────────────────────────────
-SITE_URL  = 'https://www.naukridhaba.in'
-SITE_NAME = 'Naukri Dhaba'
-
-# ── All scraping sources ────────────────────────────────────
-# Each source: base URL, listing URLs per type, branding patterns to strip
-SOURCES = [
-    {
-        'name':  'sarkariresult',
-        'base':  'https://www.sarkariresult.com',
-        'urls':  {
-            'job':    'https://www.sarkariresult.com/latestjob.php',
-            'result': 'https://www.sarkariresult.com/result.php',
-            'admit':  'https://www.sarkariresult.com/admitcard.php',
-        },
-        'branding': [
-            r'(?i)sarkari\s*results?(?:\.(?:com|org|in))?',
-            r'(?i)www\.sarkariresults?\.(?:com|org|in)',
-            r'(?i)doc\.sarkariresults?\.org\.in',
-        ],
-    },
-    {
-        'name':  'freejobalert',
-        'base':  'https://www.freejobalert.com',
-        'urls':  {
-            'job':    'https://www.freejobalert.com/latest-govt-jobs/',
-            'result': 'https://www.freejobalert.com/sarkari-result/',
-            'admit':  'https://www.freejobalert.com/admit-card/',
-        },
-        'branding': [
-            r'(?i)free\s*job\s*alert(?:\.com)?',
-            r'(?i)www\.freejobalert\.com',
-        ],
-    },
-    {
-        'name':  'rojgarresult',
-        'base':  'https://www.rojgarresult.com',
-        'urls':  {
-            'job':    'https://www.rojgarresult.com/latest-jobs/',
-            'result': 'https://www.rojgarresult.com/result/',
-            'admit':  'https://www.rojgarresult.com/admit-card/',
-        },
-        'branding': [
-            r'(?i)rojgar\s*result(?:\.com)?',
-            r'(?i)www\.rojgarresult\.com',
-        ],
-    },
-    {
-        'name':  'sarkariexam',
-        'base':  'https://www.sarkariexam.com',
-        'urls':  {
-            'job':    'https://www.sarkariexam.com/govt-jobs/',
-            'result': 'https://www.sarkariexam.com/results/',
-            'admit':  'https://www.sarkariexam.com/admit-card/',
-        },
-        'branding': [
-            r'(?i)sarkari\s*exam(?:\.com)?',
-            r'(?i)www\.sarkariexam\.com',
-        ],
-    },
-]
-
-# Keep BASE for backward-compat with any helpers that use it
-BASE = SOURCES[0]['base']
-
-# ── All source domains (for URL sanitisation) ──────────────
-_SOURCE_DOMAINS_RE = re.compile(
-    r'(?i)(' +
-    '|'.join([
-        r'sarkariresults?\.(?:com|org|in)',
-        r'freejobalert\.com',
-        r'rojgarresult\.com',
-        r'sarkariexam\.com',
-    ]) +
-    r')'
-)
 
 # ── Request settings ───────────────────────────────────────
 HEADERS = {
@@ -158,6 +103,7 @@ HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Accept-Language': 'en-IN,en;q=0.9,hi;q=0.8',
     'Accept-Encoding': 'gzip, deflate, br',
+    'Referer': BASE,
     'Connection': 'keep-alive',
 }
 DELAY   = 2.5   # seconds between requests (polite)
@@ -176,28 +122,6 @@ DEPT_MAP = {
     'ARMY': 'defence', 'NAVY': 'defence', 'AIRFORCE': 'defence',
     'IAF': 'defence', 'NDA': 'defence', 'CDS': 'defence',
     'DRDO': 'defence', 'HAL': 'defence',
-    # State PSCs
-    'BPSC': 'government', 'JPSC': 'government', 'MPPSC': 'government',
-    'HPSC': 'government', 'UPPSC': 'government', 'RPSC': 'government',
-    'TNPSC': 'government', 'OPSC': 'government', 'KPSC': 'government',
-    'WBPSC': 'government', 'GPSC': 'government', 'APPSC': 'government',
-    'MPSC': 'government', 'CGPSC': 'government', 'UKPSC': 'government',
-    # National testing / education agencies
-    'NTA': 'government', 'NEET': 'government', 'JEE': 'government',
-    'CUET': 'government', 'CTET': 'government', 'GATE': 'government',
-    'JEECUP': 'government', 'CLAT': 'government', 'NIFT': 'government',
-    'NCHMJEE': 'government', 'JIPMAT': 'government',
-    # State-level boards and agencies
-    'BTSC': 'government', 'BSNL': 'government', 'IERT': 'government',
-    'MPESB': 'government', 'RSSB': 'government', 'AIIMS': 'government',
-    'CSIR': 'government', 'NHM': 'government', 'EMRS': 'government',
-    'AAI': 'government', 'IOCL': 'government', 'ONGC': 'government',
-    'NTPC': 'government', 'BHEL': 'government', 'BPCL': 'government',
-    'HPCL': 'government', 'SAIL': 'government', 'CIL': 'government',
-    'NCL': 'government', 'ECGC': 'government', 'LIC': 'government',
-    'GIC': 'government', 'SEBI': 'government', 'NIACL': 'government',
-    'INDIA POST': 'government', 'GDS': 'government',
-    'YANTRA': 'government', 'ORDNANCE': 'government',
 }
 
 # ── SEO keyword map by dept category ──────────────────────
@@ -208,7 +132,7 @@ SEO_KW = {
     'banking':  'Bank Jobs, IBPS, SBI, RBI, PO, Clerk, Banking Vacancy',
     'police':   'Police Jobs, Constable, SI, Sub Inspector, CRPF, BSF, CISF',
     'defence':  'Defence Jobs, Army, Navy, Air Force, NDA, CDS, Agniveer',
-    'government': 'Sarkari Naukri 2026, Govt Jobs India, Online Form 2026',
+    'government': 'Government jobs India, online form updates, result updates, admit card updates, Naukri Dhaba',
 }
 
 
@@ -231,42 +155,41 @@ def clean(text: str) -> str:
     return re.sub(r'\s+', ' ', str(text)).strip()
 
 
-def sanitize(text: str, extra_patterns: list | None = None) -> str:
-    """Remove/replace all source-site branding mentions."""
+def sanitize(text: str) -> str:
+    """Remove/replace all SarkariResult mentions."""
     if not text:
         return ''
     text = str(text)
-    # Strip branding from all known sources
-    for src in SOURCES:
-        for pat in src['branding']:
-            text = re.sub(pat, SITE_NAME, text)
-    # Any caller-supplied extra patterns
-    if extra_patterns:
-        for pat in extra_patterns:
-            text = re.sub(pat, SITE_NAME, text)
-    text = re.sub(r'(?i)www\.naukridhaba\.in', 'www.naukridhaba.in', text)
+    text = re.sub(r'(?i)sarkari\s*results?(?:\.(?:com|org|in))?', SITE_NAME, text)
+    text = re.sub(r'(?i)www\.sarkariresults?\.(?:com|org|in)', 'www.naukridhaba.in', text)
+    text = re.sub(r'(?i)doc\.sarkariresults?\.org\.in', 'doc.naukridhaba.in', text)
     return text
 
 
 def sanitize_url(url: str) -> str:
     """
-    Preserve official govt/third-party URLs exactly.
-    Source-site internal URLs and relative paths are dropped (return '#').
+    Preserve official govt URLs exactly.
+    For sarkariresult.com URLs → replace domain with naukridhaba.in,
+    keeping the full path so our pages are reachable at the same slug.
+    Relative paths → resolve against naukridhaba.in.
     """
     if not url:
         return '#'
     u = url.strip()
 
+    # Relative path from sarkariresult → prefix our domain
     if u.startswith('/'):
-        return '#'
+        return f'https://www.naukridhaba.in{u}'
 
     if not u.startswith('http'):
         return '#'
 
-    # Drop any URL from a known source site
-    if _SOURCE_DOMAINS_RE.search(u):
-        return '#'
-
+    # Replace sarkariresult domain, keep full path intact
+    u = re.sub(
+        r'(?i)https?://(?:www\.)?sarkariresults?\.(?:com|org|in)',
+        'https://www.naukridhaba.in',
+        u
+    )
     return u
 
 
@@ -274,39 +197,225 @@ def item_id(title: str, dept: str) -> str:
     return hashlib.md5(f"{title.lower().strip()}|{dept.lower().strip()}".encode()).hexdigest()[:14]
 
 
-def build_unique_desc(d: dict, dept: str) -> str:
-    """Build a unique, data-rich description paragraph from scraped fields."""
-    parts = []
-    org = dept if dept and dept != 'Government' else None
+def normalize_url(url: str, base_url: str = BASE) -> str:
+    """Normalize relative links to absolute URLs without rewriting the host."""
+    if not url:
+        return '#'
+    candidate = url.strip()
+    if not candidate or candidate.startswith(('javascript:', 'mailto:', 'tel:', '#')):
+        return '#'
+    if candidate.startswith('/'):
+        return urljoin(base_url, candidate)
+    if not candidate.startswith('http'):
+        return urljoin(base_url, candidate)
+    return candidate
 
-    if org:
-        parts.append(f"{org} has released an official notification for {d['title']}.")
-    else:
-        parts.append(f"An official notification has been released for {d['title']}.")
 
-    if d.get('total_posts') and str(d['total_posts']).strip() not in ('', 'Check Notification'):
-        parts.append(f"Total vacancies: {d['total_posts']} posts.")
+def is_public_redirect(url: str) -> bool:
+    if not url or url == '#':
+        return False
+    candidate = url.strip()
+    if candidate.startswith(REDIRECT_PATH):
+        return True
+    if not candidate.startswith('http'):
+        return False
+    parsed = urlparse(candidate)
+    site_host = urlparse(SITE_URL).netloc.lower()
+    return parsed.netloc.lower() == site_host and parsed.path == REDIRECT_PATH
 
-    if d.get('last_date') and d['last_date'] not in ('Check Notification', 'As per Schedule', ''):
-        parts.append(f"Last date to apply online is {d['last_date']}.")
 
-    age_parts = []
-    if d.get('age_min'):
-        age_parts.append(str(d['age_min']))
-    if d.get('age_max'):
-        age_parts.append(str(d['age_max']))
-    if len(age_parts) == 2:
-        parts.append(f"Candidates aged {age_parts[0]}–{age_parts[1]} years are eligible.")
+def is_source_url(url: str) -> bool:
+    if not url or url == '#':
+        return False
+    return urlparse(url).netloc.lower() in SOURCE_HOSTS
 
-    if d.get('fee_general') and d['fee_general'] not in ('Nil', '', 'Check Notification'):
-        parts.append(f"Application fee for General/OBC candidates is {d['fee_general']}.")
 
-    if d.get('apply_url') and d['apply_url'] != '#':
-        domain = urlparse(d['apply_url']).netloc.replace('www.', '')
-        if domain and ('gov.in' in domain or 'nic.in' in domain):
-            parts.append(f"Apply at the official website: {domain}.")
+def is_official_url(url: str) -> bool:
+    if not url or url == '#':
+        return False
+    parsed = urlparse(url)
+    if parsed.scheme not in ('http', 'https'):
+        return False
+    host = parsed.netloc.lower()
+    if host in SOURCE_HOSTS or host.endswith('naukridhaba.in'):
+        return False
+    return True
 
-    return ' '.join(parts)
+
+def build_source_redirect(url: str) -> str:
+    if not url or url == '#':
+        return ''
+    return f'{REDIRECT_PATH}?target={quote(url, safe="")}'
+
+
+def to_public_url(url: str) -> str:
+    if is_public_redirect(url):
+        return ''
+    normalized = normalize_url(url)
+    if normalized == '#':
+        return ''
+    if is_public_redirect(normalized):
+        return ''
+    return official_url_or_empty(normalized)
+
+
+def primary_cta_url(url: str, source_detail_url: str) -> str:
+    if is_public_redirect(url):
+        return ''
+    normalized = normalize_url(url)
+    if is_public_redirect(normalized):
+        return ''
+    return official_url_or_empty(normalized)
+
+
+def normalize_title(text: str) -> str:
+    title = clean(sanitize(text))
+    title = re.sub(rf'\s*\|\s*{re.escape(SITE_NAME)}.*$', '', title, flags=re.I)
+    title = re.sub(r'\b(\d{4})\s+\1\b', r'\1', title)
+    title = re.sub(r'([A-Za-z0-9])(?=(Apply Online|Result|Admit Card))', r'\1 ', title)
+    title = re.sub(r'\b(20\d{2})\s+(Apply Online|Result|Admit Card)\s+\1\b', r'\1 \2', title)
+    return clean(title)
+
+
+def parse_display_date(text: str) -> str:
+    return clean(text) or 'Check Notification'
+
+
+def to_iso_date(text: str) -> str | None:
+    value = clean(text)
+    if not value:
+        return None
+    for fmt in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
+        try:
+            return datetime.strptime(value, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return None
+
+
+DATE_VALUE_RE = re.compile(
+    r'(\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|today|tomorrow|declared|released|available|schedule|soon)',
+    re.I,
+)
+FEE_VALUE_RE = re.compile(r'(free|no application|rs\.?|inr|/-|₹|\d)', re.I)
+
+
+def looks_like_date_value(text: str) -> bool:
+    return bool(DATE_VALUE_RE.search(clean(text)))
+
+
+def looks_like_fee_value(text: str) -> bool:
+    return bool(FEE_VALUE_RE.search(clean(text)))
+
+
+def first_value_cell(cells: list[Tag]) -> str:
+    values = []
+    for cell in cells[1:]:
+        value = clean(cell.get_text(" ", strip=True))
+        if value:
+            values.append(value)
+    return values[0] if values else ''
+
+
+def official_url_or_empty(url: str) -> str:
+    if is_public_redirect(url):
+        return ''
+    normalized = normalize_url(url)
+    if is_official_url(normalized):
+        return normalized
+    return ''
+
+
+def summary_sentence(parts: list[str]) -> str:
+    return ' '.join(part for part in parts if part)
+
+
+def build_job_overview(d: dict) -> str:
+    title = normalize_title(d.get('title', ''))
+    dept = clean(d.get('dept', 'Government'))
+    posts = str(d.get('total_posts') or '').strip()
+    parts = [
+        f"{title} is listed under {dept} recruitment updates on {SITE_NAME}.",
+        f"The current application deadline is {d.get('last_date', 'Check Notification')}.",
+        f"Total advertised posts: {posts}." if posts else '',
+        f"Baseline age range in the extracted notice is {d.get('age_min', 18)} to {d.get('age_max', 35)} years.",
+        "Use the official notification and authority portal below to verify the latest eligibility, category relaxation, and document rules before applying.",
+    ]
+    bullets = [
+        f"<li><strong>Department:</strong> {dept}</li>",
+        f"<li><strong>Application window:</strong> {d.get('app_begin', 'Check Notification')} to {d.get('last_date', 'Check Notification')}</li>",
+        f"<li><strong>Qualification:</strong> {d.get('qualification', 'Check Notification')}</li>",
+        f"<li><strong>Selection context:</strong> Track updates here, but submit only on the official authority site.</li>",
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Role Snapshot</h3>'
+        f'<p style="line-height:1.9;color:#444;">{summary_sentence(parts)}</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(bullets)}</ul>'
+        '</div>'
+    )
+
+
+def build_result_overview(d: dict) -> str:
+    title = normalize_title(d.get('title', ''))
+    dept = clean(d.get('dept', 'Government'))
+    parts = [
+        f"{title} has been added to the {SITE_NAME} result tracker for {dept}.",
+        f"The extracted result update date is {d.get('result_date', 'Check Notification')}.",
+        "Use the official result portal or scorecard link below to validate roll number lookup, cutoff, and final selection status.",
+    ]
+    bullets = [
+        f"<li><strong>Authority:</strong> {dept}</li>",
+        f"<li><strong>Result date:</strong> {d.get('result_date', 'Check Notification')}</li>",
+        f"<li><strong>Best next step:</strong> keep your registration details ready before opening the official result portal.</li>",
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Result Summary</h3>'
+        f'<p style="line-height:1.9;color:#444;">{summary_sentence(parts)}</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(bullets)}</ul>'
+        '</div>'
+    )
+
+
+def build_admit_overview(d: dict) -> str:
+    title = normalize_title(d.get('title', ''))
+    dept = clean(d.get('dept', 'Government'))
+    parts = [
+        f"{title} is available in the {SITE_NAME} admit-card tracker for {dept}.",
+        f"The extracted release date is {d.get('admit_release', 'Check Notification')}.",
+        f"The current exam schedule reference is {d.get('exam_date', 'As per Schedule')}.",
+        "Verify reporting time, exam city, and document rules on the official authority page before travelling.",
+    ]
+    bullets = [
+        f"<li><strong>Authority:</strong> {dept}</li>",
+        f"<li><strong>Release date:</strong> {d.get('admit_release', 'Check Notification')}</li>",
+        f"<li><strong>Exam schedule:</strong> {d.get('exam_date', 'As per Schedule')}</li>",
+    ]
+    return (
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h3 style="color:var(--primary);margin-top:0;">Exam Access Summary</h3>'
+        f'<p style="line-height:1.9;color:#444;">{summary_sentence(parts)}</p>'
+        f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(bullets)}</ul>'
+        '</div>'
+    )
+
+
+def dedupe_keywords(*parts: str) -> str:
+    seen = set()
+    items = []
+    for part in parts:
+        if not part:
+            continue
+        for token in [clean(x) for x in str(part).split(',')]:
+            if not token:
+                continue
+            key = token.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            items.append(token)
+    return ', '.join(items)
 
 
 def get_category(text: str) -> str:
@@ -330,6 +439,143 @@ def save_seen(seen: set):
     SEEN_FILE.write_text(json.dumps(sorted(seen), indent=2))
 
 
+TRACKING_PLACEHOLDERS = {
+    'googleAnalytics4': {'G-XXXXXXXXXX'},
+    'googleTagManager': {'GTM-XXXXXXX'},
+    'googleSearchConsole': {'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'},
+}
+
+
+def load_tracking_config() -> dict:
+    if not TRACKING_CONFIG_FILE.exists():
+        return {}
+    try:
+        return json.loads(TRACKING_CONFIG_FILE.read_text(encoding='utf-8'))
+    except Exception:
+        return {}
+
+
+TRACKING_CONFIG = load_tracking_config()
+
+
+def tracking_value(section: str, field: str) -> str:
+    return clean((TRACKING_CONFIG.get(section) or {}).get(field, ''))
+
+
+def tracking_enabled(section: str, field: str) -> bool:
+    value = tracking_value(section, field)
+    enabled = bool((TRACKING_CONFIG.get(section) or {}).get('enabled'))
+    return enabled and value not in TRACKING_PLACEHOLDERS.get(section, set())
+
+
+def detail_consent_bootstrap_markup() -> str:
+    consent = TRACKING_CONFIG.get('consentMode', {})
+    if not consent.get('enabled'):
+        return ''
+
+    storage_key = escape(clean(consent.get('storageKey', 'nd_consent_v1')), quote=True)
+    default_mode = escape(clean(consent.get('defaultMode', 'reject')), quote=True)
+    wait_for_update = int(consent.get('waitForUpdateMs', 500) or 500)
+    return '\n'.join([
+        '    <script>',
+        '      (function(w){',
+        f'        var consentKey = "{storage_key}";',
+        f'        var defaultMode = "{default_mode}";',
+        f'        var waitForUpdate = {wait_for_update};',
+        '        var denied = {ad_storage: "denied", analytics_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted", personalization_storage: "denied"};',
+        '        var analyticsGranted = {ad_storage: "denied", analytics_storage: "granted", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted", personalization_storage: "denied"};',
+        '        var allGranted = {ad_storage: "granted", analytics_storage: "granted", ad_user_data: "granted", ad_personalization: "granted", functionality_storage: "granted", security_storage: "granted", personalization_storage: "granted"};',
+        '        function cloneState(state){ return JSON.parse(JSON.stringify(state)); }',
+        '        function readStoredMode(){',
+        '          try {',
+        '            var raw = w.localStorage.getItem(consentKey);',
+        '            if (!raw) { return ""; }',
+        '            var parsed = JSON.parse(raw);',
+        '            return parsed && parsed.mode ? parsed.mode : "";',
+        '          } catch (err) {',
+        '            return "";',
+        '          }',
+        '        }',
+        '        function modeToState(mode){',
+        '          if (mode === "all") return cloneState(allGranted);',
+        '          if (mode === "analytics") return cloneState(analyticsGranted);',
+        '          return cloneState(denied);',
+        '        }',
+        '        w.dataLayer = w.dataLayer || [];',
+        '        w.gtag = w.gtag || function(){w.dataLayer.push(arguments);};',
+        '        var initialMode = readStoredMode() || defaultMode;',
+        '        var initialState = modeToState(initialMode);',
+        '        initialState.wait_for_update = waitForUpdate;',
+        '        w.NAUKRI_DHABA_CONSENT_KEY = consentKey;',
+        '        w.NAUKRI_DHABA_CONSENT_STATE = modeToState(initialMode);',
+        '        w.gtag("consent", "default", initialState);',
+        '        w.gtag("set", "ads_data_redaction", true);',
+        '        w.gtag("set", "url_passthrough", true);',
+        '      })(window);',
+        '    </script>',
+    ])
+
+
+def detail_head_tracking_markup() -> str:
+    serialized_config = json.dumps(
+        TRACKING_CONFIG,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).replace("</", "<\\/")
+    lines = [
+        f'    <script>window.NAUKRI_DHABA_TRACKING_CONFIG = {serialized_config};</script>'
+    ]
+
+    if tracking_enabled('googleSearchConsole', 'verificationCode'):
+        lines.append(
+            f'    <meta name="google-site-verification" content="{escape(tracking_value("googleSearchConsole", "verificationCode"), quote=True)}">'
+        )
+
+    consent_markup = detail_consent_bootstrap_markup()
+    if consent_markup:
+        lines.append(consent_markup)
+
+    if tracking_enabled('googleTagManager', 'containerId'):
+        container_id = escape(tracking_value('googleTagManager', 'containerId'), quote=True)
+        lines.extend([
+            '    <!-- Google Tag Manager -->',
+            '    <script>',
+            '      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":',
+            '      new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],',
+            '      j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=',
+            '      "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);',
+            f'      }})(window,document,"script","dataLayer","{container_id}");',
+            '    </script>',
+            '    <!-- End Google Tag Manager -->',
+        ])
+    elif tracking_enabled('googleAnalytics4', 'measurementId'):
+        measurement_id = escape(tracking_value('googleAnalytics4', 'measurementId'), quote=True)
+        lines.extend([
+            f'    <script async src="https://www.googletagmanager.com/gtag/js?id={measurement_id}"></script>',
+            '    <script>',
+            '      window.dataLayer = window.dataLayer || [];',
+            '      function gtag(){dataLayer.push(arguments);}',
+            '      gtag("js", new Date());',
+            f'      gtag("config", "{measurement_id}");',
+            '    </script>',
+        ])
+
+    lines.append('    <script src="../../js/tracking.js"></script>')
+    return '\n'.join(lines)
+
+
+def detail_body_tracking_markup() -> str:
+    if not tracking_enabled('googleTagManager', 'containerId'):
+        return ''
+    container_id = escape(tracking_value('googleTagManager', 'containerId'), quote=True)
+    return (
+        '    <!-- Google Tag Manager (noscript) -->\n'
+        f'    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={container_id}" '
+        'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\n'
+        '    <!-- End Google Tag Manager (noscript) -->'
+    )
+
+
 # ══════════════════════════════════════════════════════════
 # HTTP FETCHER
 # ══════════════════════════════════════════════════════════
@@ -337,18 +583,35 @@ def save_seen(seen: set):
 _session = requests.Session()
 _session.headers.update(HEADERS)
 
+_cf_session = None
+if cloudscraper is not None:
+    try:
+        _cf_session = cloudscraper.create_scraper(
+            browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
+        )
+        _cf_session.headers.update(HEADERS)
+    except Exception as exc:
+        log.warning(f'Cloudscraper init failed, falling back to requests: {exc}')
+        _cf_session = None
+
 def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
+    sessions = [_session]
+    if _cf_session is not None:
+        sessions.insert(0, _cf_session)
+
     for attempt in range(1, retries + 1):
-        try:
-            log.debug(f'GET {url}')
-            r = _session.get(url, timeout=TIMEOUT)
-            r.raise_for_status()
-            time.sleep(DELAY)
-            return BeautifulSoup(r.content, 'lxml')
-        except Exception as exc:
-            log.warning(f'Attempt {attempt}/{retries} failed for {url}: {exc}')
-            if attempt < retries:
-                time.sleep(DELAY * attempt)
+        for idx, session in enumerate(sessions):
+            client_name = 'cloudscraper' if idx == 0 and _cf_session is not None else 'requests'
+            try:
+                log.debug(f'GET {url} via {client_name}')
+                r = session.get(url, timeout=TIMEOUT)
+                r.raise_for_status()
+                time.sleep(DELAY)
+                return BeautifulSoup(r.content, 'lxml')
+            except Exception as exc:
+                log.warning(f'Attempt {attempt}/{retries} via {client_name} failed for {url}: {exc}')
+        if attempt < retries:
+            time.sleep(DELAY * attempt)
     log.error(f'Giving up on {url}')
     return None
 
@@ -378,7 +641,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
     items = []
 
     # Try several known wrapper selectors in priority order.
-    # Covers sarkariresult (TableLi / post-list), freejobalert (entry-content tables),
+    # Covers sarkariresult (TableLi/post-list), freejobalert (entry-content tables),
     # rojgarresult/sarkariexam (similar table-based layouts).
     containers = (
         soup.select('#post-list table tr') or
@@ -388,7 +651,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
         soup.select('article table tr') or
         soup.select('.entry-content table tr') or
         soup.select('.post-content table tr') or
-        soup.select('table tr')          # Fallback: all tables
+        soup.select('table tr')
     )
 
     for tr in containers:
@@ -437,24 +700,106 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
         if title.lower() in ('post name', 'latest jobs', 'results', 'admit card', '#', ''):
             continue
 
+        if not kind_matches_title(title, page_type):
+            continue
+
         items.append({
-            'title':      sanitize(title),
+            'title':      normalize_title(title),
             'dept':       sanitize(dept) if dept else infer_dept(title),
-            'date_str':   sanitize(date_str),
+            'date_str':   parse_display_date(date_str),
             'detail_url': detail_url,
+            'source_detail_url': detail_url,
             'page_type':  page_type,
         })
 
     log.info(f'  Listing parser found {len(items)} raw rows')
+    if len(items) <= 3:
+        items = parse_listing_from_anchors(soup, page_type)
+        log.info(f'  Anchor fallback found {len(items)} raw rows')
+    return items
+
+
+def listing_text_matches(title: str, page_type: str) -> bool:
+    text = title.lower()
+    if page_type == 'job':
+        return bool(re.search(r'online form|recruitment|vacancy|admission|registration|apply|correction|edit form', text))
+    if page_type == 'result':
+        return bool(re.search(r'result|merit|score\s*card|marks|cutoff|selection list', text))
+    if page_type == 'admit':
+        return bool(re.search(r'admit card|exam city|hall ticket|call letter|exam date', text))
+    return False
+
+
+def kind_matches_title(title: str, kind: str) -> bool:
+    text = normalize_title(title)
+    if kind == 'job':
+        return (
+            listing_text_matches(text, 'job')
+            and not listing_text_matches(text, 'result')
+            and not listing_text_matches(text, 'admit')
+        )
+    if kind == 'result':
+        return listing_text_matches(text, 'result')
+    if kind == 'admit':
+        return listing_text_matches(text, 'admit')
+    return True
+
+
+def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict]:
+    items = []
+    seen = set()
+    max_items = 150
+    skip_paths = {
+        'latestjob', 'result', 'admitcard', 'syllabus', 'answerkey', 'admission',
+        'boardall', 'contactus', 'search', 'videozone', 'archive', 'top10',
+    }
+
+    for anchor in soup.find_all('a', href=True):
+        title = clean(anchor.get_text(" ", strip=True))
+        if len(title) < 8 or not listing_text_matches(title, page_type):
+            continue
+
+        detail_url = normalize_url(anchor.get('href', ''))
+        if detail_url == '#':
+            continue
+
+        parsed = urlparse(detail_url)
+        path_parts = [part for part in parsed.path.split('/') if part]
+        if parsed.netloc.lower() not in SOURCE_HOSTS or len(path_parts) < 2:
+            continue
+        if path_parts[0].lower() in skip_paths:
+            continue
+
+        dedupe_key = (title.lower(), detail_url.lower())
+        if dedupe_key in seen:
+            continue
+        seen.add(dedupe_key)
+
+        items.append({
+            'title': normalize_title(title),
+            'dept': infer_dept(title),
+            'date_str': 'Check Notification',
+            'detail_url': detail_url,
+            'source_detail_url': detail_url,
+            'page_type': page_type,
+        })
+        if len(items) >= max_items:
+            break
+
     return items
 
 
 def infer_dept(title: str) -> str:
     """Guess department from post title."""
     tu = title.upper()
-    for key, cat in DEPT_MAP.items():
-        if key in tu:
-            return key
+    matches = []
+    for key in DEPT_MAP:
+        pos = tu.find(key)
+        if pos >= 0:
+            matches.append((pos, -len(key), key))
+    if matches:
+        matches.sort()
+        return matches[0][2]
     return 'Government'
 
 
@@ -499,6 +844,7 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
     d.setdefault('result_url',        '#')
     d.setdefault('scorecard_url',     '#')
     d.setdefault('admit_url',         '#')
+    d.setdefault('source_detail_url', d.get('detail_url', ''))
     d.setdefault('app_begin',         'Check Notification')
     d.setdefault('last_date',         d.get('date_str', 'Check Notification'))
     d.setdefault('exam_date',         'As per Schedule')
@@ -530,29 +876,29 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
             continue
 
         label = clean(cells[0].get_text()).lower()
-        val   = clean(cells[1].get_text()) if len(cells) > 1 else ''
+        val = first_value_cell(cells)
 
         # ── Important Dates ──────────────────────────────
-        if re.search(r'application\s*begin|apply\s*start', label):
+        if re.search(r'application\s*begin|apply\s*start', label) and looks_like_date_value(val):
             d['app_begin'] = sanitize(val) or d['app_begin']
 
-        elif re.search(r'last\s*date|closing\s*date', label):
+        elif re.search(r'last\s*date|closing\s*date', label) and looks_like_date_value(val):
             d['last_date'] = sanitize(val) or d['last_date']
 
-        elif re.search(r'exam\s*date|examination\s*date', label):
+        elif re.search(r'exam\s*date|examination\s*date', label) and looks_like_date_value(val):
             d['exam_date'] = sanitize(val) or d['exam_date']
 
-        elif re.search(r'result\s*date|declaration\s*date', label):
+        elif re.search(r'result\s*date|declaration\s*date', label) and looks_like_date_value(val):
             d['result_date'] = sanitize(val) or d['result_date']
 
-        elif re.search(r'admit\s*card\s*date|hall\s*ticket\s*date', label):
+        elif re.search(r'admit\s*card\s*date|hall\s*ticket\s*date', label) and looks_like_date_value(val):
             d['admit_release'] = sanitize(val) or d['admit_release']
 
         # ── Application Fee ──────────────────────────────
-        elif re.search(r'general|obc|ews|unreserved', label) and re.search(r'\d', val):
+        elif re.search(r'general|obc|ews|unreserved', label) and looks_like_fee_value(val):
             d['fee_general'] = sanitize(val)
 
-        elif re.search(r'sc\s*/\s*st|scheduled', label) and re.search(r'\d', val):
+        elif re.search(r'sc\s*/\s*st|scheduled', label) and looks_like_fee_value(val):
             d['fee_sc_st'] = sanitize(val)
 
         # ── Age Limit ────────────────────────────────────
@@ -603,7 +949,7 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
             link_cell = cells[1]
             anchors = link_cell.find_all('a')
             for a in anchors:
-                href = sanitize_url(a.get('href', ''))
+                href = normalize_url(a.get('href', ''))
                 link_text = clean(a.get_text())
 
                 if re.search(r'apply\s*online|register', label + ' ' + link_text, re.I):
@@ -638,7 +984,7 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
         raw_href = a.get('href', '')
         if not raw_href:
             continue
-        href_clean = sanitize_url(urljoin(BASE, raw_href))
+        href_clean = normalize_url(raw_href)
         if href_clean == '#':
             continue
         link_text = clean(a.get_text())
@@ -659,6 +1005,29 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
             if href_clean not in seen_urls:
                 seen_urls.add(href_clean)
                 d['extra_links'].append({'label': lbl, 'url': href_clean})
+
+    d['title'] = normalize_title(d.get('title', ''))
+    d['last_date'] = parse_display_date(d.get('last_date'))
+    d['result_date'] = parse_display_date(d.get('result_date'))
+    d['admit_release'] = parse_display_date(d.get('admit_release'))
+    d['apply_url'] = primary_cta_url(d.get('apply_url'), d.get('source_detail_url', ''))
+    d['result_url'] = primary_cta_url(d.get('result_url'), d.get('source_detail_url', ''))
+    d['admit_url'] = primary_cta_url(d.get('admit_url'), d.get('source_detail_url', ''))
+    d['notification_url'] = to_public_url(d.get('notification_url'))
+    d['scorecard_url'] = to_public_url(d.get('scorecard_url'))
+
+    public_links = []
+    public_seen = set()
+    for lnk in d['extra_links']:
+        public_url = to_public_url(lnk.get('url', ''))
+        if public_url == '#':
+            continue
+        key = (lnk.get('label', ''), public_url)
+        if key in public_seen:
+            continue
+        public_seen.add(key)
+        public_links.append({'label': lnk.get('label', 'Official Link'), 'url': public_url})
+    d['extra_links'] = public_links
 
     return d
 
@@ -729,7 +1098,7 @@ def _footer() -> str:
     <div class="footer__grid">
       <div>
         <h3 class="footer__title">📋 {SITE_NAME}</h3>
-        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Your gateway to Sarkari Naukri. Latest govt jobs, results and admit cards.</p>
+        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
         <a href="https://t.me/naukridhaba" class="share-btn share-btn--telegram" style="margin-top:1rem;display:inline-block;">Join Telegram</a>
       </div>
       <div>
@@ -775,13 +1144,12 @@ def _footer() -> str:
 
 
 def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: str = '') -> str:
-    cat  = get_category(dept)
+    title = normalize_title(title)
+    cat = get_category(dept)
     base_kw = SEO_KW.get(cat, SEO_KW['government'])
-    kw = f"{base_kw}, {title}, {dept} 2026, Sarkari Naukri, {SITE_NAME}"
-    if keywords_extra:
-        kw += ', ' + keywords_extra
+    kw = dedupe_keywords(base_kw, title, f'{dept} Jobs', 'Government Jobs India', keywords_extra, SITE_NAME)
     og_title = f"{title} | {SITE_NAME}"
-    desc_safe = (desc or og_title)[:160]
+    desc_safe = clean(desc or og_title)[:160]
     return f'''    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} | {SITE_NAME}</title>
@@ -802,12 +1170,12 @@ def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: 
     <meta name="geo.region" content="IN">
     <meta name="geo.placename" content="India">
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/tracking.js"></script>'''
+{detail_head_tracking_markup()}'''
 
 
 # ── Job Page ───────────────────────────────────────────────
 def build_job_page(d: dict) -> tuple[str, str]:
-    title  = d['title']
+    title  = normalize_title(d['title'])
     dept   = d.get('dept', 'Government')
     cat    = get_category(dept)
     slug   = slugify(title)
@@ -816,27 +1184,25 @@ def build_job_page(d: dict) -> tuple[str, str]:
     year   = date.today().year
 
     posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
-    desc = build_unique_desc(d, dept)
+    desc = (
+        f"{title}: {dept} has released notification. "
+        f"Last date: {d['last_date']}. Apply online at {SITE_NAME}."
+    )
+    apply_href = d.get('apply_url') or ''
+    notification_href = d.get('notification_url') or ''
 
     apply_btn = (
-        f'<a href="{d["apply_url"]}" target="_blank" rel="noopener" '
+        f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
-        if d.get('apply_url') and d['apply_url'] != '#'
+        if apply_href
         else '<span class="btn btn--primary btn--large" style="opacity:.6;cursor:default;">🚀 Apply Link Coming Soon</span>'
     )
-    if d.get('notification_url') and d['notification_url'] != '#':
-        notif_btn = (
-            f'<a href="{d["notification_url"]}" target="_blank" rel="noopener" '
-            f'class="btn btn--secondary btn--large">📄 Download Notification</a>'
-        )
-    else:
-        # No notification URL scraped — open Google search so user can find it
-        from urllib.parse import quote_plus
-        q = quote_plus(f'{title} official notification PDF')
-        notif_btn = (
-            f'<a href="https://www.google.com/search?q={q}" target="_blank" rel="noopener" '
-            f'class="btn btn--secondary btn--large">🔍 Search Notification on Google</a>'
-        )
+    notif_btn = (
+        f'<a href="{notification_href}" target="_blank" rel="nofollow noopener noreferrer" '
+        f'class="btn btn--secondary btn--large">📄 Download Notification</a>'
+        if notification_href and notification_href != '#'
+        else ''
+    )
 
     # Extra links section
     extra_html = ''
@@ -872,7 +1238,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
         "title": title,
         "description": desc,
         "datePosted": date.today().isoformat(),
-        "validThrough": d['last_date'],
+        "validThrough": to_iso_date(d['last_date']) or date.today().isoformat(),
         "employmentType": "FULL_TIME",
         "hiringOrganization": {"@type": "Organization", "name": dept},
         "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressCountry": "IN"}},
@@ -899,6 +1265,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
+{detail_body_tracking_markup()}
 {_header('jobs')}
 
 <div class="content-wrapper container" style="margin-top:2rem;">
@@ -911,8 +1278,6 @@ def build_job_page(d: dict) -> tuple[str, str]:
       <h1 style="color:var(--primary);margin-bottom:.5rem;">
         {title} <span style="background:var(--secondary);color:#fff;padding:4px 12px;border-radius:4px;font-size:1rem;">{year}</span>
       </h1>
-
-      <p style="color:#555;font-size:1rem;line-height:1.7;margin:.75rem 0 1.25rem;">{desc}</p>
 
       <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
 
@@ -959,6 +1324,8 @@ def build_job_page(d: dict) -> tuple[str, str]:
 
       {fee_section}
 
+      {build_job_overview(d)}
+
       <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
 
       <div class="calculator">
@@ -986,12 +1353,12 @@ def build_job_page(d: dict) -> tuple[str, str]:
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
         <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply / आवेदन कैसे करें</h3>
         <ol style="line-height:2.2;">
-          <li>Click on <strong>"Apply Online"</strong> button above</li>
-          <li>Register on official website with email and mobile number</li>
+          <li>Use the official authority portal linked above, not third-party mirrors.</li>
+          <li>Verify district, category, and document rules before you create an account.</li>
           <li>Fill the application form carefully / फॉर्म ध्यानपूर्वक भरें</li>
-          <li>Upload required documents (Photo, Signature, Certificates)</li>
-          <li>Pay application fee online (if applicable)</li>
-          <li>Submit and save/print the confirmation page</li>
+          <li>Upload only the files and dimensions allowed in the official notice.</li>
+          <li>Pay the fee only after you confirm the form preview and eligibility details.</li>
+          <li>Save the final application number, preview, and receipt for later stages.</li>
         </ol>
       </div>
 
@@ -1017,7 +1384,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
 
 # ── Result Page ────────────────────────────────────────────
 def build_result_page(d: dict) -> tuple[str, str]:
-    title = d['title']
+    title = normalize_title(d['title'])
     dept  = d.get('dept', 'Government')
     cat   = get_category(dept)
     slug  = slugify(title)
@@ -1026,18 +1393,20 @@ def build_result_page(d: dict) -> tuple[str, str]:
     rel   = f'results/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"{title}: Result declared. Check your result at {SITE_NAME}. Result date: {d['result_date']}."
+    result_href = d.get('result_url') or ''
+    scorecard_href = d.get('scorecard_url') or ''
 
     check_btn = (
-        f'<a href="{d["result_url"]}" target="_blank" rel="noopener" '
+        f'<a href="{result_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
         f'🎯 Check Result / परिणाम देखें</a>'
-        if d.get('result_url') and d['result_url'] != '#'
-        else '<a href="#" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;">🎯 Result Link Coming Soon</a>'
+        if result_href
+        else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">🎯 Result Link Coming Soon</span>'
     )
     scorecard_btn = (
-        f'<a href="{d["scorecard_url"]}" target="_blank" rel="noopener" '
+        f'<a href="{scorecard_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--secondary btn--large" style="display:inline-block;margin-bottom:1rem;">📄 Download Scorecard</a>'
-        if d.get('scorecard_url') and d['scorecard_url'] != '#'
+        if scorecard_href and scorecard_href != '#'
         else ''
     )
 
@@ -1055,12 +1424,11 @@ def build_result_page(d: dict) -> tuple[str, str]:
 
     ld_ev = json.dumps({
         "@context": "https://schema.org",
-        "@type": "Event",
+        "@type": "WebPage",
         "name": title,
         "description": desc,
-        "startDate": date.today().isoformat(),
-        "organizer": {"@type": "Organization", "name": dept},
-        "location": {"@type": "VirtualLocation", "url": canon}
+        "url": canon,
+        "about": {"@type": "Organization", "name": dept}
     }, ensure_ascii=False)
 
     ld_bc = json.dumps({
@@ -1083,6 +1451,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
+{detail_body_tracking_markup()}
 {_header('results')}
 
 <div class="content-wrapper container" style="margin-top:2rem;">
@@ -1111,11 +1480,11 @@ def build_result_page(d: dict) -> tuple[str, str]:
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
         <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result / परिणाम कैसे देखें</h3>
         <ol style="line-height:2.2;">
-          <li>Click on <strong>"Check Result"</strong> button above</li>
-          <li>Enter your Roll Number / Registration ID</li>
-          <li>Enter Date of Birth if required</li>
-          <li>View your result and download / save it</li>
-          <li>Take a printout for future reference</li>
+          <li>Open the official result portal linked above.</li>
+          <li>Keep your roll number or registration number ready before loading the page.</li>
+          <li>Match your name, category, and stage of exam carefully after login.</li>
+          <li>Download the result or scorecard PDF from the authority site when available.</li>
+          <li>Keep a saved copy for document verification, counselling, or joining steps.</li>
         </ol>
       </div>
 
@@ -1141,7 +1510,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
 
 # ── Admit Card Page ────────────────────────────────────────
 def build_admit_page(d: dict) -> tuple[str, str]:
-    title = d['title']
+    title = normalize_title(d['title'])
     dept  = d.get('dept', 'Government')
     cat   = get_category(dept)
     slug  = slugify(title)
@@ -1150,13 +1519,14 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     rel   = f'admit-cards/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {d['exam_date']}."
+    admit_href = d.get('admit_url') or ''
 
     dl_btn = (
-        f'<a href="{d["admit_url"]}" target="_blank" rel="noopener" '
+        f'<a href="{admit_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
         f'📥 Download Admit Card / हॉल टिकट डाउनलोड करें</a>'
-        if d.get('admit_url') and d['admit_url'] != '#'
-        else '<a href="#" class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;">📥 Admit Card Link Coming Soon</a>'
+        if admit_href
+        else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">📥 Admit Card Link Coming Soon</span>'
     )
 
     extra_html = ''
@@ -1173,12 +1543,11 @@ def build_admit_page(d: dict) -> tuple[str, str]:
 
     ld_ev = json.dumps({
         "@context": "https://schema.org",
-        "@type": "Event",
+        "@type": "WebPage",
         "name": title,
         "description": desc,
-        "startDate": date.today().isoformat(),
-        "organizer": {"@type": "Organization", "name": dept},
-        "location": {"@type": "VirtualLocation", "url": canon}
+        "url": canon,
+        "about": {"@type": "Organization", "name": dept}
     }, ensure_ascii=False)
 
     ld_bc = json.dumps({
@@ -1201,6 +1570,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
+{detail_body_tracking_markup()}
 {_header('admit-cards')}
 
 <div class="content-wrapper container" style="margin-top:2rem;">
@@ -1229,11 +1599,11 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
         <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions / महत्वपूर्ण निर्देश</h3>
         <ul style="line-height:1.8;">
-          <li>Carry <strong>printed admit card</strong> (colour preferred)</li>
-          <li>Bring valid <strong>photo ID</strong> (Aadhar / PAN / Voter ID)</li>
-          <li>Reach centre <strong>1 hour before</strong> reporting time</li>
-          <li>Verify exam date, time and centre address carefully</li>
-          <li>No electronic devices allowed (mobile, smartwatch, calculator)</li>
+          <li>Carry a printed admit card exactly as required in the official instructions.</li>
+          <li>Bring a valid photo ID that matches the admit-card identity details.</li>
+          <li>Check reporting time, gate closing time, and city or centre code before travel.</li>
+          <li>Verify exam date, shift timing, and venue address one more time on the official page.</li>
+          <li>Avoid restricted items such as phones, smartwatches, calculators, or loose papers.</li>
         </ul>
       </div>
 
@@ -1274,8 +1644,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
 
 def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
     """
-    Add new rows to the top of a listing HTML page.
-    kind: 'job' | 'result' | 'admit'
+    Legacy helper for prepend-style updates.
+    Prefer replace_listing_sections() for deterministic full rebuilds.
     """
     if not entries or not listing_file.exists():
         return
@@ -1341,22 +1711,222 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
     log.info(f'  Updated {listing_file.name} with {len(entries)} new entries')
 
 
+def build_listing_markup(entries: list[dict], kind: str, limit: int | None = None) -> tuple[str, str]:
+    entries = prepare_listing_entries(entries, kind, limit)
+    rows = []
+    cards = []
+    iterable = entries
+
+    for e in iterable:
+        title = normalize_title(e.get('title', ''))
+        dept = e.get('dept', 'Government').upper()
+
+        if kind == 'job':
+            cat = get_category(e.get('dept', ''))
+            path = f"jobs/{cat}/{slugify(title)}.html"
+            date_label = e.get('last_date', '') or e.get('date_str', '')
+            button = 'Apply'
+        elif kind == 'result':
+            cat = get_category(e.get('dept', ''))
+            slug = slugify(title)
+            if 'result' not in slug:
+                slug += '-result'
+            path = f"results/{cat}/{slug}.html"
+            date_label = e.get('result_date', '') or e.get('date_str', '')
+            button = 'View'
+        else:
+            cat = get_category(e.get('dept', ''))
+            slug = slugify(title)
+            if 'admit' not in slug and 'hall' not in slug:
+                slug += '-admit-card'
+            path = f"admit-cards/{cat}/{slug}.html"
+            date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
+            button = 'Download'
+
+        rows.append(
+            f'<tr><td>{dept}</td>'
+            f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
+            f'<td>{date_label}</td>'
+            f'<td><a href="{path}" class="btn btn--small btn--primary">{button}</a></td></tr>'
+        )
+        cards.append(
+            f'<div class="card">'
+            f'<div class="card__header"><span class="badge">{dept}</span></div>'
+            f'<h3 class="card__title">{title}</h3>'
+            f'<p style="color:#666;font-size:.875rem;">{date_label}</p>'
+            f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
+            f'</div>'
+        )
+
+    return '\n'.join(rows), '\n'.join(cards)
+
+
+def prepare_listing_entries(entries: list[dict], kind: str, limit: int | None = None) -> list[dict]:
+    cleaned = []
+    seen = set()
+    for entry in entries:
+        title = normalize_title(entry.get('title', ''))
+        if not title or not kind_matches_title(title, kind):
+            continue
+
+        dept = clean(entry.get('dept', 'Government')) or 'Government'
+        key = (title.lower(), dept.lower())
+        if key in seen:
+            continue
+        seen.add(key)
+
+        normalized = dict(entry)
+        normalized['title'] = title
+        normalized['dept'] = dept
+        cleaned.append(normalized)
+        if limit and len(cleaned) >= limit:
+            break
+    return cleaned
+
+
+def replace_listing_sections(listing_file: Path, entries: list[dict], kind: str, limit: int | None = None):
+    if not listing_file.exists():
+        return
+
+    rows_str, cards_str = build_listing_markup(entries, kind, limit=limit)
+    with open(listing_file, encoding='utf-8') as f:
+        content = f.read()
+
+    content, tbody_count = re.subn(
+        r'(<tbody>).*?(</tbody>)',
+        rf'\1{rows_str}\2',
+        content,
+        count=1,
+        flags=re.DOTALL,
+    )
+    content, cards_count = re.subn(
+        r'(<div class="cards">).*?(</div>\s*<div class="ad-slot")',
+        rf'\1{cards_str}\2',
+        content,
+        count=1,
+        flags=re.DOTALL,
+    )
+
+    with open(listing_file, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+    log.info(
+        f'  Rebuilt {listing_file.name} '
+        f'(tbody={"yes" if tbody_count else "no"}, cards={"yes" if cards_count else "no"})'
+    )
+
+
+def replace_home_jobs_section(index_file: Path, entries: list[dict], limit: int = 10):
+    if not index_file.exists():
+        return
+
+    cleaned = prepare_listing_entries(entries, 'job', limit)
+    rows_str, cards_str = build_listing_markup(cleaned, 'job')
+    section = f'''<!-- Latest Jobs -->
+<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin-bottom:2rem;">
+<h2 style="color:var(--primary);margin-top:0;display:flex;align-items:center;gap:0.5rem;">
+<span>📋</span> Latest Jobs
+                </h2>
+<div class="table-wrapper">
+<table class="table">
+<thead>
+<tr>
+<th>Department</th>
+<th>Exam/Post Name</th>
+<th>Last Date</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>{rows_str}</tbody>
+</table>
+</div>
+<div class="cards">{cards_str}</div>
+<div style="text-align:center;margin-top:1.5rem;">
+<a class="btn btn--primary" href="/latest-jobs">View All Jobs →</a>
+</div>
+</div>'''
+
+    content = index_file.read_text(encoding='utf-8')
+    content, count = re.subn(
+        r'<!-- Latest Jobs -->.*?<!-- Results & Admit Cards Grid -->',
+        section + '\n<!-- Results & Admit Cards Grid -->',
+        content,
+        count=1,
+        flags=re.DOTALL,
+    )
+    if count:
+        index_file.write_text(content, encoding='utf-8')
+        log.info('  Rebuilt index.html latest jobs section cleanly')
+
+
+def load_existing_detail_entries(kind: str) -> list[dict]:
+    if kind == 'job':
+        base = SITE_ROOT / 'jobs'
+    elif kind == 'result':
+        base = SITE_ROOT / 'results'
+    else:
+        base = SITE_ROOT / 'admit-cards'
+
+    entries = []
+    for path in sorted(base.rglob('*.html'), key=lambda p: p.stat().st_mtime, reverse=True):
+        rel = path.relative_to(SITE_ROOT).as_posix()
+        html = path.read_text(encoding='utf-8', errors='replace')
+        title_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.I | re.S)
+        title = clean(re.sub(r'<[^>]+>', '', title_match.group(1))) if title_match else normalize_title(path.stem.replace('-', ' '))
+        dept_match = re.search(r'info-item__label">[^<]*Department</span>\s*<span class="info-item__value">([^<]+)', html, re.I)
+        dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
+        date_label = 'Check Notification'
+
+        if kind == 'job':
+            match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
+            date_label = clean(match.group(1)) if match else 'Check Notification'
+            entries.append({'title': title, 'dept': dept, 'last_date': date_label})
+        elif kind == 'result':
+            match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
+            date_label = clean(match.group(1)) if match else 'Check Notification'
+            entries.append({'title': title, 'dept': dept, 'result_date': date_label})
+        else:
+            match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
+            date_label = clean(match.group(1)) if match else 'Check Notification'
+            entries.append({'title': title, 'dept': dept, 'exam_date': date_label})
+
+    return entries
+
+
 # ══════════════════════════════════════════════════════════
 # MAIN ORCHESTRATOR
 # ══════════════════════════════════════════════════════════
 
-def run():
+def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     start = datetime.now()
     log.info('=' * 60)
     log.info(f'NAUKRI DHABA SCRAPER  started {start:%Y-%m-%d %H:%M:%S IST}')
-    log.info(f'Sources: {", ".join(s["name"] for s in SOURCES)}')
+    log.info('Source: sarkariresult.com')
     log.info('=' * 60)
 
     seen = load_seen()
 
-    all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    if rebuild_only:
+        log.info('Rebuild-only mode: skipping source fetch and rebuilding listings from local detail pages.')
+        existing_jobs = load_existing_detail_entries('job')
+        existing_results = load_existing_detail_entries('result')
+        existing_admits = load_existing_detail_entries('admit')
+
+        replace_listing_sections(SITE_ROOT / 'latest-jobs.html', existing_jobs, 'job')
+        replace_home_jobs_section(SITE_ROOT / 'index.html', existing_jobs, limit=10)
+        replace_listing_sections(SITE_ROOT / 'results.html', existing_results, 'result')
+        replace_listing_sections(SITE_ROOT / 'admit-cards.html', existing_admits, 'admit')
+
+        elapsed = (datetime.now() - start).seconds
+        log.info('\n' + '=' * 60)
+        log.info(f'DONE in {elapsed}s  |  Rebuilt listings only')
+        log.info('=' * 60 + '\n')
+        return 0
 
     # ── 1. Scrape listing pages from all sources ───────────
+    all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    successful_listings = 0
+
     for source in SOURCES:
         src_name = source['name']
         src_base = source['base']
@@ -1370,17 +1940,24 @@ def run():
             if not soup:
                 log.warning(f'  [{src_name}] Could not fetch {kind} listing — skipping')
                 continue
+            successful_listings += 1
             raw = parse_listing(soup, kind, source_base=src_base)
             log.info(f'  Raw items: {len(raw)}')
 
             for item in raw:
+                if not kind_matches_title(item.get('title', ''), kind):
+                    continue
                 iid = item_id(item['title'], item['dept'])
-                if iid in seen:
+                if not refresh_existing and iid in seen:
                     log.debug(f'  [skip] already seen: {item["title"][:50]}')
                     continue
                 seen.add(iid)
                 item['source'] = src_name
                 all_items[kind].append(item)
+
+    if successful_listings == 0:
+        log.error('All source listings failed. Aborting instead of reporting a false success.')
+        return 2
 
     total_new = sum(len(v) for v in all_items.values())
     log.info(f'\nNew items to process: {total_new}  '
@@ -1393,8 +1970,7 @@ def run():
 
     for kind, items in all_items.items():
         for item in items:
-            src_label = item.get('source', 'unknown')
-            log.info(f'\n[{kind.upper()}][{src_label}] {item["title"][:60]}')
+            log.info(f'\n[{kind.upper()}] {item["title"][:60]}')
             log.info(f'  Detail URL: {item["detail_url"]}')
 
             detail_soup = fetch(item['detail_url'])
@@ -1412,23 +1988,23 @@ def run():
                 out = SITE_ROOT / rel
                 out.parent.mkdir(parents=True, exist_ok=True)
                 out.write_text(html, encoding='utf-8')
-                log.info(f'  ✅ Written: {rel}')
+                log.info(f'  Written: {rel}')
                 generated[kind].append(rich)
 
             except Exception as exc:
-                log.error(f'  ❌ Page build failed: {exc}', exc_info=True)
+                log.error(f'  Page build failed: {exc}', exc_info=True)
 
-    # ── 3. Update listing pages ────────────────────────────
-    log.info('\nUpdating listing pages…')
-    if generated['job']:
-        prepend_to_listing(SITE_ROOT / 'latest-jobs.html', generated['job'], 'job')
-        prepend_to_listing(SITE_ROOT / 'index.html',       generated['job'][:5], 'job')
+    # ── 3. Rebuild listing pages from canonical detail pages ───────────
+    # This prevents list drift, missing items, and mixed-category bleed.
+    log.info('\nRebuilding listing pages from detail pages...')
+    existing_jobs = load_existing_detail_entries('job')
+    existing_results = load_existing_detail_entries('result')
+    existing_admits = load_existing_detail_entries('admit')
 
-    if generated['result']:
-        prepend_to_listing(SITE_ROOT / 'results.html', generated['result'], 'result')
-
-    if generated['admit']:
-        prepend_to_listing(SITE_ROOT / 'admit-cards.html', generated['admit'], 'admit')
+    replace_listing_sections(SITE_ROOT / 'latest-jobs.html', existing_jobs, 'job')
+    replace_home_jobs_section(SITE_ROOT / 'index.html', existing_jobs, limit=10)
+    replace_listing_sections(SITE_ROOT / 'results.html', existing_results, 'result')
+    replace_listing_sections(SITE_ROOT / 'admit-cards.html', existing_admits, 'admit')
 
     # ── 4. Save seen set ───────────────────────────────────
     save_seen(seen)
@@ -1439,7 +2015,7 @@ def run():
     if sitemap_py.exists():
         try:
             subprocess.run([sys.executable, str(sitemap_py)], check=True, capture_output=True)
-            log.info('Sitemap regenerated ✅')
+            log.info('Sitemap regenerated')
         except Exception as e:
             log.warning(f'Sitemap generation failed: {e}')
 
@@ -1451,6 +2027,7 @@ def run():
              f'Jobs={len(generated["job"])}, Results={len(generated["result"])}, '
              f'AdmitCards={len(generated["admit"])}')
     log.info('=' * 60 + '\n')
+    return 0
 
 
 # ══════════════════════════════════════════════════════════
@@ -1461,5 +2038,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Naukri Dhaba – sarkariresult.com scraper')
     parser.add_argument('--once', action='store_true', default=True,
                         help='Run once and exit (default)')
+    parser.add_argument('--refresh-existing', action='store_true',
+                        help='Rebuild pages for items currently present on the source listings')
+    parser.add_argument('--rebuild-only', action='store_true',
+                        help='Skip source scraping and rebuild listing pages from local detail pages')
     args = parser.parse_args()
-    run()
+    raise SystemExit(run(refresh_existing=args.refresh_existing, rebuild_only=args.rebuild_only))
