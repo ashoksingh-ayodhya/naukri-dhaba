@@ -35,10 +35,11 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+          cache-dependency-path: 'scraper/requirements.txt'
 
       # ── 3. Install dependencies ───────────────────────────
       - name: Install Python dependencies
-        run: pip install requests beautifulsoup4 lxml
+        run: pip install -r scraper/requirements.txt
 
       # ── 4. Run scraper ────────────────────────────────────
       - name: Run Naukri Dhaba scraper
