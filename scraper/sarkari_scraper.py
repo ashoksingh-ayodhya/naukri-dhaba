@@ -111,6 +111,28 @@ DEPT_MAP = {
     'ARMY': 'defence', 'NAVY': 'defence', 'AIRFORCE': 'defence',
     'IAF': 'defence', 'NDA': 'defence', 'CDS': 'defence',
     'DRDO': 'defence', 'HAL': 'defence',
+    # State PSCs
+    'BPSC': 'government', 'JPSC': 'government', 'MPPSC': 'government',
+    'HPSC': 'government', 'UPPSC': 'government', 'RPSC': 'government',
+    'TNPSC': 'government', 'OPSC': 'government', 'KPSC': 'government',
+    'WBPSC': 'government', 'GPSC': 'government', 'APPSC': 'government',
+    'MPSC': 'government', 'CGPSC': 'government', 'UKPSC': 'government',
+    # National testing / education agencies
+    'NTA': 'government', 'NEET': 'government', 'JEE': 'government',
+    'CUET': 'government', 'CTET': 'government', 'GATE': 'government',
+    'JEECUP': 'government', 'CLAT': 'government', 'NIFT': 'government',
+    'NCHMJEE': 'government', 'JIPMAT': 'government',
+    # State-level boards and agencies
+    'BTSC': 'government', 'BSNL': 'government', 'IERT': 'government',
+    'MPESB': 'government', 'RSSB': 'government', 'AIIMS': 'government',
+    'CSIR': 'government', 'NHM': 'government', 'EMRS': 'government',
+    'AAI': 'government', 'IOCL': 'government', 'ONGC': 'government',
+    'NTPC': 'government', 'BHEL': 'government', 'BPCL': 'government',
+    'HPCL': 'government', 'SAIL': 'government', 'CIL': 'government',
+    'NCL': 'government', 'ECGC': 'government', 'LIC': 'government',
+    'GIC': 'government', 'SEBI': 'government', 'NIACL': 'government',
+    'INDIA POST': 'government', 'GDS': 'government',
+    'YANTRA': 'government', 'ORDNANCE': 'government',
 }
 
 # ── SEO keyword map by dept category ──────────────────────
@@ -157,33 +179,65 @@ def sanitize(text: str) -> str:
 
 def sanitize_url(url: str) -> str:
     """
-    Preserve official govt URLs exactly.
-    For sarkariresult.com URLs → replace domain with naukridhaba.in,
-    keeping the full path so our pages are reachable at the same slug.
-    Relative paths → resolve against naukridhaba.in.
+    Preserve official govt/third-party URLs exactly.
+    Sarkariresult.com internal URLs and relative paths are dropped (return '#')
+    because they either create broken links on our domain or are meaningless.
     """
     if not url:
         return '#'
     u = url.strip()
 
-    # Relative path from sarkariresult → prefix our domain
+    # Relative paths are from sarkariresult's own site — not useful to us
     if u.startswith('/'):
-        return f'https://www.naukridhaba.in{u}'
+        return '#'
 
     if not u.startswith('http'):
         return '#'
 
-    # Replace sarkariresult domain, keep full path intact
-    u = re.sub(
-        r'(?i)https?://(?:www\.)?sarkariresults?\.(?:com|org|in)',
-        'https://www.naukridhaba.in',
-        u
-    )
+    # Drop any sarkariresult.com URL — we don't mirror their URL structure
+    if re.search(r'(?i)sarkariresults?\.(?:com|org|in)', u):
+        return '#'
+
     return u
 
 
 def item_id(title: str, dept: str) -> str:
     return hashlib.md5(f"{title.lower().strip()}|{dept.lower().strip()}".encode()).hexdigest()[:14]
+
+
+def build_unique_desc(d: dict, dept: str) -> str:
+    """Build a unique, data-rich description paragraph from scraped fields."""
+    parts = []
+    org = dept if dept and dept != 'Government' else None
+
+    if org:
+        parts.append(f"{org} has released an official notification for {d['title']}.")
+    else:
+        parts.append(f"An official notification has been released for {d['title']}.")
+
+    if d.get('total_posts') and str(d['total_posts']).strip() not in ('', 'Check Notification'):
+        parts.append(f"Total vacancies: {d['total_posts']} posts.")
+
+    if d.get('last_date') and d['last_date'] not in ('Check Notification', 'As per Schedule', ''):
+        parts.append(f"Last date to apply online is {d['last_date']}.")
+
+    age_parts = []
+    if d.get('age_min'):
+        age_parts.append(str(d['age_min']))
+    if d.get('age_max'):
+        age_parts.append(str(d['age_max']))
+    if len(age_parts) == 2:
+        parts.append(f"Candidates aged {age_parts[0]}–{age_parts[1]} years are eligible.")
+
+    if d.get('fee_general') and d['fee_general'] not in ('Nil', '', 'Check Notification'):
+        parts.append(f"Application fee for General/OBC candidates is {d['fee_general']}.")
+
+    if d.get('apply_url') and d['apply_url'] != '#':
+        domain = urlparse(d['apply_url']).netloc.replace('www.', '')
+        if domain and ('gov.in' in domain or 'nic.in' in domain):
+            parts.append(f"Apply at the official website: {domain}.")
+
+    return ' '.join(parts)
 
 
 def get_category(text: str) -> str:
@@ -688,10 +742,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     year   = date.today().year
 
     posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
-    desc = (
-        f"{title}: {dept} has released notification. "
-        f"Last date: {d['last_date']}. Apply online at {SITE_NAME}."
-    )
+    desc = build_unique_desc(d, dept)
 
     apply_btn = (
         f'<a href="{d["apply_url"]}" target="_blank" rel="noopener" '
@@ -699,12 +750,19 @@ def build_job_page(d: dict) -> tuple[str, str]:
         if d.get('apply_url') and d['apply_url'] != '#'
         else '<span class="btn btn--primary btn--large" style="opacity:.6;cursor:default;">🚀 Apply Link Coming Soon</span>'
     )
-    notif_btn = (
-        f'<a href="{d["notification_url"]}" target="_blank" rel="noopener" '
-        f'class="btn btn--secondary btn--large">📄 Download Notification</a>'
-        if d.get('notification_url') and d['notification_url'] != '#'
-        else ''
-    )
+    if d.get('notification_url') and d['notification_url'] != '#':
+        notif_btn = (
+            f'<a href="{d["notification_url"]}" target="_blank" rel="noopener" '
+            f'class="btn btn--secondary btn--large">📄 Download Notification</a>'
+        )
+    else:
+        # No notification URL scraped — open Google search so user can find it
+        from urllib.parse import quote_plus
+        q = quote_plus(f'{title} official notification PDF')
+        notif_btn = (
+            f'<a href="https://www.google.com/search?q={q}" target="_blank" rel="noopener" '
+            f'class="btn btn--secondary btn--large">🔍 Search Notification on Google</a>'
+        )
 
     # Extra links section
     extra_html = ''
@@ -779,6 +837,8 @@ def build_job_page(d: dict) -> tuple[str, str]:
       <h1 style="color:var(--primary);margin-bottom:.5rem;">
         {title} <span style="background:var(--secondary);color:#fff;padding:4px 12px;border-radius:4px;font-size:1rem;">{year}</span>
       </h1>
+
+      <p style="color:#555;font-size:1rem;line-height:1.7;margin:.75rem 0 1.25rem;">{desc}</p>
 
       <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
 
