@@ -1,0 +1,84 @@
+name: Manual Scraper Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-and-publish:
+    name: Scrape → Generate → Commit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 lxml
+
+      - name: Snapshot page counts before
+        id: before
+        run: |
+          JOBS=$(find jobs -name "*.html" 2>/dev/null | wc -l)
+          RESULTS=$(find results -name "*.html" 2>/dev/null | wc -l)
+          ADMITS=$(find admit-cards -name "*.html" 2>/dev/null | wc -l)
+          echo "jobs=$JOBS"     >> $GITHUB_OUTPUT
+          echo "results=$RESULTS" >> $GITHUB_OUTPUT
+          echo "admits=$ADMITS" >> $GITHUB_OUTPUT
+          echo "Before → Jobs: $JOBS | Results: $RESULTS | Admit Cards: $ADMITS"
+
+      - name: Run scraper
+        run: python3 scraper/sarkari_scraper.py
+
+      - name: Snapshot page counts after
+        id: after
+        run: |
+          JOBS=$(find jobs -name "*.html" 2>/dev/null | wc -l)
+          RESULTS=$(find results -name "*.html" 2>/dev/null | wc -l)
+          ADMITS=$(find admit-cards -name "*.html" 2>/dev/null | wc -l)
+          echo "jobs=$JOBS"     >> $GITHUB_OUTPUT
+          echo "results=$RESULTS" >> $GITHUB_OUTPUT
+          echo "admits=$ADMITS" >> $GITHUB_OUTPUT
+          echo "After  → Jobs: $JOBS | Results: $RESULTS | Admit Cards: $ADMITS"
+
+      - name: Print summary
+        run: |
+          NEW_JOBS=$(( ${{ steps.after.outputs.jobs }}    - ${{ steps.before.outputs.jobs }}    ))
+          NEW_RES=$(( ${{ steps.after.outputs.results }}  - ${{ steps.before.outputs.results }} ))
+          NEW_ADM=$(( ${{ steps.after.outputs.admits }}   - ${{ steps.before.outputs.admits }}  ))
+          TOTAL=$(( NEW_JOBS + NEW_RES + NEW_ADM ))
+          echo "============================================"
+          echo "  New Jobs:        $NEW_JOBS"
+          echo "  New Results:     $NEW_RES"
+          echo "  New Admit Cards: $NEW_ADM"
+          echo "  Total new pages: $TOTAL"
+          echo "============================================"
+
+      - name: Commit new pages
+        run: |
+          git config user.name  "Naukri Dhaba Bot"
+          git config user.email "bot@naukridhaba.in"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No new pages generated."
+          else
+            COUNT=$(git diff --staged --name-only | wc -l)
+            git commit -m "scrape: $(TZ='Asia/Kolkata' date +'%d %b %Y %I:%M %p IST') – $COUNT new files"
+            git push
+            echo "Pushed $COUNT files."
+          fi
+
+      - name: Show scraper log
+        if: always()
+        run: tail -80 scraper/logs/scraper.log 2>/dev/null || echo "(no log)"
