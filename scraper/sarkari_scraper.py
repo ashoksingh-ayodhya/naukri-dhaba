@@ -60,7 +60,7 @@ try:
 except ImportError:
     cloudscraper = None
 
-from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS
+from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES
 
 # ══════════════════════════════════════════════════════════
 # PATHS & CONSTANTS
@@ -636,16 +636,22 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
 # Sometimes there is a 3-column layout with dept in col 0,
 # title+link in col 1, date in col 2.
 
-def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
-    """Extract all rows from a sarkariresult listing page."""
+def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) -> list[dict]:
+    """Extract all rows from a listing page. Works across all supported sources."""
     items = []
 
-    # Try several known wrapper selectors in priority order
+    # Try several known wrapper selectors in priority order.
+    # Covers sarkariresult (TableLi/post-list), freejobalert (entry-content tables),
+    # rojgarresult/sarkariexam (similar table-based layouts).
     containers = (
         soup.select('#post-list table tr') or
         soup.select('.TableLi table tr') or
         soup.select('div.latestnews table tr') or
-        soup.select('table.latestnews tr')
+        soup.select('table.latestnews tr') or
+        soup.select('article table tr') or
+        soup.select('.entry-content table tr') or
+        soup.select('.post-content table tr') or
+        soup.select('table tr')
     )
 
     for tr in containers:
@@ -688,7 +694,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str) -> list[dict]:
         if not link_tag or not link_tag.get('href'):
             continue
 
-        detail_url = urljoin(BASE, link_tag['href'])
+        detail_url = urljoin(source_base, link_tag['href'])
 
         # Skip header rows / navigation rows
         if title.lower() in ('post name', 'latest jobs', 'results', 'admit card', '#', ''):
@@ -1917,34 +1923,37 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         log.info('=' * 60 + '\n')
         return 0
 
-    # ── 1. Scrape listing pages ────────────────────────────
-    listing_data = [
-        (URL_JOBS,    'job'),
-        (URL_RESULTS, 'result'),
-        (URL_ADMITS,  'admit'),
-    ]
-
+    # ── 1. Scrape listing pages from all sources ───────────
     all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
     successful_listings = 0
 
-    for url, kind in listing_data:
-        log.info(f'\nFetching {kind.upper()} listing: {url}')
-        soup = fetch(url)
-        if not soup:
-            continue
-        successful_listings += 1
-        raw = parse_listing(soup, kind)
-        log.info(f'  Raw items: {len(raw)}')
+    for source in SOURCES:
+        src_name = source['name']
+        src_base = source['base']
+        log.info(f'\n{"─"*40}')
+        log.info(f'SOURCE: {src_name}  ({src_base})')
+        log.info(f'{"─"*40}')
 
-        for item in raw:
-            if not kind_matches_title(item.get('title', ''), kind):
+        for kind, url in source['urls'].items():
+            log.info(f'\nFetching {kind.upper()} listing: {url}')
+            soup = fetch(url)
+            if not soup:
+                log.warning(f'  [{src_name}] Could not fetch {kind} listing — skipping')
                 continue
-            iid = item_id(item['title'], item['dept'])
-            if not refresh_existing and iid in seen:
-                log.debug(f'  [skip] already seen: {item["title"][:50]}')
-                continue
-            seen.add(iid)
-            all_items[kind].append(item)
+            successful_listings += 1
+            raw = parse_listing(soup, kind, source_base=src_base)
+            log.info(f'  Raw items: {len(raw)}')
+
+            for item in raw:
+                if not kind_matches_title(item.get('title', ''), kind):
+                    continue
+                iid = item_id(item['title'], item['dept'])
+                if not refresh_existing and iid in seen:
+                    log.debug(f'  [skip] already seen: {item["title"][:50]}')
+                    continue
+                seen.add(iid)
+                item['source'] = src_name
+                all_items[kind].append(item)
 
     if successful_listings == 0:
         log.error('All source listings failed. Aborting instead of reporting a false success.')

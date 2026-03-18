@@ -1,8 +1,11 @@
 name: Daily Scraper - 10 AM IST
 
 on:
+  # ── Auto: every 30 minutes ──────────────────────────────
   schedule:
-    - cron: "30 4 * * *"
+    - cron: '*/30 * * * *'
+
+  # ── Manual: tap "Run workflow" on GitHub from your phone ─
   workflow_dispatch:
     inputs:
       reason:
@@ -19,7 +22,7 @@ permissions:
 
 jobs:
   scrape-and-publish:
-    name: Scrape sarkariresult.com -> Generate HTML
+    name: Scrape all sources → Generate HTML
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -36,6 +39,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
+          cache-dependency-path: "scraper/requirements.txt"
 
       - name: Install Python dependencies
         run: pip install -r scraper/requirements.txt
