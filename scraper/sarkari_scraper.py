@@ -1456,26 +1456,30 @@ def build_job_page(d: dict) -> tuple[str, str]:
         </div>'''
 
     # JSON-LD
-    ld_job = json.dumps({
+    _valid_through = to_iso_date(d['last_date'])
+    _org_name = cat.title() + ' Recruitment' if cat != 'government' else dept or 'Government of India'
+    ld_job_dict = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
         "title": title,
         "description": desc,
         "datePosted": date.today().isoformat(),
-        "validThrough": to_iso_date(d['last_date']) or date.today().isoformat(),
         "employmentType": "FULL_TIME",
-        "hiringOrganization": {"@type": "Organization", "name": dept},
-        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressCountry": "IN"}},
+        "hiringOrganization": {"@type": "Organization", "name": _org_name, "sameAs": SITE_URL},
+        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "India", "addressRegion": "India", "addressCountry": "IN"}},
         "url": canon
-    }, ensure_ascii=False)
+    }
+    if _valid_through and _valid_through >= date.today().isoformat():
+        ld_job_dict["validThrough"] = _valid_through
+    ld_job = json.dumps(ld_job_dict, ensure_ascii=False)
 
     ld_bc = json.dumps({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE_URL + '/latest-jobs.html'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/latest-jobs.html'},
+            {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE_URL + '/latest-jobs'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/latest-jobs'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
@@ -1665,8 +1669,8 @@ def build_result_page(d: dict) -> tuple[str, str]:
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Results", "item": SITE_URL + '/results.html'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/results.html'},
+            {"@type": "ListItem", "position": 2, "name": "Results", "item": SITE_URL + '/results'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/results'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
@@ -1789,8 +1793,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Admit Cards", "item": SITE_URL + '/admit-cards.html'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/admit-cards.html'},
+            {"@type": "ListItem", "position": 2, "name": "Admit Cards", "item": SITE_URL + '/admit-cards'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/admit-cards'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
@@ -2023,6 +2027,13 @@ def prepare_listing_entries(entries: list[dict], kind: str, limit: int | None = 
     return cleaned
 
 
+_LISTING_META = {
+    'latest-jobs.html':  ('Latest Government Jobs',  SITE_URL + '/latest-jobs'),
+    'results.html':      ('Government Exam Results',  SITE_URL + '/results'),
+    'admit-cards.html':  ('Government Admit Cards',   SITE_URL + '/admit-cards'),
+}
+
+
 def replace_listing_sections(listing_file: Path, entries: list[dict], kind: str, limit: int | None = None):
     if not listing_file.exists():
         return
@@ -2045,6 +2056,31 @@ def replace_listing_sections(listing_file: Path, entries: list[dict], kind: str,
         count=1,
         flags=re.DOTALL,
     )
+
+    # Rebuild ItemList JSON-LD from current entries
+    meta = _LISTING_META.get(listing_file.name)
+    if meta:
+        list_name, list_url = meta
+        prepared = prepare_listing_entries(entries, kind, limit)
+        items = []
+        for i, e in enumerate(prepared):
+            title = normalize_title(e.get('title', ''))
+            cat = get_category(e.get('dept', ''))
+            if kind == 'job':
+                path = e.get('url') or f'/jobs/{cat}/{slugify(title)}.html'
+            elif kind == 'result':
+                slug = slugify(title)
+                path = e.get('url') or f'/results/{cat}/{slug if "result" in slug else slug + "-result"}.html'
+            else:
+                slug = slugify(title)
+                path = e.get('url') or f'/admit-cards/{cat}/{slug if "admit" in slug else slug + "-admit-card"}.html'
+            items.append({'@type': 'ListItem', 'position': i + 1, 'name': title, 'url': SITE_URL + path})
+        schema = json.dumps({'@context': 'https://schema.org', '@type': 'ItemList', 'name': list_name, 'url': list_url, 'itemListElement': items}, ensure_ascii=False)
+        new_tag = f'<script type="application/ld+json">{schema}</script>'
+        if 'application/ld+json' in content:
+            content = re.sub(r'<script type="application/ld\+json">.*?</script>', new_tag, content, count=1, flags=re.DOTALL)
+        else:
+            content = content.replace('</head>', f'    {new_tag}\n</head>', 1)
 
     with open(listing_file, 'w', encoding='utf-8') as f:
         f.write(content)
