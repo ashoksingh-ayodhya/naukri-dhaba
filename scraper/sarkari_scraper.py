@@ -116,12 +116,19 @@ DEPT_MAP = {
     'UPSSSC': 'ssc', 'BSSC': 'ssc', 'JSSC': 'ssc', 'HSSC': 'ssc',
     'RRB': 'railway', 'RRC': 'railway', 'RAILWAY': 'railway',
     'IBPS': 'banking', 'SBI': 'banking', 'RBI': 'banking',
-    'NABARD': 'banking', 'BANK': 'banking',
+    'NABARD': 'banking', 'BANK': 'banking', 'IDBI': 'banking',
     'POLICE': 'police', 'CISF': 'police', 'BSF': 'police',
     'CRPF': 'police', 'ITBP': 'police', 'SSB': 'police',
     'ARMY': 'defence', 'NAVY': 'defence', 'AIRFORCE': 'defence',
     'IAF': 'defence', 'NDA': 'defence', 'CDS': 'defence',
     'DRDO': 'defence', 'HAL': 'defence',
+    'NTA': 'government', 'CBSE': 'government', 'CISCE': 'government',
+    'JEEMAIN': 'government', 'NEET': 'government', 'CUET': 'government',
+    'UGC': 'government', 'GATE': 'government',
+    'BIHAR BOARD': 'government', 'UP BOARD': 'government',
+    'MPBSE': 'government', 'RSSB': 'government', 'NVS': 'government',
+    'MPPSC': 'government', 'JPSC': 'government', 'PPSC': 'government',
+    'LIC': 'government', 'AFCAT': 'government',
 }
 
 # ── SEO keyword map by dept category ──────────────────────
@@ -269,9 +276,6 @@ def primary_cta_url(url: str, source_detail_url: str) -> str:
     official = official_url_or_empty(normalized)
     if official:
         return official
-    # Fall back to source detail page via redirect (so user can find the link there)
-    if source_detail_url and source_detail_url != '#':
-        return build_source_redirect(source_detail_url)
     return ''
 
 
@@ -757,6 +761,14 @@ def detail_body_tracking_markup() -> str:
 # HTTP FETCHER
 # ══════════════════════════════════════════════════════════
 
+# Explicitly clear proxy env vars — trust_env=False alone is not enough
+# on some GitHub Actions runners that inject proxies at a lower level.
+for _pvar in ('HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy',
+              'ALL_PROXY', 'all_proxy', 'NO_PROXY', 'no_proxy'):
+    os.environ.pop(_pvar, None)
+
+_NO_PROXY = {'http': None, 'https': None}  # passed to every requests call
+
 _session = requests.Session()
 _session.trust_env = False  # ignore HTTP_PROXY/HTTPS_PROXY env vars from GitHub Actions
 _session.headers.update(HEADERS)
@@ -777,6 +789,12 @@ if cloudscraper is not None:
 _CF_WORKER_URL    = os.environ.get('CF_WORKER_PROXY_URL', '').rstrip('/')
 _CF_WORKER_SECRET = os.environ.get('CF_WORKER_SECRET', '')
 
+if _CF_WORKER_URL:
+    log.info(f'CF Worker proxy configured: {_CF_WORKER_URL[:40]}...')
+else:
+    log.warning('CF_WORKER_PROXY_URL is NOT set — direct requests will be used. '
+                'Set this secret in GitHub Actions if scraping fails.')
+
 def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     """Fetch a URL through the Cloudflare Worker proxy."""
     proxy_url = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
@@ -784,7 +802,7 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     if _CF_WORKER_SECRET:
         headers['X-Proxy-Secret'] = _CF_WORKER_SECRET
     try:
-        r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT)
+        r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT, proxies=_NO_PROXY)
         r.raise_for_status()
         return BeautifulSoup(r.content, 'lxml')
     except Exception as exc:
@@ -810,7 +828,7 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
             client_name = 'cloudscraper' if idx == 0 and _cf_session is not None else 'requests'
             try:
                 log.debug(f'GET {url} via {client_name}')
-                r = session.get(url, timeout=TIMEOUT)
+                r = session.get(url, timeout=TIMEOUT, proxies=_NO_PROXY)
                 r.raise_for_status()
                 time.sleep(DELAY)
                 return BeautifulSoup(r.content, 'lxml')
@@ -1285,9 +1303,9 @@ def _sidebar() -> str:
   <div class="widget">
     <h3 class="widget__title">🔗 Quick Links</h3>
     <div class="footer__links">
-      <a href="/latest-jobs.html">💼 Latest Jobs</a>
-      <a href="/results.html">📊 Results</a>
-      <a href="/admit-cards.html">🎫 Admit Cards</a>
+      <a href="/latest-jobs">💼 Latest Jobs</a>
+      <a href="/results">📊 Results</a>
+      <a href="/admit-cards">🎫 Admit Cards</a>
       <a href="/eligibility-calculator.html">🎯 Eligibility Check</a>
     </div>
   </div>
@@ -1310,21 +1328,21 @@ def _footer() -> str:
       <div>
         <h3 class="footer__title">Quick Links</h3>
         <div class="footer__links">
-          <a href="/latest-jobs.html">Latest Jobs</a>
-          <a href="/results.html">Results</a>
-          <a href="/admit-cards.html">Admit Cards</a>
-          <a href="/resources.html">Resources</a>
+          <a href="/latest-jobs">Latest Jobs</a>
+          <a href="/results">Results</a>
+          <a href="/admit-cards">Admit Cards</a>
+          <a href="/resources">Resources</a>
         </div>
       </div>
       <div>
         <h3 class="footer__title">Categories</h3>
         <div class="footer__links">
-          <a href="/latest-jobs.html">UPSC Jobs</a>
-          <a href="/latest-jobs.html">SSC Jobs</a>
-          <a href="/latest-jobs.html">Railway Jobs</a>
-          <a href="/latest-jobs.html">Banking Jobs</a>
-          <a href="/latest-jobs.html">Defence Jobs</a>
-          <a href="/latest-jobs.html">Police Jobs</a>
+          <a href="/latest-jobs">UPSC Jobs</a>
+          <a href="/latest-jobs">SSC Jobs</a>
+          <a href="/latest-jobs">Railway Jobs</a>
+          <a href="/latest-jobs">Banking Jobs</a>
+          <a href="/latest-jobs">Defence Jobs</a>
+          <a href="/latest-jobs">Police Jobs</a>
         </div>
       </div>
       <div>
@@ -1370,6 +1388,11 @@ def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: 
     <meta property="og:url" content="{canonical}">
     <meta property="og:site_name" content="{SITE_NAME}">
     <meta property="og:locale" content="hi_IN">
+    <meta property="og:image" content="{SITE_URL}/img/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{SITE_URL}/img/og-default.png">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{og_title}">
     <meta name="twitter:description" content="{desc_safe}">
@@ -1390,10 +1413,19 @@ def build_job_page(d: dict) -> tuple[str, str]:
     year   = date.today().year
 
     posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
-    desc = (
-        f"{title}: {dept} has released notification. "
-        f"Last date: {d['last_date']}. Apply online at {SITE_NAME}."
-    )
+    desc_parts = [f"{title} — official recruitment notification from {dept}."]
+    if d.get('total_posts'):
+        desc_parts.append(f"Total vacancies: {d['total_posts']}.")
+    if d.get('qualification') and d['qualification'] != 'Check Notification':
+        desc_parts.append(f"Qualification: {d['qualification']}.")
+    if d.get('age_min') and d.get('age_max'):
+        desc_parts.append(f"Age limit: {d['age_min']} to {d['age_max']} years.")
+    if d.get('app_begin') and d['app_begin'] != 'Check Notification':
+        desc_parts.append(f"Application start: {d['app_begin']}.")
+    if d.get('last_date') and d['last_date'] != 'Check Notification':
+        desc_parts.append(f"Last date to apply: {d['last_date']}.")
+    desc_parts.append(f"Apply online at {SITE_NAME}.")
+    desc = ' '.join(desc_parts)
     apply_href = d.get('apply_url') or ''
     notification_href = d.get('notification_url') or ''
 
@@ -1401,7 +1433,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
         f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
         if apply_href
-        else '<span class="btn btn--primary btn--large" style="opacity:.6;cursor:default;">🚀 Apply Link Coming Soon</span>'
+        else ''
     )
     notif_btn = (
         f'<a href="{notification_href}" target="_blank" rel="nofollow noopener noreferrer" '
@@ -1438,26 +1470,30 @@ def build_job_page(d: dict) -> tuple[str, str]:
         </div>'''
 
     # JSON-LD
-    ld_job = json.dumps({
+    _valid_through = to_iso_date(d['last_date'])
+    _org_name = cat.title() + ' Recruitment' if cat != 'government' else dept or 'Government of India'
+    ld_job_dict = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
         "title": title,
         "description": desc,
         "datePosted": date.today().isoformat(),
-        "validThrough": to_iso_date(d['last_date']) or date.today().isoformat(),
         "employmentType": "FULL_TIME",
-        "hiringOrganization": {"@type": "Organization", "name": dept},
-        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressCountry": "IN"}},
+        "hiringOrganization": {"@type": "Organization", "name": _org_name, "sameAs": SITE_URL},
+        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "India", "addressRegion": "India", "addressCountry": "IN"}},
         "url": canon
-    }, ensure_ascii=False)
+    }
+    if _valid_through and _valid_through >= date.today().isoformat():
+        ld_job_dict["validThrough"] = _valid_through
+    ld_job = json.dumps(ld_job_dict, ensure_ascii=False)
 
     ld_bc = json.dumps({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE_URL + '/latest-jobs.html'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/latest-jobs.html'},
+            {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE_URL + '/latest-jobs'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/latest-jobs'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
@@ -1481,7 +1517,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
   <main>
     <article class="job-detail">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/latest-jobs.html">Jobs</a> &gt; <span>{title}</span>
+        <a href="/">Home</a> &gt; <a href="/latest-jobs">Jobs</a> &gt; <span>{title}</span>
       </nav>
 
       <h1 style="color:var(--primary);margin-bottom:.5rem;">
@@ -1647,8 +1683,8 @@ def build_result_page(d: dict) -> tuple[str, str]:
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Results", "item": SITE_URL + '/results.html'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/results.html'},
+            {"@type": "ListItem", "position": 2, "name": "Results", "item": SITE_URL + '/results'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/results'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
@@ -1672,7 +1708,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
   <main>
     <article class="result-detail">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/results.html">Results</a> &gt; <span>{title}</span>
+        <a href="/">Home</a> &gt; <a href="/results">Results</a> &gt; <span>{title}</span>
       </nav>
 
       <h1 style="color:var(--primary);">📊 {title}</h1>
@@ -1685,7 +1721,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
         {check_btn}
         {scorecard_btn}
         <div style="margin-top:1rem;">
-          <a href="/latest-jobs.html" class="btn btn--secondary">🔍 Browse Latest Jobs</a>
+          <a href="/latest-jobs" class="btn btn--secondary">🔍 Browse Latest Jobs</a>
         </div>
       </div>
 
@@ -1771,8 +1807,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Admit Cards", "item": SITE_URL + '/admit-cards.html'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/admit-cards.html'},
+            {"@type": "ListItem", "position": 2, "name": "Admit Cards", "item": SITE_URL + '/admit-cards'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/admit-cards'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
@@ -1796,7 +1832,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
   <main>
     <article class="admit-detail">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/admit-cards.html">Admit Cards</a> &gt; <span>{title}</span>
+        <a href="/">Home</a> &gt; <a href="/admit-cards">Admit Cards</a> &gt; <span>{title}</span>
       </nav>
 
       <h1 style="color:var(--primary);">🎫 {title}</h1>
@@ -1809,7 +1845,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
         <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">📅 Exam Date: {d["exam_date"]}</p>
         {dl_btn}
         <div style="margin-top:1rem;">
-          <a href="/results.html" class="btn btn--secondary">📊 Check Results</a>
+          <a href="/results" class="btn btn--secondary">📊 Check Results</a>
         </div>
       </div>
 
@@ -1883,7 +1919,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
 
         if kind == 'job':
             cat  = get_category(e.get('dept', ''))
-            path = f"jobs/{cat}/{slugify(title)}.html"
+            path = f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '')
             btn  = 'Apply'
         elif kind == 'result':
@@ -1891,7 +1927,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             s    = slugify(title)
             if 'result' not in s:
                 s += '-result'
-            path = f"results/{cat}/{s}.html"
+            path = f"/results/{cat}/{s}.html"
             date_label = e.get('result_date', '')
             btn  = 'View'
         else:
@@ -1899,7 +1935,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             s    = slugify(title)
             if 'admit' not in s and 'hall' not in s:
                 s += '-admit-card'
-            path = f"admit-cards/{cat}/{s}.html"
+            path = f"/admit-cards/{cat}/{s}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '')
             btn  = 'Download'
 
@@ -1944,7 +1980,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
 
         if kind == 'job':
             cat = get_category(e.get('dept', ''))
-            path = f"jobs/{cat}/{slugify(title)}.html"
+            path = e.get('url') or f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '') or e.get('date_str', '')
             button = 'Apply'
         elif kind == 'result':
@@ -1952,7 +1988,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             slug = slugify(title)
             if 'result' not in slug:
                 slug += '-result'
-            path = f"results/{cat}/{slug}.html"
+            path = e.get('url') or f"/results/{cat}/{slug}.html"
             date_label = e.get('result_date', '') or e.get('date_str', '')
             button = 'View'
         else:
@@ -1960,7 +1996,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             slug = slugify(title)
             if 'admit' not in slug and 'hall' not in slug:
                 slug += '-admit-card'
-            path = f"admit-cards/{cat}/{slug}.html"
+            path = e.get('url') or f"/admit-cards/{cat}/{slug}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
             button = 'Download'
 
@@ -2005,6 +2041,13 @@ def prepare_listing_entries(entries: list[dict], kind: str, limit: int | None = 
     return cleaned
 
 
+_LISTING_META = {
+    'latest-jobs.html':  ('Latest Government Jobs',  SITE_URL + '/latest-jobs'),
+    'results.html':      ('Government Exam Results',  SITE_URL + '/results'),
+    'admit-cards.html':  ('Government Admit Cards',   SITE_URL + '/admit-cards'),
+}
+
+
 def replace_listing_sections(listing_file: Path, entries: list[dict], kind: str, limit: int | None = None):
     if not listing_file.exists():
         return
@@ -2027,6 +2070,31 @@ def replace_listing_sections(listing_file: Path, entries: list[dict], kind: str,
         count=1,
         flags=re.DOTALL,
     )
+
+    # Rebuild ItemList JSON-LD from current entries
+    meta = _LISTING_META.get(listing_file.name)
+    if meta:
+        list_name, list_url = meta
+        prepared = prepare_listing_entries(entries, kind, limit)
+        items = []
+        for i, e in enumerate(prepared):
+            title = normalize_title(e.get('title', ''))
+            cat = get_category(e.get('dept', ''))
+            if kind == 'job':
+                path = e.get('url') or f'/jobs/{cat}/{slugify(title)}.html'
+            elif kind == 'result':
+                slug = slugify(title)
+                path = e.get('url') or f'/results/{cat}/{slug if "result" in slug else slug + "-result"}.html'
+            else:
+                slug = slugify(title)
+                path = e.get('url') or f'/admit-cards/{cat}/{slug if "admit" in slug else slug + "-admit-card"}.html'
+            items.append({'@type': 'ListItem', 'position': i + 1, 'name': title, 'url': SITE_URL + path})
+        schema = json.dumps({'@context': 'https://schema.org', '@type': 'ItemList', 'name': list_name, 'url': list_url, 'itemListElement': items}, ensure_ascii=False)
+        new_tag = f'<script type="application/ld+json">{schema}</script>'
+        if 'application/ld+json' in content:
+            content = re.sub(r'<script type="application/ld\+json">.*?</script>', new_tag, content, count=1, flags=re.DOTALL)
+        else:
+            content = content.replace('</head>', f'    {new_tag}\n</head>', 1)
 
     with open(listing_file, 'w', encoding='utf-8') as f:
         f.write(content)
@@ -2096,20 +2164,35 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         title = clean(re.sub(r'<[^>]+>', '', title_match.group(1))) if title_match else normalize_title(path.stem.replace('-', ' '))
         dept_match = re.search(r'info-item__label">[^<]*Department</span>\s*<span class="info-item__value">([^<]+)', html, re.I)
         dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
+        # Override dept using URL path category when stored value is unreliable.
+        # e.g. results/railway/... → RAILWAY, jobs/ssc/... → SSC
+        _path_cat = path.parent.name.upper()
+        _cat_to_dept = {
+            'RAILWAY': 'RAILWAY', 'SSC': 'SSC', 'UPSC': 'UPSC',
+            'BANKING': 'BANKING', 'POLICE': 'POLICE', 'DEFENCE': 'DEFENCE',
+        }
+        if _path_cat in _cat_to_dept:
+            dept = _cat_to_dept[_path_cat]
+        # If stored dept is NTA (scraper bug from old runs), try title inference.
+        # If title also doesn't give a proper category, fall back to GOVERNMENT.
+        elif dept.upper() == 'NTA':
+            inferred = infer_dept(title)
+            dept = inferred if inferred.upper() not in ('NTA', 'GOVERNMENT') else 'GOVERNMENT'
         date_label = 'Check Notification'
 
+        actual_url = '/' + rel  # actual on-disk path, used to avoid slug mismatch
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'last_date': date_label})
+            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'result_date': date_label})
+            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'exam_date': date_label})
+            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url})
 
     return entries
 
@@ -2147,10 +2230,13 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # ── 1. Scrape listing pages from all sources ───────────
     all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
     successful_listings = 0
+    # per-source counters: {src_name: {kind: count}}
+    source_counts: dict[str, dict[str, int]] = {}
 
     for source in SOURCES:
         src_name = source['name']
         src_base = source['base']
+        source_counts[src_name] = {'job': 0, 'result': 0, 'admit': 0}
         log.info(f'\n{"─"*40}')
         log.info(f'SOURCE: {src_name}  ({src_base})')
         log.info(f'{"─"*40}')
@@ -2163,8 +2249,9 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 continue
             successful_listings += 1
             raw = parse_listing(soup, kind, source_base=src_base)
-            log.info(f'  Raw items: {len(raw)}')
+            log.info(f'  Raw items from {src_name}: {len(raw)}')
 
+            accepted = 0
             for item in raw:
                 if not kind_matches_title(item.get('title', ''), kind):
                     continue
@@ -2180,16 +2267,27 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 seen.add(iid)
                 item['source'] = src_name
                 all_items[kind].append(item)
+                source_counts[src_name][kind] += 1
+                accepted += 1
+            log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
     if successful_listings == 0:
         log.error('All source listings failed. Aborting instead of reporting a false success.')
         return 2
 
+    # Per-source summary table
+    log.info('\n' + '─' * 60)
+    log.info('SCRAPE SUMMARY — new posts per source:')
+    log.info(f'  {"Source":<20} {"Jobs":>6} {"Results":>9} {"Admits":>8} {"Total":>7}')
+    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*7}')
+    for src_name, counts in source_counts.items():
+        src_total = sum(counts.values())
+        src_base = next(s['base'] for s in SOURCES if s['name'] == src_name)
+        log.info(f'  {src_name:<20} {counts["job"]:>6} {counts["result"]:>9} {counts["admit"]:>8} {src_total:>7}   ({src_base})')
+    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*7}')
     total_new = sum(len(v) for v in all_items.values())
-    log.info(f'\nNew items to process: {total_new}  '
-             f'(jobs={len(all_items["job"])}, '
-             f'results={len(all_items["result"])}, '
-             f'admits={len(all_items["admit"])})')
+    log.info(f'  {"TOTAL":<20} {len(all_items["job"]):>6} {len(all_items["result"]):>9} {len(all_items["admit"]):>8} {total_new:>7}')
+    log.info('─' * 60)
 
     # ── 2. Scrape detail pages & generate HTML ─────────────
     generated: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
@@ -2200,7 +2298,10 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             log.info(f'  Detail URL: {item["detail_url"]}')
 
             detail_soup = fetch(item['detail_url'])
-            rich = parse_detail(detail_soup, item) if detail_soup else item
+            if not detail_soup:
+                log.error(f'  [SKIP] fetch() returned None for detail URL — skipping item to avoid fake-data page: {item["detail_url"]}')
+                continue
+            rich = parse_detail(detail_soup, item)
             rich['dept'] = rich.get('dept') or infer_dept(rich['title'])
 
             try:
@@ -2248,10 +2349,23 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # ── Done ───────────────────────────────────────────────
     elapsed = (datetime.now() - start).seconds
     total_gen = sum(len(v) for v in generated.values())
+
+    # Per-source generated breakdown
+    gen_by_source: dict[str, dict[str, int]] = {}
+    for kind, items in generated.items():
+        for item in items:
+            src = item.get('source', 'unknown')
+            gen_by_source.setdefault(src, {'job': 0, 'result': 0, 'admit': 0})
+            gen_by_source[src][kind] += 1
+
     log.info('\n' + '=' * 60)
-    log.info(f'DONE in {elapsed}s  |  Generated {total_gen} pages  |  '
-             f'Jobs={len(generated["job"])}, Results={len(generated["result"])}, '
-             f'AdmitCards={len(generated["admit"])}')
+    log.info(f'DONE in {elapsed}s  |  Pages generated: {total_gen}')
+    log.info(f'  Jobs={len(generated["job"])}, Results={len(generated["result"])}, AdmitCards={len(generated["admit"])}')
+    if gen_by_source:
+        log.info('  Pages generated per source:')
+        for src, counts in gen_by_source.items():
+            src_base = next((s['base'] for s in SOURCES if s['name'] == src), src)
+            log.info(f'    {src:<20} Jobs={counts["job"]} Results={counts["result"]} Admits={counts["admit"]}   ({src_base})')
     log.info('=' * 60 + '\n')
     return 0
 

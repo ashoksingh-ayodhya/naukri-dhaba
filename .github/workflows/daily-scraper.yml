@@ -44,6 +44,25 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scraper/requirements.txt
 
+      # ── Diagnose secrets configuration ───────────────────
+      - name: Check secrets configuration
+        env:
+          CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
+          CF_WORKER_SECRET: ${{ secrets.CF_WORKER_SECRET }}
+        run: |
+          echo "=== Secrets Diagnostic ==="
+          if [ -n "$CF_WORKER_PROXY_URL" ]; then
+            echo "✓ CF_WORKER_PROXY_URL is set"
+          else
+            echo "✗ CF_WORKER_PROXY_URL NOT SET — scraping will use direct requests (likely to fail)"
+            echo "  Fix: GitHub repo → Settings → Secrets → Actions → add CF_WORKER_PROXY_URL"
+          fi
+          if [ -n "$CF_WORKER_SECRET" ]; then
+            echo "✓ CF_WORKER_SECRET is set"
+          else
+            echo "✗ CF_WORKER_SECRET NOT SET"
+          fi
+
       # ── Pre-flight: check if source sites are reachable ──
       - name: Check source accessibility
         id: source_check
@@ -69,6 +88,10 @@ jobs:
           echo "Time (IST): $(date)"
           python3 scraper/sarkari_scraper.py --refresh-existing
           echo "=== Scraper done ==="
+
+      - name: Regenerate state pages
+        if: steps.source_check.outputs.sources_down != 'true'
+        run: python3 generate-state-pages.py
 
       - name: Normalize generated pages
         if: steps.source_check.outputs.sources_down != 'true'

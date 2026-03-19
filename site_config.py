@@ -32,9 +32,18 @@ SOURCES = [
         "name": "rojgarresult",
         "base": "https://www.rojgarresult.com",
         "urls": {
-            "job":    "https://www.rojgarresult.com/latest-jobs/",
-            "result": "https://www.rojgarresult.com/result/",
+            "job":    "https://www.rojgarresult.com/recruitments/",
+            "result": "https://www.rojgarresult.com/latest-result/",
             "admit":  "https://www.rojgarresult.com/admit-card/",
+        },
+    },
+    {
+        "name": "sarkariexam",
+        "base": "https://www.sarkariexam.com",
+        "urls": {
+            "job":    "https://www.sarkariexam.com/category/jobs",
+            "result": "https://www.sarkariexam.com/exam-result",
+            "admit":  "https://www.sarkariexam.com/category/admit-card/",
         },
     },
 ]
@@ -49,6 +58,8 @@ SOURCE_HOSTS = {
     "www.freejobalert.com",
     "rojgarresult.com",
     "www.rojgarresult.com",
+    "sarkariexam.com",
+    "www.sarkariexam.com",
 }
 REDIRECT_PATH = "/go.html"
 PRETTY_ROUTE_MAP = {

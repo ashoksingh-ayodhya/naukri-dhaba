@@ -16,8 +16,12 @@
     <meta property="og:url" content="https://naukridhaba.in/resources">
     <meta property="og:site_name" content="Naukri Dhaba">
     <meta property="og:locale" content="hi_IN">
+    <meta property="og:image" content="https://naukridhaba.in/img/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://naukridhaba.in/img/og-default.png">
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Resources & Tools - Government Update | Naukri Dhaba">
     <meta name="twitter:description" content="All preparation tools in one place">
     <!-- India Geo -->
@@ -121,14 +125,79 @@
 
 <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
 </header>
-    <main class="container" style="padding:4rem 1rem;text-align:center;">
-        <div style="max-width:600px;margin:0 auto;background:var(--surface);padding:3rem;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
-            <div style="font-size:4rem;margin-bottom:1rem;">🚧</div>
-            <h1 style="color:var(--primary);margin-bottom:1rem;">Resources & Tools</h1>
-            <p style="color:#666;margin-bottom:2rem;font-size:1.1rem;">All preparation tools in one place</p>
-            <p style="color:#666;margin-bottom:2rem;">We're building something amazing for you. Check back soon!</p>
-            <a href="/" class="btn btn--primary btn--large">🏠 Back to Home</a>
+    <main class="container" style="padding:2rem 1rem;">
+        <h1 style="color:var(--primary);margin-bottom:.5rem;">Resources &amp; Tools</h1>
+        <p style="color:#666;margin-bottom:2rem;font-size:1.05rem;">Everything you need to prepare for government exams — in one place.</p>
+
+        <!-- Tools Section -->
+        <h2 style="color:var(--primary);margin-bottom:1rem;font-size:1.2rem;">Preparation Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;margin-bottom:2.5rem;">
+            <a href="/eligibility-calculator" style="text-decoration:none;">
+                <div class="card" style="height:100%;transition:transform .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+                    <div style="font-size:2.5rem;margin-bottom:.75rem;">🧮</div>
+                    <h3 style="color:var(--primary);margin-bottom:.5rem;">Eligibility Calculator</h3>
+                    <p style="color:#666;font-size:.9rem;line-height:1.5;">Check your age, qualification, and category eligibility for any government exam instantly.</p>
+                    <span class="btn btn--primary btn--small" style="margin-top:1rem;display:inline-block;">Open Tool</span>
+                </div>
+            </a>
+            <a href="/study-planner" style="text-decoration:none;">
+                <div class="card" style="height:100%;transition:transform .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+                    <div style="font-size:2.5rem;margin-bottom:.75rem;">📅</div>
+                    <h3 style="color:var(--primary);margin-bottom:.5rem;">Study Planner</h3>
+                    <p style="color:#666;font-size:.9rem;line-height:1.5;">Create a personalized study schedule based on your exam date and available hours per day.</p>
+                    <span class="btn btn--primary btn--small" style="margin-top:1rem;display:inline-block;">Open Tool</span>
+                </div>
+            </a>
+            <a href="/previous-papers" style="text-decoration:none;">
+                <div class="card" style="height:100%;transition:transform .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+                    <div style="font-size:2.5rem;margin-bottom:.75rem;">📄</div>
+                    <h3 style="color:var(--primary);margin-bottom:.5rem;">Previous Papers</h3>
+                    <p style="color:#666;font-size:.9rem;line-height:1.5;">Access previous year question papers for UPSC, SSC, Railway, Banking, and State PSC exams.</p>
+                    <span class="btn btn--primary btn--small" style="margin-top:1rem;display:inline-block;">Browse Papers</span>
+                </div>
+            </a>
+            <a href="/syllabus.html" style="text-decoration:none;">
+                <div class="card" style="height:100%;transition:transform .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+                    <div style="font-size:2.5rem;margin-bottom:.75rem;">📋</div>
+                    <h3 style="color:var(--primary);margin-bottom:.5rem;">Exam Syllabus</h3>
+                    <p style="color:#666;font-size:.9rem;line-height:1.5;">Complete syllabus for UPSC, SSC, Railway, Banking, and all major state PSC exams.</p>
+                    <span class="btn btn--primary btn--small" style="margin-top:1rem;display:inline-block;">View Syllabus</span>
+                </div>
+            </a>
+            <a href="/cut-off-marks.html" style="text-decoration:none;">
+                <div class="card" style="height:100%;transition:transform .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+                    <div style="font-size:2.5rem;margin-bottom:.75rem;">🎯</div>
+                    <h3 style="color:var(--primary);margin-bottom:.5rem;">Cut-off Marks</h3>
+                    <p style="color:#666;font-size:.9rem;line-height:1.5;">Category-wise cut-off marks for all major competitive exams. General, OBC, SC, ST cut-offs.</p>
+                    <span class="btn btn--primary btn--small" style="margin-top:1rem;display:inline-block;">Check Cut-offs</span>
+                </div>
+            </a>
         </div>
+
+        <!-- Quick Links by Category -->
+        <h2 style="color:var(--primary);margin-bottom:1rem;font-size:1.2rem;">Browse by Category</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2.5rem;">
+            <a href="/latest-jobs" class="btn btn--outline btn--block" style="padding:.75rem;text-align:center;">💼 Latest Jobs</a>
+            <a href="/results" class="btn btn--outline btn--block" style="padding:.75rem;text-align:center;">📊 Results</a>
+            <a href="/admit-cards" class="btn btn--outline btn--block" style="padding:.75rem;text-align:center;">🎫 Admit Cards</a>
+        </div>
+
+        <!-- State-wise Jobs -->
+        <h2 style="color:var(--primary);margin-bottom:1rem;font-size:1.2rem;">State-wise Jobs</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:2.5rem;">
+            <a href="/state/uttar-pradesh.html" class="pill">Uttar Pradesh</a>
+            <a href="/state/bihar.html" class="pill">Bihar</a>
+            <a href="/state/rajasthan.html" class="pill">Rajasthan</a>
+            <a href="/state/madhya-pradesh.html" class="pill">Madhya Pradesh</a>
+            <a href="/state/delhi.html" class="pill">Delhi</a>
+            <a href="/state/maharashtra.html" class="pill">Maharashtra</a>
+            <a href="/state/haryana.html" class="pill">Haryana</a>
+            <a href="/state/jharkhand.html" class="pill">Jharkhand</a>
+            <a href="/state/gujarat.html" class="pill">Gujarat</a>
+            <a href="/state/punjab.html" class="pill">Punjab</a>
+        </div>
+
+        <div class="ad-slot" style="margin-top:1rem;">Advertisement</div>
     </main>
     <footer class="footer">
   <div class="container">
