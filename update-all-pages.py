@@ -658,9 +658,7 @@ def build_standard_sidebar():
       <a href="/eligibility-calculator">Eligibility Check</a>
     </div>
   </div>
-  <div class="nd-ad ad-slot" data-ad-slot="sidebar-top" style="min-height:250px;">
-    <p>Advertisement</p><p style="font-size:.75rem">300x250</p>
-  </div>
+  <div class="nd-ad ad-slot" data-ad-slot="sidebar-top" style="min-height:250px;"></div>
 </aside>'''
 
 
