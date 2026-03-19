@@ -288,6 +288,12 @@ def normalize_title(text: str) -> str:
     return clean(title)
 
 
+def google_search_url(title: str, suffix: str = '') -> str:
+    """Return a Google search URL for the given title + optional suffix."""
+    q = f'{title} {suffix}'.strip() if suffix else title
+    return f'https://www.google.com/search?q={quote(q)}'
+
+
 def parse_display_date(text: str) -> str:
     return clean(text) or 'Check Notification'
 
@@ -1426,14 +1432,12 @@ def build_job_page(d: dict) -> tuple[str, str]:
         desc_parts.append(f"Last date to apply: {d['last_date']}.")
     desc_parts.append(f"Apply online at {SITE_NAME}.")
     desc = ' '.join(desc_parts)
-    apply_href = d.get('apply_url') or ''
-    notification_href = d.get('notification_url') or ''
+    apply_href = d.get('apply_url') or google_search_url(title, 'apply online')
+    notification_href = d.get('notification_url') or google_search_url(title, 'notification PDF')
 
     apply_btn = (
         f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
-        if apply_href
-        else ''
     )
     notif_btn = (
         f'<a href="{notification_href}" target="_blank" rel="nofollow noopener noreferrer" '
@@ -1446,9 +1450,9 @@ def build_job_page(d: dict) -> tuple[str, str]:
     extra_html = ''
     if d.get('extra_links'):
         rows = '\n'.join(
-            f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener">'
+            f'<li><a href="{lnk["url"] if lnk.get("url") and lnk["url"] != "#" else google_search_url(title, lnk.get("label", ""))}" target="_blank" rel="noopener">'
             f'{clean(lnk["label"])}</a></li>'
-            for lnk in d['extra_links'] if lnk.get('url') and lnk['url'] != '#'
+            for lnk in d['extra_links'] if lnk.get('label')
         )
         if rows:
             extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
@@ -1640,15 +1644,13 @@ def build_result_page(d: dict) -> tuple[str, str]:
     rel   = f'results/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"{title}: Result declared. Check your result at {SITE_NAME}. Result date: {d['result_date']}."
-    result_href = d.get('result_url') or ''
-    scorecard_href = d.get('scorecard_url') or ''
+    result_href = d.get('result_url') or google_search_url(title, 'result')
+    scorecard_href = d.get('scorecard_url') or google_search_url(title, 'scorecard marks')
 
     check_btn = (
         f'<a href="{result_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
         f'🎯 Check Result / परिणाम देखें</a>'
-        if result_href
-        else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">🎯 Result Link Coming Soon</span>'
     )
     scorecard_btn = (
         f'<a href="{scorecard_href}" target="_blank" rel="nofollow noopener noreferrer" '
@@ -1771,14 +1773,12 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     rel   = f'admit-cards/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {d['exam_date']}."
-    admit_href = d.get('admit_url') or ''
+    admit_href = d.get('admit_url') or google_search_url(title, 'admit card download')
 
     dl_btn = (
         f'<a href="{admit_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
         f'📥 Download Admit Card / हॉल टिकट डाउनलोड करें</a>'
-        if admit_href
-        else '<span class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;opacity:.7;cursor:default;">📥 Admit Card Link Coming Soon</span>'
     )
 
     extra_html = ''
