@@ -1,9 +1,9 @@
 name: Daily Scraper - 10 AM IST
 
 on:
-  # ── Auto: every 5 minutes ───────────────────────────────
+  # ── Auto: every 30 minutes ──────────────────────────────
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/30 * * * *'
 
   # ── Manual: tap "Run workflow" on GitHub from your phone ─
   workflow_dispatch:
@@ -44,6 +44,55 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scraper/requirements.txt
 
+      # ── Pre-flight: check if source sites are reachable ──
+      - name: Check source accessibility
+        id: source_check
+        run: |
+          echo "=== Source Accessibility Check ==="
+          if python3 scraper/check_sources.py; then
+            echo "sources_down=false" >> $GITHUB_OUTPUT
+          else
+            echo "sources_down=true" >> $GITHUB_OUTPUT
+          fi
+
+      # ── Email alert when ALL sources are down ─────────────
+      - name: Send alert email (all sources down)
+        if: steps.source_check.outputs.sources_down == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "⚠️ Naukri Dhaba — All source sites are DOWN (${{ env.TZ }} ${{ github.run_id }})"
+          to: ${{ secrets.ALERT_EMAIL }}
+          from: Naukri Dhaba Bot <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            Hello,
+
+            The Naukri Dhaba scraper ran at $(date +'%d %b %Y %I:%M %p IST') but
+            ALL source websites are currently unreachable from GitHub Actions:
+
+              • sarkariresult.com
+              • freejobalert.com
+              • rojgarresult.com
+
+            The scraper was skipped to avoid a false-success commit.
+            No new pages were generated.
+
+            Please check the source sites manually or wait for the next scheduled run.
+
+            — Naukri Dhaba Bot
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Stop if all sources are down
+        if: steps.source_check.outputs.sources_down == 'true'
+        run: |
+          echo "All sources are down. Stopping workflow."
+          exit 0
+
+      # ── Normal scraper run ────────────────────────────────
       - name: Run Naukri Dhaba scraper
         run: |
           echo "=== Naukri Dhaba Scraper ==="
