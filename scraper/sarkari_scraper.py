@@ -1419,7 +1419,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
         f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
         if apply_href
-        else '<span class="btn btn--primary btn--large" style="opacity:.6;cursor:default;">🚀 Apply Link Coming Soon</span>'
+        else ''
     )
     notif_btn = (
         f'<a href="{notification_href}" target="_blank" rel="nofollow noopener noreferrer" '
