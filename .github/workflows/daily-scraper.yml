@@ -86,14 +86,9 @@ jobs:
             — Naukri Dhaba Bot
             Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      - name: Stop if all sources are down
-        if: steps.source_check.outputs.sources_down == 'true'
-        run: |
-          echo "All sources are down. Stopping workflow."
-          exit 0
-
-      # ── Normal scraper run ────────────────────────────────
+      # ── Normal scraper run (skipped if all sources down) ──
       - name: Run Naukri Dhaba scraper
+        if: steps.source_check.outputs.sources_down != 'true'
         run: |
           echo "=== Naukri Dhaba Scraper ==="
           echo "Time (IST): $(date)"
@@ -101,15 +96,19 @@ jobs:
           echo "=== Scraper done ==="
 
       - name: Normalize generated pages
+        if: steps.source_check.outputs.sources_down != 'true'
         run: python3 update-all-pages.py
 
       - name: Rebuild sitemap
+        if: steps.source_check.outputs.sources_down != 'true'
         run: python3 generate-sitemap.py
 
       - name: Validate generated output
+        if: steps.source_check.outputs.sources_down != 'true'
         run: python3 validate-generated-site.py
 
       - name: Commit new pages
+        if: steps.source_check.outputs.sources_down != 'true'
         run: |
           git config user.name "Naukri Dhaba Bot"
           git config user.email "bot@naukridhaba.in"
