@@ -227,7 +227,8 @@ def is_public_redirect(url: str) -> bool:
 def is_source_url(url: str) -> bool:
     if not url or url == '#':
         return False
-    return urlparse(url).netloc.lower() in SOURCE_HOSTS
+    host = urlparse(url).netloc.lower()
+    return any(host == sh or host.endswith('.' + sh) for sh in SOURCE_HOSTS)
 
 
 def is_official_url(url: str) -> bool:
@@ -237,7 +238,7 @@ def is_official_url(url: str) -> bool:
     if parsed.scheme not in ('http', 'https'):
         return False
     host = parsed.netloc.lower()
-    if host in SOURCE_HOSTS or host.endswith('naukridhaba.in'):
+    if any(host == sh or host.endswith('.' + sh) for sh in SOURCE_HOSTS) or host.endswith('naukridhaba.in'):
         return False
     return True
 
