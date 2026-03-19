@@ -36,14 +36,14 @@ import argparse
 from pathlib import Path
 from datetime import date, datetime
 from html import escape
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 try:
     from bs4 import BeautifulSoup
 except ImportError:
     BeautifulSoup = None
 
-from site_config import PRETTY_ROUTE_MAP, REDIRECT_PATH, SITE_NAME, SITE_URL
+from site_config import PRETTY_ROUTE_MAP, REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_HOSTS
 
 SITE_ROOT = Path(__file__).parent
 TODAY = date.today().isoformat()
@@ -1196,6 +1196,26 @@ def remove_sarkariresult_urls(content):
     return content
 
 
+def wrap_source_links(content):
+    """Wrap any direct source host href/src through the redirect proxy."""
+    def repl(match):
+        attr = match.group(1)
+        quote_char = match.group(2)
+        url = match.group(3)
+        parsed = urlparse(url)
+        if parsed.netloc.lower() in SOURCE_HOSTS:
+            wrapped = f'{REDIRECT_PATH}?target={quote(url, safe="")}'
+            return f'{attr}={quote_char}{wrapped}{quote_char}'
+        return match.group(0)
+
+    return re.sub(
+        r'(href|src)=(["\'])([^"\']+)\2',
+        repl,
+        content,
+        flags=re.IGNORECASE,
+    )
+
+
 def fix_malformed_redirect_hosts(content):
     """Repair broken hostnames introduced by older text replacement passes."""
     return re.sub(
@@ -1338,6 +1358,9 @@ def update_page(filepath, dry_run=False):
 
     # Step 1: Remove SarkariResult references
     content = remove_sarkariresult_urls(content)
+
+    # Step 1b: Wrap any remaining direct source host links through redirect proxy
+    content = wrap_source_links(content)
 
     # Step 2: Fix broken buttons
     content = fix_broken_buttons(content)
