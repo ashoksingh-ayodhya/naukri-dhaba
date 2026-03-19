@@ -29,11 +29,6 @@ Allow: /
 User-agent: Amazonbot
 Allow: /
 
-# Disallow admin/tool pages
-Disallow: /eligibility-calculator.html
-Disallow: /study-planner.html
-Disallow: /previous-papers.html
-
 # Allow important crawlable paths
 Allow: /jobs/
 Allow: /results/
