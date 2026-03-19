@@ -40,8 +40,28 @@ HEADERS = {
 }
 
 
+CF_WORKER_URL    = os.environ.get("CF_WORKER_PROXY_URL", "").rstrip("/")
+CF_WORKER_SECRET = os.environ.get("CF_WORKER_SECRET", "")
+
+
 def check_url(url: str) -> tuple[bool, str]:
-    """Return (reachable, reason)."""
+    """Return (reachable, reason). Uses CF Worker proxy if configured."""
+    # Try via Cloudflare Worker first
+    if CF_WORKER_URL:
+        try:
+            from urllib.parse import quote
+            proxy_url = f"{CF_WORKER_URL}/?url={quote(url, safe='')}"
+            proxy_headers = dict(HEADERS)
+            if CF_WORKER_SECRET:
+                proxy_headers["X-Proxy-Secret"] = CF_WORKER_SECRET
+            req = Request(proxy_url, headers=proxy_headers, method="GET")
+            with urlopen(req, timeout=TIMEOUT) as resp:
+                if resp.status < 400:
+                    return True, f"HTTP {resp.status} (via CF Worker)"
+        except Exception:
+            pass  # fall through to direct check
+
+    # Direct fetch fallback
     try:
         req = Request(url, headers=HEADERS, method="GET")
         with urlopen(req, timeout=TIMEOUT) as resp:
