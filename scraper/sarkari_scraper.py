@@ -757,6 +757,14 @@ def detail_body_tracking_markup() -> str:
 # HTTP FETCHER
 # ══════════════════════════════════════════════════════════
 
+# Explicitly clear proxy env vars — trust_env=False alone is not enough
+# on some GitHub Actions runners that inject proxies at a lower level.
+for _pvar in ('HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy',
+              'ALL_PROXY', 'all_proxy', 'NO_PROXY', 'no_proxy'):
+    os.environ.pop(_pvar, None)
+
+_NO_PROXY = {'http': None, 'https': None}  # passed to every requests call
+
 _session = requests.Session()
 _session.trust_env = False  # ignore HTTP_PROXY/HTTPS_PROXY env vars from GitHub Actions
 _session.headers.update(HEADERS)
@@ -777,6 +785,12 @@ if cloudscraper is not None:
 _CF_WORKER_URL    = os.environ.get('CF_WORKER_PROXY_URL', '').rstrip('/')
 _CF_WORKER_SECRET = os.environ.get('CF_WORKER_SECRET', '')
 
+if _CF_WORKER_URL:
+    log.info(f'CF Worker proxy configured: {_CF_WORKER_URL[:40]}...')
+else:
+    log.warning('CF_WORKER_PROXY_URL is NOT set — direct requests will be used. '
+                'Set this secret in GitHub Actions if scraping fails.')
+
 def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     """Fetch a URL through the Cloudflare Worker proxy."""
     proxy_url = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
@@ -784,7 +798,7 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     if _CF_WORKER_SECRET:
         headers['X-Proxy-Secret'] = _CF_WORKER_SECRET
     try:
-        r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT)
+        r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT, proxies=_NO_PROXY)
         r.raise_for_status()
         return BeautifulSoup(r.content, 'lxml')
     except Exception as exc:
@@ -810,7 +824,7 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
             client_name = 'cloudscraper' if idx == 0 and _cf_session is not None else 'requests'
             try:
                 log.debug(f'GET {url} via {client_name}')
-                r = session.get(url, timeout=TIMEOUT)
+                r = session.get(url, timeout=TIMEOUT, proxies=_NO_PROXY)
                 r.raise_for_status()
                 time.sleep(DELAY)
                 return BeautifulSoup(r.content, 'lxml')
@@ -1883,7 +1897,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
 
         if kind == 'job':
             cat  = get_category(e.get('dept', ''))
-            path = f"jobs/{cat}/{slugify(title)}.html"
+            path = f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '')
             btn  = 'Apply'
         elif kind == 'result':
@@ -1891,7 +1905,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             s    = slugify(title)
             if 'result' not in s:
                 s += '-result'
-            path = f"results/{cat}/{s}.html"
+            path = f"/results/{cat}/{s}.html"
             date_label = e.get('result_date', '')
             btn  = 'View'
         else:
@@ -1899,7 +1913,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             s    = slugify(title)
             if 'admit' not in s and 'hall' not in s:
                 s += '-admit-card'
-            path = f"admit-cards/{cat}/{s}.html"
+            path = f"/admit-cards/{cat}/{s}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '')
             btn  = 'Download'
 
@@ -1944,7 +1958,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
 
         if kind == 'job':
             cat = get_category(e.get('dept', ''))
-            path = f"jobs/{cat}/{slugify(title)}.html"
+            path = f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '') or e.get('date_str', '')
             button = 'Apply'
         elif kind == 'result':
@@ -1952,7 +1966,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             slug = slugify(title)
             if 'result' not in slug:
                 slug += '-result'
-            path = f"results/{cat}/{slug}.html"
+            path = f"/results/{cat}/{slug}.html"
             date_label = e.get('result_date', '') or e.get('date_str', '')
             button = 'View'
         else:
@@ -1960,7 +1974,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             slug = slugify(title)
             if 'admit' not in slug and 'hall' not in slug:
                 slug += '-admit-card'
-            path = f"admit-cards/{cat}/{slug}.html"
+            path = f"/admit-cards/{cat}/{slug}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
             button = 'Download'
 
