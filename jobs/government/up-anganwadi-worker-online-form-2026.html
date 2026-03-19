@@ -96,7 +96,7 @@
     <!-- End Google Tag Manager -->
     <script src="../../js/tracking.js"></script>
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"JobPosting","title":"UP Anganwadi Worker Online Form","datePosted":"2026-03-19","validThrough":"2026-03-19","employmentType":"FULL_TIME","hiringOrganization":{"@type":"Organization","name":"NTA"},"jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressCountry":"IN"}},"url":"https://naukridhaba.in/jobs/government/up-anganwadi-worker-online-form-2026.html"}
+    {"@context": "https://schema.org", "@type": "JobPosting", "title": "UP Anganwadi Worker Online Form", "description": "UP Anganwadi Worker Online Form: Government has released notification. Last date: Check Notification. Apply online at Naukri Dhaba.", "datePosted": "2026-03-19", "validThrough": "2027-03-19", "employmentType": "FULL_TIME", "hiringOrganization": {"@type": "Organization", "name": "Government", "sameAs": "https://naukridhaba.in"}, "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressCountry": "IN"}}, "applicantLocationRequirements": {"@type": "Country", "name": "IN"}}
     </script>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Naukri Dhaba","item":"https://naukridhaba.in/"},{"@type":"ListItem","position":2,"name":"Jobs","item":"https://naukridhaba.in/latest-jobs"},{"@type":"ListItem","position":3,"name":"NTA","item":"https://naukridhaba.in/latest-jobs"},{"@type":"ListItem","position":4,"name":"UP Anganwadi Worker Online Form","item":"https://naukridhaba.in/jobs/government/up-anganwadi-worker-online-form-2026.html"}]}
@@ -123,7 +123,7 @@
     </div>
   </div>
   <nav class="nav--mobile">
-    <label for="menu-toggle" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;">✕</label>
+    <button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
     <a href="/">🏠 Home</a>
     <a href="/latest-jobs">💼 Latest Jobs</a>
     <a href="/results">📊 Results</a>
@@ -131,6 +131,8 @@
     <a href="/resources">📚 Resources</a>
   </nav>
   <style>.menu-toggle{display:none!important}@media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}</style>
+
+<div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
 </header>
 
 <div class="content-wrapper container" style="margin-top:2rem;">

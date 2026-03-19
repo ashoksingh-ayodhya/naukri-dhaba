@@ -113,11 +113,13 @@
     </nav>
     <div style="display:flex;gap:1rem;align-items:center;">
       <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌓</button>
-      <input type="checkbox" id="menu-toggle" style="display:none;"><label for="menu-toggle" class="btn--icon menu-toggle" style="display:none;font-size:1.5rem;cursor:pointer;">☰</label>
+      <button class="btn--icon menu-toggle" onclick="toggleMobileMenu()" style="display:none;font-size:1.5rem;cursor:pointer;" aria-label="Open menu">☰</button>
     </div>
   </div>
-  <nav class="nav--mobile"><label for="menu-toggle" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;">✕</label><a href="/">🏠 Home</a><a href="/latest-jobs">💼 Latest Jobs</a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 Resources</a></nav>
+  <nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 Home</a><a href="/latest-jobs">💼 Latest Jobs</a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 Resources</a></nav>
   <style>.menu-toggle{display:none!important}@media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}</style>
+
+<div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
 </header>
     <main class="container" style="padding:4rem 1rem;text-align:center;">
         <div style="max-width:600px;margin:0 auto;background:var(--surface);padding:3rem;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
