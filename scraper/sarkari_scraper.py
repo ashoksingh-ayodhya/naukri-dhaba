@@ -116,12 +116,19 @@ DEPT_MAP = {
     'UPSSSC': 'ssc', 'BSSC': 'ssc', 'JSSC': 'ssc', 'HSSC': 'ssc',
     'RRB': 'railway', 'RRC': 'railway', 'RAILWAY': 'railway',
     'IBPS': 'banking', 'SBI': 'banking', 'RBI': 'banking',
-    'NABARD': 'banking', 'BANK': 'banking',
+    'NABARD': 'banking', 'BANK': 'banking', 'IDBI': 'banking',
     'POLICE': 'police', 'CISF': 'police', 'BSF': 'police',
     'CRPF': 'police', 'ITBP': 'police', 'SSB': 'police',
     'ARMY': 'defence', 'NAVY': 'defence', 'AIRFORCE': 'defence',
     'IAF': 'defence', 'NDA': 'defence', 'CDS': 'defence',
     'DRDO': 'defence', 'HAL': 'defence',
+    'NTA': 'government', 'CBSE': 'government', 'CISCE': 'government',
+    'JEEMAIN': 'government', 'NEET': 'government', 'CUET': 'government',
+    'UGC': 'government', 'GATE': 'government',
+    'BIHAR BOARD': 'government', 'UP BOARD': 'government',
+    'MPBSE': 'government', 'RSSB': 'government', 'NVS': 'government',
+    'MPPSC': 'government', 'JPSC': 'government', 'PPSC': 'government',
+    'LIC': 'government', 'AFCAT': 'government',
 }
 
 # ── SEO keyword map by dept category ──────────────────────
@@ -2110,6 +2117,20 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         title = clean(re.sub(r'<[^>]+>', '', title_match.group(1))) if title_match else normalize_title(path.stem.replace('-', ' '))
         dept_match = re.search(r'info-item__label">[^<]*Department</span>\s*<span class="info-item__value">([^<]+)', html, re.I)
         dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
+        # Override dept using URL path category when stored value is unreliable.
+        # e.g. results/railway/... → RAILWAY, jobs/ssc/... → SSC
+        _path_cat = path.parent.name.upper()
+        _cat_to_dept = {
+            'RAILWAY': 'RAILWAY', 'SSC': 'SSC', 'UPSC': 'UPSC',
+            'BANKING': 'BANKING', 'POLICE': 'POLICE', 'DEFENCE': 'DEFENCE',
+        }
+        if _path_cat in _cat_to_dept:
+            dept = _cat_to_dept[_path_cat]
+        # If stored dept is NTA (scraper bug from old runs), try title inference.
+        # If title also doesn't give a proper category, fall back to GOVERNMENT.
+        elif dept.upper() == 'NTA':
+            inferred = infer_dept(title)
+            dept = inferred if inferred.upper() not in ('NTA', 'GOVERNMENT') else 'GOVERNMENT'
         date_label = 'Check Notification'
 
         actual_url = '/' + rel  # actual on-disk path, used to avoid slug mismatch

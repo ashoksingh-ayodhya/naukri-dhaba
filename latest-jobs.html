@@ -124,11 +124,11 @@
 <div class="container" style="margin-top:2rem;">
 <h1 style="color:var(--primary);">Latest Govt Jobs 2026</h1>
 <div class="pills" style="margin:1.5rem 0;">
-<a class="pill active" href="#">All</a>
-<a class="pill" href="#">Railway</a>
-<a class="pill" href="#">SSC</a>
-<a class="pill" href="#">UPSC</a>
-<a class="pill" href="#">Banking</a>
+<a class="pill active" href="#" onclick="filterPill(event,'all',this)">All</a>
+<a class="pill" href="#" onclick="filterPill(event,'railway',this)">Railway</a>
+<a class="pill" href="#" onclick="filterPill(event,'ssc',this)">SSC</a>
+<a class="pill" href="#" onclick="filterPill(event,'upsc',this)">UPSC</a>
+<a class="pill" href="#" onclick="filterPill(event,'banking',this)">Banking</a>
 </div>
 <div class="search-box" style="margin-bottom:1rem;">
 <input id="search-input" placeholder="Search jobs... / नौकरी खोजें..." type="text" oninput="filterJobs(this.value)"/>
@@ -176,7 +176,8 @@
 <tr><td>GOVERNMENT</td><td><a href="/jobs/government/nta-jee-main-apply-online-2026.html" style="color:var(--primary);font-weight:600;">NTA JEE MAIN Apply Online 2026</a></td><td>25/02/2026</td><td><a href="/jobs/government/nta-jee-main-apply-online-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr>
 <tr><td>GOVERNMENT</td><td><a href="/jobs/government/upbed-2026-online-form.html" style="color:var(--primary);font-weight:600;">UPBED 2026 Online Form 2026</a></td><td>10/03/2026</td><td><a href="/jobs/government/upbed-2026-online-form.html" class="btn btn--small btn--primary">Apply</a></td></tr>
 <tr><td>GOVERNMENT</td><td><a href="/jobs/government/rajasthan-rssb-ldc-jr-assistant-online-form-2026.html" style="color:var(--primary);font-weight:600;">Rajasthan RSSB LDC / Jr Assistant Online Form 2026</a></td><td>13/02/2026 🔴</td><td><a href="/jobs/government/rajasthan-rssb-ldc-jr-assistant-online-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr>
-<tr><td>GOVERNMENT</td><td><a href="/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html" style="color:var(--primary);font-weight:600;">CSBC Bihar Police Constable Special Branch Online Form 2026</a></td><td>05/03/2026</td><td><a href="/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr>
+<tr><td>POLICE</td><td><a href="/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html" style="color:var(--primary);font-weight:600;">CSBC Bihar Police Constable Special Branch Online Form 2026</a></td><td>05/03/2026</td><td><a href="/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr>
+<tr><td>POLICE</td><td><a href="/jobs/police/up-police-constable-edit-correction-form-2026.html" style="color:var(--primary);font-weight:600;">UP Police Constable Edit Correction Form 2026</a></td><td>30/01/2026 🔴</td><td><a href="/jobs/police/up-police-constable-edit-correction-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr>
 <tr><td>UPSC</td><td><a href="/jobs/upsc/upsc-ias-pre-online-form-2026.html" style="color:var(--primary);font-weight:600;">UPSC IAS Pre Online Form 2026</a></td><td>24/02/2026</td><td><a href="/jobs/upsc/upsc-ias-pre-online-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr></tbody>
 </table>
 <p id="no-results" style="display:none;text-align:center;padding:2rem;color:#666;">No jobs found for your search. / कोई नौकरी नहीं मिली।</p>
@@ -213,7 +214,8 @@
 <div class="card"><div class="card__header"><span class="badge">GOVERNMENT</span></div><h3 class="card__title">NTA JEE MAIN Apply Online 2026</h3><p style="color:#666;font-size:.875rem;">25/02/2026</p><a href="/jobs/government/nta-jee-main-apply-online-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
 <div class="card"><div class="card__header"><span class="badge">GOVERNMENT</span></div><h3 class="card__title">UPBED 2026 Online Form 2026</h3><p style="color:#666;font-size:.875rem;">10/03/2026</p><a href="/jobs/government/upbed-2026-online-form.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
 <div class="card"><div class="card__header"><span class="badge">GOVERNMENT</span></div><h3 class="card__title">Rajasthan RSSB LDC / Jr Assistant Online Form 2026</h3><p style="color:#666;font-size:.875rem;">13/02/2026 🔴</p><a href="/jobs/government/rajasthan-rssb-ldc-jr-assistant-online-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
-<div class="card"><div class="card__header"><span class="badge">GOVERNMENT</span></div><h3 class="card__title">CSBC Bihar Police Constable Special Branch Online Form 2026</h3><p style="color:#666;font-size:.875rem;">05/03/2026</p><a href="/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
+<div class="card"><div class="card__header"><span class="badge">POLICE</span></div><h3 class="card__title">CSBC Bihar Police Constable Special Branch Online Form 2026</h3><p style="color:#666;font-size:.875rem;">05/03/2026</p><a href="/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
+<div class="card"><div class="card__header"><span class="badge">POLICE</span></div><h3 class="card__title">UP Police Constable Edit Correction Form 2026</h3><p style="color:#666;font-size:.875rem;">30/01/2026 🔴</p><a href="/jobs/police/up-police-constable-edit-correction-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
 <div class="card"><div class="card__header"><span class="badge">UPSC</span></div><h3 class="card__title">UPSC IAS Pre Online Form 2026</h3><p style="color:#666;font-size:.875rem;">24/02/2026</p><a href="/jobs/upsc/upsc-ias-pre-online-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div></div>
 <div class="ad-slot" style="margin-top:2rem;">Advertisement</div>
 <footer class="footer">
