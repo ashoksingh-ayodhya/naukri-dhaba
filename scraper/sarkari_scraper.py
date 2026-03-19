@@ -2299,8 +2299,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
             detail_soup = fetch(item['detail_url'])
             if not detail_soup:
-                log.error(f'  [SKIP] fetch() returned None for detail URL — skipping item to avoid fake-data page: {item["detail_url"]}')
-                continue
+                log.warning(f'  Detail page unavailable — generating from listing data: {item["detail_url"]}')
             rich = parse_detail(detail_soup, item)
             rich['dept'] = rich.get('dept') or infer_dept(rich['title'])
 
