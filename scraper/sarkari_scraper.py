@@ -868,7 +868,8 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
     items = []
 
     # Try several known wrapper selectors in priority order.
-    # Covers sarkariresult.com layout (TableLi/post-list).
+    # Covers sarkariresult (TableLi/post-list), freejobalert (entry-content tables),
+    # rojgarresult/sarkariexam (similar table-based layouts).
     containers = (
         soup.select('#post-list table tr') or
         soup.select('.TableLi table tr') or
