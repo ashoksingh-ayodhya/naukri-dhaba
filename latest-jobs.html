@@ -134,8 +134,12 @@
 <a class="pill" href="#">UPSC</a>
 <a class="pill" href="#">Banking</a>
 </div>
+<div class="search-box" style="margin-bottom:1rem;">
+<input id="search-input" placeholder="Search jobs... / नौकरी खोजें..." type="text" oninput="filterJobs(this.value)"/>
+<button onclick="filterJobs(document.getElementById('search-input').value)">Search</button>
+</div>
 <div class="table-wrapper">
-<table class="table">
+<table class="table" id="jobs-table">
 <thead>
 <tr>
 <th>Department</th>
@@ -179,6 +183,7 @@
 <tr><td>GOVERNMENT</td><td><a href="jobs/government/btsc-work-inspector-mechanical-online-form-2026.html" style="color:var(--primary);font-weight:600;">BTSC Work Inspector Mechanical Online Form 2026</a></td><td>08/02/2026 🔴</td><td><a href="jobs/government/btsc-work-inspector-mechanical-online-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr>
 <tr><td>GOVERNMENT</td><td><a href="jobs/government/bpsc-auditor-online-form-2026.html" style="color:var(--primary);font-weight:600;">BPSC Auditor Online Form 2026</a></td><td>26/02/2026</td><td><a href="jobs/government/bpsc-auditor-online-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr></tbody>
 </table>
+<p id="no-results" style="display:none;text-align:center;padding:2rem;color:#666;">No jobs found for your search. / कोई नौकरी नहीं मिली।</p>
 </div>
 <div class="cards"><div class="card"><div class="card__header"><span class="badge">UPSC</span></div><h3 class="card__title">UPSC IAS Pre Online Form 2026</h3><p style="color:#666;font-size:.875rem;">24/02/2026</p><a href="jobs/upsc/upsc-ias-pre-online-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
 <div class="card"><div class="card__header"><span class="badge">SSC</span></div><h3 class="card__title">UPSSSC Lekhpal Correction Edit Form 2026</h3><p style="color:#666;font-size:.875rem;">28/01/2026 🔴</p><a href="jobs/ssc/upsssc-lekhpal-correction-edit-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
