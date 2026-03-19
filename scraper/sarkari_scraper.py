@@ -1303,9 +1303,9 @@ def _sidebar() -> str:
   <div class="widget">
     <h3 class="widget__title">🔗 Quick Links</h3>
     <div class="footer__links">
-      <a href="/latest-jobs.html">💼 Latest Jobs</a>
-      <a href="/results.html">📊 Results</a>
-      <a href="/admit-cards.html">🎫 Admit Cards</a>
+      <a href="/latest-jobs">💼 Latest Jobs</a>
+      <a href="/results">📊 Results</a>
+      <a href="/admit-cards">🎫 Admit Cards</a>
       <a href="/eligibility-calculator.html">🎯 Eligibility Check</a>
     </div>
   </div>
@@ -1328,21 +1328,21 @@ def _footer() -> str:
       <div>
         <h3 class="footer__title">Quick Links</h3>
         <div class="footer__links">
-          <a href="/latest-jobs.html">Latest Jobs</a>
-          <a href="/results.html">Results</a>
-          <a href="/admit-cards.html">Admit Cards</a>
-          <a href="/resources.html">Resources</a>
+          <a href="/latest-jobs">Latest Jobs</a>
+          <a href="/results">Results</a>
+          <a href="/admit-cards">Admit Cards</a>
+          <a href="/resources">Resources</a>
         </div>
       </div>
       <div>
         <h3 class="footer__title">Categories</h3>
         <div class="footer__links">
-          <a href="/latest-jobs.html">UPSC Jobs</a>
-          <a href="/latest-jobs.html">SSC Jobs</a>
-          <a href="/latest-jobs.html">Railway Jobs</a>
-          <a href="/latest-jobs.html">Banking Jobs</a>
-          <a href="/latest-jobs.html">Defence Jobs</a>
-          <a href="/latest-jobs.html">Police Jobs</a>
+          <a href="/latest-jobs">UPSC Jobs</a>
+          <a href="/latest-jobs">SSC Jobs</a>
+          <a href="/latest-jobs">Railway Jobs</a>
+          <a href="/latest-jobs">Banking Jobs</a>
+          <a href="/latest-jobs">Defence Jobs</a>
+          <a href="/latest-jobs">Police Jobs</a>
         </div>
       </div>
       <div>
@@ -1503,7 +1503,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
   <main>
     <article class="job-detail">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/latest-jobs.html">Jobs</a> &gt; <span>{title}</span>
+        <a href="/">Home</a> &gt; <a href="/latest-jobs">Jobs</a> &gt; <span>{title}</span>
       </nav>
 
       <h1 style="color:var(--primary);margin-bottom:.5rem;">
@@ -1694,7 +1694,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
   <main>
     <article class="result-detail">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/results.html">Results</a> &gt; <span>{title}</span>
+        <a href="/">Home</a> &gt; <a href="/results">Results</a> &gt; <span>{title}</span>
       </nav>
 
       <h1 style="color:var(--primary);">📊 {title}</h1>
@@ -1707,7 +1707,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
         {check_btn}
         {scorecard_btn}
         <div style="margin-top:1rem;">
-          <a href="/latest-jobs.html" class="btn btn--secondary">🔍 Browse Latest Jobs</a>
+          <a href="/latest-jobs" class="btn btn--secondary">🔍 Browse Latest Jobs</a>
         </div>
       </div>
 
@@ -1818,7 +1818,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
   <main>
     <article class="admit-detail">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/admit-cards.html">Admit Cards</a> &gt; <span>{title}</span>
+        <a href="/">Home</a> &gt; <a href="/admit-cards">Admit Cards</a> &gt; <span>{title}</span>
       </nav>
 
       <h1 style="color:var(--primary);">🎫 {title}</h1>
@@ -1831,7 +1831,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
         <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">📅 Exam Date: {d["exam_date"]}</p>
         {dl_btn}
         <div style="margin-top:1rem;">
-          <a href="/results.html" class="btn btn--secondary">📊 Check Results</a>
+          <a href="/results" class="btn btn--secondary">📊 Check Results</a>
         </div>
       </div>
 
