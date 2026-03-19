@@ -89,6 +89,10 @@ jobs:
           python3 scraper/sarkari_scraper.py --refresh-existing
           echo "=== Scraper done ==="
 
+      - name: Regenerate state pages
+        if: steps.source_check.outputs.sources_down != 'true'
+        run: python3 generate-state-pages.py
+
       - name: Normalize generated pages
         if: steps.source_check.outputs.sources_down != 'true'
         run: python3 update-all-pages.py

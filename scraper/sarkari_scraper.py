@@ -1958,7 +1958,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
 
         if kind == 'job':
             cat = get_category(e.get('dept', ''))
-            path = f"/jobs/{cat}/{slugify(title)}.html"
+            path = e.get('url') or f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '') or e.get('date_str', '')
             button = 'Apply'
         elif kind == 'result':
@@ -1966,7 +1966,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             slug = slugify(title)
             if 'result' not in slug:
                 slug += '-result'
-            path = f"/results/{cat}/{slug}.html"
+            path = e.get('url') or f"/results/{cat}/{slug}.html"
             date_label = e.get('result_date', '') or e.get('date_str', '')
             button = 'View'
         else:
@@ -1974,7 +1974,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             slug = slugify(title)
             if 'admit' not in slug and 'hall' not in slug:
                 slug += '-admit-card'
-            path = f"/admit-cards/{cat}/{slug}.html"
+            path = e.get('url') or f"/admit-cards/{cat}/{slug}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
             button = 'Download'
 
@@ -2112,18 +2112,19 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
         date_label = 'Check Notification'
 
+        actual_url = '/' + rel  # actual on-disk path, used to avoid slug mismatch
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'last_date': date_label})
+            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'result_date': date_label})
+            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'exam_date': date_label})
+            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url})
 
     return entries
 
