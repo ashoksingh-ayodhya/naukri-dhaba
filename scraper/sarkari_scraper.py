@@ -266,7 +266,13 @@ def primary_cta_url(url: str, source_detail_url: str) -> str:
     normalized = normalize_url(url)
     if is_public_redirect(normalized):
         return ''
-    return official_url_or_empty(normalized)
+    official = official_url_or_empty(normalized)
+    if official:
+        return official
+    # Fall back to source detail page via redirect (so user can find the link there)
+    if source_detail_url and source_detail_url != '#':
+        return build_source_redirect(source_detail_url)
+    return ''
 
 
 def normalize_title(text: str) -> str:
@@ -400,6 +406,176 @@ def build_admit_overview(d: dict) -> str:
         f'<ul style="line-height:2;margin:0;padding-left:1.2rem;">{"".join(bullets)}</ul>'
         '</div>'
     )
+
+
+def build_job_faq(d: dict) -> tuple[str, str]:
+    """Return (faq_html, faq_json_ld) for a job detail page."""
+    title  = normalize_title(d.get('title', ''))
+    dept   = clean(d.get('dept', 'Government'))
+    last_d = d.get('last_date', 'Check Notification')
+    posts  = str(d.get('total_posts') or '').strip()
+    age_min = d.get('age_min', 18)
+    age_max = d.get('age_max', 35)
+    fee_g  = d.get('fee_general', '')
+    fee_s  = d.get('fee_sc_st', '')
+    qual   = d.get('qualification', 'Check Notification')
+
+    qas = [
+        (
+            f"What is the last date to apply for {title}?",
+            f"The last date to apply for {title} is {last_d}. Candidates should submit their application before this date to avoid rejection."
+        ),
+        (
+            f"How many vacancies are available in {title}?",
+            f"{'There are ' + posts + ' total vacancies advertised under ' + title + '.' if posts else 'The total vacancy count for ' + title + ' has not been specified yet. Please check the official notification.'}"
+        ),
+        (
+            f"What is the age limit for {title}?",
+            f"The age limit for {title} is {age_min} to {age_max} years as per the official notification. Age relaxation is applicable for SC/ST/OBC/PwD candidates as per government norms."
+        ),
+        (
+            f"What is the application fee for {title}?",
+            f"{'Application fee: General/OBC/EWS — ' + fee_g + ('; SC/ST — ' + fee_s if fee_s else '') + '.' if fee_g else 'Application fee details for ' + title + ' are mentioned in the official notification. Please refer to the official site.'}"
+        ),
+        (
+            f"What is the educational qualification required for {title}?",
+            f"The required qualification for {title} is: {qual}. Please verify from the official notification as requirements may have been updated."
+        ),
+    ]
+
+    html_items = '\n'.join(
+        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">'
+        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
+        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
+        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'</div></div>'
+        for q, a in qas
+    )
+    faq_html = (
+        '<div itemscope itemtype="https://schema.org/FAQPage" '
+        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h2 style="color:var(--primary);margin-top:0;">❓ Frequently Asked Questions</h2>'
+        + html_items +
+        '</div>'
+    )
+
+    faq_ld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": a}}
+            for q, a in qas
+        ]
+    }, ensure_ascii=False)
+    return faq_html, faq_ld
+
+
+def build_result_faq(d: dict) -> tuple[str, str]:
+    """Return (faq_html, faq_json_ld) for a result detail page."""
+    title   = normalize_title(d.get('title', ''))
+    dept    = clean(d.get('dept', 'Government'))
+    r_date  = d.get('result_date', 'Check Notification')
+
+    qas = [
+        (
+            f"When was the {title} declared?",
+            f"The {title} was declared on {r_date}. Candidates can check the result using the official link provided on this page."
+        ),
+        (
+            f"How can I check the {title}?",
+            f"To check the {title}: (1) Click the result link on this page. (2) Enter your roll number or registration ID. (3) Verify your name, category, and marks. (4) Download the result PDF for future reference."
+        ),
+        (
+            f"What documents are needed to check the {title}?",
+            "Keep your admit card (roll number/registration number), date of birth, and application number ready before opening the result portal."
+        ),
+        (
+            f"What should I do after checking the {title}?",
+            f"After checking the {title}: (1) Download and save the result PDF. (2) If selected, await the official merit list / joining instructions from {dept}. (3) Keep all original documents ready for verification rounds."
+        ),
+    ]
+
+    html_items = '\n'.join(
+        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">'
+        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
+        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
+        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'</div></div>'
+        for q, a in qas
+    )
+    faq_html = (
+        '<div itemscope itemtype="https://schema.org/FAQPage" '
+        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h2 style="color:var(--primary);margin-top:0;">❓ Frequently Asked Questions</h2>'
+        + html_items +
+        '</div>'
+    )
+
+    faq_ld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": a}}
+            for q, a in qas
+        ]
+    }, ensure_ascii=False)
+    return faq_html, faq_ld
+
+
+def build_admit_faq(d: dict) -> tuple[str, str]:
+    """Return (faq_html, faq_json_ld) for an admit card detail page."""
+    title    = normalize_title(d.get('title', ''))
+    dept     = clean(d.get('dept', 'Government'))
+    release  = d.get('admit_release', 'Check Notification')
+    exam_dt  = d.get('exam_date', 'As per Schedule')
+
+    qas = [
+        (
+            f"When was the {title} released?",
+            f"The {title} was released on {release}. Download it using the official link provided on this page."
+        ),
+        (
+            f"How to download the {title}?",
+            f"To download the {title}: (1) Click the download link on this page. (2) Enter your registration number and date of birth. (3) View and download your admit card. (4) Take a colour printout for the exam."
+        ),
+        (
+            f"What is the exam date for {title}?",
+            f"The exam date for {title} is {exam_dt}. Please verify the reporting time and exam centre from your admit card."
+        ),
+        (
+            f"What documents to carry with {title}?",
+            f"Carry the printed {title} along with a valid photo ID (Aadhaar / PAN / Passport) to the exam centre. Some exams also require a passport-size photograph — check instructions on the admit card."
+        ),
+    ]
+
+    html_items = '\n'.join(
+        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">'
+        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
+        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
+        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'</div></div>'
+        for q, a in qas
+    )
+    faq_html = (
+        '<div itemscope itemtype="https://schema.org/FAQPage" '
+        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h2 style="color:var(--primary);margin-top:0;">❓ Frequently Asked Questions</h2>'
+        + html_items +
+        '</div>'
+    )
+
+    faq_ld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": q,
+             "acceptedAnswer": {"@type": "Answer", "text": a}}
+            for q, a in qas
+        ]
+    }, ensure_ascii=False)
+    return faq_html, faq_ld
 
 
 def dedupe_keywords(*parts: str) -> str:
@@ -795,7 +971,7 @@ def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict
 
         parsed = urlparse(detail_url)
         path_parts = [part for part in parsed.path.split('/') if part]
-        if parsed.netloc.lower() not in SOURCE_HOSTS or len(path_parts) < 2:
+        if parsed.netloc.lower() not in SOURCE_HOSTS or len(path_parts) < 1:
             continue
         if path_parts[0].lower() in skip_paths:
             continue
@@ -1286,12 +1462,15 @@ def build_job_page(d: dict) -> tuple[str, str]:
         ]
     }, ensure_ascii=False)
 
+    faq_html, faq_ld = build_job_faq(d)
+
     html = f'''<!DOCTYPE html>
 <html lang="hi">
 <head>
 {_seo_head(title, desc, canon, dept)}
     <script type="application/ld+json">{ld_job}</script>
     <script type="application/ld+json">{ld_bc}</script>
+    <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
@@ -1392,6 +1571,8 @@ def build_job_page(d: dict) -> tuple[str, str]:
         </ol>
       </div>
 
+      {faq_html}
+
       <div class="share-section">
         <h3>📢 Share with Friends / दोस्तों को शेयर करें</h3>
         <button onclick="shareWhatsApp(window.location.href,'{title.replace(chr(39),'')}') " class="share-btn share-btn--whatsapp">WhatsApp</button>
@@ -1472,12 +1653,15 @@ def build_result_page(d: dict) -> tuple[str, str]:
         ]
     }, ensure_ascii=False)
 
+    faq_html, faq_ld = build_result_faq(d)
+
     html = f'''<!DOCTYPE html>
 <html lang="hi">
 <head>
 {_seo_head(title + ' - Result', desc, canon, dept)}
     <script type="application/ld+json">{ld_ev}</script>
     <script type="application/ld+json">{ld_bc}</script>
+    <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
@@ -1519,6 +1703,8 @@ def build_result_page(d: dict) -> tuple[str, str]:
       </div>
 
       <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+
+      {faq_html}
 
       <div class="share-section">
         <h3>📢 Share with Friends</h3>
@@ -1591,12 +1777,15 @@ def build_admit_page(d: dict) -> tuple[str, str]:
         ]
     }, ensure_ascii=False)
 
+    faq_html, faq_ld = build_admit_faq(d)
+
     html = f'''<!DOCTYPE html>
 <html lang="hi">
 <head>
 {_seo_head(title + ' - Admit Card', desc, canon, dept)}
     <script type="application/ld+json">{ld_ev}</script>
     <script type="application/ld+json">{ld_bc}</script>
+    <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
 </head>
 <body>
@@ -1649,6 +1838,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       </div>
 
       <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
+
+      {faq_html}
 
       <div class="share-section">
         <h3>📢 Share with Friends</h3>
