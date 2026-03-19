@@ -1408,10 +1408,19 @@ def build_job_page(d: dict) -> tuple[str, str]:
     year   = date.today().year
 
     posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
-    desc = (
-        f"{title}: {dept} has released notification. "
-        f"Last date: {d['last_date']}. Apply online at {SITE_NAME}."
-    )
+    desc_parts = [f"{title} — official recruitment notification from {dept}."]
+    if d.get('total_posts'):
+        desc_parts.append(f"Total vacancies: {d['total_posts']}.")
+    if d.get('qualification') and d['qualification'] != 'Check Notification':
+        desc_parts.append(f"Qualification: {d['qualification']}.")
+    if d.get('age_min') and d.get('age_max'):
+        desc_parts.append(f"Age limit: {d['age_min']} to {d['age_max']} years.")
+    if d.get('app_begin') and d['app_begin'] != 'Check Notification':
+        desc_parts.append(f"Application start: {d['app_begin']}.")
+    if d.get('last_date') and d['last_date'] != 'Check Notification':
+        desc_parts.append(f"Last date to apply: {d['last_date']}.")
+    desc_parts.append(f"Apply online at {SITE_NAME}.")
+    desc = ' '.join(desc_parts)
     apply_href = d.get('apply_url') or ''
     notification_href = d.get('notification_url') or ''
 
