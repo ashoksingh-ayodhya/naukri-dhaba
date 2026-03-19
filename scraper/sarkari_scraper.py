@@ -582,6 +582,7 @@ def detail_body_tracking_markup() -> str:
 # ══════════════════════════════════════════════════════════
 
 _session = requests.Session()
+_session.trust_env = False  # ignore HTTP_PROXY/HTTPS_PROXY env vars from GitHub Actions
 _session.headers.update(HEADERS)
 
 _cf_session = None
@@ -590,6 +591,7 @@ if cloudscraper is not None:
         _cf_session = cloudscraper.create_scraper(
             browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
         )
+        _cf_session.trust_env = False  # ignore HTTP_PROXY/HTTPS_PROXY env vars
         _cf_session.headers.update(HEADERS)
     except Exception as exc:
         log.warning(f'Cloudscraper init failed, falling back to requests: {exc}')

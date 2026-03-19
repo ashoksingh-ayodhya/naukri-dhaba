@@ -47,6 +47,9 @@ jobs:
       # ── Pre-flight: check if source sites are reachable ──
       - name: Check source accessibility
         id: source_check
+        env:
+          CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
+          CF_WORKER_SECRET: ${{ secrets.CF_WORKER_SECRET }}
         run: |
           echo "=== Source Accessibility Check ==="
           if python3 scraper/check_sources.py; then

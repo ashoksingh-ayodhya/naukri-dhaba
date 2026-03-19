@@ -11,9 +11,8 @@
  *   3. Copy the Worker URL (e.g. https://nd-proxy.YOUR-NAME.workers.dev)
  *   4. Add to GitHub repo secrets:
  *        CF_WORKER_PROXY_URL = https://nd-proxy.YOUR-NAME.workers.dev
- *        CF_WORKER_SECRET    = (any random string, same as PROXY_SECRET below)
- *   5. Also add the same secret as a Worker env var in the Cloudflare dashboard:
- *        Settings → Variables → PROXY_SECRET = <your random string>
+ *        CF_WORKER_SECRET    = (leave blank — no PROXY_SECRET binding needed)
+ *   Note: PROXY_SECRET binding is optional. If not set, all requests are allowed.
  *
  * USAGE (called by scraper automatically):
  *   GET https://nd-proxy.YOUR-NAME.workers.dev/?url=https://www.sarkariresult.com/latestjob.php
@@ -27,6 +26,8 @@ const ALLOWED_HOSTS = [
   'www.freejobalert.com',
   'rojgarresult.com',
   'www.rojgarresult.com',
+  'sarkariexam.com',
+  'www.sarkariexam.com',
 ];
 
 export default {

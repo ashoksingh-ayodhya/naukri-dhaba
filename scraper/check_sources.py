@@ -17,8 +17,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 import logging
 import time
-from urllib.request import Request, urlopen
+from urllib.request import Request, urlopen, build_opener, ProxyHandler
 from urllib.error import URLError, HTTPError
+
+# Bypass HTTP_PROXY / HTTPS_PROXY env vars (picked up by default in urllib)
+_direct_opener = build_opener(ProxyHandler({}))
 
 from site_config import SOURCES
 
@@ -55,16 +58,16 @@ def check_url(url: str) -> tuple[bool, str]:
             if CF_WORKER_SECRET:
                 proxy_headers["X-Proxy-Secret"] = CF_WORKER_SECRET
             req = Request(proxy_url, headers=proxy_headers, method="GET")
-            with urlopen(req, timeout=TIMEOUT) as resp:
+            with _direct_opener.open(req, timeout=TIMEOUT) as resp:
                 if resp.status < 400:
                     return True, f"HTTP {resp.status} (via CF Worker)"
         except Exception:
             pass  # fall through to direct check
 
-    # Direct fetch fallback
+    # Direct fetch fallback (no proxy)
     try:
         req = Request(url, headers=HEADERS, method="GET")
-        with urlopen(req, timeout=TIMEOUT) as resp:
+        with _direct_opener.open(req, timeout=TIMEOUT) as resp:
             status = resp.status
             if status < 400:
                 return True, f"HTTP {status}"
