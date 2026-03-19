@@ -89,6 +89,9 @@ jobs:
       # ── Normal scraper run (skipped if all sources down) ──
       - name: Run Naukri Dhaba scraper
         if: steps.source_check.outputs.sources_down != 'true'
+        env:
+          CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
+          CF_WORKER_SECRET: ${{ secrets.CF_WORKER_SECRET }}
         run: |
           echo "=== Naukri Dhaba Scraper ==="
           echo "Time (IST): $(date)"

@@ -595,7 +595,34 @@ if cloudscraper is not None:
         log.warning(f'Cloudscraper init failed, falling back to requests: {exc}')
         _cf_session = None
 
+# Cloudflare Worker proxy (set CF_WORKER_PROXY_URL env var to enable)
+_CF_WORKER_URL    = os.environ.get('CF_WORKER_PROXY_URL', '').rstrip('/')
+_CF_WORKER_SECRET = os.environ.get('CF_WORKER_SECRET', '')
+
+def _fetch_via_worker(url: str) -> BeautifulSoup | None:
+    """Fetch a URL through the Cloudflare Worker proxy."""
+    proxy_url = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
+    headers = {}
+    if _CF_WORKER_SECRET:
+        headers['X-Proxy-Secret'] = _CF_WORKER_SECRET
+    try:
+        r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT)
+        r.raise_for_status()
+        return BeautifulSoup(r.content, 'lxml')
+    except Exception as exc:
+        log.warning(f'CF Worker fetch failed for {url}: {exc}')
+        return None
+
 def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
+    # Try Cloudflare Worker first if configured
+    if _CF_WORKER_URL:
+        log.info(f'GET {url} via CF Worker')
+        result = _fetch_via_worker(url)
+        if result is not None:
+            time.sleep(DELAY)
+            return result
+        log.warning(f'CF Worker failed for {url}, falling back to direct fetch')
+
     sessions = [_session]
     if _cf_session is not None:
         sessions.insert(0, _cf_session)
