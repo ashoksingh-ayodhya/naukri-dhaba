@@ -591,6 +591,7 @@ if cloudscraper is not None:
         _cf_session = cloudscraper.create_scraper(
             browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
         )
+        _cf_session.trust_env = False  # ignore HTTP_PROXY/HTTPS_PROXY env vars
         _cf_session.headers.update(HEADERS)
     except Exception as exc:
         log.warning(f'Cloudscraper init failed, falling back to requests: {exc}')
