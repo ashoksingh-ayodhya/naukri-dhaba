@@ -276,9 +276,6 @@ def primary_cta_url(url: str, source_detail_url: str) -> str:
     official = official_url_or_empty(normalized)
     if official:
         return official
-    # Fall back to source detail page via redirect (so user can find the link there)
-    if source_detail_url and source_detail_url != '#':
-        return build_source_redirect(source_detail_url)
     return ''
 
 
