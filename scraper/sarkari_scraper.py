@@ -2161,10 +2161,13 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # ── 1. Scrape listing pages from all sources ───────────
     all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
     successful_listings = 0
+    # per-source counters: {src_name: {kind: count}}
+    source_counts: dict[str, dict[str, int]] = {}
 
     for source in SOURCES:
         src_name = source['name']
         src_base = source['base']
+        source_counts[src_name] = {'job': 0, 'result': 0, 'admit': 0}
         log.info(f'\n{"─"*40}')
         log.info(f'SOURCE: {src_name}  ({src_base})')
         log.info(f'{"─"*40}')
@@ -2177,8 +2180,9 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 continue
             successful_listings += 1
             raw = parse_listing(soup, kind, source_base=src_base)
-            log.info(f'  Raw items: {len(raw)}')
+            log.info(f'  Raw items from {src_name}: {len(raw)}')
 
+            accepted = 0
             for item in raw:
                 if not kind_matches_title(item.get('title', ''), kind):
                     continue
@@ -2194,16 +2198,27 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 seen.add(iid)
                 item['source'] = src_name
                 all_items[kind].append(item)
+                source_counts[src_name][kind] += 1
+                accepted += 1
+            log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
     if successful_listings == 0:
         log.error('All source listings failed. Aborting instead of reporting a false success.')
         return 2
 
+    # Per-source summary table
+    log.info('\n' + '─' * 60)
+    log.info('SCRAPE SUMMARY — new posts per source:')
+    log.info(f'  {"Source":<20} {"Jobs":>6} {"Results":>9} {"Admits":>8} {"Total":>7}')
+    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*7}')
+    for src_name, counts in source_counts.items():
+        src_total = sum(counts.values())
+        src_base = next(s['base'] for s in SOURCES if s['name'] == src_name)
+        log.info(f'  {src_name:<20} {counts["job"]:>6} {counts["result"]:>9} {counts["admit"]:>8} {src_total:>7}   ({src_base})')
+    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*7}')
     total_new = sum(len(v) for v in all_items.values())
-    log.info(f'\nNew items to process: {total_new}  '
-             f'(jobs={len(all_items["job"])}, '
-             f'results={len(all_items["result"])}, '
-             f'admits={len(all_items["admit"])})')
+    log.info(f'  {"TOTAL":<20} {len(all_items["job"]):>6} {len(all_items["result"]):>9} {len(all_items["admit"]):>8} {total_new:>7}')
+    log.info('─' * 60)
 
     # ── 2. Scrape detail pages & generate HTML ─────────────
     generated: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
@@ -2262,10 +2277,23 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # ── Done ───────────────────────────────────────────────
     elapsed = (datetime.now() - start).seconds
     total_gen = sum(len(v) for v in generated.values())
+
+    # Per-source generated breakdown
+    gen_by_source: dict[str, dict[str, int]] = {}
+    for kind, items in generated.items():
+        for item in items:
+            src = item.get('source', 'unknown')
+            gen_by_source.setdefault(src, {'job': 0, 'result': 0, 'admit': 0})
+            gen_by_source[src][kind] += 1
+
     log.info('\n' + '=' * 60)
-    log.info(f'DONE in {elapsed}s  |  Generated {total_gen} pages  |  '
-             f'Jobs={len(generated["job"])}, Results={len(generated["result"])}, '
-             f'AdmitCards={len(generated["admit"])}')
+    log.info(f'DONE in {elapsed}s  |  Pages generated: {total_gen}')
+    log.info(f'  Jobs={len(generated["job"])}, Results={len(generated["result"])}, AdmitCards={len(generated["admit"])}')
+    if gen_by_source:
+        log.info('  Pages generated per source:')
+        for src, counts in gen_by_source.items():
+            src_base = next((s['base'] for s in SOURCES if s['name'] == src), src)
+            log.info(f'    {src:<20} Jobs={counts["job"]} Results={counts["result"]} Admits={counts["admit"]}   ({src_base})')
     log.info('=' * 60 + '\n')
     return 0
 

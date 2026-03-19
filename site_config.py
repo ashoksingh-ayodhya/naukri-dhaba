@@ -37,6 +37,15 @@ SOURCES = [
             "admit":  "https://www.rojgarresult.com/admit-card/",
         },
     },
+    {
+        "name": "sarkariexam",
+        "base": "https://www.sarkariexam.com",
+        "urls": {
+            "job":    "https://www.sarkariexam.com/govt-jobs/",
+            "result": "https://www.sarkariexam.com/results/",
+            "admit":  "https://www.sarkariexam.com/admit-card/",
+        },
+    },
 ]
 
 # All source domains — used to filter/drop source-internal links
@@ -49,6 +58,8 @@ SOURCE_HOSTS = {
     "www.freejobalert.com",
     "rojgarresult.com",
     "www.rojgarresult.com",
+    "sarkariexam.com",
+    "www.sarkariexam.com",
 }
 REDIRECT_PATH = "/go.html"
 PRETTY_ROUTE_MAP = {
