@@ -1076,8 +1076,10 @@ def build_meta_block(data, page_type, filepath, canonical_url):
 def build_job_json_ld(title, dept, last_date, canonical_url):
     """Build JobPosting JSON-LD."""
     iso_last_date = to_iso_date(last_date) or TODAY
+    safe_title = normalize_title_text(title)
+    desc = f"{safe_title}: {dept} recruitment notification. Last date: {last_date}. Apply at {SITE_NAME}."
     return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"JobPosting","title":"{normalize_title_text(title)}","datePosted":"{TODAY}","validThrough":"{iso_last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
+    {{"@context":"https://schema.org","@type":"JobPosting","title":"{safe_title}","description":"{desc}","datePosted":"{TODAY}","validThrough":"{iso_last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
     </script>'''
 
 

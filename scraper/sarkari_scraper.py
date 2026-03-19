@@ -266,7 +266,13 @@ def primary_cta_url(url: str, source_detail_url: str) -> str:
     normalized = normalize_url(url)
     if is_public_redirect(normalized):
         return ''
-    return official_url_or_empty(normalized)
+    official = official_url_or_empty(normalized)
+    if official:
+        return official
+    # Fall back to source detail page via redirect (so user can find the link there)
+    if source_detail_url and source_detail_url != '#':
+        return build_source_redirect(source_detail_url)
+    return ''
 
 
 def normalize_title(text: str) -> str:
@@ -795,7 +801,7 @@ def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict
 
         parsed = urlparse(detail_url)
         path_parts = [part for part in parsed.path.split('/') if part]
-        if parsed.netloc.lower() not in SOURCE_HOSTS or len(path_parts) < 2:
+        if parsed.netloc.lower() not in SOURCE_HOSTS or len(path_parts) < 1:
             continue
         if path_parts[0].lower() in skip_paths:
             continue
