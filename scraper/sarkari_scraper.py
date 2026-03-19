@@ -487,10 +487,15 @@ def build_result_faq(d: dict) -> tuple[str, str]:
     dept    = clean(d.get('dept', 'Government'))
     r_date  = d.get('result_date', 'Check Notification')
 
+    date_answer = (
+        f"The {title} was declared on {r_date}. Candidates can check the result using the official link provided on this page."
+        if r_date not in ('Check Notification', '')
+        else f"The {title} has been declared. Visit the official link on this page to check your result."
+    )
     qas = [
         (
             f"When was the {title} declared?",
-            f"The {title} was declared on {r_date}. Candidates can check the result using the official link provided on this page."
+            date_answer
         ),
         (
             f"How can I check the {title}?",
@@ -1719,7 +1724,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
 
       <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
         <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared / घोषित</div>
-        <p style="color:#666;margin-bottom:1.5rem;">Result Date: {d["result_date"]}</p>
+        {'<p style="color:#666;margin-bottom:1.5rem;">Result Date: ' + d["result_date"] + '</p>' if d["result_date"] not in ("Check Notification", "") else ''}
         {check_btn}
         {scorecard_btn}
         <div style="margin-top:1rem;">
