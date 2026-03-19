@@ -32,8 +32,8 @@ SOURCES = [
         "name": "rojgarresult",
         "base": "https://www.rojgarresult.com",
         "urls": {
-            "job":    "https://www.rojgarresult.com/latest-jobs/",
-            "result": "https://www.rojgarresult.com/result/",
+            "job":    "https://www.rojgarresult.com/recruitments/",
+            "result": "https://www.rojgarresult.com/latest-result/",
             "admit":  "https://www.rojgarresult.com/admit-card/",
         },
     },
@@ -41,9 +41,9 @@ SOURCES = [
         "name": "sarkariexam",
         "base": "https://www.sarkariexam.com",
         "urls": {
-            "job":    "https://www.sarkariexam.com/govt-jobs/",
-            "result": "https://www.sarkariexam.com/results/",
-            "admit":  "https://www.sarkariexam.com/admit-card/",
+            "job":    "https://www.sarkariexam.com/category/jobs",
+            "result": "https://www.sarkariexam.com/exam-result",
+            "admit":  "https://www.sarkariexam.com/category/admit-card/",
         },
     },
 ]
