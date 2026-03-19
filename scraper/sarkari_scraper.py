@@ -1057,12 +1057,12 @@ def _header(active: str) -> str:
     </nav>
     <div style="display:flex;gap:1rem;align-items:center;">
       <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌓</button>
-      <input type="checkbox" id="menu-toggle" style="display:none;">
-      <label for="menu-toggle" class="btn--icon menu-toggle" style="display:none;font-size:1.5rem;cursor:pointer;">☰</label>
+      <button class="btn--icon menu-toggle" onclick="toggleMobileMenu()" aria-label="Open menu" style="display:none;font-size:1.5rem;cursor:pointer;background:none;border:none;">☰</button>
     </div>
   </div>
+  <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;"></div>
   <nav class="nav--mobile">
-    <label for="menu-toggle" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;">✕</label>
+    <button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;background:none;border:none;color:var(--text);">✕</button>
     <a href="/">🏠 Home</a>
     {mobile}
   </nav>
