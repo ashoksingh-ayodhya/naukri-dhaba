@@ -1948,6 +1948,11 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             for item in raw:
                 if not kind_matches_title(item.get('title', ''), kind):
                     continue
+                # Skip items older than 2025
+                iso = to_iso_date(item.get('date_str', ''))
+                if iso and int(iso[:4]) < 2025:
+                    log.debug(f'  [skip] pre-2025 item: {item["title"][:50]} ({iso})')
+                    continue
                 iid = item_id(item['title'], item['dept'])
                 if not refresh_existing and iid in seen:
                     log.debug(f'  [skip] already seen: {item["title"][:50]}')
