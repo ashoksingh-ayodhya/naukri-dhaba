@@ -19,33 +19,6 @@ SOURCES = [
             "admit":  "https://www.sarkariresult.com/admitcard.php",
         },
     },
-    {
-        "name": "freejobalert",
-        "base": "https://www.freejobalert.com",
-        "urls": {
-            "job":    "https://www.freejobalert.com/government-jobs/",
-            "result": "https://www.freejobalert.com/sarkariresult/",
-            "admit":  "https://www.freejobalert.com/admit-card/",
-        },
-    },
-    {
-        "name": "rojgarresult",
-        "base": "https://www.rojgarresult.com",
-        "urls": {
-            "job":    "https://www.rojgarresult.com/latest-jobs/",
-            "result": "https://www.rojgarresult.com/result/",
-            "admit":  "https://www.rojgarresult.com/admit-card/",
-        },
-    },
-    {
-        "name": "sarkariexam",
-        "base": "https://www.sarkariexam.com",
-        "urls": {
-            "job":    "https://www.sarkariexam.com/govt-jobs/",
-            "result": "https://www.sarkariexam.com/results/",
-            "admit":  "https://www.sarkariexam.com/admit-card/",
-        },
-    },
 ]
 
 # All source domains — used to filter/drop source-internal links
@@ -54,12 +27,6 @@ SOURCE_HOSTS = {
     "www.sarkariresult.com",
     "sarkariresults.com",
     "www.sarkariresults.com",
-    "freejobalert.com",
-    "www.freejobalert.com",
-    "rojgarresult.com",
-    "www.rojgarresult.com",
-    "sarkariexam.com",
-    "www.sarkariexam.com",
 }
 REDIRECT_PATH = "/go.html"
 PRETTY_ROUTE_MAP = {
