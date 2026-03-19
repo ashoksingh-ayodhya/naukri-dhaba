@@ -582,6 +582,7 @@ def detail_body_tracking_markup() -> str:
 # ══════════════════════════════════════════════════════════
 
 _session = requests.Session()
+_session.trust_env = False  # ignore HTTP_PROXY/HTTPS_PROXY env vars from GitHub Actions
 _session.headers.update(HEADERS)
 
 _cf_session = None
