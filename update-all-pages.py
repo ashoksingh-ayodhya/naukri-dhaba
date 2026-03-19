@@ -524,6 +524,7 @@ def build_detail_article(detail, page_type):
           <li>Save the application number, preview, and payment receipt for later stages.</li>
         </ol>
       </div>
+      {build_faq_html(build_job_faq_data(detail))}
       <div class="share-section">
         <h3>Share with Friends</h3>
         <button onclick="shareWhatsApp(window.location.href,'{title}')" class="share-btn share-btn--whatsapp">WhatsApp</button>
@@ -576,6 +577,7 @@ def build_detail_article(detail, page_type):
           <li>Download the official PDF or scorecard and keep a copy for verification.</li>
         </ol>
       </div>
+      {build_faq_html(build_result_faq_data(detail))}
       <div class="share-section">
         <h3>Share with Friends</h3>
         <button onclick="shareWhatsApp(window.location.href,'{title} Result')" class="share-btn share-btn--whatsapp">WhatsApp</button>
@@ -631,6 +633,7 @@ def build_detail_article(detail, page_type):
           <li style="padding:.4rem 0;">Pens and transparent water bottle if allowed</li>
         </ul>
       </div>
+      {build_faq_html(build_admit_faq_data(detail))}
       <div class="share-section">
         <h3>Share with Friends</h3>
         <button onclick="shareWhatsApp(window.location.href,'{title} Admit Card')" class="share-btn share-btn--whatsapp">WhatsApp</button>
@@ -724,7 +727,21 @@ def rebuild_detail_main(content, filepath, page_type):
         f'{build_standard_footer()}\n'
         '<script src="/js/app.js"></script>\n'
     )
-    return re.sub(r'<div class="content-wrapper container" style="margin-top:2rem;">.*?</body>', shell + '</body>', content, count=1, flags=re.DOTALL)
+    result = re.sub(r'<div class="content-wrapper container" style="margin-top:2rem;">.*?</body>', shell + '</body>', content, count=1, flags=re.DOTALL)
+
+    # Inject FAQ JSON-LD into <head>
+    if page_type == 'job':
+        faq_qas = build_job_faq_data(detail)
+    elif page_type == 'result':
+        faq_qas = build_result_faq_data(detail)
+    else:
+        faq_qas = build_admit_faq_data(detail)
+    faq_ld = build_faq_json_ld(faq_qas)
+    # Insert before </head> only if FAQPage JSON-LD not already present
+    if '"FAQPage"' not in result:
+        result = result.replace('</head>', faq_ld + '\n</head>', 1)
+
+    return result
 
 
 def get_canonical_url(filepath):
@@ -1095,6 +1112,90 @@ def build_admit_json_ld(title, dept, canonical_url):
     return f'''    <script type="application/ld+json">
     {{"@context":"https://schema.org","@type":"WebPage","name":"{normalize_title_text(title)}","description":"Download {normalize_title_text(title)} admit card at {SITE_NAME}.","url":"{canonical_url}","about":{{"@type":"Organization","name":"{dept}"}}}}
     </script>'''
+
+
+def build_faq_json_ld(qas):
+    """Build FAQPage JSON-LD from list of (question, answer) tuples."""
+    entities = json.dumps([
+        {"@type": "Question", "name": q,
+         "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in qas
+    ], ensure_ascii=False)
+    return f'    <script type="application/ld+json">\n    {{"@context":"https://schema.org","@type":"FAQPage","mainEntity":{entities}}}\n    </script>'
+
+
+def build_job_faq_data(detail):
+    title = escape(detail['title'])
+    dept  = escape(detail['dept'])
+    last_d = escape(detail['last_date'])
+    posts  = escape(detail['total_posts'])
+    age_min = escape(str(detail['age_min']))
+    age_max = escape(str(detail['age_max']))
+    fee_g  = escape(detail['fee_general'])
+    fee_r  = escape(detail['fee_reserved'])
+    qual   = escape(detail['qualification'])
+    return [
+        (f"What is the last date to apply for {title}?",
+         f"The last date to apply for {title} is {last_d}. Submit before this deadline to avoid rejection."),
+        (f"How many vacancies are available in {title}?",
+         f"{'There are ' + posts + ' vacancies advertised under ' + title + '.' if posts and posts != 'Check Notification' else 'The total vacancy count has not been specified yet. Please check the official notification.'}"),
+        (f"What is the age limit for {title}?",
+         f"The age limit is {age_min} to {age_max} years. Age relaxation applies for SC/ST/OBC/PwD as per government norms."),
+        (f"What is the application fee for {title}?",
+         f"{'Application fee: General/OBC/EWS — ' + fee_g + ('; SC/ST/PH — ' + fee_r if fee_r else '') + '.' if fee_g else 'Fee details are in the official notification.'}"),
+        (f"What qualification is required for {title}?",
+         f"Required qualification: {qual}. Verify from the official notification before applying."),
+    ]
+
+
+def build_result_faq_data(detail):
+    title  = escape(detail['title'])
+    dept   = escape(detail['dept'])
+    r_date = escape(detail['result_date'])
+    return [
+        (f"When was the {title} declared?",
+         f"The {title} was declared on {r_date}. Check using the official link on this page."),
+        (f"How can I check the {title}?",
+         f"Click the result link, enter your roll number or registration ID, verify your details, and download the PDF."),
+        ("What documents are needed to check the result?",
+         "Keep your admit card (roll number/registration number) and date of birth ready before opening the result portal."),
+        (f"What should I do after checking the {title}?",
+         f"Download and save the result PDF. If selected, await official instructions from {dept} and keep original documents ready for verification."),
+    ]
+
+
+def build_admit_faq_data(detail):
+    title   = escape(detail['title'])
+    release = escape(detail['admit_release'])
+    exam_dt = escape(detail['exam_date'])
+    return [
+        (f"When was the {title} released?",
+         f"The {title} was released on {release}. Download using the official link on this page."),
+        (f"How to download the {title}?",
+         "Click the download link, enter your registration number and date of birth, then print the admit card in colour."),
+        (f"What is the exam date for {title}?",
+         f"The exam date is {exam_dt}. Verify reporting time and exam centre from your admit card."),
+        (f"What documents to carry with {title}?",
+         f"Carry the printed {title} along with a valid photo ID (Aadhaar / PAN / Passport) to the exam centre."),
+    ]
+
+
+def build_faq_html(qas):
+    """Generate FAQ HTML with microdata for a list of (question, answer) tuples."""
+    items = '\n'.join(
+        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="border-bottom:1px solid #eee;padding:1rem 0;">'
+        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .4rem;font-size:1rem;">{q}</h3>'
+        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
+        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'</div></div>'
+        for q, a in qas
+    )
+    return (
+        '<div itemscope itemtype="https://schema.org/FAQPage" '
+        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<h2 style="color:var(--primary);margin-top:0;">Frequently Asked Questions</h2>'
+        + items + '</div>'
+    )
 
 
 def build_breadcrumb_json_ld(items):
