@@ -814,7 +814,12 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
         headers['X-Proxy-Secret'] = _CF_WORKER_SECRET
     try:
         r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT, proxies=_NO_PROXY)
+        if r.status_code == 503 and r.headers.get('X-Challenge-Detected'):
+            log.warning(f'CF Worker: Cloudflare challenge page detected for {url} — site is blocking scraper requests')
+            return None
         r.raise_for_status()
+        origin_status = r.headers.get('X-Origin-Status', '?')
+        log.info(f'CF Worker OK for {url} (origin status: {origin_status}, size: {len(r.content)} bytes)')
         return BeautifulSoup(r.content, 'lxml')
     except Exception as exc:
         log.warning(f'CF Worker fetch failed for {url}: {exc}')
