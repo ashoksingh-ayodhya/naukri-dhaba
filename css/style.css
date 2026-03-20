@@ -9,7 +9,7 @@
 .logo{font-size:1.5rem;font-weight:bold;color:#fff;text-decoration:none}
 .nav{display:flex;gap:1.5rem;align-items:center}.nav a{color:#fff;text-decoration:none;font-weight:500}
 .nav--mobile{display:none;position:fixed;top:0;right:-100%;width:80%;height:100vh;background:var(--surface);padding:2rem;transition:right 0.3s;z-index:1001}
-.nav--mobile.active{right:0}.nav--mobile a{display:block;padding:1rem;color:var(--text);text-decoration:none;border-bottom:1px solid #eee}
+.nav--mobile.active{right:0;display:block}.nav--mobile a{display:block;padding:1rem;color:var(--text);text-decoration:none;border-bottom:1px solid #eee}
 .btn--icon{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#fff}
 @media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}
 /* Ticker */
