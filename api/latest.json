@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-20T18:02:10Z",
+  "updated": "2026-03-20T19:04:24Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -286,6 +286,30 @@
       "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
     },
     {
+      "title": "NTA NIFT 2025 Result / Score Card",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
+    },
+    {
+      "title": "NTA UGC NET December 2025 Result",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
+    },
+    {
+      "title": "NVS Class 9th Result 2025",
+      "dept": "NVS",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
+    },
+    {
       "title": "RSSB NHM Contractual Various Post Result 2026",
       "dept": "RSSB",
       "type": "result",
@@ -294,36 +318,12 @@
       "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
     },
     {
-      "title": "UP CNET 2025 Result",
+      "title": "Patna High Court Stenographer 2025 Result",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
-    },
-    {
-      "title": "Rajasthan Board RBSE Class 10th Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/rajasthan-board-rbse-class-10th-result-2025.html"
-    },
-    {
-      "title": "UP Madarsa Board Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
-    },
-    {
-      "title": "SEBI Assistant Manager Phase I Result 2026",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/sebi-assistant-manager-phase-i-result-2026.html"
+      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
     }
   ],
   "admits": [
@@ -432,22 +432,6 @@
       "url": "https://naukridhaba.in/admits/railway/ibps-rrb-14th-office-assistant-mains-admit-card.html"
     },
     {
-      "title": "UP CPET 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-cpet-2025-admit-card.html"
-    },
-    {
-      "title": "UP CNET 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-cnet-2025-admit-card.html"
-    },
-    {
       "title": "UPBED 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
@@ -472,20 +456,36 @@
       "url": "https://naukridhaba.in/admits/government/uppsc-computer-assistant-admit-card-2026.html"
     },
     {
-      "title": "UP GNM Entrance Test UPGET 2025 Admit Card",
+      "title": "UPCATET 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-gnm-entrance-test-upget-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admits/government/upcatet-2025-admit-card.html"
     },
     {
-      "title": "SWD UP IAS / PCS Free Coaching Admit Card 2025",
-      "dept": "IAS",
+      "title": "SCI Junior Court Assistant Admit Card 2025",
+      "dept": "GOVERNMENT",
       "type": "admit",
-      "category": "upsc",
+      "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/swd-up-ias-pcs-free-coaching-admit-card-2025.html"
+      "url": "https://naukridhaba.in/admits/government/sci-junior-court-assistant-admit-card-2025.html"
+    },
+    {
+      "title": "Rajasthan PTET Admit Card 2025",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/rajasthan-ptet-admit-card-2025.html"
+    },
+    {
+      "title": "UP CPET 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/up-cpet-2025-admit-card.html"
     }
   ]
 }
