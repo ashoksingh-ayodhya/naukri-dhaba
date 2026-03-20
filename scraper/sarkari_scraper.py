@@ -212,6 +212,27 @@ def slugify(text: str) -> str:
     return t[:80]
 
 
+# All category folder names used for detail pages
+_ALL_CATEGORIES = ('upsc', 'ssc', 'railway', 'banking', 'police', 'defence', 'government')
+
+
+def remove_cross_category_duplicates(kind_dir: str, cat: str, slug: str):
+    """Remove same slug from other category folders to prevent duplicates.
+
+    When a job's category changes between runs (e.g. detail-page parsing
+    returns a different dept), the old file lingers in the previous category
+    folder.  This helper deletes those stale copies.
+    """
+    base = SITE_ROOT / kind_dir
+    for other_cat in _ALL_CATEGORIES:
+        if other_cat == cat:
+            continue
+        stale = base / other_cat / f'{slug}.html'
+        if stale.exists():
+            log.info(f'  [dedup] Removing stale cross-category copy: {stale.relative_to(SITE_ROOT)}')
+            stale.unlink()
+
+
 def clean(text: str) -> str:
     """Strip whitespace and collapse spaces."""
     if not text:
@@ -2240,7 +2261,15 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         base = SITE_ROOT / 'admit-cards'
 
     entries = []
+    seen_slugs: set[str] = set()   # deduplicate by filename slug
     for path in sorted(base.rglob('*.html'), key=lambda p: p.stat().st_mtime, reverse=True):
+        slug = path.stem  # e.g. 'up-police-constable-edit-correction-form-2026'
+        if slug in seen_slugs:
+            # Same slug already loaded from a newer file — skip this stale copy
+            log.debug(f'  [dedup] Skipping duplicate slug in listings: {path.relative_to(SITE_ROOT)}')
+            continue
+        seen_slugs.add(slug)
+
         rel = path.relative_to(SITE_ROOT).as_posix()
         html = path.read_text(encoding='utf-8', errors='replace')
         title_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.I | re.S)
@@ -2819,6 +2848,11 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             rich = parse_detail(detail_soup, item)
             rich['dept'] = rich.get('dept') or infer_dept(rich['title'])
 
+            # Re-validate kind after detail parse (title may have changed)
+            if not kind_matches_title(rich.get('title', ''), kind):
+                log.info(f'  [skip] Title no longer matches kind={kind} after detail parse: {rich["title"][:60]}')
+                continue
+
             try:
                 if kind == 'job':
                     rel, html = build_job_page(rich)
@@ -2826,6 +2860,12 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     rel, html = build_result_page(rich)
                 else:
                     rel, html = build_admit_page(rich)
+
+                # Remove stale copies from other category folders
+                parts = rel.split('/')  # e.g. 'jobs/police/slug.html'
+                if len(parts) == 3:
+                    kind_dir, cat, fname = parts
+                    remove_cross_category_duplicates(kind_dir, cat, fname.removesuffix('.html'))
 
                 out = SITE_ROOT / rel
                 out.parent.mkdir(parents=True, exist_ok=True)
