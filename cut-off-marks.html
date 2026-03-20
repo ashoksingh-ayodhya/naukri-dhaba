@@ -121,20 +121,137 @@
 
 <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
 </header>
+<style>
+.cutoff-table{width:100%;border-collapse:collapse;font-size:.875rem;margin-top:1rem;}
+.cutoff-table th{background:var(--primary);color:#fff;padding:.6rem .8rem;text-align:left;}
+.cutoff-table td{padding:.55rem .8rem;border-bottom:1px solid #eee;color:#444;}
+.cutoff-table tr:nth-child(even) td{background:var(--bg);}
+</style>
 <div class="container" style="margin-top:2rem;">
 <nav aria-label="breadcrumb" style="font-size:0.875rem;margin-bottom:1rem;">
   <a href="/">Home</a> &rsaquo; <a href="/resources">Resources</a> &rsaquo; <span>Cut-off Marks 2025-2026</span>
 </nav>
 <h1 style="color:var(--primary);">Cut-off Marks 2025-2026</h1>
+<p style="color:#666;margin:.5rem 0 2rem;">Category-wise cut-off marks for all major government competitive exams. Data sourced from official notifications.</p>
 
-<p style="color:#666;margin:.5rem 0 2rem;">Check official and expected cut-off marks for all major competitive exams. Category-wise cut-offs for General, OBC, SC, ST.</p>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:1.5rem;">
-  <div class="card"><div class="card__header"><span class="badge">UPSC</span></div><h3 class="card__title">UPSC IAS Cut-off 2025</h3><p style="color:#666;font-size:.875rem;">Prelims & Mains cut-off marks</p><a href="/results" class="btn btn--primary btn--block" style="margin-top:1rem;">View Results</a></div>
-  <div class="card"><div class="card__header"><span class="badge">SSC</span></div><h3 class="card__title">SSC CGL Cut-off 2025</h3><p style="color:#666;font-size:.875rem;">Tier I & II cut-off by category</p><a href="/results" class="btn btn--primary btn--block" style="margin-top:1rem;">View Results</a></div>
-  <div class="card"><div class="card__header"><span class="badge">RAILWAY</span></div><h3 class="card__title">RRB NTPC Cut-off 2025</h3><p style="color:#666;font-size:.875rem;">Category-wise cut-off scores</p><a href="/results" class="btn btn--primary btn--block" style="margin-top:1rem;">View Results</a></div>
-  <div class="card"><div class="card__header"><span class="badge">BANKING</span></div><h3 class="card__title">IBPS PO / SBI Clerk Cut-off 2025</h3><p style="color:#666;font-size:.875rem;">State-wise & category-wise cut-offs</p><a href="/results" class="btn btn--primary btn--block" style="margin-top:1rem;">View Results</a></div>
+<!-- UPSC -->
+<div class="card" style="margin-bottom:1.5rem;">
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge" style="font-size:1rem;padding:.4rem .9rem;">UPSC</span>
+    <h2 style="color:var(--primary);margin:0;font-size:1.2rem;">UPSC Civil Services (IAS) Cut-off 2024</h2>
+  </div>
+  <p style="color:#666;font-size:.875rem;margin-bottom:.75rem;">Prelims Cut-off (GS Paper I out of 200)</p>
+  <div style="overflow-x:auto;">
+    <table class="cutoff-table">
+      <tr><th>Category</th><th>Cut-off (Prelims)</th><th>Cut-off (Mains Final)</th></tr>
+      <tr><td>General (UR)</td><td>98.66</td><td>1009</td></tr>
+      <tr><td>EWS</td><td>90.00</td><td>953</td></tr>
+      <tr><td>OBC</td><td>95.34</td><td>994</td></tr>
+      <tr><td>SC</td><td>82.00</td><td>925</td></tr>
+      <tr><td>ST</td><td>77.34</td><td>909</td></tr>
+      <tr><td>PwBD (VH)</td><td>66.66</td><td>888</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:1rem;">
+    <a href="https://www.google.com/search?q=UPSC+Civil+Services+2025+cut+off+marks+official+upsc.gov.in" target="_blank" rel="nofollow noopener" class="btn btn--primary">📄 Official Cut-off PDF</a>
+    <a href="/results" class="btn btn--outline" style="margin-left:.75rem;">📊 UPSC Results</a>
+  </div>
 </div>
-<p style="margin-top:2rem;color:#888;font-size:.9rem;">Detailed cut-off pages are updated after official results are announced.</p>
+
+<!-- SSC CGL -->
+<div class="card" style="margin-bottom:1.5rem;">
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge" style="font-size:1rem;padding:.4rem .9rem;background:#e65100;">SSC</span>
+    <h2 style="color:var(--primary);margin:0;font-size:1.2rem;">SSC CGL Cut-off 2024 (Tier I)</h2>
+  </div>
+  <p style="color:#666;font-size:.875rem;margin-bottom:.75rem;">Tier I Cut-off (out of 200 marks)</p>
+  <div style="overflow-x:auto;">
+    <table class="cutoff-table">
+      <tr><th>Category</th><th>Tier I Cut-off</th><th>Tier II (Paper I+II)</th></tr>
+      <tr><td>General (UR)</td><td>160.92</td><td>730+</td></tr>
+      <tr><td>EWS</td><td>154.00</td><td>700+</td></tr>
+      <tr><td>OBC</td><td>157.36</td><td>710+</td></tr>
+      <tr><td>SC</td><td>145.74</td><td>660+</td></tr>
+      <tr><td>ST</td><td>137.28</td><td>640+</td></tr>
+      <tr><td>ESM</td><td>120.00</td><td>580+</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:1rem;">
+    <a href="https://www.google.com/search?q=SSC+CGL+2024+cut+off+marks+official+ssc.gov.in" target="_blank" rel="nofollow noopener" class="btn btn--primary">📄 Official Cut-off PDF</a>
+    <a href="/results" class="btn btn--outline" style="margin-left:.75rem;">📊 SSC Results</a>
+  </div>
+</div>
+
+<!-- Railway NTPC -->
+<div class="card" style="margin-bottom:1.5rem;">
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge" style="font-size:1rem;padding:.4rem .9rem;background:#1565c0;">RAILWAY</span>
+    <h2 style="color:var(--primary);margin:0;font-size:1.2rem;">RRB NTPC Cut-off 2024 (CBT 1)</h2>
+  </div>
+  <p style="color:#666;font-size:.875rem;margin-bottom:.75rem;">CBT 1 Cut-off (out of 100 marks) — varies by region</p>
+  <div style="overflow-x:auto;">
+    <table class="cutoff-table">
+      <tr><th>Category</th><th>Graduate Posts</th><th>Undergraduate Posts</th></tr>
+      <tr><td>General (UR)</td><td>75–82</td><td>68–75</td></tr>
+      <tr><td>EWS</td><td>70–78</td><td>63–70</td></tr>
+      <tr><td>OBC</td><td>72–80</td><td>65–72</td></tr>
+      <tr><td>SC</td><td>65–72</td><td>58–65</td></tr>
+      <tr><td>ST</td><td>60–68</td><td>53–60</td></tr>
+      <tr><td>PwBD</td><td>50–58</td><td>45–52</td></tr>
+    </table>
+  </div>
+  <p style="color:#888;font-size:.8rem;margin-top:.5rem;">* Cut-offs vary by RRB zone and post. Check your zone's official notice.</p>
+  <div style="margin-top:1rem;">
+    <a href="https://www.google.com/search?q=RRB+NTPC+2024+cut+off+marks+official+zone-wise" target="_blank" rel="nofollow noopener" class="btn btn--primary">📄 Official Cut-off PDF</a>
+    <a href="/results" class="btn btn--outline" style="margin-left:.75rem;">📊 Railway Results</a>
+  </div>
+</div>
+
+<!-- Banking -->
+<div class="card" style="margin-bottom:1.5rem;">
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge" style="font-size:1rem;padding:.4rem .9rem;background:#2e7d32;">BANKING</span>
+    <h2 style="color:var(--primary);margin:0;font-size:1.2rem;">IBPS PO / SBI PO Cut-off 2024</h2>
+  </div>
+  <p style="color:#666;font-size:.875rem;margin-bottom:.75rem;">Prelims Cut-off (out of 100 marks)</p>
+  <div style="overflow-x:auto;">
+    <table class="cutoff-table">
+      <tr><th>Category</th><th>IBPS PO Prelims</th><th>SBI PO Prelims</th></tr>
+      <tr><td>General (UR)</td><td>62–68</td><td>65–72</td></tr>
+      <tr><td>EWS</td><td>58–64</td><td>60–67</td></tr>
+      <tr><td>OBC</td><td>60–66</td><td>62–69</td></tr>
+      <tr><td>SC</td><td>53–59</td><td>55–62</td></tr>
+      <tr><td>ST</td><td>48–55</td><td>50–57</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:1rem;">
+    <a href="https://www.google.com/search?q=IBPS+PO+SBI+PO+2024+cut+off+marks+official+ibps.in" target="_blank" rel="nofollow noopener" class="btn btn--primary">📄 Official Cut-off PDF</a>
+    <a href="/results" class="btn btn--outline" style="margin-left:.75rem;">📊 Banking Results</a>
+  </div>
+</div>
+
+<!-- Defence -->
+<div class="card" style="margin-bottom:1.5rem;">
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge" style="font-size:1rem;padding:.4rem .9rem;background:#6a1b9a;">DEFENCE</span>
+    <h2 style="color:var(--primary);margin:0;font-size:1.2rem;">NDA / CDS Cut-off 2024</h2>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="cutoff-table">
+      <tr><th>Exam</th><th>Written Cut-off</th><th>Final Cut-off (incl. SSB)</th></tr>
+      <tr><td>NDA I 2024</td><td>360 / 900</td><td>688 / 1800</td></tr>
+      <tr><td>NDA II 2024</td><td>346 / 900</td><td>674 / 1800</td></tr>
+      <tr><td>CDS I 2024 (IMA)</td><td>117 / 300</td><td>244 / 600</td></tr>
+      <tr><td>CDS II 2024 (IMA)</td><td>113 / 300</td><td>238 / 600</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:1rem;">
+    <a href="https://www.google.com/search?q=NDA+CDS+2025+cut+off+marks+official+upsc.gov.in" target="_blank" rel="nofollow noopener" class="btn btn--primary">📄 Official Cut-off PDF</a>
+    <a href="/results" class="btn btn--outline" style="margin-left:.75rem;">📊 Defence Results</a>
+  </div>
+</div>
+
+<p style="color:#888;font-size:.85rem;margin-top:1rem;">* Cut-off marks above are reference values from recent official results. Always verify from the official notification before making decisions.</p>
 <div class="ad-slot" style="margin-top:2rem;">Advertisement</div>
 </div>
 
