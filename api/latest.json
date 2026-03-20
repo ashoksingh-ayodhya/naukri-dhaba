@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-20T19:47:22Z",
+  "updated": "2026-03-20T20:17:32Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -84,6 +84,14 @@
       "url": "https://naukridhaba.in/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html"
     },
     {
+      "title": "UP Anganwadi Worker Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/jobs/government/up-anganwadi-worker-online-form-2026.html"
+    },
+    {
       "title": "UP Police Constable Edit Correction Form 2026",
       "dept": "Government",
       "type": "job",
@@ -114,14 +122,6 @@
       "category": "government",
       "date": "03/03/2026",
       "url": "https://naukridhaba.in/jobs/government/yantra-india-ltd-yil-ordnance-factory-apprentices-online-form-2026.html"
-    },
-    {
-      "title": "UP Anganwadi Worker Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/jobs/government/up-anganwadi-worker-online-form-2026.html"
     },
     {
       "title": "IERT Admissions 2026 Online Form 2026",
@@ -156,12 +156,12 @@
       "url": "https://naukridhaba.in/jobs/government/rajasthan-rssb-ldc-jr-assistant-online-form-2026.html"
     },
     {
-      "title": "BSNL Senior Executive Trainee SET Online Form 2026",
+      "title": "RSSB Forester Online Form 2026",
       "dept": "Government",
       "type": "job",
       "category": "government",
-      "date": "07/03/2026",
-      "url": "https://naukridhaba.in/jobs/government/bsnl-senior-executive-trainee-set-online-form-2026.html"
+      "date": "11/02/2026 🔴",
+      "url": "https://naukridhaba.in/jobs/government/rssb-forester-online-form-2026.html"
     }
   ],
   "results": [
@@ -278,6 +278,22 @@
       "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
+      "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
+    },
+    {
+      "title": "UPPSC LT Grade Assistant Teacher Result 2026",
+      "dept": "PPSC",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uppsc-lt-grade-assistant-teacher-result-2026.html"
+    },
+    {
       "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -302,28 +318,12 @@
       "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
     },
     {
-      "title": "NVS Class 9th Result 2025",
-      "dept": "NVS",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
-    },
-    {
-      "title": "RSSB NHM Contractual Various Post Result 2026",
-      "dept": "RSSB",
-      "type": "result",
-      "category": "police",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
-    },
-    {
-      "title": "Patna High Court Stenographer 2025 Result",
+      "title": "NTA JEEMAIN Session I Paper 2 Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
+      "url": "https://naukridhaba.in/results/government/nta-jeemain-session-i-paper-2-result-2025.html"
     }
   ],
   "admits": [
