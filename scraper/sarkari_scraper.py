@@ -2208,6 +2208,95 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
 
 
 # ══════════════════════════════════════════════════════════
+# RESOURCES — PREVIOUS PAPERS PAGE UPDATER
+# ══════════════════════════════════════════════════════════
+
+# Category badge colours matching previous-papers.html
+_CAT_BADGE = {
+    'upsc':     ('#e8eaf6', '#1a237e', 'UPSC'),
+    'ssc':      ('#e8f5e9', '#2e7d32', 'SSC'),
+    'railway':  ('#fff3e0', '#e65100', 'Railway'),
+    'banking':  ('#e3f2fd', '#0d47a1', 'Banking'),
+    'police':   ('#fce4ec', '#880e4f', 'Police'),
+    'defence':  ('#fce4ec', '#880e4f', 'Defence'),
+    'state':    ('#f3e5f5', '#4a148c', 'State PSC'),
+    'government': ('#e8eaf6', '#1a237e', 'Govt'),
+}
+
+def _build_paper_card(title: str, cat: str) -> str:
+    bg, tc, label = _CAT_BADGE.get(cat, ('#e8eaf6', '#1a237e', 'Govt'))
+    q = quote(title + ' previous year question papers PDF download')
+    url = f'https://www.google.com/search?q={q}'
+    return (
+        f'<div class="card paper-card" data-cat="{cat}" data-scraped="1">'
+        f'<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;">'
+        f'<span style="background:{bg};color:{tc};padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">{label}</span>'
+        f'</div>'
+        f'<h3 style="color:var(--primary);margin:.5rem 0;">{escape(title)}</h3>'
+        f'<p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p>'
+        f'<a href="{url}" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>'
+        f'</div>'
+    )
+
+
+def update_previous_papers(site_root: Path) -> None:
+    """Scan scraped job/result/admit pages and inject new exam cards into previous-papers.html."""
+    pp_file = site_root / 'previous-papers.html'
+    if not pp_file.exists():
+        return
+
+    html = pp_file.read_text(encoding='utf-8')
+
+    # Collect titles already in the page (avoid duplicates)
+    existing_titles: set[str] = set()
+    for m in re.finditer(r'<h3 [^>]*>([^<]+)</h3>', html):
+        existing_titles.add(m.group(1).strip().lower())
+
+    # Gather exam titles from scraped detail pages (h1 tag)
+    h1_re = re.compile(r'<h1[^>]*>\s*([^<]+)</h1>', re.I)
+    new_cards: list[str] = []
+    added_titles: set[str] = set()
+
+    for folder in ['jobs', 'results', 'admit-cards']:
+        for page in sorted((site_root / folder).rglob('*.html')):
+            try:
+                content = page.read_text(encoding='utf-8')
+            except Exception:
+                continue
+            m = h1_re.search(content)
+            if not m:
+                continue
+            title = m.group(1).strip()
+            tl = title.lower()
+            if tl in existing_titles or tl in added_titles:
+                continue
+            if len(title) < 10 or len(title) > 120:
+                continue
+            cat = get_category(title)
+            new_cards.append(_build_paper_card(title, cat))
+            added_titles.add(tl)
+
+    if not new_cards:
+        log.info('previous-papers: no new exams to add')
+        return
+
+    # Inject before closing </div><!-- #papers-grid -->
+    inject_marker = '</div><!-- #papers-grid -->'
+    if inject_marker not in html:
+        # Fallback: inject before the <script> block at bottom of grid
+        inject_marker = '<script>\n        function filterPapers'
+        if inject_marker not in html:
+            log.warning('previous-papers: could not find injection point')
+            return
+        html = html.replace(inject_marker, '\n' + '\n'.join(new_cards) + '\n\n        ' + inject_marker.lstrip(), 1)
+    else:
+        html = html.replace(inject_marker, '\n' + '\n'.join(new_cards) + '\n\n        ' + inject_marker, 1)
+
+    pp_file.write_text(html, encoding='utf-8')
+    log.info(f'previous-papers: added {len(new_cards)} new exam paper cards')
+
+
+# ══════════════════════════════════════════════════════════
 # MAIN ORCHESTRATOR
 # ══════════════════════════════════════════════════════════
 
@@ -2344,6 +2433,12 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
     # ── 4. Save seen set ───────────────────────────────────
     save_seen(seen)
+
+    # ── 4b. Update previous-papers page with newly scraped exams ──
+    try:
+        update_previous_papers(SITE_ROOT)
+    except Exception as e:
+        log.warning(f'previous-papers update failed: {e}')
 
     # ── 5. Regenerate sitemap ──────────────────────────────
     import subprocess
