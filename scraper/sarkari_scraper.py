@@ -1370,11 +1370,6 @@ def _header(active: str) -> str:
 
 def _sidebar() -> str:
     return '''<aside class="sidebar">
-  <div class="widget widget--telegram">
-    <h3 class="widget__title">📢 Join Telegram</h3>
-    <p style="margin-bottom:1rem;">Get instant job alerts on your phone!</p>
-    <a href="https://t.me/naukridhaba" target="_blank" class="btn" style="background:#fff;color:#0088cc;width:100%;">Join Channel</a>
-  </div>
   <div class="widget">
     <h3 class="widget__title">🔗 Quick Links</h3>
     <div class="footer__links">
@@ -1398,7 +1393,7 @@ def _footer() -> str:
       <div>
         <h3 class="footer__title">📋 {SITE_NAME}</h3>
         <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
-        <a href="https://t.me/naukridhaba" class="share-btn share-btn--telegram" style="margin-top:1rem;display:inline-block;">Join Telegram</a>
+        <p style="color:#ccc;font-size:.85rem;margin-top:.5rem;">Share job alerts with friends &amp; help them find government jobs.</p>
       </div>
       <div>
         <h3 class="footer__title">Quick Links</h3>
@@ -1699,10 +1694,8 @@ def build_job_page(d: dict) -> tuple[str, str]:
       {faq_html}
 
       <div class="share-section">
-        <h3>📢 Share with Friends / दोस्तों को शेयर करें</h3>
-        <button onclick="shareWhatsApp(window.location.href,'{title.replace(chr(39),'')}') " class="share-btn share-btn--whatsapp">WhatsApp</button>
-        <button onclick="shareTelegram(window.location.href,'{title.replace(chr(39),'')}') " class="share-btn share-btn--telegram">Telegram</button>
-        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+        <h3>📢 Share this Job</h3>
+        <button onclick="sharePost(window.location.href,'{title.replace(chr(39),chr(96))}')" class="share-btn">Share</button>
       </div>
 
       <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
@@ -1835,10 +1828,8 @@ def build_result_page(d: dict) -> tuple[str, str]:
       {faq_html}
 
       <div class="share-section">
-        <h3>📢 Share with Friends</h3>
-        <button onclick="shareWhatsApp(window.location.href,'{title.replace(chr(39),'')} Result Declared')" class="share-btn share-btn--whatsapp">WhatsApp</button>
-        <button onclick="shareTelegram(window.location.href,'{title.replace(chr(39),'')} Result')" class="share-btn share-btn--telegram">Telegram</button>
-        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+        <h3>📢 Share this Result</h3>
+        <button onclick="sharePost(window.location.href,'{title.replace(chr(39),chr(96))} Result Declared')" class="share-btn">Share</button>
       </div>
     </article>
   </main>
@@ -1973,10 +1964,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       {faq_html}
 
       <div class="share-section">
-        <h3>📢 Share with Friends</h3>
-        <button onclick="shareWhatsApp(window.location.href,'{title.replace(chr(39),'')} Admit Card Available')" class="share-btn share-btn--whatsapp">WhatsApp</button>
-        <button onclick="shareTelegram(window.location.href,'{title.replace(chr(39),'')} Admit Card')" class="share-btn share-btn--telegram">Telegram</button>
-        <button onclick="copyLink(window.location.href)" class="share-btn share-btn--copy">Copy Link</button>
+        <h3>📢 Share this Admit Card</h3>
+        <button onclick="sharePost(window.location.href,'{title.replace(chr(39),chr(96))} Admit Card Available')" class="share-btn">Share</button>
       </div>
     </article>
   </main>
@@ -2382,6 +2371,163 @@ def update_previous_papers(site_root: Path) -> None:
 
 
 # ══════════════════════════════════════════════════════════
+# DYNAMIC RESOURCES PAGE
+# ══════════════════════════════════════════════════════════
+
+_EXAM_RESOURCES: dict[str, dict] = {
+    'upsc': {
+        'icon': '🏛️', 'label': 'UPSC Civil Services',
+        'color': '#1a237e',
+        'topics': 'History · Polity · Geography · Economy · Environment · Current Affairs',
+        'links': [
+            ('Official Syllabus', 'https://upsc.gov.in/examinations/syllabus-materials'),
+            ('Previous Year Papers', 'https://upsc.gov.in/examinations/previous-year-question-papers'),
+            ('Laxmikant — Polity (free preview)', 'https://archive.org/search?query=laxmikant+indian+polity'),
+            ('IGNOU Study Material', 'https://egyankosh.ac.in/'),
+        ],
+    },
+    'ssc': {
+        'icon': '📝', 'label': 'SSC (CGL / CHSL / MTS)',
+        'color': '#b71c1c',
+        'topics': 'Quantitative Aptitude · Reasoning · English · General Awareness',
+        'links': [
+            ('SSC Official Syllabus', 'https://ssc.nic.in/Portal/Syllabus'),
+            ('Previous Papers', 'https://ssc.nic.in/Portal/QuestionPapers'),
+            ('Jagran Josh Free SSC Material', 'https://www.jagranjosh.com/ssc'),
+        ],
+    },
+    'railway': {
+        'icon': '🚂', 'label': 'Railway (RRB / RRC)',
+        'color': '#004d40',
+        'topics': 'General Science · Maths · Reasoning · General Awareness · Technical (for ALP/JE)',
+        'links': [
+            ('RRB Official Portal', 'https://www.rrbcdg.gov.in'),
+            ('RRB Syllabus & Pattern', 'https://www.rrcb.gov.in'),
+            ('Testbook Free Railway Tests', 'https://testbook.com/free-mock-tests/rrb-ntpc'),
+        ],
+    },
+    'banking': {
+        'icon': '🏦', 'label': 'Banking (IBPS / SBI / RBI)',
+        'color': '#1b5e20',
+        'topics': 'Quantitative Aptitude · Reasoning · English · Banking Awareness · Computer',
+        'links': [
+            ('IBPS Official Syllabus', 'https://www.ibps.in'),
+            ('RBI Opportunities', 'https://www.rbi.org.in/Scripts/Vacancies.aspx'),
+            ('Bankersadda Free Tests', 'https://www.bankersadda.com/quiz'),
+        ],
+    },
+    'defence': {
+        'icon': '🪖', 'label': 'Defence (NDA / CDS / AFCAT)',
+        'color': '#3e2723',
+        'topics': 'Mathematics · English · General Knowledge · Physics (NDA) · Current Affairs',
+        'links': [
+            ('UPSC NDA Syllabus', 'https://upsc.gov.in/examinations/syllabus-materials'),
+            ('AFCAT Official', 'https://afcat.cdac.in'),
+            ('Join Indian Army', 'https://joinindianarmy.nic.in'),
+            ('Join Indian Navy', 'https://www.joinindiannavy.gov.in'),
+        ],
+    },
+    'police': {
+        'icon': '👮', 'label': 'Police / Paramilitary',
+        'color': '#212121',
+        'topics': 'General Awareness · Reasoning · Physical Standards · Hindi/English',
+        'links': [
+            ('CISF Recruitment', 'https://cisfrectt.in'),
+            ('CRPF Recruitment', 'https://www.crpf.gov.in/Recruitment.htm'),
+            ('SSC CPO Syllabus', 'https://ssc.nic.in/Portal/Syllabus'),
+        ],
+    },
+    'government': {
+        'icon': '🏢', 'label': 'State PSC / Other Govt',
+        'color': '#4a148c',
+        'topics': 'State GK · Polity · History · Reasoning · Subject-specific (per exam)',
+        'links': [
+            ('UPPSC', 'https://uppsc.up.nic.in'),
+            ('BPSC', 'https://bpsc.bih.nic.in'),
+            ('MPPSC', 'https://mppsc.mp.gov.in'),
+            ('RPSC', 'https://rpsc.rajasthan.gov.in'),
+            ('Scholarships.gov.in', 'https://scholarships.gov.in'),
+        ],
+    },
+}
+
+
+def update_resources_section(site_root: Path) -> None:
+    """Scan scraped pages to find active categories and inject exam-specific resources into resources.html."""
+    res_file = site_root / 'resources.html'
+    if not res_file.exists():
+        return
+
+    # Count pages per category
+    cat_counts: dict[str, int] = {}
+    for folder in ['jobs', 'results', 'admit-cards']:
+        for subdir in (site_root / folder).iterdir():
+            if subdir.is_dir():
+                cat = subdir.name
+                count = sum(1 for _ in subdir.glob('*.html'))
+                if count:
+                    cat_counts[cat] = cat_counts.get(cat, 0) + count
+
+    active_cats = [c for c in _EXAM_RESOURCES if cat_counts.get(c, 0) > 0]
+    if not active_cats:
+        log.info('resources: no active categories found, skipping')
+        return
+
+    # Build HTML cards
+    cards_html = []
+    for cat in active_cats:
+        r = _EXAM_RESOURCES[cat]
+        count = cat_counts.get(cat, 0)
+        links_html = ' &nbsp;·&nbsp; '.join(
+            f'<a href="{url}" target="_blank" rel="noopener" style="color:{r["color"]};text-decoration:underline;font-size:.85rem;">{label} ↗</a>'
+            for label, url in r['links']
+        )
+        cards_html.append(f'''        <div class="card" style="border-left:4px solid {r["color"]};">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;">
+                <h3 style="color:{r["color"]};margin:0;font-size:1rem;">{r["icon"]} {r["label"]}</h3>
+                <span class="badge" style="background:{r["color"]}1a;color:{r["color"]};white-space:nowrap;">{count} posts</span>
+            </div>
+            <p style="color:#555;font-size:.82rem;margin-bottom:.75rem;line-height:1.5;"><strong>Key topics:</strong> {r["topics"]}</p>
+            <div style="line-height:2;">{links_html}</div>
+        </div>''')
+
+    section_html = (
+        '<!-- #exam-resources-start -->\n'
+        '        <h2 style="color:var(--primary);margin-bottom:.5rem;font-size:1.2rem;">🎯 Exam-Specific Preparation</h2>\n'
+        '        <p style="color:#666;margin-bottom:1rem;font-size:.9rem;">Resources matched to exams currently active on this site — syllabus, official papers, and practice material.</p>\n'
+        '        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin-bottom:2.5rem;">\n'
+        + '\n'.join(cards_html) + '\n'
+        '        </div>\n'
+        '        <!-- #exam-resources-end -->'
+    )
+
+    html = res_file.read_text(encoding='utf-8')
+
+    # Replace between markers if they exist, else inject before NCERT section
+    start_marker = '<!-- #exam-resources-start -->'
+    end_marker = '<!-- #exam-resources-end -->'
+    if start_marker in html and end_marker in html:
+        html = re.sub(
+            re.escape(start_marker) + r'.*?' + re.escape(end_marker),
+            section_html,
+            html,
+            flags=re.DOTALL,
+        )
+    else:
+        inject_before = '<!-- Free NCERT Books -->'
+        if inject_before not in html:
+            inject_before = '<h2 style="color:var(--primary);margin-bottom:.5rem;font-size:1.2rem;">📖 Free NCERT'
+        if inject_before in html:
+            html = html.replace(inject_before, section_html + '\n\n        ' + inject_before, 1)
+        else:
+            log.warning('resources: could not find injection point')
+            return
+
+    res_file.write_text(html, encoding='utf-8')
+    log.info(f'resources: updated exam-specific section with {len(active_cats)} active categories')
+
+
+# ══════════════════════════════════════════════════════════
 # DISTRIBUTION & OFF-PAGE SEO
 # ══════════════════════════════════════════════════════════
 
@@ -2587,6 +2733,10 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             generate_api_json(SITE_ROOT, existing_jobs, existing_results, existing_admits)
         except Exception as e:
             log.warning(f'API JSON generation failed: {e}')
+        try:
+            update_resources_section(SITE_ROOT)
+        except Exception as e:
+            log.warning(f'resources section update failed: {e}')
 
         elapsed = (datetime.now() - start).seconds
         log.info('\n' + '=' * 60)
@@ -2707,6 +2857,12 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         update_previous_papers(SITE_ROOT)
     except Exception as e:
         log.warning(f'previous-papers update failed: {e}')
+
+    # ── 4b2. Update resources page with active exam categories ──
+    try:
+        update_resources_section(SITE_ROOT)
+    except Exception as e:
+        log.warning(f'resources section update failed: {e}')
 
     # ── 4c. RSS feeds + JSON API ───────────────────────────
     all_jobs    = existing_jobs    + generated.get('job', [])
