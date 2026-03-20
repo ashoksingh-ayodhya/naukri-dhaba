@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-20T21:25:33Z",
+  "updated": "2026-03-20T21:53:44Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -68,6 +68,14 @@
       "url": "https://naukridhaba.in/jobs/police/up-police-constable-edit-correction-form-2026.html"
     },
     {
+      "title": "Railway Group D Apply Online 2026",
+      "dept": "RAILWAY",
+      "type": "job",
+      "category": "railway",
+      "date": "02/03/2026",
+      "url": "https://naukridhaba.in/jobs/railway/railway-group-d-apply-online-2026.html"
+    },
+    {
       "title": "CSBC Bihar Police Constable Special Branch Online Form 2026",
       "dept": "POLICE",
       "type": "job",
@@ -76,12 +84,36 @@
       "url": "https://naukridhaba.in/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html"
     },
     {
-      "title": "Railway Group D Apply Online 2026",
-      "dept": "RAILWAY",
+      "title": "UP Police Constable Edit Correction Form 2026",
+      "dept": "Government",
       "type": "job",
-      "category": "railway",
-      "date": "02/03/2026",
-      "url": "https://naukridhaba.in/jobs/railway/railway-group-d-apply-online-2026.html"
+      "category": "government",
+      "date": "30/01/2026 🔴",
+      "url": "https://naukridhaba.in/jobs/government/up-police-constable-edit-correction-form-2026.html"
+    },
+    {
+      "title": "UP RTE Nursery, LKG, UKG, Class 1 Free Admissions Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "Check Site",
+      "url": "https://naukridhaba.in/jobs/government/up-rte-nursery-lkg-ukg-class-1-free-admissions-online-form-2026.html"
+    },
+    {
+      "title": "UPBED 2026 Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "10/03/2026",
+      "url": "https://naukridhaba.in/jobs/government/upbed-2026-online-form-2026.html"
+    },
+    {
+      "title": "Yantra India Ltd YIL Ordnance Factory Apprentices Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "03/03/2026",
+      "url": "https://naukridhaba.in/jobs/government/yantra-india-ltd-yil-ordnance-factory-apprentices-online-form-2026.html"
     },
     {
       "title": "UP Anganwadi Worker Online Form 2026",
@@ -130,38 +162,6 @@
       "category": "government",
       "date": "07/03/2026",
       "url": "https://naukridhaba.in/jobs/government/bsnl-senior-executive-trainee-set-online-form-2026.html"
-    },
-    {
-      "title": "RSSB Forester Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "11/02/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/rssb-forester-online-form-2026.html"
-    },
-    {
-      "title": "NEET UG 2026 Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "08/03/2026",
-      "url": "https://naukridhaba.in/jobs/government/neet-ug-2026-online-form-2026.html"
-    },
-    {
-      "title": "JEECUP 2026 Apply Online",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/jeecup-2026-apply-online.html"
-    },
-    {
-      "title": "UP Police Constable Edit Correction Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/01/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/up-police-constable-edit-correction-form-2026.html"
     }
   ],
   "results": [
@@ -278,6 +278,14 @@
       "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
+      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
+    },
+    {
       "title": "UP CNET 2025 Result",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -294,6 +302,14 @@
       "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
     },
     {
+      "title": "SEBI Assistant Manager Phase I Result 2026",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/sebi-assistant-manager-phase-i-result-2026.html"
+    },
+    {
       "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -308,22 +324,6 @@
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/government/uppsc-lt-grade-assistant-teacher-result-2026.html"
-    },
-    {
-      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
-    },
-    {
-      "title": "NTA NIFT 2025 Result / Score Card",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
     }
   ],
   "admits": [
@@ -432,6 +432,14 @@
       "url": "https://naukridhaba.in/admits/railway/ibps-rrb-14th-office-assistant-mains-admit-card.html"
     },
     {
+      "title": "UP CPET 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/up-cpet-2025-admit-card.html"
+    },
+    {
       "title": "UPBED 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
@@ -456,6 +464,14 @@
       "url": "https://naukridhaba.in/admits/government/uppsc-computer-assistant-admit-card-2026.html"
     },
     {
+      "title": "UP GNM Entrance Test UPGET 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/up-gnm-entrance-test-upget-2025-admit-card.html"
+    },
+    {
       "title": "UPCATET 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
@@ -470,22 +486,6 @@
       "category": "government",
       "date": "",
       "url": "https://naukridhaba.in/admits/government/sci-junior-court-assistant-admit-card-2025.html"
-    },
-    {
-      "title": "Rajasthan PTET Admit Card 2025",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/rajasthan-ptet-admit-card-2025.html"
-    },
-    {
-      "title": "UP CPET 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-cpet-2025-admit-card.html"
     }
   ]
 }
