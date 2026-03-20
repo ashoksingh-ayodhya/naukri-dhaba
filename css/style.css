@@ -12,6 +12,11 @@
 .nav--mobile.active{right:0;display:block}.nav--mobile a{display:block;padding:1rem;color:var(--text);text-decoration:none;border-bottom:1px solid #eee}
 .btn--icon{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#fff}
 @media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}
+/* Language toggle */
+[data-lang="hi"] .lang-en{display:none!important}
+[data-lang="en"] .lang-hi{display:none!important}
+.lang-popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center}
+.lang-popup__box{background:var(--surface);padding:2rem;border-radius:12px;text-align:center;max-width:340px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.2)}
 /* Ticker */
 .ticker{background:var(--danger);color:#fff;padding:0.5rem 0;overflow:hidden;white-space:nowrap}
 .ticker__content{display:inline-block;animation:marquee 30s linear infinite;padding-left:100%}

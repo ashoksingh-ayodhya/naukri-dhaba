@@ -142,6 +142,63 @@ SEO_KW = {
     'government': 'Government jobs India, online form updates, result updates, admit card updates, Naukri Dhaba',
 }
 
+# ── Official government portals per board / exam body ─────
+# Used as a fallback when no specific apply/result/admit URL is extracted from source pages.
+# Order matters: more-specific keys first, so 'UPSSSC' matches before 'SSC'.
+BOARD_PORTALS: dict[str, str] = {
+    'UPSSSC':  'https://upsssc.gov.in',
+    'UPSC':    'https://upsc.gov.in',
+    'SSC':     'https://ssc.nic.in',
+    'SBI':     'https://sbi.co.in/careers',
+    'IBPS':    'https://www.ibps.in',
+    'RBI':     'https://www.rbi.org.in/Scripts/Vacancies.aspx',
+    'NABARD':  'https://www.nabard.org/career.aspx',
+    'RRB':     'https://www.rrbcdg.gov.in',
+    'RRC':     'https://www.rrcb.gov.in',
+    'DRDO':    'https://www.drdo.gov.in/careers',
+    'CISF':    'https://cisfrectt.in',
+    'BSF':     'https://bsf.gov.in/recruitment.html',
+    'CRPF':    'https://www.crpf.gov.in/Recruitment.htm',
+    'NVS':     'https://navodaya.gov.in/nvs/en/Recruitment',
+    'NTA':     'https://nta.ac.in',
+    'BPSC':    'https://bpsc.bih.nic.in',
+    'UPPSC':   'https://uppsc.up.nic.in',
+    'MPPSC':   'https://mppsc.mp.gov.in',
+    'RPSC':    'https://rpsc.rajasthan.gov.in',
+    'JPSC':    'https://www.jpsc.gov.in',
+    'HSSC':    'https://hssc.gov.in',
+    'JSSC':    'https://jssc.nic.in',
+    'PPSC':    'https://ppsc.gov.in',
+    'LIC':     'https://licindia.in/Bottom-Links/Recruitment',
+    'AFCAT':   'https://afcat.cdac.in',
+    'HAL':     'https://hal-india.co.in/Career',
+    'ARMY':    'https://joinindianarmy.nic.in',
+    'NAVY':    'https://www.joinindiannavy.gov.in',
+    'IAF':     'https://airmenselection.cdac.in',
+    'NDA':     'https://upsc.gov.in',
+    'CDS':     'https://upsc.gov.in',
+}
+
+# Category-level fallback (less specific than BOARD_PORTALS)
+OFFICIAL_PORTALS: dict[str, str] = {
+    'upsc':       'https://upsc.gov.in',
+    'ssc':        'https://ssc.nic.in',
+    'railway':    'https://www.rrbcdg.gov.in',
+    'banking':    'https://www.ibps.in',
+    'police':     'https://www.crpf.gov.in/Recruitment.htm',
+    'defence':    'https://joinindianarmy.nic.in',
+    'government': 'https://www.india.gov.in',
+}
+
+
+def official_portal_for(title: str, cat: str) -> str:
+    """Return the best known official govt portal URL for this exam/dept, or ''."""
+    tu = title.upper()
+    for board, url in BOARD_PORTALS.items():
+        if board in tu:
+            return url
+    return OFFICIAL_PORTALS.get(cat, '')
+
 
 # ══════════════════════════════════════════════════════════
 # UTILITY HELPERS
@@ -1277,16 +1334,18 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
 # ══════════════════════════════════════════════════════════
 
 def _header(active: str) -> str:
+    # Bilingual nav labels: English + Hindi for SEO across both language queries
     tabs = [
-        ('latest-jobs.html', '💼 Latest Jobs', 'jobs'),
-        ('results.html',     '📊 Results',      'results'),
-        ('admit-cards.html', '🎫 Admit Cards',  'admit-cards'),
-        ('resources.html',   '📚 Resources',    'resources'),
+        ('latest-jobs.html', '💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span>', 'jobs'),
+        ('results.html',     '📊 <span class="lang-en">Results</span><span class="lang-hi">परिणाम</span>',               'results'),
+        ('admit-cards.html', '🎫 <span class="lang-en">Admit Cards</span><span class="lang-hi">प्रवेश पत्र</span>',     'admit-cards'),
+        ('resources.html',   '📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span>',             'resources'),
     ]
     desktop = '\n      '.join(
         f'<a href="/{u}" class="{"active" if k == active else ""}">{lbl}</a>'
         for u, lbl, k in tabs
     )
+    mobile_home = '🏠 <span class="lang-en">Home</span><span class="lang-hi">होम</span>'
     mobile = '\n    '.join(f'<a href="/{u}">{lbl}</a>' for u, lbl, _ in tabs)
     return f'''<header class="header">
   <div class="container header__container">
@@ -1302,7 +1361,7 @@ def _header(active: str) -> str:
   <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;"></div>
   <nav class="nav--mobile">
     <button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;background:none;border:none;color:var(--text);">✕</button>
-    <a href="/">🏠 Home</a>
+    <a href="/">{mobile_home}</a>
     {mobile}
   </nav>
   <style>.menu-toggle{{display:none!important}}@media(max-width:768px){{.nav--desktop{{display:none}}.menu-toggle{{display:block!important}}}}</style>
@@ -1380,7 +1439,18 @@ def _footer() -> str:
   </div>
 </footer>
 <script src="/js/app.js"></script>
-<script src="/js/ads-manager.js" defer></script>'''
+<script src="/js/ads-manager.js" defer></script>
+<div id="lang-popup" class="lang-popup">
+  <div class="lang-popup__box">
+    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
+    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
+    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
+    <div style="display:flex;gap:1rem;justify-content:center;">
+      <button onclick="setLang(\'en\')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
+      <button onclick="setLang(\'hi\')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
+    </div>
+  </div>
+</div>'''
 
 
 def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: str = '') -> str:
@@ -1442,12 +1512,17 @@ def build_job_page(d: dict) -> tuple[str, str]:
         desc_parts.append(f"Last date to apply: {d['last_date']}.")
     desc_parts.append(f"Apply online at {SITE_NAME}.")
     desc = ' '.join(desc_parts)
-    apply_href = d.get('apply_url') or google_search_url(title, 'apply online')
+    _portal = official_portal_for(title, cat)
+    apply_href = d.get('apply_url') or _portal or google_search_url(title, 'apply online official site')
     notification_href = d.get('notification_url') or google_search_url(title, 'notification PDF')
+    _apply_is_portal = not d.get('apply_url') and bool(_portal)
 
     apply_btn = (
         f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
+        + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 0;text-align:center;">'
+           f'Opens the official portal — check the Apply / Recruitment section there.</p>'
+           if _apply_is_portal else '')
     )
     notif_btn = (
         f'<a href="{notification_href}" target="_blank" rel="nofollow noopener noreferrer" '
@@ -1654,13 +1729,18 @@ def build_result_page(d: dict) -> tuple[str, str]:
     rel   = f'results/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"{title}: Result declared. Check your result at {SITE_NAME}. Result date: {d['result_date']}."
-    result_href = d.get('result_url') or google_search_url(title, 'result')
+    _rportal = official_portal_for(title, cat)
+    result_href = d.get('result_url') or _rportal or google_search_url(title, 'result')
     scorecard_href = d.get('scorecard_url') or google_search_url(title, 'scorecard marks')
+    _result_is_portal = not d.get('result_url') and bool(_rportal)
 
     check_btn = (
         f'<a href="{result_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
         f'🎯 Check Result / परिणाम देखें</a>'
+        + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
+           f'Opens the official portal — check the Latest Results section there.</p>'
+           if _result_is_portal else '')
     )
     scorecard_btn = (
         f'<a href="{scorecard_href}" target="_blank" rel="nofollow noopener noreferrer" '
@@ -1783,12 +1863,17 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     rel   = f'admit-cards/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {d['exam_date']}."
-    admit_href = d.get('admit_url') or google_search_url(title, 'admit card download')
+    _aportal = official_portal_for(title, cat)
+    admit_href = d.get('admit_url') or _aportal or google_search_url(title, 'admit card download')
+    _admit_is_portal = not d.get('admit_url') and bool(_aportal)
 
     dl_btn = (
         f'<a href="{admit_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
         f'📥 Download Admit Card / हॉल टिकट डाउनलोड करें</a>'
+        + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
+           f'Opens the official portal — check the Admit Card / Hall Ticket section there.</p>'
+           if _admit_is_portal else '')
     )
 
     extra_html = ''
@@ -2297,6 +2382,180 @@ def update_previous_papers(site_root: Path) -> None:
 
 
 # ══════════════════════════════════════════════════════════
+# DISTRIBUTION & OFF-PAGE SEO
+# ══════════════════════════════════════════════════════════
+
+from email.utils import formatdate as _rfc822
+
+def _rss_item(item: dict, kind: str) -> str:
+    cat    = get_category(item.get('dept', ''))
+    slug   = slugify(item.get('title', ''))
+    url    = f'{SITE_URL}/{kind}s/{cat}/{slug}.html'
+    title  = escape(item.get('title', ''))
+    dept   = escape(item.get('dept', ''))
+    date   = item.get('last_date') or item.get('result_date') or item.get('admit_release') or ''
+    pub    = _rfc822(localtime=True)
+    desc   = f'{title} — {dept}. Date: {date}. More details at {SITE_URL}.'
+    return (
+        f'<item>'
+        f'<title>{title}</title>'
+        f'<link>{url}</link>'
+        f'<guid isPermaLink="true">{url}</guid>'
+        f'<description>{escape(desc)}</description>'
+        f'<category>{escape(dept)}</category>'
+        f'<pubDate>{pub}</pubDate>'
+        f'</item>'
+    )
+
+
+def generate_rss_feed(site_root: Path, jobs: list, results: list, admits: list) -> None:
+    """Generate RSS 2.0 feeds: combined feed.xml + type-specific feeds."""
+    feed_dir = site_root / 'feed'
+    feed_dir.mkdir(exist_ok=True)
+
+    def _channel(title: str, desc: str, items_xml: str) -> str:
+        return (
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">'
+            '<channel>'
+            f'<title>{escape(title)}</title>'
+            f'<link>{SITE_URL}</link>'
+            f'<description>{escape(desc)}</description>'
+            '<language>en-IN</language>'
+            f'<atom:link href="{SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>'
+            f'{items_xml}'
+            '</channel></rss>'
+        )
+
+    jobs_xml    = ''.join(_rss_item(i, 'job')    for i in jobs[:50])
+    results_xml = ''.join(_rss_item(i, 'result') for i in results[:50])
+    admits_xml  = ''.join(_rss_item(i, 'admit')  for i in admits[:50])
+    all_xml     = ''.join(
+        _rss_item(i, k)
+        for k, lst in [('job', jobs), ('result', results), ('admit', admits)]
+        for i in lst[:25]
+    )
+
+    (site_root / 'feed.xml').write_text(
+        _channel(f'{SITE_NAME} — All Updates', f'Latest government jobs, results, and admit cards from {SITE_URL}', all_xml),
+        encoding='utf-8'
+    )
+    (feed_dir / 'jobs.xml').write_text(
+        _channel(f'{SITE_NAME} — Latest Jobs', f'Latest government job notifications from {SITE_URL}', jobs_xml),
+        encoding='utf-8'
+    )
+    (feed_dir / 'results.xml').write_text(
+        _channel(f'{SITE_NAME} — Results', f'Latest exam results from {SITE_URL}', results_xml),
+        encoding='utf-8'
+    )
+    (feed_dir / 'admit-cards.xml').write_text(
+        _channel(f'{SITE_NAME} — Admit Cards', f'Latest admit card releases from {SITE_URL}', admits_xml),
+        encoding='utf-8'
+    )
+    log.info(f'RSS feeds generated: feed.xml + feed/jobs|results|admit-cards.xml')
+
+
+def generate_api_json(site_root: Path, jobs: list, results: list, admits: list) -> None:
+    """Generate /api/latest.json — a public JSON endpoint for developers."""
+    api_dir = site_root / 'api'
+    api_dir.mkdir(exist_ok=True)
+
+    def _entry(item: dict, kind: str) -> dict:
+        cat  = get_category(item.get('dept', ''))
+        slug = slugify(item.get('title', ''))
+        return {
+            'title':    item.get('title', ''),
+            'dept':     item.get('dept', ''),
+            'type':     kind,
+            'category': cat,
+            'date':     item.get('last_date') or item.get('result_date') or item.get('admit_release') or '',
+            'url':      f'{SITE_URL}/{kind}s/{cat}/{slug}.html',
+        }
+
+    payload = {
+        'updated': datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'source':  SITE_URL,
+        'attribution': f'Data from {SITE_NAME} ({SITE_URL}). Please link back when using.',
+        'jobs':    [_entry(i, 'job')    for i in jobs[:20]],
+        'results': [_entry(i, 'result') for i in results[:20]],
+        'admits':  [_entry(i, 'admit')  for i in admits[:20]],
+    }
+    (api_dir / 'latest.json').write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding='utf-8'
+    )
+    log.info('API JSON generated: api/latest.json')
+
+
+def notify_telegram(new_items: list) -> None:
+    """Post each newly scraped item to the Telegram channel via Bot API."""
+    token   = os.getenv('TELEGRAM_BOT_TOKEN', '')
+    channel = os.getenv('TELEGRAM_CHANNEL_ID', '')  # e.g. @naukridhaba
+    if not token or not channel:
+        log.info('Telegram: TELEGRAM_BOT_TOKEN or TELEGRAM_CHANNEL_ID not set — skipping')
+        return
+    import urllib.request, urllib.parse
+    posted = 0
+    for item in new_items[:8]:   # cap at 8 to avoid spam
+        kind  = item.get('page_type', 'job')
+        cat   = get_category(item.get('dept', ''))
+        slug  = slugify(item.get('title', ''))
+        url   = f'{SITE_URL}/{kind}s/{cat}/{slug}.html'
+        date  = item.get('last_date') or item.get('result_date') or item.get('admit_release') or 'Check page'
+        emoji = {'job': '💼', 'result': '📊', 'admit': '🎫'}.get(kind, '🔔')
+        msg   = (
+            f'{emoji} *{item["title"]}*\n'
+            f'📅 {date}\n'
+            f'🏛 {item.get("dept", "")}\n\n'
+            f'👉 {url}'
+        )
+        try:
+            data = urllib.parse.urlencode({
+                'chat_id':    channel,
+                'text':       msg,
+                'parse_mode': 'Markdown',
+                'disable_web_page_preview': 'false',
+            }).encode()
+            req = urllib.request.Request(
+                f'https://api.telegram.org/bot{token}/sendMessage',
+                data=data, method='POST'
+            )
+            with urllib.request.urlopen(req, timeout=10) as r:
+                if r.status == 200:
+                    posted += 1
+        except Exception as e:
+            log.warning(f'Telegram post failed: {e}')
+    if posted:
+        log.info(f'Telegram: posted {posted} items to {channel}')
+
+
+def ping_indexnow(new_urls: list) -> None:
+    """Notify Bing/Yandex instantly about new pages via IndexNow API."""
+    key = os.getenv('INDEXNOW_KEY', '')
+    if not key or not new_urls:
+        log.info('IndexNow: INDEXNOW_KEY not set or no new URLs — skipping')
+        return
+    import urllib.request
+    payload = json.dumps({
+        'host':        'naukridhaba.in',
+        'key':         key,
+        'keyLocation': f'{SITE_URL}/{key}.txt',
+        'urlList':     new_urls[:100],
+    }).encode()
+    try:
+        req = urllib.request.Request(
+            'https://api.indexnow.org/indexnow',
+            data=payload,
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        with urllib.request.urlopen(req, timeout=15) as r:
+            log.info(f'IndexNow: pinged {len(new_urls)} URLs — HTTP {r.status}')
+    except Exception as e:
+        log.warning(f'IndexNow ping failed: {e}')
+
+
+# ══════════════════════════════════════════════════════════
 # MAIN ORCHESTRATOR
 # ══════════════════════════════════════════════════════════
 
@@ -2319,6 +2578,15 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         replace_home_jobs_section(SITE_ROOT / 'index.html', existing_jobs, limit=10)
         replace_listing_sections(SITE_ROOT / 'results.html', existing_results, 'result')
         replace_listing_sections(SITE_ROOT / 'admit-cards.html', existing_admits, 'admit')
+
+        try:
+            generate_rss_feed(SITE_ROOT, existing_jobs, existing_results, existing_admits)
+        except Exception as e:
+            log.warning(f'RSS generation failed: {e}')
+        try:
+            generate_api_json(SITE_ROOT, existing_jobs, existing_results, existing_admits)
+        except Exception as e:
+            log.warning(f'API JSON generation failed: {e}')
 
         elapsed = (datetime.now() - start).seconds
         log.info('\n' + '=' * 60)
@@ -2439,6 +2707,40 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         update_previous_papers(SITE_ROOT)
     except Exception as e:
         log.warning(f'previous-papers update failed: {e}')
+
+    # ── 4c. RSS feeds + JSON API ───────────────────────────
+    all_jobs    = existing_jobs    + generated.get('job', [])
+    all_results = existing_results + generated.get('result', [])
+    all_admits  = existing_admits  + generated.get('admit', [])
+    try:
+        generate_rss_feed(SITE_ROOT, all_jobs, all_results, all_admits)
+    except Exception as e:
+        log.warning(f'RSS feed generation failed: {e}')
+    try:
+        generate_api_json(SITE_ROOT, all_jobs, all_results, all_admits)
+    except Exception as e:
+        log.warning(f'API JSON generation failed: {e}')
+
+    # ── 4d. Telegram notification for new pages ────────────
+    new_all = generated.get('job', []) + generated.get('result', []) + generated.get('admit', [])
+    if new_all:
+        try:
+            notify_telegram(new_all)
+        except Exception as e:
+            log.warning(f'Telegram notification failed: {e}')
+
+    # ── 4e. IndexNow ping for new pages ───────────────────
+    if new_all:
+        new_urls = []
+        for item in new_all:
+            kind = item.get('page_type', 'job')
+            cat  = get_category(item.get('dept', ''))
+            slug = slugify(item.get('title', ''))
+            new_urls.append(f'{SITE_URL}/{kind}s/{cat}/{slug}.html')
+        try:
+            ping_indexnow(new_urls)
+        except Exception as e:
+            log.warning(f'IndexNow ping failed: {e}')
 
     # ── 5. Regenerate sitemap ──────────────────────────────
     import subprocess

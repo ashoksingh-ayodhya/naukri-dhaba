@@ -12,8 +12,13 @@ function countdown(target,elId){const el=document.getElementById(elId);if(!el)re
 function doSearch(){var q=document.getElementById('search-input');if(q&&q.value.trim())window.location.href='/latest-jobs?q='+encodeURIComponent(q.value.trim());}
 function filterJobs(q){var rows=document.querySelectorAll('#jobs-table tbody tr'),term=q.toLowerCase().trim(),noResults=document.getElementById('no-results');rows.forEach(function(r){r.style.display=(!term||r.textContent.toLowerCase().includes(term))?'':'none';});if(noResults)noResults.style.display=[].slice.call(rows).every(function(r){return r.style.display==='none';})?'block':'none';}
 function filterPill(e,dept,el){e.preventDefault();document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active');});el.classList.add('active');var tbl=document.querySelector('table.table tbody');if(!tbl)return;var rows=tbl.querySelectorAll('tr');rows.forEach(function(r){var d=r.cells[0]?r.cells[0].textContent.trim().toUpperCase():'';r.style.display=(dept==='all'||d===dept.toUpperCase())?'':'none';});}
+// ── Language toggle ──────────────────────────────────────
+function initLang(){var l=storage.get('nd_lang');if(!l){showLangPopup();return;}document.documentElement.setAttribute('lang',l);document.body.setAttribute('data-lang',l);}
+function showLangPopup(){var el=document.getElementById('lang-popup');if(el)el.style.display='flex';}
+function setLang(l){storage.set('nd_lang',l);document.documentElement.setAttribute('lang',l);document.body.setAttribute('data-lang',l);var el=document.getElementById('lang-popup');if(el)el.style.display='none';}
 document.addEventListener('DOMContentLoaded',function(){
   initTheme();
+  initLang();
   document.querySelectorAll('.nav--mobile a').forEach(function(a){a.addEventListener('click',closeMobileMenu);});
   var inp=document.getElementById('search-input');
   if(inp){
