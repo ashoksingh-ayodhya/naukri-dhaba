@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed Latest Govt Jobs Widget — Naukri Dhaba</title>
+    <meta name="description" content="Embed the Naukri Dhaba latest government jobs widget on your website for free. One line of code.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://naukridhaba.in/widget">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      .embed-code{background:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:6px;font-family:monospace;font-size:.875rem;overflow-x:auto;white-space:pre;}
+      .embed-code .kw{color:#569cd6;}.embed-code .at{color:#9cdcfe;}.embed-code .val{color:#ce9178;}
+    </style>
+</head>
+<body>
+<header class="header">
+  <div class="container header__container">
+    <a href="/" class="logo">📋 Naukri Dhaba</a>
+    <nav class="nav nav--desktop">
+      <a href="/latest-jobs">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a>
+      <a href="/results">📊 <span class="lang-en">Results</span><span class="lang-hi">परिणाम</span></a>
+      <a href="/admit-cards">🎫 <span class="lang-en">Admit Cards</span><span class="lang-hi">प्रवेश पत्र</span></a>
+      <a href="/resources">📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span></a>
+    </nav>
+    <div style="display:flex;gap:1rem;align-items:center;">
+      <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌓</button>
+      <button class="btn--icon menu-toggle" onclick="toggleMobileMenu()" style="display:none;font-size:1.5rem;cursor:pointer;" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+  <nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 Home</a><a href="/latest-jobs">💼 Latest Jobs</a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 Resources</a></nav>
+  <style>.menu-toggle{display:none!important}@media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}</style>
+  <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
+</header>
+
+<main class="container" style="padding:2rem 1rem;max-width:900px;">
+    <h1 style="color:var(--primary);margin-bottom:.5rem;">Embed Latest Govt Jobs Widget</h1>
+    <p style="color:#666;margin-bottom:2rem;">Add a live government jobs feed to your website in one line of code. Free, no API key needed, auto-updates daily.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2.5rem;" class="widget-demo-grid">
+
+        <!-- Preview -->
+        <div>
+            <h2 style="color:var(--primary);font-size:1.1rem;margin-bottom:1rem;">Live Preview (Light)</h2>
+            <script src="/widget.js" data-nd-limit="5"></script>
+        </div>
+        <div>
+            <h2 style="color:var(--primary);font-size:1.1rem;margin-bottom:1rem;">Live Preview (Dark)</h2>
+            <script src="/widget.js" data-nd-limit="5" data-nd-theme="dark"></script>
+        </div>
+    </div>
+
+    <h2 style="color:var(--primary);font-size:1.1rem;margin-bottom:1rem;">How to Embed</h2>
+
+    <div class="card" style="margin-bottom:1.5rem;">
+        <h3 style="color:var(--primary);margin:0 0 .75rem;font-size:1rem;">Basic Embed (Light Theme, 5 jobs)</h3>
+        <div class="embed-code"><span class="kw">&lt;script</span> <span class="at">src</span>=<span class="val">"https://naukridhaba.in/widget.js"</span><span class="kw">&gt;&lt;/script&gt;</span></div>
+        <button onclick="navigator.clipboard.writeText('<script src=\'https://naukridhaba.in/widget.js\'><\/script>').then(()=>this.textContent='Copied!').catch(()=>{})" class="btn btn--secondary btn--small" style="margin-top:.75rem;">Copy Code</button>
+    </div>
+
+    <div class="card" style="margin-bottom:1.5rem;">
+        <h3 style="color:var(--primary);margin:0 0 .75rem;font-size:1rem;">Dark Theme, 8 jobs</h3>
+        <div class="embed-code"><span class="kw">&lt;script</span> <span class="at">src</span>=<span class="val">"https://naukridhaba.in/widget.js"</span>
+       <span class="at">data-nd-limit</span>=<span class="val">"8"</span>
+       <span class="at">data-nd-theme</span>=<span class="val">"dark"</span><span class="kw">&gt;&lt;/script&gt;</span></div>
+        <button onclick="navigator.clipboard.writeText('<script src=\'https://naukridhaba.in/widget.js\' data-nd-limit=\'8\' data-nd-theme=\'dark\'><\/script>').then(()=>this.textContent='Copied!').catch(()=>{})" class="btn btn--secondary btn--small" style="margin-top:.75rem;">Copy Code</button>
+    </div>
+
+    <h2 style="color:var(--primary);font-size:1.1rem;margin-bottom:1rem;">Options</h2>
+    <table class="table" style="width:100%;margin-bottom:2rem;">
+        <thead><tr><th>Attribute</th><th>Values</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>data-nd-limit</code></td><td>1–20</td><td>5</td><td>Number of jobs to show</td></tr>
+            <tr><td><code>data-nd-theme</code></td><td>light / dark</td><td>light</td><td>Widget color theme</td></tr>
+        </tbody>
+    </table>
+
+    <div style="background:#e8f5e9;border-radius:8px;padding:1.5rem;margin-bottom:2rem;">
+        <h3 style="color:#2e7d32;margin:0 0 .5rem;">Terms of Use</h3>
+        <ul style="color:#555;font-size:.9rem;margin:.5rem 0;padding-left:1.5rem;">
+            <li>Free to use on any website — education, coaching, news, blog</li>
+            <li>Widget automatically links back to Naukri Dhaba (attribution required)</li>
+            <li>Do not hotlink the widget.js on production at scale — host your own copy if needed</li>
+            <li>Data is updated daily — jobs shown are current at time of last scrape</li>
+        </ul>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid #e0e0e0;border-radius:8px;padding:1.5rem;">
+        <h3 style="color:var(--primary);margin:0 0 .5rem;">JSON API (for developers)</h3>
+        <p style="color:#666;font-size:.9rem;margin-bottom:.75rem;">Build your own integration using our free JSON feed:</p>
+        <div class="embed-code">GET https://naukridhaba.in/api/latest.json</div>
+        <p style="color:#888;font-size:.8rem;margin:.5rem 0 0;">Returns latest 20 jobs, results, and admit cards. Attribution required.</p>
+    </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <h3 class="footer__title">📋 Naukri Dhaba</h3>
+        <p style="color:#ccc;font-size:0.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
+      </div>
+      <div>
+        <h3 class="footer__title">Quick Links</h3>
+        <div class="footer__links">
+          <a href="/latest-jobs">Latest Jobs</a>
+          <a href="/results">Results</a>
+          <a href="/admit-cards">Admit Cards</a>
+          <a href="/resources">Resources</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 Naukri Dhaba. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+<script src="/js/app.js"></script>
+<div id="lang-popup" class="lang-popup">
+  <div class="lang-popup__box">
+    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
+    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
+    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
+    <div style="display:flex;gap:1rem;justify-content:center;">
+      <button onclick="setLang('en')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
+      <button onclick="setLang('hi')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

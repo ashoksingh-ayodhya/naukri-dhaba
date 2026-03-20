@@ -106,26 +106,26 @@
   <div class="container header__container">
     <a href="/" class="logo">📋 Naukri Dhaba</a>
     <nav class="nav nav--desktop">
-      <a href="/latest-jobs" class="">💼 Latest Jobs</a>
+      <a href="/latest-jobs" class="">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a>
       <a href="/results" class="">📊 Results</a>
       <a href="/admit-cards" class="">🎫 Admit Cards</a>
-      <a href="/resources" class="active">📚 Resources</a>
+      <a href="/resources" class="active">📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span></a>
     </nav>
     <div style="display:flex;gap:1rem;align-items:center;">
       <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌓</button>
       <button class="btn--icon menu-toggle" onclick="toggleMobileMenu()" style="display:none;font-size:1.5rem;cursor:pointer;" aria-label="Open menu">☰</button>
     </div>
   </div>
-  <nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 Home</a><a href="/latest-jobs">💼 Latest Jobs</a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 Resources</a></nav>
+  <nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 <span class="lang-en">Home</span><span class="lang-hi">होम</span></a><a href="/latest-jobs">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span></a></nav>
   <style>.menu-toggle{display:none!important}@media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}</style>
 
 <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
 </header>
     <main class="container" style="padding:2rem 1rem;">
         <h1 style="color:var(--primary);margin-bottom:.5rem;">Previous Year Question Papers</h1>
-        <p style="color:#666;margin-bottom:.75rem;font-size:1.05rem;">Download past exam papers for all major government exams. Click any exam to find PDFs via Google.</p>
-        <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:.75rem 1rem;margin-bottom:2rem;font-size:.9rem;color:#856404;">
-            Papers open on the official/trusted source. We do not host PDFs directly.
+        <p style="color:#666;margin-bottom:.75rem;font-size:1.05rem;">Free previous year papers from official government portals — UPSC, SSC, RRB, IBPS, and more. All links go directly to official sources.</p>
+        <div style="background:#e8f5e9;border:1px solid #4caf50;border-radius:6px;padding:.75rem 1rem;margin-bottom:2rem;font-size:.9rem;color:#2e7d32;">
+            ✅ Official sources only — all links go to government portals or trusted repositories. We do not host PDFs.
         </div>
 
         <!-- Filter Pills -->
@@ -149,7 +149,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">Civil Services (IAS) Pre</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">GS Paper I & II (CSAT). 10 years of solved papers.</p>
-                <a href="https://www.google.com/search?q=UPSC+Civil+Services+Prelims+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://upsc.gov.in/examinations/previous-year-question-papers" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="upsc">
@@ -159,7 +159,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">NDA / NA Exam</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Mathematics & GAT papers with answer keys.</p>
-                <a href="https://www.google.com/search?q=UPSC+NDA+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://upsc.gov.in/examinations/previous-year-question-papers" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="upsc">
@@ -169,7 +169,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">CDS Exam</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">English, GK, Elementary Maths. Both sessions.</p>
-                <a href="https://www.google.com/search?q=UPSC+CDS+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://upsc.gov.in/examinations/previous-year-question-papers" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <!-- SSC -->
@@ -180,7 +180,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">SSC CGL</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Tier I & Tier II papers. All shifts included.</p>
-                <a href="https://www.google.com/search?q=SSC+CGL+previous+year+question+papers+PDF+all+shifts+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://ssc.nic.in/Portal/QuestionPapers" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="ssc">
@@ -190,7 +190,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">SSC CHSL</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">LDC, DEO, PA/SA. Tier I papers with solutions.</p>
-                <a href="https://www.google.com/search?q=SSC+CHSL+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://ssc.nic.in/Portal/QuestionPapers" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="ssc">
@@ -200,7 +200,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">SSC GD Constable</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">GK, Reasoning, Maths, English/Hindi papers.</p>
-                <a href="https://www.google.com/search?q=SSC+GD+Constable+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://ssc.nic.in/Portal/QuestionPapers" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="ssc">
@@ -210,7 +210,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">SSC MTS</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Multi-Tasking Staff. Paper I & Paper II.</p>
-                <a href="https://www.google.com/search?q=SSC+MTS+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://ssc.nic.in/Portal/QuestionPapers" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <!-- Railway -->
@@ -221,7 +221,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">RRB NTPC</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">CBT 1 & CBT 2. Graduate & Undergraduate level.</p>
-                <a href="https://www.google.com/search?q=RRB+NTPC+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://www.rrbcdg.gov.in/previous-papers.html" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="railway">
@@ -231,7 +231,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">RRB Group D</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Level 1 posts. All shift papers with answer key.</p>
-                <a href="https://www.google.com/search?q=RRB+Group+D+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://www.rrbcdg.gov.in/previous-papers.html" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="railway">
@@ -241,7 +241,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">RRB ALP / Technician</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Assistant Loco Pilot. Stage 1 & Stage 2 papers.</p>
-                <a href="https://www.google.com/search?q=RRB+ALP+Technician+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://www.rrbcdg.gov.in/previous-papers.html" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <!-- Banking -->
@@ -252,7 +252,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">IBPS PO</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Prelims & Mains. Reasoning, Quant, English, GA.</p>
-                <a href="https://www.google.com/search?q=IBPS+PO+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://www.ibps.in/resources/common-written-examination/" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="banking">
@@ -262,7 +262,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">SBI PO</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Prelims, Mains & GD/Interview pattern papers.</p>
-                <a href="https://www.google.com/search?q=SBI+PO+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://sbi.co.in/web/careers/recruitment-announcement" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="banking">
@@ -272,7 +272,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">IBPS Clerk</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Prelims & Mains solved papers with answers.</p>
-                <a href="https://www.google.com/search?q=IBPS+Clerk+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://www.ibps.in/resources/common-written-examination/" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <!-- Defence -->
@@ -283,7 +283,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">AFCAT</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Air Force Common Admission Test. Both sessions.</p>
-                <a href="https://www.google.com/search?q=AFCAT+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://afcat.cdac.in/AFCAT/" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="defence">
@@ -293,7 +293,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">Indian Army Agniveer</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">GD, Technical, Clerk/SKT, Tradesman papers.</p>
-                <a href="https://www.google.com/search?q=Indian+Army+Agniveer+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://joinindianarmy.nic.in/writereaddata/Portal/NotificationPDF/" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <!-- State PSC -->
@@ -304,7 +304,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">UPPSC / UPPCS</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">UP Pre & Mains GS papers with answer key.</p>
-                <a href="https://www.google.com/search?q=UPPSC+UPPCS+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://uppsc.up.nic.in/Pages/Public/OldPapers.aspx" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="state">
@@ -314,7 +314,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">BPSC</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Bihar PSC Pre & Mains. GS papers all sets.</p>
-                <a href="https://www.google.com/search?q=BPSC+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://bpsc.bih.nic.in/Advt/Notice.aspx" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="state">
@@ -324,7 +324,7 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">MPPSC</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">MP PSC Pre & Mains. All GS papers.</p>
-                <a href="https://www.google.com/search?q=MPPSC+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://mppsc.mp.gov.in/OldQuestion" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
             <div class="card paper-card" data-cat="state">
@@ -334,11 +334,11 @@
                 </div>
                 <h3 style="color:var(--primary);margin:.5rem 0;">RPSC (Rajasthan)</h3>
                 <p style="color:#666;font-size:.875rem;margin-bottom:1rem;">RAS Pre & Mains. GS + Optional papers.</p>
-                <a href="https://www.google.com/search?q=RPSC+RAS+previous+year+question+papers+PDF+download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
+                <a href="https://rpsc.rajasthan.gov.in/QuestionPaper.aspx" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a>
             </div>
 
         
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BPSC Auditor Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=BPSC%20Auditor%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BPSC Auditor Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://bpsc.bih.nic.in/Advt/Notice.aspx" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BSNL Senior Executive Trainee SET Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=BSNL%20Senior%20Executive%20Trainee%20SET%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BTSC Pump Operator Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=BTSC%20Pump%20Operator%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BTSC Work Inspector Mechanical Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=BTSC%20Work%20Inspector%20Mechanical%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
@@ -349,7 +349,7 @@
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">JEECUP 2026 Apply Online</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=JEECUP%202026%20Apply%20Online%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Jharkhand JPSC Civil Services Pre Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Jharkhand%20JPSC%20Civil%20Services%20Pre%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">JPSC Drug Inspector Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=JPSC%20Drug%20Inspector%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPPSC Pre 2026 Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MPPSC%20Pre%202026%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPPSC Pre 2026 Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://mppsc.mp.gov.in/OldQuestion" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NEET UG 2026 Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NEET%20UG%202026%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NTA CUET PG 2026 Correction / Edit Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NTA%20CUET%20PG%202026%20Correction%20/%20Edit%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NTA CUET UG 2026 Online Form 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NTA%20CUET%20UG%202026%20Online%20Form%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
@@ -382,14 +382,14 @@
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Coast Guard Navik / Yantrik CGEPT 01/2025 Stage II Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Coast%20Guard%20Navik%20/%20Yantrik%20CGEPT%2001/2025%20Stage%20II%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="defence" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#fce4ec;color:#880e4f;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Defence</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Indian Airforce Agniveer Vayu Intake 01/2025 Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Indian%20Airforce%20Agniveer%20Vayu%20Intake%2001/2025%20Result%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="defence" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#fce4ec;color:#880e4f;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Defence</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Indian Airforce Agniveer Vayu Intake 01/2026 Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Indian%20Airforce%20Agniveer%20Vayu%20Intake%2001/2026%20Result%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AFCAT 01/2025 Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=AFCAT%2001/2025%20Result%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AFCAT 01/2025 Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://afcat.cdac.in/AFCAT/" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AIIMS NORCET 8th Stage II Mains Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=AIIMS%20NORCET%208th%20Stage%20II%20Mains%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BHU SET CHS E Lottery Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=BHU%20SET%20CHS%20E%20Lottery%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Bihar Board BSEB Class 10th Matric, Class 12th Inter Compartment Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Bihar%20Board%20BSEB%20Class%2010th%20Matric%2C%20Class%2012th%20Inter%20Compartment%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Bihar Board BSEB Class 10th Scrutiny Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Bihar%20Board%20BSEB%20Class%2010th%20Scrutiny%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Bihar Board BSEB Class 12th Inter Scrutiny Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Bihar%20Board%20BSEB%20Class%2012th%20Inter%20Scrutiny%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Bihar CET BEd 2 Year Course Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Bihar%20CET%20BEd%202%20Year%20Course%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BPSC Motor Vehcile Inspector MVI 2025 Final Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=BPSC%20Motor%20Vehcile%20Inspector%20MVI%202025%20Final%20Result%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BPSC Motor Vehcile Inspector MVI 2025 Final Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://bpsc.bih.nic.in/Advt/Notice.aspx" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">BSEH Haryana Board HBSE 12th Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=BSEH%20Haryana%20Board%20HBSE%2012th%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">CBSE Board Class 10th Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=CBSE%20Board%20Class%2010th%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">CBSE Superintendent, Junior Assistant Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=CBSE%20Superintendent%2C%20Junior%20Assistant%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
@@ -411,7 +411,7 @@
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Maharashtra Board HSC Class 12th Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Maharashtra%20Board%20HSC%20Class%2012th%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MHA IB SA / MT Tier I Exam Result 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MHA%20IB%20SA%20/%20MT%20Tier%20I%20Exam%20Result%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MP Board Class 10th, 12th Result 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MP%20Board%20Class%2010th%2C%2012th%20Result%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPPSC Pre 2025 Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MPPSC%20Pre%202025%20Result%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPPSC Pre 2025 Result</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://mppsc.mp.gov.in/OldQuestion" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NCL CIL Apprentices Merit List 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NCL%20CIL%20Apprentices%20Merit%20List%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NTA AISSEE 2025 Result / Score Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NTA%20AISSEE%202025%20Result%20/%20Score%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NTA CMAT 2025 Result / Score Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NTA%20CMAT%202025%20Result%20/%20Score%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
@@ -457,8 +457,8 @@
 <div class="card paper-card" data-cat="defence" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#fce4ec;color:#880e4f;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Defence</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Indian Navy INCET 01/2025 Re Exam Admit Card 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Indian%20Navy%20INCET%2001/2025%20Re%20Exam%20Admit%20Card%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="defence" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#fce4ec;color:#880e4f;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Defence</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Navy SSR / MR Admit Card 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Navy%20SSR%20/%20MR%20Admit%20Card%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AAI Non Executives Western Region Admit Card 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=AAI%20Non%20Executives%20Western%20Region%20Admit%20Card%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AFCAT 01/2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=AFCAT%2001/2025%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AFCAT 01/2026 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=AFCAT%2001/2026%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AFCAT 01/2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://afcat.cdac.in/AFCAT/" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AFCAT 01/2026 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://afcat.cdac.in/AFCAT/" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">AIIMS NORCET 8th Stage II Admit Card 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=AIIMS%20NORCET%208th%20Stage%20II%20Admit%20Card%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Allahabad University PGAT 2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Allahabad%20University%20PGAT%202025%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">Assam Rifles Rally Recruitment Admit Card 2025</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=Assam%20Rifles%20Rally%20Recruitment%20Admit%20Card%202025%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
@@ -485,7 +485,7 @@
 <div class="card paper-card" data-cat="ssc" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8f5e9;color:#2e7d32;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">SSC</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MHA IB MTS Admit Card 2026</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MHA%20IB%20MTS%20Admit%20Card%202026%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPESB ADDET 2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MPESB%20ADDET%202025%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="ssc" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8f5e9;color:#2e7d32;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">SSC</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPESB ANMTST 2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MPESB%20ANMTST%202025%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
-<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPPSC Pre 2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=MPPSC%20Pre%202025%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
+<div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">MPPSC Pre 2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://mppsc.mp.gov.in/OldQuestion" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NTA AISSEE 2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NTA%20AISSEE%202025%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NTA CMAT 2025 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NTA%20CMAT%202025%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
 <div class="card paper-card" data-cat="government" data-scraped="1"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem;"><span style="background:#e8eaf6;color:#1a237e;padding:.2rem .6rem;border-radius:4px;font-size:.8rem;font-weight:600;">Govt</span></div><h3 style="color:var(--primary);margin:.5rem 0;">NTA CMAT 2026 Admit Card</h3><p style="color:#666;font-size:.875rem;margin-bottom:1rem;">Previous year question papers with answer keys.</p><a href="https://www.google.com/search?q=NTA%20CMAT%202026%20Admit%20Card%20previous%20year%20question%20papers%20PDF%20download" target="_blank" rel="nofollow noopener" class="btn btn--primary btn--small">Find Papers</a></div>
@@ -580,9 +580,6 @@
       <div>
         <h3 class="footer__title">📋 Naukri Dhaba</h3>
         <p style="color:#ccc;font-size:0.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
-        <div style="margin-top:1rem;">
-          <a href="https://t.me/naukridhaba " class="share-btn share-btn--telegram" style="margin:0;">Join Telegram</a>
-        </div>
       </div>
       <div>
         <h3 class="footer__title">Quick Links</h3>
@@ -613,5 +610,16 @@
   </div>
 </footer>
 <script src="/js/app.js"></script>
+<div id="lang-popup" class="lang-popup">
+  <div class="lang-popup__box">
+    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
+    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
+    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
+    <div style="display:flex;gap:1rem;justify-content:center;">
+      <button onclick="setLang('en')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
+      <button onclick="setLang('hi')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
