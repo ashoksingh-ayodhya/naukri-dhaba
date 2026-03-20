@@ -23,9 +23,7 @@ permissions:
 jobs:
   scrape-and-publish:
     name: Scrape all sources → Generate HTML
-    # ── Self-hosted runner preferred (your IP, not blocked by Cloudflare)
-    # ── Falls back to ubuntu-latest only if self-hosted is unavailable
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       TZ: Asia/Kolkata
