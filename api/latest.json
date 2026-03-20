@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-20T20:17:32Z",
+  "updated": "2026-03-20T20:53:44Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -100,6 +100,14 @@
       "url": "https://naukridhaba.in/jobs/government/up-police-constable-edit-correction-form-2026.html"
     },
     {
+      "title": "RSSB NHM Contractual Various Post Result 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "01/05/2025 🔴",
+      "url": "https://naukridhaba.in/jobs/government/rssb-nhm-contractual-various-post-result-2026.html"
+    },
+    {
       "title": "UP RTE Nursery, LKG, UKG, Class 1 Free Admissions Online Form 2026",
       "dept": "Government",
       "type": "job",
@@ -154,14 +162,6 @@
       "category": "government",
       "date": "13/02/2026 🔴",
       "url": "https://naukridhaba.in/jobs/government/rajasthan-rssb-ldc-jr-assistant-online-form-2026.html"
-    },
-    {
-      "title": "RSSB Forester Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "11/02/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/rssb-forester-online-form-2026.html"
     }
   ],
   "results": [
@@ -278,6 +278,22 @@
       "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
+      "title": "UP CNET 2025 Result",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
+    },
+    {
+      "title": "UP Madarsa Board Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
+    },
+    {
       "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -308,22 +324,6 @@
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
-    },
-    {
-      "title": "NTA UGC NET December 2025 Result",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
-    },
-    {
-      "title": "NTA JEEMAIN Session I Paper 2 Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-jeemain-session-i-paper-2-result-2025.html"
     }
   ],
   "admits": [
