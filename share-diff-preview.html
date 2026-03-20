@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Button — Before vs After (Mobile View)</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #1a1a2e; padding: 2rem 1rem; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+  h1 { color: #eee; font-size: 1rem; margin: 0; letter-spacing: .05em; text-transform: uppercase; }
+
+  /* Phone frame */
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+  .phone-label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .8rem; border-radius: 20px; }
+  .phone-label.before { background: #fce4ec; color: #b71c1c; }
+  .phone-label.after  { background: #e8f5e9; color: #1b5e20; }
+
+  .phone { width: 320px; background: #111; border-radius: 36px; padding: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.6), inset 0 0 0 2px #333; }
+  .phone-screen { background: #f5f5f5; border-radius: 26px; overflow: hidden; }
+  .phone-notch { background: #111; height: 28px; display: flex; align-items: center; justify-content: center; margin: 0 0 0; border-radius: 0 0 12px 12px; margin: 0 60px 0; }
+  .phone-notch-dot { width: 8px; height: 8px; background: #333; border-radius: 50%; }
+  .phone-home { width: 40px; height: 5px; background: #444; border-radius: 3px; margin: 8px auto 4px; }
+
+  /* Site chrome */
+  :root { --primary: #3949ab; --secondary: #ff6f00; }
+  .site-header { background: var(--primary); color: #fff; padding: .6rem 1rem; font-size: .8rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+  .site-content { padding: .75rem; }
+  .breadcrumb { font-size: .65rem; color: #888; margin-bottom: .5rem; }
+  .job-title { font-size: .9rem; font-weight: 700; color: var(--primary); margin: 0 0 .5rem; line-height: 1.3; }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; background: #e8eaf6; padding: .6rem; border-radius: 6px; margin-bottom: .75rem; }
+  .info-item label { font-size: .55rem; color: #666; display: block; }
+  .info-item span { font-size: .75rem; font-weight: 700; color: #222; }
+  .cta-btn { display: block; background: var(--secondary); color: #fff; text-align: center; padding: .6rem; border-radius: 4px; font-size: .8rem; font-weight: 700; text-decoration: none; margin-bottom: .75rem; }
+
+  /* BEFORE: share section */
+  .share-section { background: #e8f5e9; padding: .75rem; border-radius: 6px; text-align: center; margin-bottom: .75rem; }
+  .share-section h4 { font-size: .75rem; margin: 0 0 .5rem; color: #333; }
+  .share-btns { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; }
+  .sb { padding: .45rem .7rem; border-radius: 4px; color: #fff; font-size: .65rem; font-weight: 600; border: none; }
+  .sb-wa { background: #25d366; }
+  .sb-tg { background: #0088cc; }
+  .sb-cp { background: #666; }
+
+  /* AFTER: share section */
+  .share-section-new { background: #e8f5e9; padding: .75rem; border-radius: 6px; text-align: center; margin-bottom: .75rem; }
+  .share-section-new h4 { font-size: .75rem; margin: 0 0 .5rem; color: #333; }
+  .sb-new { padding: .5rem 1.5rem; border-radius: 4px; color: #fff; background: var(--primary); font-size: .75rem; font-weight: 600; border: none; }
+
+  /* Pills */
+  .pills-row { display: flex; gap: .3rem; flex-wrap: nowrap; overflow-x: auto; padding: .3rem 0; margin-bottom: .5rem; scrollbar-width: none; }
+  .pill-old { background: rgba(255,255,255,0.2); color: #f5f5f5; padding: .3rem .6rem; border-radius: 20px; font-size: .6rem; white-space: nowrap; border: none; } /* invisible sim */
+  .pill-new { background: #fff; color: var(--primary); padding: .3rem .6rem; border-radius: 20px; font-size: .6rem; white-space: nowrap; border: 1px solid var(--primary); font-weight: 600; }
+  .pill-new.active { background: var(--primary); color: #fff; }
+
+  /* side by side phones */
+  .phones-row { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+
+  .divider { width: 100%; max-width: 700px; border: none; border-top: 1px solid #333; margin: .5rem 0; }
+  .section-note { color: #aaa; font-size: .75rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Mobile Preview — Before vs After</h1>
+<p class="section-note">Job / Result / Admit Card detail pages</p>
+
+<!-- ── ROW 1: SHARE SECTION ── -->
+<div class="phones-row">
+
+  <!-- BEFORE -->
+  <div class="phone-wrap">
+    <div class="phone-label before">Before</div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="site-header">📋 Naukri Dhaba <span>🌓</span></div>
+        <div class="site-content">
+          <div class="breadcrumb">Home › Jobs › UPSC</div>
+          <h2 class="job-title">UPSC IAS Pre Online Form 2026</h2>
+          <div class="info-grid">
+            <div class="info-item"><label>Vacancies</label><span>1056</span></div>
+            <div class="info-item"><label>Last Date</label><span>18 Feb 2026</span></div>
+            <div class="info-item"><label>Fee</label><span>₹100</span></div>
+            <div class="info-item"><label>Category</label><span>UPSC</span></div>
+          </div>
+          <a class="cta-btn">Apply Online →</a>
+
+          <!-- OLD 3-button share -->
+          <div class="share-section">
+            <h4>📢 Share with Friends</h4>
+            <div class="share-btns">
+              <button class="sb sb-wa">WhatsApp</button>
+              <button class="sb sb-tg">Telegram</button>
+              <button class="sb sb-cp">Copy Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-home"></div>
+    </div>
+  </div>
+
+  <!-- AFTER -->
+  <div class="phone-wrap">
+    <div class="phone-label after">After</div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="site-header">📋 Naukri Dhaba <span>🌓</span></div>
+        <div class="site-content">
+          <div class="breadcrumb">Home › Jobs › UPSC</div>
+          <h2 class="job-title">UPSC IAS Pre Online Form 2026</h2>
+          <div class="info-grid">
+            <div class="info-item"><label>Vacancies</label><span>1056</span></div>
+            <div class="info-item"><label>Last Date</label><span>18 Feb 2026</span></div>
+            <div class="info-item"><label>Fee</label><span>₹100</span></div>
+            <div class="info-item"><label>Category</label><span>UPSC</span></div>
+          </div>
+          <a class="cta-btn">Apply Online →</a>
+
+          <!-- NEW single share button -->
+          <div class="share-section-new">
+            <h4>📢 Share this Job</h4>
+            <button class="sb-new">Share</button>
+          </div>
+        </div>
+      </div>
+      <div class="phone-home"></div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+<p class="section-note">Filter pills on Latest Jobs / Results / Admit Cards pages</p>
+
+<!-- ── ROW 2: PILLS ── -->
+<div class="phones-row">
+
+  <!-- BEFORE: invisible pills -->
+  <div class="phone-wrap">
+    <div class="phone-label before">Before — pills invisible</div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="site-header">📋 Naukri Dhaba <span>🌓</span></div>
+        <div class="site-content">
+          <h2 class="job-title" style="margin-bottom:.5rem;">Latest Govt Jobs 2026</h2>
+          <div class="pills-row">
+            <span class="pill-old">All</span>
+            <span class="pill-old">Railway</span>
+            <span class="pill-old">SSC</span>
+            <span class="pill-old">UPSC</span>
+            <span class="pill-old">Banking</span>
+          </div>
+          <div style="background:#fff;border-radius:6px;padding:.5rem;display:flex;gap:.4rem;margin-bottom:.75rem;">
+            <input placeholder="Search jobs..." style="flex:1;border:none;font-size:.7rem;outline:none;" readonly>
+            <button style="background:var(--secondary);color:#fff;border:none;border-radius:3px;padding:.3rem .6rem;font-size:.65rem;">Go</button>
+          </div>
+          <div style="background:#fff;border-radius:6px;padding:.6rem;margin-bottom:.4rem;border-left:3px solid var(--primary);">
+            <div style="font-size:.65rem;color:#888;">UPSC</div>
+            <div style="font-size:.75rem;font-weight:600;color:var(--primary);margin:.2rem 0;">UPSC IAS Pre Online Form 2026</div>
+            <div style="font-size:.6rem;color:#666;">Last Date: 18 Feb 2026</div>
+          </div>
+          <div style="background:#fff;border-radius:6px;padding:.6rem;margin-bottom:.4rem;border-left:3px solid var(--primary);">
+            <div style="font-size:.65rem;color:#888;">SSC</div>
+            <div style="font-size:.75rem;font-weight:600;color:var(--primary);margin:.2rem 0;">SSC Selection Post Phase 13</div>
+            <div style="font-size:.6rem;color:#666;">Last Date: 10 Mar 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-home"></div>
+    </div>
+  </div>
+
+  <!-- AFTER: visible pills -->
+  <div class="phone-wrap">
+    <div class="phone-label after">After — pills visible</div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="site-header">📋 Naukri Dhaba <span>🌓</span></div>
+        <div class="site-content">
+          <h2 class="job-title" style="margin-bottom:.5rem;">Latest Govt Jobs 2026</h2>
+          <div class="pills-row">
+            <span class="pill-new active">All</span>
+            <span class="pill-new">Railway</span>
+            <span class="pill-new">SSC</span>
+            <span class="pill-new">UPSC</span>
+            <span class="pill-new">Banking</span>
+          </div>
+          <div style="background:#fff;border-radius:6px;padding:.5rem;display:flex;gap:.4rem;margin-bottom:.75rem;">
+            <input placeholder="Search jobs..." style="flex:1;border:none;font-size:.7rem;outline:none;" readonly>
+            <button style="background:var(--secondary);color:#fff;border:none;border-radius:3px;padding:.3rem .6rem;font-size:.65rem;">Go</button>
+          </div>
+          <div style="background:#fff;border-radius:6px;padding:.6rem;margin-bottom:.4rem;border-left:3px solid var(--primary);">
+            <div style="font-size:.65rem;color:#888;">UPSC</div>
+            <div style="font-size:.75rem;font-weight:600;color:var(--primary);margin:.2rem 0;">UPSC IAS Pre Online Form 2026</div>
+            <div style="font-size:.6rem;color:#666;">Last Date: 18 Feb 2026</div>
+          </div>
+          <div style="background:#fff;border-radius:6px;padding:.6rem;margin-bottom:.4rem;border-left:3px solid var(--primary);">
+            <div style="font-size:.65rem;color:#888;">SSC</div>
+            <div style="font-size:.75rem;font-weight:600;color:var(--primary);margin:.2rem 0;">SSC Selection Post Phase 13</div>
+            <div style="font-size:.6rem;color:#666;">Last Date: 10 Mar 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-home"></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
