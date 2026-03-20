@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-20T22:22:56Z",
+  "updated": "2026-03-20T22:54:17Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -278,6 +278,30 @@
       "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
+      "title": "UP Madarsa Board Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
+    },
+    {
+      "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
+    },
+    {
+      "title": "UPPSC LT Grade Assistant Teacher Result 2026",
+      "dept": "PPSC",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uppsc-lt-grade-assistant-teacher-result-2026.html"
+    },
+    {
       "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -300,30 +324,6 @@
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
-    },
-    {
-      "title": "NVS Class 9th Result 2025",
-      "dept": "NVS",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
-    },
-    {
-      "title": "RSSB NHM Contractual Various Post Result 2026",
-      "dept": "RSSB",
-      "type": "result",
-      "category": "police",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
-    },
-    {
-      "title": "Patna High Court Stenographer 2025 Result",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
     }
   ],
   "admits": [
@@ -440,14 +440,6 @@
       "url": "https://naukridhaba.in/admits/government/sci-junior-court-assistant-admit-card-2025.html"
     },
     {
-      "title": "Rajasthan PTET Admit Card 2025",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/rajasthan-ptet-admit-card-2025.html"
-    },
-    {
       "title": "UP CPET 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
@@ -486,6 +478,14 @@
       "category": "government",
       "date": "",
       "url": "https://naukridhaba.in/admits/government/upbed-2025-admit-card.html"
+    },
+    {
+      "title": "UP Polytechnic JEECUP 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/up-polytechnic-jeecup-2025-admit-card.html"
     }
   ]
 }
