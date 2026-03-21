@@ -25,20 +25,20 @@ function initFooter(){
   +'<p>Disclaimer: We are not affiliated with any government organization. We only provide information.</p></div></div>';
 }
 function cleanPlaceholders(){
-  var map={'Check Notification':'Yet to be announced','As per Schedule':'Yet to be announced','As per Government Norms':'Yet to be announced'};
-  // Fix info-grid values, table cells, card text, role snapshot
+  var placeholders=['Check Notification','As per Schedule','As per Government Norms','Check Site'];
+  var isListing=!!document.querySelector('#jobs-table,.cards');
+  var label=isListing?'—':'Yet to be announced';
   document.querySelectorAll('.info-item__value, td, .card p, ul li').forEach(function(el){
     var t=el.textContent.trim();
-    if(map[t])el.textContent=map[t];
-    // Fix nan-nan Years
-    if(/nan[–-]nan/i.test(t))el.textContent='Yet to be announced';
+    if(placeholders.indexOf(t)!==-1)el.textContent=label;
+    if(/nan[–-]nan/i.test(t))el.textContent=label;
   });
 }
 function labelDates(){
   document.querySelectorAll('.card p').forEach(function(p){
     var t=p.textContent.trim();
     if(/^\d{2}\/\d{2}\/\d{4}/.test(t)&&t.indexOf('Last Date')===-1)p.textContent='Last Date: '+t;
-    else if(/^Yet to be/i.test(t))p.textContent='Last Date: '+t;
+    else if(t==='—')p.textContent='Last Date: —';
   });
 }
 document.addEventListener('DOMContentLoaded',function(){
