@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-20T23:52:22Z",
+  "updated": "2026-03-21T01:06:23Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -84,6 +84,30 @@
       "url": "https://naukridhaba.in/jobs/police/csbc-bihar-police-constable-special-branch-online-form-2026.html"
     },
     {
+      "title": "UP RTE Nursery, LKG, UKG, Class 1 Free Admissions Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "Check Site",
+      "url": "https://naukridhaba.in/jobs/government/up-rte-nursery-lkg-ukg-class-1-free-admissions-online-form-2026.html"
+    },
+    {
+      "title": "UPBED 2026 Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "10/03/2026",
+      "url": "https://naukridhaba.in/jobs/government/upbed-2026-online-form-2026.html"
+    },
+    {
+      "title": "Yantra India Ltd YIL Ordnance Factory Apprentices Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "03/03/2026",
+      "url": "https://naukridhaba.in/jobs/government/yantra-india-ltd-yil-ordnance-factory-apprentices-online-form-2026.html"
+    },
+    {
       "title": "UP Anganwadi Worker Online Form 2026",
       "dept": "Government",
       "type": "job",
@@ -138,30 +162,6 @@
       "category": "government",
       "date": "11/02/2026 🔴",
       "url": "https://naukridhaba.in/jobs/government/rssb-forester-online-form-2026.html"
-    },
-    {
-      "title": "NEET UG 2026 Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "08/03/2026",
-      "url": "https://naukridhaba.in/jobs/government/neet-ug-2026-online-form-2026.html"
-    },
-    {
-      "title": "JEECUP 2026 Apply Online",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/jeecup-2026-apply-online.html"
-    },
-    {
-      "title": "UP Police Constable Edit Correction Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/01/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/up-police-constable-edit-correction-form-2026.html"
     }
   ],
   "results": [
@@ -440,14 +440,6 @@
       "url": "https://naukridhaba.in/admits/government/sci-junior-court-assistant-admit-card-2025.html"
     },
     {
-      "title": "Rajasthan PTET Admit Card 2025",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/rajasthan-ptet-admit-card-2025.html"
-    },
-    {
       "title": "UP CPET 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
@@ -486,6 +478,14 @@
       "category": "government",
       "date": "",
       "url": "https://naukridhaba.in/admits/government/upbed-2025-admit-card.html"
+    },
+    {
+      "title": "UP Polytechnic JEECUP 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/up-polytechnic-jeecup-2025-admit-card.html"
     }
   ]
 }
