@@ -228,7 +228,7 @@ def generate_state_page(slug: str, info: dict,
     <meta property="og:description" content="Latest government jobs, exam results, and admit cards for {name} 2026 on Naukri Dhaba.">
     <meta property="og:url" content="{canonical}">
     <meta property="og:site_name" content="Naukri Dhaba">
-    <meta property="og:locale" content="hi_IN">
+    <meta property="og:locale" content="en_IN">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{name} Govt Jobs, Results & Admit Cards 2026 | Naukri Dhaba">

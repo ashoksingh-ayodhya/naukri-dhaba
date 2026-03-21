@@ -25,7 +25,7 @@ SOURCES = [
     {
         "name": "freejobalert",
         "base": "https://www.freejobalert.com",
-        "primary": False,
+        "primary": True,
         "urls": {
             "job":    "https://www.freejobalert.com/government-jobs/",
             "result": "https://www.freejobalert.com/sarkariresult/",
@@ -35,7 +35,7 @@ SOURCES = [
     {
         "name": "rojgarresult",
         "base": "https://www.rojgarresult.com",
-        "primary": False,
+        "primary": True,
         "urls": {
             "job":    "https://www.rojgarresult.com/recruitments/",
             "result": "https://www.rojgarresult.com/latest-result/",
@@ -45,7 +45,7 @@ SOURCES = [
     {
         "name": "sarkariexam",
         "base": "https://www.sarkariexam.com",
-        "primary": False,
+        "primary": True,
         "urls": {
             "job":    "https://www.sarkariexam.com/category/jobs",
             "result": "https://www.sarkariexam.com/exam-result",

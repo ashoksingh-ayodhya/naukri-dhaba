@@ -98,8 +98,12 @@ jobs:
           else
             COUNT=$(git diff --staged --name-only | wc -l)
             git commit -m "Auto-scrape $(date +'%d %b %Y %I:%M %p IST') - $COUNT files"
-            git pull --rebase origin main
-            git push
+            # Retry push up to 4 times with exponential backoff
+            for attempt in 1 2 3 4; do
+              git pull --rebase origin main && git push && break
+              echo "Push attempt $attempt failed, retrying in $((attempt * 2))s..."
+              sleep $((attempt * 2))
+            done
             echo "Pushed $COUNT new/updated files."
           fi
 

@@ -1233,8 +1233,17 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
     log.info(f'  Listing parser found {len(items)} raw rows (skipped {len(skipped_titles)} non-matching titles)')
     if skipped_titles:
         log.info(f'  Skipped titles sample: {skipped_titles[:5]}')
+
+    # Fallback 1: try <li>/<div>-based listing (freejobalert, sarkariexam, rojgarresult)
     if len(items) <= 3:
-        items = parse_listing_from_anchors(soup, page_type)
+        li_items = _parse_listing_from_lists(soup, page_type, source_base)
+        log.info(f'  List/div fallback found {len(li_items)} raw rows')
+        if len(li_items) > len(items):
+            items = li_items
+
+    # Fallback 2: broad anchor scan
+    if len(items) <= 3:
+        items = parse_listing_from_anchors(soup, page_type, source_base=source_base)
         log.info(f'  Anchor fallback found {len(items)} raw rows')
     return items
 
@@ -1242,22 +1251,24 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
 def listing_text_matches(title: str, page_type: str) -> bool:
     text = title.lower()
     if page_type == 'job':
-        return bool(re.search(r'online form|recruitment|vacancy|admission|registration|apply|correction|edit form', text))
+        return bool(re.search(r'online form|recruitment|vacancy|admission|registration|apply|correction|edit form|notification|bharti|post|opening|walk.?in', text))
     if page_type == 'result':
-        return bool(re.search(r'result|merit|score\s*card|marks|cutoff|selection list', text))
+        return bool(re.search(r'result|merit|score\s*card|marks|cutoff|cut.off|selection list|final list|topper|rank', text))
     if page_type == 'admit':
-        return bool(re.search(r'admit card|exam city|hall ticket|call letter|exam date', text))
+        return bool(re.search(r'admit card|exam city|hall ticket|call letter|exam date|exam schedule|e.admit', text))
     return False
 
 
 def kind_matches_title(title: str, kind: str) -> bool:
     text = normalize_title(title)
     if kind == 'job':
-        return (
-            listing_text_matches(text, 'job')
-            and not listing_text_matches(text, 'result')
-            and not listing_text_matches(text, 'admit')
-        )
+        # Accept if it matches job keywords; only exclude if it ONLY matches result/admit
+        if listing_text_matches(text, 'job'):
+            return True
+        # If it doesn't match any specific category, still accept it from job listings
+        if not listing_text_matches(text, 'result') and not listing_text_matches(text, 'admit'):
+            return True
+        return False
     if kind == 'result':
         return listing_text_matches(text, 'result')
     if kind == 'admit':
@@ -1265,7 +1276,69 @@ def kind_matches_title(title: str, kind: str) -> bool:
     return True
 
 
-def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict]:
+def _parse_listing_from_lists(soup: BeautifulSoup, page_type: str, source_base: str = BASE) -> list[dict]:
+    """Parse listings from <li> or <div> based layouts used by freejobalert, rojgarresult, sarkariexam."""
+    items = []
+    seen = set()
+    source_host = urlparse(source_base).netloc.lower()
+
+    # Try common content containers
+    content_divs = (
+        soup.select('.entry-content li') or
+        soup.select('.post-content li') or
+        soup.select('article li') or
+        soup.select('.td-post-content li') or
+        soup.select('.content li') or
+        soup.select('.post li') or
+        soup.select('main li') or
+        []
+    )
+
+    for li in content_divs:
+        anchor = li.find('a', href=True)
+        if not anchor:
+            continue
+        title = clean(anchor.get_text(" ", strip=True))
+        if len(title) < 8:
+            continue
+
+        href = anchor.get('href', '')
+        detail_url = normalize_url(href, base_url=source_base)
+        if detail_url == '#':
+            continue
+
+        parsed = urlparse(detail_url)
+        if parsed.netloc.lower() not in SOURCE_HOSTS and parsed.netloc.lower() != source_host:
+            continue
+
+        dedupe_key = title.lower()
+        if dedupe_key in seen:
+            continue
+        seen.add(dedupe_key)
+
+        # Try to extract date from surrounding text
+        full_text = li.get_text()
+        m = re.search(r'\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{4}', full_text)
+        date_str = m.group(0) if m else ''
+
+        if not kind_matches_title(title, page_type):
+            continue
+
+        items.append({
+            'title': normalize_title(title),
+            'dept': infer_dept(title),
+            'date_str': parse_display_date(date_str) if date_str else 'Check Notification',
+            'detail_url': detail_url,
+            'source_detail_url': detail_url,
+            'page_type': page_type,
+        })
+        if len(items) >= 150:
+            break
+
+    return items
+
+
+def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str, source_base: str = BASE) -> list[dict]:
     items = []
     seen = set()
     max_items = 150
@@ -1273,19 +1346,22 @@ def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict
         'latestjob', 'result', 'admitcard', 'syllabus', 'answerkey', 'admission',
         'boardall', 'contactus', 'search', 'videozone', 'archive', 'top10',
     }
+    source_host = urlparse(source_base).netloc.lower()
 
     for anchor in soup.find_all('a', href=True):
         title = clean(anchor.get_text(" ", strip=True))
         if len(title) < 8 or not listing_text_matches(title, page_type):
             continue
 
-        detail_url = normalize_url(anchor.get('href', ''))
+        detail_url = normalize_url(anchor.get('href', ''), base_url=source_base)
         if detail_url == '#':
             continue
 
         parsed = urlparse(detail_url)
         path_parts = [part for part in parsed.path.split('/') if part]
-        if parsed.netloc.lower() not in SOURCE_HOSTS or len(path_parts) < 1:
+        # Accept links from the source's own domain or any known source host
+        if (parsed.netloc.lower() not in SOURCE_HOSTS and
+                parsed.netloc.lower() != source_host) or len(path_parts) < 1:
             continue
         if path_parts[0].lower() in skip_paths:
             continue
@@ -1688,7 +1764,7 @@ def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: 
     <meta property="og:description" content="{desc_safe}">
     <meta property="og:url" content="{canonical}">
     <meta property="og:site_name" content="{SITE_NAME}">
-    <meta property="og:locale" content="hi_IN">
+    <meta property="og:locale" content="en_IN">
     <meta property="og:image" content="{SITE_URL}/img/og-default.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">

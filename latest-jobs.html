@@ -15,7 +15,7 @@
     <meta property="og:description" content="Browse the latest government jobs, online forms, and recruitment updates across India on Naukri Dhaba.">
     <meta property="og:url" content="https://naukridhaba.in/latest-jobs">
     <meta property="og:site_name" content="Naukri Dhaba">
-    <meta property="og:locale" content="hi_IN">
+    <meta property="og:locale" content="en_IN">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Latest Govt Jobs 2026 | Naukri Dhaba">
@@ -106,7 +106,7 @@
 <div class="container header__container">
 <a class="logo" href="/">📋 Naukri Dhaba</a>
 <nav class="nav nav--desktop">
-<a class="active" href="/latest-jobs">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a>
+<a class="active" href="/latest-jobs">💼 Latest Jobs</a>
 <a class="" href="/results">📊 Results</a>
 <a class="" href="/admit-cards">🎫 Admit Cards</a>
 <a class="" href="/resources">📚 Resources</a>
@@ -116,7 +116,7 @@
 <button class="btn--icon menu-toggle" onclick="toggleMobileMenu()" style="display:none;font-size:1.5rem;cursor:pointer;" aria-label="Open menu">☰</button>
 </div>
 </div>
-<nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 <span class="lang-en">Home</span><span class="lang-hi">होम</span></a><a href="/latest-jobs">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 Resources</a></nav>
+<nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 Home</a><a href="/latest-jobs">💼 Latest Jobs</a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 Resources</a></nav>
 <style>.menu-toggle{display:none!important}@media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}</style>
 
 <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
@@ -131,7 +131,7 @@
 <a class="pill" href="#" onclick="filterPill(event,'banking',this)">Banking</a>
 </div>
 <div class="search-box" style="margin-bottom:1rem;">
-<input id="search-input" placeholder="Search jobs... / नौकरी खोजें..." type="text" oninput="filterJobs(this.value)"/>
+<input id="search-input" placeholder="Search jobs..." type="text" oninput="filterJobs(this.value)"/>
 <button onclick="filterJobs(document.getElementById('search-input').value)">Search</button>
 </div>
 <div class="table-wrapper">
@@ -180,7 +180,7 @@
 <tr><td>GOVERNMENT</td><td><a href="/jobs/government/india-post-gds-apply-online-2026.html" style="color:var(--primary);font-weight:600;">India Post GDS Apply Online 2026</a></td><td>14/02/2026 🔴</td><td><a href="/jobs/government/india-post-gds-apply-online-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr>
 <tr><td>GOVERNMENT</td><td><a href="/jobs/government/bpsc-auditor-online-form-2026.html" style="color:var(--primary);font-weight:600;">BPSC Auditor Online Form 2026</a></td><td>26/02/2026</td><td><a href="/jobs/government/bpsc-auditor-online-form-2026.html" class="btn btn--small btn--primary">Apply</a></td></tr></tbody>
 </table>
-<p id="no-results" style="display:none;text-align:center;padding:2rem;color:#666;">No jobs found for your search. / कोई नौकरी नहीं मिली।</p>
+<p id="no-results" style="display:none;text-align:center;padding:2rem;color:#666;">No jobs found for your search.</p>
 </div>
 <div class="cards"><div class="card"><div class="card__header"><span class="badge">UPSC</span></div><h3 class="card__title">UPSC IAS Pre Online Form 2026</h3><p style="color:#666;font-size:.875rem;">24/02/2026</p><a href="/jobs/upsc/upsc-ias-pre-online-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
 <div class="card"><div class="card__header"><span class="badge">SSC</span></div><h3 class="card__title">UPSSSC Lekhpal Correction Edit Form 2026</h3><p style="color:#666;font-size:.875rem;">28/01/2026 🔴</p><a href="/jobs/ssc/upsssc-lekhpal-correction-edit-form-2026.html" class="btn btn--primary btn--block" style="margin-top:1rem;">Apply</a></div>
@@ -254,16 +254,5 @@
 </div>
 </footer>
 <script src="/js/app.js"></script>
-<div id="lang-popup" class="lang-popup">
-  <div class="lang-popup__box">
-    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
-    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
-    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
-    <div style="display:flex;gap:1rem;justify-content:center;">
-      <button onclick="setLang('en')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
-      <button onclick="setLang('hi')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
