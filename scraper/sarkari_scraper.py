@@ -1374,6 +1374,7 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
     d.setdefault('qualification',     'Check Notification')
     d.setdefault('salary',            'As per Government Norms')
     d.setdefault('extra_links',       [])    # [{label, url}]
+    d.setdefault('download_links',    [])    # [{label, url}] — PDFs, syllabus, answer keys, etc.
 
     if not soup:
         return d
@@ -1530,6 +1531,22 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
                 seen_urls.add(href_clean)
                 d['extra_links'].append({'label': lbl, 'url': href_clean})
 
+        # Collect downloadable assets — PDFs, docs, images of notifications
+        if re.search(r'\.(pdf|PDF|doc|docx|xls|xlsx|jpg|jpeg|png)(\?.*)?$', raw_href):
+            dl_lbl = sanitize(link_text) or 'Download'
+            # Classify the download type from link text or label
+            if re.search(r'syllabus', link_text, re.I):
+                dl_lbl = dl_lbl or 'Syllabus PDF'
+            elif re.search(r'answer\s*key', link_text, re.I):
+                dl_lbl = dl_lbl or 'Answer Key'
+            elif re.search(r'notif|advt|adverti', link_text, re.I):
+                dl_lbl = dl_lbl or 'Notification PDF'
+            elif re.search(r'admit|hall\s*ticket', link_text, re.I):
+                dl_lbl = dl_lbl or 'Admit Card PDF'
+            elif re.search(r'result|merit|cut.?off', link_text, re.I):
+                dl_lbl = dl_lbl or 'Result PDF'
+            d['download_links'].append({'label': dl_lbl, 'url': href_clean})
+
     d['title'] = normalize_title(d.get('title', ''))
     d['last_date'] = parse_display_date(d.get('last_date'))
     d['result_date'] = parse_display_date(d.get('result_date'))
@@ -1552,6 +1569,17 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
         public_seen.add(key)
         public_links.append({'label': lnk.get('label', 'Official Link'), 'url': public_url})
     d['extra_links'] = public_links
+
+    # Deduplicate & resolve download links
+    dl_seen = set()
+    unique_dls = []
+    for dl in d['download_links']:
+        url = dl['url']
+        resolved = official_url_or_empty(url) or _extract_embedded_official_url(url) or _resolve_source_redirect(url) or url
+        if resolved and resolved != '#' and resolved not in dl_seen and not is_source_url(resolved):
+            dl_seen.add(resolved)
+            unique_dls.append({'label': dl['label'], 'url': resolved})
+    d['download_links'] = unique_dls
 
     return d
 
@@ -1610,6 +1638,24 @@ def _sidebar() -> str:
     <p>Advertisement</p><p style="font-size:.75rem">300×250</p>
   </div>
 </aside>'''
+
+
+def _downloads_html(d: dict) -> str:
+    """Build the downloadable assets section if any PDFs/docs were found."""
+    links = d.get('download_links', [])
+    if not links:
+        return ''
+    rows = '\n'.join(
+        f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener noreferrer">'
+        f'📄 {clean(lnk["label"])}</a></li>'
+        for lnk in links if lnk.get('url') and lnk['url'] != '#'
+    )
+    if not rows:
+        return ''
+    return f'''<div class="downloads-section">
+          <h3>📥 Downloads / डाउनलोड</h3>
+          <ul style="line-height:2.4;list-style:none;padding-left:0;">{rows}</ul>
+        </div>'''
 
 
 def _footer() -> str:
@@ -1911,6 +1957,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
       </div>
 
       {extra_html}
+      {_downloads_html(d)}
 
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
         <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply / आवेदन कैसे करें</h3>
@@ -2044,6 +2091,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
       </div>
 
       {extra_html}
+      {_downloads_html(d)}
 
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
         <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result / परिणाम कैसे देखें</h3>
@@ -2169,6 +2217,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       </div>
 
       {extra_html}
+      {_downloads_html(d)}
 
       <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
         <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions / महत्वपूर्ण निर्देश</h3>
