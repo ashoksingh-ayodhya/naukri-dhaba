@@ -10,8 +10,30 @@ function countdown(target,elId){const el=document.getElementById(elId);if(!el)re
 function doSearch(){var q=document.getElementById('search-input');if(q&&q.value.trim())window.location.href='/latest-jobs?q='+encodeURIComponent(q.value.trim());}
 function filterJobs(q){var rows=document.querySelectorAll('#jobs-table tbody tr'),term=q.toLowerCase().trim(),noResults=document.getElementById('no-results');rows.forEach(function(r){r.style.display=(!term||r.textContent.toLowerCase().includes(term))?'':'none';});if(noResults)noResults.style.display=[].slice.call(rows).every(function(r){return r.style.display==='none';})?'block':'none';}
 function filterPill(e,dept,el){e.preventDefault();document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active');});el.classList.add('active');var tbl=document.querySelector('table.table tbody');if(!tbl)return;var rows=tbl.querySelectorAll('tr');rows.forEach(function(r){var d=r.cells[0]?r.cells[0].textContent.trim().toUpperCase():'';r.style.display=(dept==='all'||d===dept.toUpperCase())?'':'none';});}
+function initFooter(){
+  var el=document.getElementById('site-footer');if(!el)return;
+  el.innerHTML='<div class="container">'
+  +'<div class="footer__about"><h3 class="footer__title">📋 Naukri Dhaba</h3>'
+  +'<p style="color:#ccc;font-size:0.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p></div>'
+  +'<div class="footer__mid"><div><h3 class="footer__title">Quick Links</h3>'
+  +'<div class="footer__links"><a href="/latest-jobs">Latest Jobs</a><a href="/results">Results</a><a href="/admit-cards">Admit Cards</a></div></div>'
+  +'<div><h3 class="footer__title">Tools</h3>'
+  +'<div class="footer__links"><a href="/eligibility-calculator">Eligibility Calculator</a><a href="/study-planner">Study Planner</a><a href="/previous-papers">Previous Papers</a><a href="/syllabus.html">Syllabus</a><a href="/cut-off-marks.html">Cut-off Marks</a></div></div></div>'
+  +'<div class="footer__grid"><div><h3 class="footer__title">State Jobs</h3>'
+  +'<div class="state-list"><a href="/state/uttar-pradesh.html">Uttar Pradesh</a><a href="/state/bihar.html">Bihar</a><a href="/state/rajasthan.html">Rajasthan</a><a href="/state/madhya-pradesh.html">Madhya Pradesh</a><a href="/state/haryana.html">Haryana</a><a href="/state/jharkhand.html">Jharkhand</a><a href="/state/delhi.html">Delhi</a><a href="/state/maharashtra.html">Maharashtra</a><a href="/state/gujarat.html">Gujarat</a><a href="/state/punjab.html">Punjab</a></div></div></div>'
+  +'<div class="footer__bottom"><p>&copy; 2026 Naukri Dhaba. All rights reserved.</p>'
+  +'<p>Disclaimer: We are not affiliated with any government organization. We only provide information.</p></div></div>';
+}
+function labelDates(){
+  // Add "Last Date: " to card date paragraphs that show raw dates
+  document.querySelectorAll('.card p').forEach(function(p){
+    var t=p.textContent.trim();
+    if(/^\d{2}\/\d{2}\/\d{4}/.test(t)&&t.indexOf('Last Date')===-1)p.textContent='Last Date: '+t;
+    else if(/^Check /i.test(t)&&t.indexOf('Status')===-1)p.textContent='Status: '+t;
+  });
+}
 document.addEventListener('DOMContentLoaded',function(){
-  initTheme();
+  initTheme();initFooter();labelDates();
   document.querySelectorAll('.nav--mobile a').forEach(function(a){a.addEventListener('click',closeMobileMenu);});
   var inp=document.getElementById('search-input');
   if(inp){

@@ -1659,52 +1659,7 @@ def _downloads_html(d: dict) -> str:
 
 
 def _footer() -> str:
-    y = date.today().year
-    return f'''<footer class="footer">
-  <div class="container">
-    <div class="footer__grid">
-      <div>
-        <h3 class="footer__title">📋 {SITE_NAME}</h3>
-        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
-        <p style="color:#ccc;font-size:.85rem;margin-top:.5rem;">Share job alerts with friends &amp; help them find government jobs.</p>
-      </div>
-      <div>
-        <h3 class="footer__title">Quick Links</h3>
-        <div class="footer__links">
-          <a href="/latest-jobs">Latest Jobs</a>
-          <a href="/results">Results</a>
-          <a href="/admit-cards">Admit Cards</a>
-        </div>
-      </div>
-      <div>
-        <h3 class="footer__title">Categories</h3>
-        <div class="footer__links">
-          <a href="/latest-jobs">UPSC Jobs</a>
-          <a href="/latest-jobs">SSC Jobs</a>
-          <a href="/latest-jobs">Railway Jobs</a>
-          <a href="/latest-jobs">Banking Jobs</a>
-          <a href="/latest-jobs">Defence Jobs</a>
-          <a href="/latest-jobs">Police Jobs</a>
-        </div>
-      </div>
-      <div>
-        <h3 class="footer__title">State Jobs</h3>
-        <div class="state-list">
-          <a href="/state/uttar-pradesh.html">Uttar Pradesh</a>
-          <a href="/state/bihar.html">Bihar</a>
-          <a href="/state/rajasthan.html">Rajasthan</a>
-          <a href="/state/madhya-pradesh.html">Madhya Pradesh</a>
-          <a href="/state/delhi.html">Delhi</a>
-          <a href="/state/maharashtra.html">Maharashtra</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer__bottom">
-      <p>&copy; {y} {SITE_NAME}. All rights reserved.</p>
-      <p>Disclaimer: We are not affiliated with any government body. Information only.</p>
-    </div>
-  </div>
-</footer>
+    return '''<footer class="footer" id="site-footer"></footer>
 <script src="/js/app.js"></script>
 <script src="/js/ads-manager.js" defer></script>'''
 
