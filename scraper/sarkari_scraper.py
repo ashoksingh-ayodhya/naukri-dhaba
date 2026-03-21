@@ -1674,7 +1674,6 @@ def _footer() -> str:
           <a href="/latest-jobs">Latest Jobs</a>
           <a href="/results">Results</a>
           <a href="/admit-cards">Admit Cards</a>
-          <a href="/resources">Resources</a>
         </div>
       </div>
       <div>
