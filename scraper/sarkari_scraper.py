@@ -2553,6 +2553,20 @@ def replace_home_jobs_section(index_file: Path, entries: list[dict], limit: int 
         log.info('  Rebuilt index.html latest jobs section cleanly')
 
 
+def _parse_sort_date(date_str: str) -> date | None:
+    """Parse a DD/MM/YYYY date string (possibly with trailing emoji/text) into a date object."""
+    if not date_str:
+        return None
+    # Strip trailing emoji / indicator text like " 🔴"
+    cleaned = re.sub(r'\s*[🔴🟢🟡⚠️✅❌].*$', '', date_str).strip()
+    for fmt in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
+        try:
+            return datetime.strptime(cleaned, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
 def load_existing_detail_entries(kind: str) -> list[dict]:
     if kind == 'job':
         base = SITE_ROOT / 'jobs'
@@ -2563,10 +2577,10 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
 
     entries = []
     seen_slugs: set[str] = set()   # deduplicate by filename slug
-    for path in sorted(base.rglob('*.html'), key=lambda p: p.stat().st_mtime, reverse=True):
+    # Initial scan — no particular order needed; we sort after collecting all entries.
+    for path in base.rglob('*.html'):
         slug = path.stem  # e.g. 'up-police-constable-edit-correction-form-2026'
         if slug in seen_slugs:
-            # Same slug already loaded from a newer file — skip this stale copy
             log.debug(f'  [dedup] Skipping duplicate slug in listings: {path.relative_to(SITE_ROOT)}')
             continue
         seen_slugs.add(slug)
@@ -2578,7 +2592,6 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         dept_match = re.search(r'info-item__label">[^<]*Department</span>\s*<span class="info-item__value">([^<]+)', html, re.I)
         dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
         # Override dept using URL path category when stored value is unreliable.
-        # e.g. results/railway/... → RAILWAY, jobs/ssc/... → SSC
         _path_cat = path.parent.name.upper()
         _cat_to_dept = {
             'RAILWAY': 'RAILWAY', 'SSC': 'SSC', 'UPSC': 'UPSC',
@@ -2586,26 +2599,45 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         }
         if _path_cat in _cat_to_dept:
             dept = _cat_to_dept[_path_cat]
-        # If stored dept is NTA (scraper bug from old runs), try title inference.
-        # If title also doesn't give a proper category, fall back to GOVERNMENT.
         elif dept.upper() == 'NTA':
             inferred = infer_dept(title)
             dept = inferred if inferred.upper() not in ('NTA', 'GOVERNMENT') else 'GOVERNMENT'
-        date_label = 'Check Notification'
 
-        actual_url = '/' + rel  # actual on-disk path, used to avoid slug mismatch
+        date_label = 'Check Notification'
+        file_mtime = path.stat().st_mtime
+
+        actual_url = '/' + rel
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url})
+            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url, '_mtime': file_mtime})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url})
+            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url, '_mtime': file_mtime})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url})
+            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url, '_mtime': file_mtime})
+
+    # ── Sort by post date (newest first), unparseable dates fall back to file mtime ──
+    _date_key_map = {'job': 'last_date', 'result': 'result_date', 'admit': 'exam_date'}
+    date_field = _date_key_map.get(kind, 'last_date')
+    _epoch = date(2000, 1, 1)
+
+    def _sort_key(entry: dict) -> tuple:
+        parsed = _parse_sort_date(entry.get(date_field, ''))
+        if parsed:
+            # Real date found → sort group 0 (top), then by date descending
+            return (0, -parsed.toordinal())
+        # No parseable date → sort group 1 (bottom), then by file mtime descending
+        return (1, -entry.get('_mtime', 0))
+
+    entries.sort(key=_sort_key)
+
+    # Remove internal _mtime key before returning
+    for e in entries:
+        e.pop('_mtime', None)
 
     return entries
 
