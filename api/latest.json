@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-21T08:47:48Z",
+  "updated": "2026-03-21T09:18:30Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -84,12 +84,28 @@
       "url": "https://naukridhaba.in/jobs/government/up-anganwadi-worker-online-form-2026.html"
     },
     {
+      "title": "RSSB Forester Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "11/02/2026 🔴",
+      "url": "https://naukridhaba.in/jobs/government/rssb-forester-online-form-2026.html"
+    },
+    {
       "title": "UP RTE Nursery, LKG, UKG, Class 1 Free Admissions Online Form 2026",
       "dept": "Government",
       "type": "job",
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/jobs/government/up-rte-nursery-lkg-ukg-class-1-free-admissions-online-form-2026.html"
+    },
+    {
+      "title": "Rajasthan RSSB Women Supervisor Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "11/02/2026 🔴",
+      "url": "https://naukridhaba.in/jobs/government/rajasthan-rssb-women-supervisor-online-form-2026.html"
     },
     {
       "title": "UPBED 2026 Online Form 2026",
@@ -146,22 +162,6 @@
       "category": "government",
       "date": "07/03/2026",
       "url": "https://naukridhaba.in/jobs/government/bsnl-senior-executive-trainee-set-online-form-2026.html"
-    },
-    {
-      "title": "RSSB Forester Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "11/02/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/rssb-forester-online-form-2026.html"
-    },
-    {
-      "title": "NEET UG 2026 Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "08/03/2026",
-      "url": "https://naukridhaba.in/jobs/government/neet-ug-2026-online-form-2026.html"
     }
   ],
   "results": [
@@ -262,14 +262,6 @@
       "url": "https://naukridhaba.in/results/railway/railway-rrb-technician-grade-iii-result-2025.html"
     },
     {
-      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
-      "dept": "RAILWAY",
-      "type": "result",
-      "category": "railway",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
-    },
-    {
       "title": "MPESB MP Police Constable Result 2026",
       "dept": "POLICE",
       "type": "result",
@@ -278,20 +270,12 @@
       "url": "https://naukridhaba.in/results/police/mpesb-mp-police-constable-result-2026.html"
     },
     {
-      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
-      "dept": "GOVERNMENT",
+      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
+      "dept": "RAILWAY",
       "type": "result",
-      "category": "government",
+      "category": "railway",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
-    },
-    {
-      "title": "RSSB NHM Contractual Various Post Result 2026",
-      "dept": "RSSB",
-      "type": "result",
-      "category": "police",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
+      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
       "title": "UP CNET 2025 Result",
@@ -302,14 +286,6 @@
       "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
     },
     {
-      "title": "Rajasthan Board RBSE Class 10th Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/rajasthan-board-rbse-class-10th-result-2025.html"
-    },
-    {
       "title": "UP Madarsa Board Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -318,12 +294,36 @@
       "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
     },
     {
-      "title": "SEBI Assistant Manager Phase I Result 2026",
+      "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/sebi-assistant-manager-phase-i-result-2026.html"
+      "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
+    },
+    {
+      "title": "UPPSC LT Grade Assistant Teacher Result 2026",
+      "dept": "PPSC",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uppsc-lt-grade-assistant-teacher-result-2026.html"
+    },
+    {
+      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
+    },
+    {
+      "title": "NTA NIFT 2025 Result / Score Card",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
     }
   ],
   "admits": [
