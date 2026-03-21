@@ -60,7 +60,7 @@ try:
 except ImportError:
     cloudscraper = None
 
-from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES
+from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES, STAGING_DIR
 
 # ══════════════════════════════════════════════════════════
 # PATHS & CONSTANTS
@@ -2836,10 +2836,18 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
     # ── 2. Scrape detail pages & generate HTML ─────────────
     generated: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    staged: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    staging_root = SITE_ROOT / STAGING_DIR
+    staging_manifest: list[dict] = []
+
+    # Build a lookup of primary-source sources for dedup
+    primary_sources = {s['name'] for s in SOURCES if s.get('primary', False)}
 
     for kind, items in all_items.items():
         for item in items:
-            log.info(f'\n[{kind.upper()}] {item["title"][:60]}')
+            src_name = item.get('source', 'unknown')
+            is_primary = src_name in primary_sources
+            log.info(f'\n[{kind.upper()}] {item["title"][:60]}  (source: {src_name})')
             log.info(f'  Detail URL: {item["detail_url"]}')
 
             detail_soup = fetch(item['detail_url'])
@@ -2861,20 +2869,60 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 else:
                     rel, html = build_admit_page(rich)
 
-                # Remove stale copies from other category folders
-                parts = rel.split('/')  # e.g. 'jobs/police/slug.html'
-                if len(parts) == 3:
-                    kind_dir, cat, fname = parts
-                    remove_cross_category_duplicates(kind_dir, cat, fname.removesuffix('.html'))
+                # For secondary sources: skip if the page already exists from a primary source
+                if not is_primary and (SITE_ROOT / rel).exists():
+                    log.info(f'  [skip] Already exists from primary source: {rel}')
+                    continue
 
-                out = SITE_ROOT / rel
-                out.parent.mkdir(parents=True, exist_ok=True)
-                out.write_text(html, encoding='utf-8')
-                log.info(f'  Written: {rel}')
-                generated[kind].append(rich)
+                if is_primary:
+                    # Primary source → write directly to live site
+                    # Remove stale copies from other category folders
+                    parts = rel.split('/')  # e.g. 'jobs/police/slug.html'
+                    if len(parts) == 3:
+                        kind_dir, cat, fname = parts
+                        remove_cross_category_duplicates(kind_dir, cat, fname.removesuffix('.html'))
+
+                    out = SITE_ROOT / rel
+                    out.parent.mkdir(parents=True, exist_ok=True)
+                    out.write_text(html, encoding='utf-8')
+                    log.info(f'  Written (LIVE): {rel}')
+                    generated[kind].append(rich)
+                else:
+                    # Secondary source → write to staging/ for manual review
+                    out = staging_root / rel
+                    out.parent.mkdir(parents=True, exist_ok=True)
+                    out.write_text(html, encoding='utf-8')
+                    log.info(f'  Written (STAGING): {STAGING_DIR}/{rel}')
+                    staged[kind].append(rich)
+                    staging_manifest.append({
+                        'source': src_name,
+                        'kind': kind,
+                        'title': rich.get('title', ''),
+                        'dept': rich.get('dept', ''),
+                        'rel_path': rel,
+                        'detail_url': item.get('detail_url', ''),
+                        'scraped_at': datetime.now().isoformat(),
+                    })
 
             except Exception as exc:
                 log.error(f'  Page build failed: {exc}', exc_info=True)
+
+    # ── 2b. Save staging manifest ──────────────────────────
+    if staging_manifest:
+        manifest_file = staging_root / 'manifest.json'
+        existing_manifest = []
+        if manifest_file.exists():
+            try:
+                existing_manifest = json.loads(manifest_file.read_text(encoding='utf-8'))
+            except (json.JSONDecodeError, OSError):
+                pass
+        existing_manifest.extend(staging_manifest)
+        staging_root.mkdir(parents=True, exist_ok=True)
+        manifest_file.write_text(json.dumps(existing_manifest, indent=2, ensure_ascii=False), encoding='utf-8')
+        log.info(f'\nStaging manifest updated: {len(staging_manifest)} new items ({manifest_file})')
+        total_staged = sum(len(v) for v in staged.values())
+        log.info(f'  Staged: Jobs={len(staged["job"])}, Results={len(staged["result"])}, AdmitCards={len(staged["admit"])} (total={total_staged})')
+        log.info(f'  These items require manual review before going live.')
 
     # ── 3. Rebuild listing pages from canonical detail pages ───────────
     # This prevents list drift, missing items, and mixed-category bleed.
