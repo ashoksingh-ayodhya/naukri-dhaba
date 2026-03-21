@@ -86,11 +86,12 @@ jobs:
         if: steps.source_check.outputs.sources_down != 'true'
         run: python3 validate-generated-site.py
 
-      - name: Commit new pages
+      - name: Commit new pages (primary sources only)
         if: steps.source_check.outputs.sources_down != 'true'
         run: |
           git config user.name "Manual Job Post Bot"
           git config user.email "bot@naukridhaba.in"
+          # Only stage live site files — staging/ is gitignored
           git add -A
           if git diff --staged --quiet; then
             echo "No new pages generated today."
@@ -100,6 +101,17 @@ jobs:
             git pull --rebase origin main
             git push
             echo "Pushed $COUNT new/updated files."
+          fi
+
+      - name: Report staging summary
+        if: steps.source_check.outputs.sources_down != 'true'
+        run: |
+          if [ -f staging/manifest.json ]; then
+            STAGED=$(python3 -c "import json; m=json.load(open('staging/manifest.json')); print(len(m))")
+            echo "Staging: $STAGED item(s) pending review from secondary sources."
+            echo "Run 'python3 promote-staging.py --list' to see them."
+          else
+            echo "No staged items from secondary sources."
           fi
 
       - name: Show scraper log (last 50 lines)

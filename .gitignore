@@ -3,3 +3,5 @@ scraper/__pycache__/
 scraper/logs/
 output/playwright/
 .playwright-cli/
+# Staging directory — secondary source pages pending manual review
+staging/

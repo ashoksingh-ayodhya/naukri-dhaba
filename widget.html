@@ -106,10 +106,10 @@
   <div class="container header__container">
     <a href="/" class="logo">📋 Naukri Dhaba</a>
     <nav class="nav nav--desktop">
-      <a href="/latest-jobs">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a>
-      <a href="/results">📊 <span class="lang-en">Results</span><span class="lang-hi">परिणाम</span></a>
-      <a href="/admit-cards">🎫 <span class="lang-en">Admit Cards</span><span class="lang-hi">प्रवेश पत्र</span></a>
-      <a href="/resources">📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span></a>
+      <a href="/latest-jobs">💼 Latest Jobs</a>
+      <a href="/results">📊 Results</a>
+      <a href="/admit-cards">🎫 Admit Cards</a>
+      <a href="/resources">📚 Resources</a>
     </nav>
     <div style="display:flex;gap:1rem;align-items:center;">
       <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌓</button>
@@ -181,39 +181,7 @@
     </div>
 </main>
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer__grid">
-      <div>
-        <h3 class="footer__title">📋 Naukri Dhaba</h3>
-        <p style="color:#ccc;font-size:0.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
-      </div>
-      <div>
-        <h3 class="footer__title">Quick Links</h3>
-        <div class="footer__links">
-          <a href="/latest-jobs">Latest Jobs</a>
-          <a href="/results">Results</a>
-          <a href="/admit-cards">Admit Cards</a>
-          <a href="/resources">Resources</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer__bottom">
-      <p>&copy; 2026 Naukri Dhaba. All rights reserved.</p>
-    </div>
-  </div>
-</footer>
+<footer class="footer" id="site-footer"></footer>
 <script src="/js/app.js"></script>
-<div id="lang-popup" class="lang-popup">
-  <div class="lang-popup__box">
-    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
-    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
-    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
-    <div style="display:flex;gap:1rem;justify-content:center;">
-      <button onclick="setLang('en')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
-      <button onclick="setLang('hi')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>

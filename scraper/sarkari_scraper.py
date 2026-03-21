@@ -39,7 +39,7 @@ import argparse
 from datetime import datetime, date
 from html import escape
 from pathlib import Path
-from urllib.parse import quote, urljoin, urlparse
+from urllib.parse import quote, urljoin, urlparse, parse_qs
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -60,7 +60,7 @@ try:
 except ImportError:
     cloudscraper = None
 
-from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES
+from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES, STAGING_DIR
 
 # ══════════════════════════════════════════════════════════
 # PATHS & CONSTANTS
@@ -146,30 +146,34 @@ SEO_KW = {
 # Used as a fallback when no specific apply/result/admit URL is extracted from source pages.
 # Order matters: more-specific keys first, so 'UPSSSC' matches before 'SSC'.
 BOARD_PORTALS: dict[str, str] = {
+    # ── Public Service Commissions ──
     'UPSSSC':  'https://upsssc.gov.in',
     'UPSC':    'https://upsc.gov.in',
     'SSC':     'https://ssc.nic.in',
-    'SBI':     'https://sbi.co.in/careers',
-    'IBPS':    'https://www.ibps.in',
-    'RBI':     'https://www.rbi.org.in/Scripts/Vacancies.aspx',
-    'NABARD':  'https://www.nabard.org/career.aspx',
-    'RRB':     'https://www.rrbcdg.gov.in',
-    'RRC':     'https://www.rrcb.gov.in',
-    'DRDO':    'https://www.drdo.gov.in/careers',
-    'CISF':    'https://cisfrectt.in',
-    'BSF':     'https://bsf.gov.in/recruitment.html',
-    'CRPF':    'https://www.crpf.gov.in/Recruitment.htm',
-    'NVS':     'https://navodaya.gov.in/nvs/en/Recruitment',
-    'NTA':     'https://nta.ac.in',
     'BPSC':    'https://bpsc.bih.nic.in',
     'UPPSC':   'https://uppsc.up.nic.in',
     'MPPSC':   'https://mppsc.mp.gov.in',
     'RPSC':    'https://rpsc.rajasthan.gov.in',
     'JPSC':    'https://www.jpsc.gov.in',
     'HSSC':    'https://hssc.gov.in',
+    'HPSC':    'https://hpsc.gov.in',
     'JSSC':    'https://jssc.nic.in',
     'PPSC':    'https://ppsc.gov.in',
+    # ── Banking / Finance ──
+    'SBI':     'https://sbi.co.in/careers',
+    'IBPS':    'https://www.ibps.in',
+    'RBI':     'https://www.rbi.org.in/Scripts/Vacancies.aspx',
+    'NABARD':  'https://www.nabard.org/career.aspx',
     'LIC':     'https://licindia.in/Bottom-Links/Recruitment',
+    'ECGC':    'https://www.ecgc.in',
+    # ── Railways ──
+    'RRB':     'https://www.rrbcdg.gov.in',
+    'RRC':     'https://www.rrcb.gov.in',
+    # ── Defence / Police ──
+    'DRDO':    'https://www.drdo.gov.in/careers',
+    'CISF':    'https://cisfrectt.in',
+    'BSF':     'https://bsf.gov.in/recruitment.html',
+    'CRPF':    'https://www.crpf.gov.in/Recruitment.htm',
     'AFCAT':   'https://afcat.cdac.in',
     'HAL':     'https://hal-india.co.in/Career',
     'ARMY':    'https://joinindianarmy.nic.in',
@@ -177,6 +181,94 @@ BOARD_PORTALS: dict[str, str] = {
     'IAF':     'https://airmenselection.cdac.in',
     'NDA':     'https://upsc.gov.in',
     'CDS':     'https://upsc.gov.in',
+    'ASSAM RIFLES': 'https://assamrifles.gov.in',
+    'DGAFMS':  'https://dgafms.gov.in',
+    'MHA':     'https://www.mha.gov.in',
+    # ── Education boards ──
+    'CBSE':    'https://www.cbse.gov.in',
+    'CISCE':   'https://www.cisce.org',
+    'ICSE':    'https://www.cisce.org',
+    'BSEB':    'https://biharboardonline.bihar.gov.in',
+    'BIHAR BOARD': 'https://biharboardonline.bihar.gov.in',
+    'BSEH':    'https://bseh.org.in',
+    'HARYANA BOARD': 'https://bseh.org.in',
+    'HBSE':    'https://bseh.org.in',
+    'CGBSE':   'https://cgbse.nic.in',
+    'CHHATTISGARH BOARD': 'https://cgbse.nic.in',
+    'JAC':     'https://jac.jharkhand.gov.in',
+    'JHARKHAND BOARD': 'https://jac.jharkhand.gov.in',
+    'MAHARASHTRA BOARD': 'https://mahahsscboard.in',
+    'MP BOARD': 'https://mpbse.nic.in',
+    'MPBSE':   'https://mpbse.nic.in',
+    'RAJASTHAN BOARD': 'https://rajeduboard.rajasthan.gov.in',
+    'RBSE':    'https://rajeduboard.rajasthan.gov.in',
+    'UP BOARD': 'https://upmsp.edu.in',
+    'UPMSP':   'https://upmsp.edu.in',
+    'UTTARAKHAND BOARD': 'https://ubse.uk.gov.in',
+    'UBSE':    'https://ubse.uk.gov.in',
+    'UP MADARSA': 'https://madarsaboard.upsdc.gov.in',
+    # ── NTA exams ──
+    'NTA':     'https://nta.ac.in',
+    'CUET':    'https://cuet.nta.nic.in',
+    'JEE':     'https://jeemain.nta.ac.in',
+    'NEET':    'https://neet.nta.nic.in',
+    'GATE':    'https://gate2025.iitr.ac.in',
+    'GPAT':    'https://gpat.nta.nic.in',
+    'CTET':    'https://ctet.nic.in',
+    'CLAT':    'https://consortiumofnlus.ac.in',
+    'IIT JAM': 'https://jam.iitb.ac.in',
+    'NCHMJEE': 'https://nchmjee.nta.nic.in',
+    'NTET':    'https://nta.ac.in',
+    # ── Universities / Institutions ──
+    'AIIMS':   'https://aiimsexams.ac.in',
+    'NORCET':  'https://aiimsexams.ac.in',
+    'BHU':     'https://www.bhu.ac.in',
+    'ALLAHABAD UNIVERSITY': 'https://www.allduniv.ac.in',
+    'CIPET':   'https://www.cipet.gov.in',
+    'DUVASU':  'https://www.duvasu.org',
+    'IERT':    'https://iert.ac.in',
+    'UPBED':   'https://www.lkouniv.ac.in',
+    'UP CNET': 'https://www.lkouniv.ac.in',
+    'UP CPET': 'https://www.lkouniv.ac.in',
+    'UPCATET': 'https://upcatet.org',
+    'JEECUP':  'https://jeecup.admissions.nic.in',
+    'UP POLYTECHNIC': 'https://jeecup.admissions.nic.in',
+    'UP GNM':  'https://upsmfac.org',
+    'UPGET':   'https://upsmfac.org',
+    'UP RTE':  'https://rte25.upsdc.gov.in',
+    # ── Autonomous bodies ──
+    'NVS':     'https://navodaya.gov.in/nvs/en/Recruitment',
+    'KVS':     'https://kvsangathan.nic.in',
+    'EMRS':    'https://emrs.tribal.gov.in',
+    'INDIA POST': 'https://indiapostgdsonline.gov.in',
+    'GDS':     'https://indiapostgdsonline.gov.in',
+    'IOCL':    'https://iocl.com',
+    'NCL':     'https://www.nclcil.in',
+    'CIL':     'https://www.coalindia.in',
+    'AAI':     'https://www.aai.aero',
+    # ── Courts ──
+    'SUPREME COURT': 'https://main.sci.gov.in',
+    'SCI':     'https://main.sci.gov.in',
+    'PATNA HIGH COURT': 'https://patnahighcourt.gov.in',
+    # ── State-specific ──
+    'BTSC':    'https://btsc.bih.nic.in',
+    'OFSS':    'https://ofssbihar.in',
+    'BIHAR':   'https://bceceboard.bihar.gov.in',
+    'MPESB':   'https://peb.mp.gov.in',
+    'RSSB':    'https://rsmssb.rajasthan.gov.in',
+    'RAJASTHAN PTET': 'https://ptetdcb.com',
+    'BIHAR DELED': 'https://deledbihar.com',
+    'BIHAR ITICAT': 'https://bceceboard.bihar.gov.in',
+    'SWD UP':  'https://socialwelfare.up.gov.in',
+    'JEE ADVANCED': 'https://jeeadv.ac.in',
+    # ── CSIR labs ──
+    'CSIR-CDRI': 'https://cdri.res.in',
+    'CSIR CDRI': 'https://cdri.res.in',
+    'CSIR-CRRI': 'https://crridom.gov.in',
+    'CSIR CRRI': 'https://crridom.gov.in',
+    'CSIR-IITR': 'https://iitr.res.in',
+    'CSIR IITR': 'https://iitr.res.in',
+    'CSIR':    'https://www.csir.res.in',
 }
 
 # Category-level fallback (less specific than BOARD_PORTALS)
@@ -187,7 +279,7 @@ OFFICIAL_PORTALS: dict[str, str] = {
     'banking':    'https://www.ibps.in',
     'police':     'https://www.crpf.gov.in/Recruitment.htm',
     'defence':    'https://joinindianarmy.nic.in',
-    'government': 'https://www.india.gov.in',
+    'government': '',
 }
 
 
@@ -210,6 +302,27 @@ def slugify(text: str) -> str:
     t = re.sub(r'[\s_]+', '-', t)
     t = re.sub(r'-{2,}', '-', t).strip('-')
     return t[:80]
+
+
+# All category folder names used for detail pages
+_ALL_CATEGORIES = ('upsc', 'ssc', 'railway', 'banking', 'police', 'defence', 'government')
+
+
+def remove_cross_category_duplicates(kind_dir: str, cat: str, slug: str):
+    """Remove same slug from other category folders to prevent duplicates.
+
+    When a job's category changes between runs (e.g. detail-page parsing
+    returns a different dept), the old file lingers in the previous category
+    folder.  This helper deletes those stale copies.
+    """
+    base = SITE_ROOT / kind_dir
+    for other_cat in _ALL_CATEGORIES:
+        if other_cat == cat:
+            continue
+        stale = base / other_cat / f'{slug}.html'
+        if stale.exists():
+            log.info(f'  [dedup] Removing stale cross-category copy: {stale.relative_to(SITE_ROOT)}')
+            stale.unlink()
 
 
 def clean(text: str) -> str:
@@ -321,7 +434,105 @@ def to_public_url(url: str) -> str:
         return ''
     if is_public_redirect(normalized):
         return ''
-    return official_url_or_empty(normalized)
+    official = official_url_or_empty(normalized)
+    if official:
+        return official
+    embedded = _extract_embedded_official_url(normalized)
+    if embedded:
+        return embedded
+    resolved = _resolve_source_redirect(normalized)
+    if resolved:
+        return resolved
+    return ''
+
+
+def _extract_embedded_official_url(url: str) -> str:
+    """Extract embedded official URL from source-site redirect URLs.
+
+    Source sites like sarkariresult.com wrap official links in redirects,
+    e.g. sarkariresult.com/redirect.php?url=https://upsc.gov.in/apply.
+    This function extracts the embedded target URL if it is an official site.
+    """
+    if not url:
+        return ''
+    parsed = urlparse(url)
+    qs = parse_qs(parsed.query)
+    for param in ('url', 'target', 'redirect', 'link', 'go', 'u', 'r', 'to'):
+        vals = qs.get(param, [])
+        for v in vals:
+            if is_official_url(v):
+                return v
+    return ''
+
+
+# Cache for resolved redirects to avoid repeat HEAD requests
+_redirect_cache: dict[str, str] = {}
+
+# Separate session for redirect resolution — keeps the main scraping session clean
+_resolve_session: requests.Session | None = None
+
+
+def _get_resolve_session() -> requests.Session:
+    """Lazy-init a dedicated session for redirect resolution.
+
+    Uses a separate session so cookies/headers from redirect targets
+    never pollute the main scraping session.
+    """
+    global _resolve_session
+    if _resolve_session is None:
+        _resolve_session = requests.Session()
+        _resolve_session.trust_env = False
+        _resolve_session.headers.update(HEADERS)
+        _resolve_session.max_redirects = 5  # don't follow infinite chains
+    return _resolve_session
+
+
+def _resolve_source_redirect(url: str) -> str:
+    """Follow a source-site URL (e.g. sarkariresult.com/xxx) via HEAD request
+    to discover the actual official destination URL.
+
+    Source sites wrap official links in their own redirect pages. This follows
+    the redirect chain (without downloading the body) to find where it lands.
+    Returns the final URL if it's an official site, else ''.
+
+    Safety:
+    - Uses a SEPARATE session (not the main scraper session)
+    - Short timeout (5s) so it never blocks the scraper
+    - Caches results so each URL is resolved at most once
+    - Only activates for source-site URLs (never for official/unknown URLs)
+    """
+    if not url or not is_source_url(url):
+        return ''
+    if url in _redirect_cache:
+        return _redirect_cache[url]
+
+    sess = _get_resolve_session()
+
+    # Try HEAD first (lightweight, no body download)
+    try:
+        r = sess.head(url, timeout=5, allow_redirects=True, proxies=_NO_PROXY)
+        final = r.url
+        if final and final != url and is_official_url(final):
+            _redirect_cache[url] = final
+            log.info(f'  [resolve] {url[:60]}... -> {final}')
+            return final
+    except Exception as exc:
+        log.debug(f'  [resolve] HEAD failed for {url}: {exc}')
+
+    # Some servers reject HEAD — try GET with stream (don't download body)
+    try:
+        r = sess.get(url, timeout=5, allow_redirects=True, stream=True, proxies=_NO_PROXY)
+        final = r.url
+        r.close()  # close immediately, we only need the final URL
+        if final and final != url and is_official_url(final):
+            _redirect_cache[url] = final
+            log.info(f'  [resolve] {url[:60]}... -> {final}')
+            return final
+    except Exception:
+        pass  # already logged HEAD failure, no need to spam
+
+    _redirect_cache[url] = ''
+    return ''
 
 
 def primary_cta_url(url: str, source_detail_url: str) -> str:
@@ -330,9 +541,18 @@ def primary_cta_url(url: str, source_detail_url: str) -> str:
     normalized = normalize_url(url)
     if is_public_redirect(normalized):
         return ''
+    # 1. Direct official URL — use as-is
     official = official_url_or_empty(normalized)
     if official:
         return official
+    # 2. Extract official URL from query params of source redirect
+    embedded = _extract_embedded_official_url(normalized)
+    if embedded:
+        return embedded
+    # 3. Follow the source-site redirect via HTTP to find actual destination
+    resolved = _resolve_source_redirect(normalized)
+    if resolved:
+        return resolved
     return ''
 
 
@@ -936,10 +1156,10 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
 def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) -> list[dict]:
     """Extract all rows from a listing page. Works across all supported sources."""
     items = []
+    skipped_titles = []
 
     # Try several known wrapper selectors in priority order.
-    # Covers sarkariresult (TableLi/post-list), freejobalert (entry-content tables),
-    # rojgarresult/sarkariexam (similar table-based layouts).
+    # Covers sarkariresult (TableLi/post-list) table-based layout.
     containers = (
         soup.select('#post-list table tr') or
         soup.select('.TableLi table tr') or
@@ -998,6 +1218,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
             continue
 
         if not kind_matches_title(title, page_type):
+            skipped_titles.append(title[:80])
             continue
 
         items.append({
@@ -1009,7 +1230,9 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
             'page_type':  page_type,
         })
 
-    log.info(f'  Listing parser found {len(items)} raw rows')
+    log.info(f'  Listing parser found {len(items)} raw rows (skipped {len(skipped_titles)} non-matching titles)')
+    if skipped_titles:
+        log.info(f'  Skipped titles sample: {skipped_titles[:5]}')
     if len(items) <= 3:
         items = parse_listing_from_anchors(soup, page_type)
         log.info(f'  Anchor fallback found {len(items)} raw rows')
@@ -1155,6 +1378,7 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
     d.setdefault('qualification',     'Check Notification')
     d.setdefault('salary',            'As per Government Norms')
     d.setdefault('extra_links',       [])    # [{label, url}]
+    d.setdefault('download_links',    [])    # [{label, url}] — PDFs, syllabus, answer keys, etc.
 
     if not soup:
         return d
@@ -1265,13 +1489,21 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
                     lbl = sanitize(label or link_text) or 'Official Link'
                     d['extra_links'].append({'label': lbl.title(), 'url': href})
 
-    # ── Deduplicate extra_links ────────────────────────────
+    # ── Resolve & deduplicate extra_links ─────────────────
     seen_urls = set()
     unique_links = []
     for lnk in d['extra_links']:
-        if lnk['url'] not in seen_urls:
-            seen_urls.add(lnk['url'])
-            unique_links.append(lnk)
+        raw = lnk['url']
+        # Resolve source-site URLs to their official destinations
+        resolved = official_url_or_empty(raw)
+        if not resolved:
+            resolved = _extract_embedded_official_url(raw)
+        if not resolved:
+            resolved = _resolve_source_redirect(raw)
+        url = resolved or raw
+        if url and url != '#' and url not in seen_urls and not is_source_url(url):
+            seen_urls.add(url)
+            unique_links.append({'label': lnk['label'], 'url': url})
     d['extra_links'] = unique_links
 
     # ── Full-page anchor scan as fallback ─────────────────
@@ -1303,6 +1535,22 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
                 seen_urls.add(href_clean)
                 d['extra_links'].append({'label': lbl, 'url': href_clean})
 
+        # Collect downloadable assets — PDFs, docs, images of notifications
+        if re.search(r'\.(pdf|PDF|doc|docx|xls|xlsx|jpg|jpeg|png)(\?.*)?$', raw_href):
+            dl_lbl = sanitize(link_text) or 'Download'
+            # Classify the download type from link text or label
+            if re.search(r'syllabus', link_text, re.I):
+                dl_lbl = dl_lbl or 'Syllabus PDF'
+            elif re.search(r'answer\s*key', link_text, re.I):
+                dl_lbl = dl_lbl or 'Answer Key'
+            elif re.search(r'notif|advt|adverti', link_text, re.I):
+                dl_lbl = dl_lbl or 'Notification PDF'
+            elif re.search(r'admit|hall\s*ticket', link_text, re.I):
+                dl_lbl = dl_lbl or 'Admit Card PDF'
+            elif re.search(r'result|merit|cut.?off', link_text, re.I):
+                dl_lbl = dl_lbl or 'Result PDF'
+            d['download_links'].append({'label': dl_lbl, 'url': href_clean})
+
     d['title'] = normalize_title(d.get('title', ''))
     d['last_date'] = parse_display_date(d.get('last_date'))
     d['result_date'] = parse_display_date(d.get('result_date'))
@@ -1326,6 +1574,17 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
         public_links.append({'label': lnk.get('label', 'Official Link'), 'url': public_url})
     d['extra_links'] = public_links
 
+    # Deduplicate & resolve download links
+    dl_seen = set()
+    unique_dls = []
+    for dl in d['download_links']:
+        url = dl['url']
+        resolved = official_url_or_empty(url) or _extract_embedded_official_url(url) or _resolve_source_redirect(url) or url
+        if resolved and resolved != '#' and resolved not in dl_seen and not is_source_url(resolved):
+            dl_seen.add(resolved)
+            unique_dls.append({'label': dl['label'], 'url': resolved})
+    d['download_links'] = unique_dls
+
     return d
 
 
@@ -1334,18 +1593,18 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
 # ══════════════════════════════════════════════════════════
 
 def _header(active: str) -> str:
-    # Bilingual nav labels: English + Hindi for SEO across both language queries
+    # Navigation labels
     tabs = [
-        ('latest-jobs.html', '💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span>', 'jobs'),
-        ('results.html',     '📊 <span class="lang-en">Results</span><span class="lang-hi">परिणाम</span>',               'results'),
-        ('admit-cards.html', '🎫 <span class="lang-en">Admit Cards</span><span class="lang-hi">प्रवेश पत्र</span>',     'admit-cards'),
-        ('resources.html',   '📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span>',             'resources'),
+        ('latest-jobs.html', '💼 Latest Jobs', 'jobs'),
+        ('results.html',     '📊 Results',               'results'),
+        ('admit-cards.html', '🎫 Admit Cards',     'admit-cards'),
+        ('resources.html',   '📚 Resources',             'resources'),
     ]
     desktop = '\n      '.join(
         f'<a href="/{u}" class="{"active" if k == active else ""}">{lbl}</a>'
         for u, lbl, k in tabs
     )
-    mobile_home = '🏠 <span class="lang-en">Home</span><span class="lang-hi">होम</span>'
+    mobile_home = '🏠 Home'
     mobile = '\n    '.join(f'<a href="/{u}">{lbl}</a>' for u, lbl, _ in tabs)
     return f'''<header class="header">
   <div class="container header__container">
@@ -1385,67 +1644,28 @@ def _sidebar() -> str:
 </aside>'''
 
 
+def _downloads_html(d: dict) -> str:
+    """Build the downloadable assets section if any PDFs/docs were found."""
+    links = d.get('download_links', [])
+    if not links:
+        return ''
+    rows = '\n'.join(
+        f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener noreferrer">'
+        f'📄 {clean(lnk["label"])}</a></li>'
+        for lnk in links if lnk.get('url') and lnk['url'] != '#'
+    )
+    if not rows:
+        return ''
+    return f'''<div class="downloads-section">
+          <h3>📥 Downloads</h3>
+          <ul style="line-height:2.4;list-style:none;padding-left:0;">{rows}</ul>
+        </div>'''
+
+
 def _footer() -> str:
-    y = date.today().year
-    return f'''<footer class="footer">
-  <div class="container">
-    <div class="footer__grid">
-      <div>
-        <h3 class="footer__title">📋 {SITE_NAME}</h3>
-        <p style="color:#ccc;font-size:.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
-        <p style="color:#ccc;font-size:.85rem;margin-top:.5rem;">Share job alerts with friends &amp; help them find government jobs.</p>
-      </div>
-      <div>
-        <h3 class="footer__title">Quick Links</h3>
-        <div class="footer__links">
-          <a href="/latest-jobs">Latest Jobs</a>
-          <a href="/results">Results</a>
-          <a href="/admit-cards">Admit Cards</a>
-          <a href="/resources">Resources</a>
-        </div>
-      </div>
-      <div>
-        <h3 class="footer__title">Categories</h3>
-        <div class="footer__links">
-          <a href="/latest-jobs">UPSC Jobs</a>
-          <a href="/latest-jobs">SSC Jobs</a>
-          <a href="/latest-jobs">Railway Jobs</a>
-          <a href="/latest-jobs">Banking Jobs</a>
-          <a href="/latest-jobs">Defence Jobs</a>
-          <a href="/latest-jobs">Police Jobs</a>
-        </div>
-      </div>
-      <div>
-        <h3 class="footer__title">State Jobs</h3>
-        <div class="state-list">
-          <a href="/state/uttar-pradesh.html">Uttar Pradesh</a>
-          <a href="/state/bihar.html">Bihar</a>
-          <a href="/state/rajasthan.html">Rajasthan</a>
-          <a href="/state/madhya-pradesh.html">Madhya Pradesh</a>
-          <a href="/state/delhi.html">Delhi</a>
-          <a href="/state/maharashtra.html">Maharashtra</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer__bottom">
-      <p>&copy; {y} {SITE_NAME}. All rights reserved.</p>
-      <p>Disclaimer: We are not affiliated with any government body. Information only.</p>
-    </div>
-  </div>
-</footer>
+    return '''<footer class="footer" id="site-footer"></footer>
 <script src="/js/app.js"></script>
-<script src="/js/ads-manager.js" defer></script>
-<div id="lang-popup" class="lang-popup">
-  <div class="lang-popup__box">
-    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
-    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
-    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
-    <div style="display:flex;gap:1rem;justify-content:center;">
-      <button onclick="setLang(\'en\')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
-      <button onclick="setLang(\'hi\')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
-    </div>
-  </div>
-</div>'''
+<script src="/js/ads-manager.js" defer></script>'''
 
 
 def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: str = '') -> str:
@@ -1493,18 +1713,32 @@ def build_job_page(d: dict) -> tuple[str, str]:
     canon  = f'{SITE_URL}/{rel}'
     year   = date.today().year
 
-    posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
-    desc_parts = [f"{title} — official recruitment notification from {dept}."]
-    if d.get('total_posts'):
-        desc_parts.append(f"Total vacancies: {d['total_posts']}.")
+    posts_val = str(d['total_posts']).strip() if d.get('total_posts') else ''
+    posts_disp = posts_val or 'Check Notification'
+    posts_num = int(posts_val) if posts_val.isdigit() else 0
+    # Engaging prefix based on vacancy count
+    if posts_num >= 10000:
+        seo_prefix = f'Mega Hiring: {posts_num:,}+ Vacancies'
+        h1_prefix = f'🔥 Mega Hiring — {posts_num:,} Posts'
+    elif posts_num >= 1000:
+        seo_prefix = f'Hiring Alert: {posts_num:,} Vacancies'
+        h1_prefix = f'📢 Hiring Alert — {posts_num:,} Posts'
+    elif posts_num > 0:
+        seo_prefix = f'{posts_num} Vacancies'
+        h1_prefix = f'📋 {posts_num} Posts'
+    else:
+        seo_prefix = ''
+        h1_prefix = ''
+    # SEO description
+    desc_parts = []
+    if seo_prefix:
+        desc_parts.append(f"{seo_prefix} — {title}!")
+    else:
+        desc_parts.append(f"{title} — official recruitment notification from {dept}.")
+    if d.get('last_date') and d['last_date'] != 'Check Notification':
+        desc_parts.append(f"Last date: {d['last_date']}.")
     if d.get('qualification') and d['qualification'] != 'Check Notification':
         desc_parts.append(f"Qualification: {d['qualification']}.")
-    if d.get('age_min') and d.get('age_max'):
-        desc_parts.append(f"Age limit: {d['age_min']} to {d['age_max']} years.")
-    if d.get('app_begin') and d['app_begin'] != 'Check Notification':
-        desc_parts.append(f"Application start: {d['app_begin']}.")
-    if d.get('last_date') and d['last_date'] != 'Check Notification':
-        desc_parts.append(f"Last date to apply: {d['last_date']}.")
     desc_parts.append(f"Apply online at {SITE_NAME}.")
     desc = ' '.join(desc_parts)
     _portal = official_portal_for(title, cat)
@@ -1514,7 +1748,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
 
     apply_btn = (
         f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
-        f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
+        f'class="btn btn--primary btn--large">🚀 Apply Online</a>'
         + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 0;text-align:center;">'
            f'Opens the official portal — check the Apply / Recruitment section there.</p>'
            if _apply_is_portal else '')
@@ -1536,7 +1770,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
         )
         if rows:
             extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links / महत्वपूर्ण लिंक</h3>
+          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
           <ul style="line-height:2.4;">{rows}</ul>
         </div>'''
 
@@ -1556,6 +1790,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     # JSON-LD
     _valid_through = to_iso_date(d['last_date'])
     _org_name = cat.title() + ' Recruitment' if cat != 'government' else dept or 'Government of India'
+    _org_url = official_portal_for(title, cat) or SITE_URL
     ld_job_dict = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
@@ -1563,12 +1798,17 @@ def build_job_page(d: dict) -> tuple[str, str]:
         "description": desc,
         "datePosted": date.today().isoformat(),
         "employmentType": "FULL_TIME",
-        "hiringOrganization": {"@type": "Organization", "name": _org_name, "sameAs": SITE_URL},
+        "hiringOrganization": {"@type": "Organization", "name": _org_name, "sameAs": _org_url},
         "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "India", "addressRegion": "India", "addressCountry": "IN"}},
-        "url": canon
+        "url": canon,
+        "directApply": bool(d.get('apply_url'))
     }
     if _valid_through and _valid_through >= date.today().isoformat():
         ld_job_dict["validThrough"] = _valid_through
+    if d.get('salary') and d['salary'] != 'Check Notification':
+        ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary']}}
+    if d.get('vacancy') and d['vacancy'] != 'Check Notification':
+        ld_job_dict["totalJobOpenings"] = d['vacancy']
     ld_job = json.dumps(ld_job_dict, ensure_ascii=False)
 
     ld_bc = json.dumps({
@@ -1585,7 +1825,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     faq_html, faq_ld = build_job_faq(d)
 
     html = f'''<!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 {_seo_head(title, desc, canon, dept)}
     <script type="application/ld+json">{ld_job}</script>
@@ -1625,7 +1865,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
         </div>
         <div class="info-item">
           <span class="info-item__label">👤 Age Limit</span>
-          <span class="info-item__value">{d["age_min"]}–{d["age_max"]} Years</span>
+          <span class="info-item__value">{str(d["age_min"]) + '–' + str(d["age_max"]) + ' Years' if d["age_min"] and d["age_max"] and str(d["age_min"]) not in ('nan', '') else 'Check Notification'}</span>
         </div>
         <div class="info-item">
           <span class="info-item__label">🎓 Qualification</span>
@@ -1643,7 +1883,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
       </div>
 
       <div style="border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;margin:1.5rem 0;">
-        <h2 style="color:var(--primary);margin-top:0;">📋 Important Dates / महत्वपूर्ण तिथियां</h2>
+        <h2 style="color:var(--primary);margin-top:0;">📋 Important Dates</h2>
         <table style="width:100%;border-collapse:collapse;">
           <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;width:55%;">Application Begin</td><td style="font-weight:bold;">{d["app_begin"]}</td></tr>
           <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Last Date to Apply Online</td><td style="font-weight:bold;color:var(--danger);">{d["last_date"]}</td></tr>
@@ -1658,33 +1898,34 @@ def build_job_page(d: dict) -> tuple[str, str]:
       <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
 
       <div class="calculator">
-        <h3 style="margin-top:0;">🎯 Age Eligibility Calculator / आयु कैलकुलेटर</h3>
+        <h3 style="margin-top:0;">🎯 Age Eligibility Calculator</h3>
         <p style="color:#666;font-size:.875rem;">Age limit: {d["age_min"]}–{d["age_max"]} years. OBC +3 yrs, SC/ST +5 yrs relaxation.</p>
         <div class="form-group">
-          <label>Date of Birth / जन्म तिथि:</label>
+          <label>Date of Birth:</label>
           <input type="date" id="dob-input">
         </div>
         <div class="form-group">
-          <label>Category / वर्ग:</label>
+          <label>Category:</label>
           <select id="category-select">
-            <option value="general">General / सामान्य</option>
+            <option value="general">General</option>
             <option value="obc">OBC (+3 years)</option>
             <option value="sc">SC (+5 years)</option>
             <option value="st">ST (+5 years)</option>
           </select>
         </div>
-        <button onclick="checkEligibility({d['age_min']}, {d['age_max']})" class="btn btn--primary">Check Eligibility / योग्यता जांचें</button>
+        <button onclick="checkEligibility({d['age_min']}, {d['age_max']})" class="btn btn--primary">Check Eligibility</button>
         <div id="eligibility-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:4px;"></div>
       </div>
 
       {extra_html}
+      {_downloads_html(d)}
 
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-        <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply / आवेदन कैसे करें</h3>
+        <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply</h3>
         <ol style="line-height:2.2;">
           <li>Use the official authority portal linked above, not third-party mirrors.</li>
           <li>Verify district, category, and document rules before you create an account.</li>
-          <li>Fill the application form carefully / फॉर्म ध्यानपूर्वक भरें</li>
+          <li>Fill the application form carefully</li>
           <li>Upload only the files and dimensions allowed in the official notice.</li>
           <li>Pay the fee only after you confirm the form preview and eligibility details.</li>
           <li>Save the final application number, preview, and receipt for later stages.</li>
@@ -1730,7 +1971,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     check_btn = (
         f'<a href="{result_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
-        f'🎯 Check Result / परिणाम देखें</a>'
+        f'🎯 Check Result</a>'
         + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
            f'Opens the official portal — check the Latest Results section there.</p>'
            if _result_is_portal else '')
@@ -1777,7 +2018,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     faq_html, faq_ld = build_result_faq(d)
 
     html = f'''<!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 {_seo_head(title + ' - Result', desc, canon, dept)}
     <script type="application/ld+json">{ld_ev}</script>
@@ -1801,7 +2042,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
       <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
 
       <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared / घोषित</div>
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared</div>
         {'<p style="color:#666;margin-bottom:1.5rem;">Result Date: ' + d["result_date"] + '</p>' if d["result_date"] not in ("Check Notification", "") else ''}
         {check_btn}
         {scorecard_btn}
@@ -1811,9 +2052,10 @@ def build_result_page(d: dict) -> tuple[str, str]:
       </div>
 
       {extra_html}
+      {_downloads_html(d)}
 
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-        <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result / परिणाम कैसे देखें</h3>
+        <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result</h3>
         <ol style="line-height:2.2;">
           <li>Open the official result portal linked above.</li>
           <li>Keep your roll number or registration number ready before loading the page.</li>
@@ -1861,7 +2103,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     dl_btn = (
         f'<a href="{admit_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
-        f'📥 Download Admit Card / हॉल टिकट डाउनलोड करें</a>'
+        f'📥 Download Admit Card</a>'
         + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
            f'Opens the official portal — check the Admit Card / Hall Ticket section there.</p>'
            if _admit_is_portal else '')
@@ -1902,7 +2144,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     faq_html, faq_ld = build_admit_faq(d)
 
     html = f'''<!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 {_seo_head(title + ' - Admit Card', desc, canon, dept)}
     <script type="application/ld+json">{ld_ev}</script>
@@ -1926,7 +2168,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
 
       <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Available / उपलब्ध</div>
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Available</div>
         <p style="color:#666;margin-bottom:.5rem;">Released: {d["admit_release"]}</p>
         <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">📅 Exam Date: {d["exam_date"]}</p>
         {dl_btn}
@@ -1936,9 +2178,10 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       </div>
 
       {extra_html}
+      {_downloads_html(d)}
 
       <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
-        <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions / महत्वपूर्ण निर्देश</h3>
+        <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions</h3>
         <ul style="line-height:1.8;">
           <li>Carry a printed admit card exactly as required in the official instructions.</li>
           <li>Bring a valid photo ID that matches the admit-card identity details.</li>
@@ -2029,9 +2272,11 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             f'<td>{date_label}</td>'
             f'<td><a href="{path}" class="btn btn--small btn--primary">{btn}</a></td></tr>'
         )
+        posts_val = e.get('total_posts', '')
+        posts_tag = f' <span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:600;">{posts_val} Posts</span>' if posts_val and str(posts_val) not in ('', '0', 'Check Notification') else ''
         new_cards.append(
             f'<div class="card">'
-            f'<div class="card__header"><span class="badge">{dept}</span></div>'
+            f'<div class="card__header"><span class="badge">{dept}</span>{posts_tag}</div>'
             f'<h3 class="card__title">{title}</h3>'
             f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
             f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{btn}</a>'
@@ -2241,7 +2486,15 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         base = SITE_ROOT / 'admit-cards'
 
     entries = []
+    seen_slugs: set[str] = set()   # deduplicate by filename slug
     for path in sorted(base.rglob('*.html'), key=lambda p: p.stat().st_mtime, reverse=True):
+        slug = path.stem  # e.g. 'up-police-constable-edit-correction-form-2026'
+        if slug in seen_slugs:
+            # Same slug already loaded from a newer file — skip this stale copy
+            log.debug(f'  [dedup] Skipping duplicate slug in listings: {path.relative_to(SITE_ROOT)}')
+            continue
+        seen_slugs.add(slug)
+
         rel = path.relative_to(SITE_ROOT).as_posix()
         html = path.read_text(encoding='utf-8', errors='replace')
         title_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.I | re.S)
@@ -2808,10 +3061,18 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
     # ── 2. Scrape detail pages & generate HTML ─────────────
     generated: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    staged: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    staging_root = SITE_ROOT / STAGING_DIR
+    staging_manifest: list[dict] = []
+
+    # Build a lookup of primary-source sources for dedup
+    primary_sources = {s['name'] for s in SOURCES if s.get('primary', False)}
 
     for kind, items in all_items.items():
         for item in items:
-            log.info(f'\n[{kind.upper()}] {item["title"][:60]}')
+            src_name = item.get('source', 'unknown')
+            is_primary = src_name in primary_sources
+            log.info(f'\n[{kind.upper()}] {item["title"][:60]}  (source: {src_name})')
             log.info(f'  Detail URL: {item["detail_url"]}')
 
             detail_soup = fetch(item['detail_url'])
@@ -2819,6 +3080,11 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 log.warning(f'  Detail page unavailable — generating from listing data: {item["detail_url"]}')
             rich = parse_detail(detail_soup, item)
             rich['dept'] = rich.get('dept') or infer_dept(rich['title'])
+
+            # Re-validate kind after detail parse (title may have changed)
+            if not kind_matches_title(rich.get('title', ''), kind):
+                log.info(f'  [skip] Title no longer matches kind={kind} after detail parse: {rich["title"][:60]}')
+                continue
 
             try:
                 if kind == 'job':
@@ -2828,14 +3094,60 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 else:
                     rel, html = build_admit_page(rich)
 
-                out = SITE_ROOT / rel
-                out.parent.mkdir(parents=True, exist_ok=True)
-                out.write_text(html, encoding='utf-8')
-                log.info(f'  Written: {rel}')
-                generated[kind].append(rich)
+                # For secondary sources: skip if the page already exists from a primary source
+                if not is_primary and (SITE_ROOT / rel).exists():
+                    log.info(f'  [skip] Already exists from primary source: {rel}')
+                    continue
+
+                if is_primary:
+                    # Primary source → write directly to live site
+                    # Remove stale copies from other category folders
+                    parts = rel.split('/')  # e.g. 'jobs/police/slug.html'
+                    if len(parts) == 3:
+                        kind_dir, cat, fname = parts
+                        remove_cross_category_duplicates(kind_dir, cat, fname.removesuffix('.html'))
+
+                    out = SITE_ROOT / rel
+                    out.parent.mkdir(parents=True, exist_ok=True)
+                    out.write_text(html, encoding='utf-8')
+                    log.info(f'  Written (LIVE): {rel}')
+                    generated[kind].append(rich)
+                else:
+                    # Secondary source → write to staging/ for manual review
+                    out = staging_root / rel
+                    out.parent.mkdir(parents=True, exist_ok=True)
+                    out.write_text(html, encoding='utf-8')
+                    log.info(f'  Written (STAGING): {STAGING_DIR}/{rel}')
+                    staged[kind].append(rich)
+                    staging_manifest.append({
+                        'source': src_name,
+                        'kind': kind,
+                        'title': rich.get('title', ''),
+                        'dept': rich.get('dept', ''),
+                        'rel_path': rel,
+                        'detail_url': item.get('detail_url', ''),
+                        'scraped_at': datetime.now().isoformat(),
+                    })
 
             except Exception as exc:
                 log.error(f'  Page build failed: {exc}', exc_info=True)
+
+    # ── 2b. Save staging manifest ──────────────────────────
+    if staging_manifest:
+        manifest_file = staging_root / 'manifest.json'
+        existing_manifest = []
+        if manifest_file.exists():
+            try:
+                existing_manifest = json.loads(manifest_file.read_text(encoding='utf-8'))
+            except (json.JSONDecodeError, OSError):
+                pass
+        existing_manifest.extend(staging_manifest)
+        staging_root.mkdir(parents=True, exist_ok=True)
+        manifest_file.write_text(json.dumps(existing_manifest, indent=2, ensure_ascii=False), encoding='utf-8')
+        log.info(f'\nStaging manifest updated: {len(staging_manifest)} new items ({manifest_file})')
+        total_staged = sum(len(v) for v in staged.values())
+        log.info(f'  Staged: Jobs={len(staged["job"])}, Results={len(staged["result"])}, AdmitCards={len(staged["admit"])} (total={total_staged})')
+        log.info(f'  These items require manual review before going live.')
 
     # ── 3. Rebuild listing pages from canonical detail pages ───────────
     # This prevents list drift, missing items, and mixed-category bleed.

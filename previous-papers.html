@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,17 +106,17 @@
   <div class="container header__container">
     <a href="/" class="logo">📋 Naukri Dhaba</a>
     <nav class="nav nav--desktop">
-      <a href="/latest-jobs" class="">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a>
+      <a href="/latest-jobs" class="">💼 Latest Jobs</a>
       <a href="/results" class="">📊 Results</a>
       <a href="/admit-cards" class="">🎫 Admit Cards</a>
-      <a href="/resources" class="active">📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span></a>
+      <a href="/resources" class="active">📚 Resources</a>
     </nav>
     <div style="display:flex;gap:1rem;align-items:center;">
       <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌓</button>
       <button class="btn--icon menu-toggle" onclick="toggleMobileMenu()" style="display:none;font-size:1.5rem;cursor:pointer;" aria-label="Open menu">☰</button>
     </div>
   </div>
-  <nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 <span class="lang-en">Home</span><span class="lang-hi">होम</span></a><a href="/latest-jobs">💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span></a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span></a></nav>
+  <nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button><a href="/">🏠 Home</a><a href="/latest-jobs">💼 Latest Jobs</a><a href="/results">📊 Results</a><a href="/admit-cards">🎫 Admit Cards</a><a href="/resources">📚 Resources</a></nav>
   <style>.menu-toggle{display:none!important}@media(max-width:768px){.nav--desktop{display:none}.menu-toggle{display:block!important}}</style>
 
 <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
@@ -622,52 +622,7 @@
         }
         </script>
     </main>
-    <footer class="footer">
-  <div class="container">
-    <div class="footer__grid">
-      <div>
-        <h3 class="footer__title">📋 Naukri Dhaba</h3>
-        <p style="color:#ccc;font-size:0.9rem;line-height:1.6;">Independent government job updates, result tracking, and admit card alerts for India.</p>
-      </div>
-      <div>
-        <h3 class="footer__title">Quick Links</h3>
-        <div class="footer__links">
-          <a href="/latest-jobs">Latest Jobs</a>
-          <a href="/results">Results</a>
-          <a href="/admit-cards">Admit Cards</a>
-          <a href="/resources">Resources & Tools</a>
-        </div>
-      </div>
-      <div>
-        <h3 class="footer__title">Tools</h3>
-        <div class="footer__links">
-          <a href="/eligibility-calculator">Eligibility Calculator</a><a href="/study-planner">Study Planner</a><a href="/previous-papers">Previous Papers</a><a href="/syllabus.html">Syllabus</a><a href="/cut-off-marks.html">Cut-off Marks</a>
-        </div>
-      </div>
-      <div>
-        <h3 class="footer__title">State Jobs</h3>
-        <div class="state-list">
-          <a href="/state/uttar-pradesh.html">Uttar Pradesh</a><a href="/state/bihar.html">Bihar</a><a href="/state/rajasthan.html">Rajasthan</a><a href="/state/madhya-pradesh.html">Madhya Pradesh</a><a href="/state/haryana.html">Haryana</a><a href="/state/jharkhand.html">Jharkhand</a><a href="/state/delhi.html">Delhi</a><a href="/state/maharashtra.html">Maharashtra</a><a href="/state/gujarat.html">Gujarat</a><a href="/state/punjab.html">Punjab</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer__bottom">
-      <p>&copy; 2026 Naukri Dhaba. All rights reserved.</p>
-      <p>Disclaimer: We are not affiliated with any government organization. We only provide information.</p>
-    </div>
-  </div>
-</footer>
+    <footer class="footer" id="site-footer"></footer>
 <script src="/js/app.js"></script>
-<div id="lang-popup" class="lang-popup">
-  <div class="lang-popup__box">
-    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
-    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
-    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
-    <div style="display:flex;gap:1rem;justify-content:center;">
-      <button onclick="setLang('en')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
-      <button onclick="setLang('hi')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
