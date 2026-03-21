@@ -1589,18 +1589,18 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
 # ══════════════════════════════════════════════════════════
 
 def _header(active: str) -> str:
-    # Bilingual nav labels: English + Hindi for SEO across both language queries
+    # Navigation labels
     tabs = [
-        ('latest-jobs.html', '💼 <span class="lang-en">Latest Jobs</span><span class="lang-hi">नवीनतम नौकरियां</span>', 'jobs'),
-        ('results.html',     '📊 <span class="lang-en">Results</span><span class="lang-hi">परिणाम</span>',               'results'),
-        ('admit-cards.html', '🎫 <span class="lang-en">Admit Cards</span><span class="lang-hi">प्रवेश पत्र</span>',     'admit-cards'),
-        ('resources.html',   '📚 <span class="lang-en">Resources</span><span class="lang-hi">संसाधन</span>',             'resources'),
+        ('latest-jobs.html', '💼 Latest Jobs', 'jobs'),
+        ('results.html',     '📊 Results',               'results'),
+        ('admit-cards.html', '🎫 Admit Cards',     'admit-cards'),
+        ('resources.html',   '📚 Resources',             'resources'),
     ]
     desktop = '\n      '.join(
         f'<a href="/{u}" class="{"active" if k == active else ""}">{lbl}</a>'
         for u, lbl, k in tabs
     )
-    mobile_home = '🏠 <span class="lang-en">Home</span><span class="lang-hi">होम</span>'
+    mobile_home = '🏠 Home'
     mobile = '\n    '.join(f'<a href="/{u}">{lbl}</a>' for u, lbl, _ in tabs)
     return f'''<header class="header">
   <div class="container header__container">
@@ -1653,7 +1653,7 @@ def _downloads_html(d: dict) -> str:
     if not rows:
         return ''
     return f'''<div class="downloads-section">
-          <h3>📥 Downloads / डाउनलोड</h3>
+          <h3>📥 Downloads</h3>
           <ul style="line-height:2.4;list-style:none;padding-left:0;">{rows}</ul>
         </div>'''
 
@@ -1707,18 +1707,7 @@ def _footer() -> str:
   </div>
 </footer>
 <script src="/js/app.js"></script>
-<script src="/js/ads-manager.js" defer></script>
-<div id="lang-popup" class="lang-popup">
-  <div class="lang-popup__box">
-    <div style="font-size:2.5rem;margin-bottom:.75rem;">🇮🇳</div>
-    <h2 style="color:var(--primary);margin:0 0 .5rem;font-size:1.3rem;">Choose Language / भाषा चुनें</h2>
-    <p style="color:#666;font-size:.9rem;margin-bottom:1.5rem;">Select your preferred language</p>
-    <div style="display:flex;gap:1rem;justify-content:center;">
-      <button onclick="setLang(\'en\')" class="btn btn--primary btn--large" style="flex:1;min-width:120px;">English</button>
-      <button onclick="setLang(\'hi\')" class="btn btn--secondary btn--large" style="flex:1;min-width:120px;">हिंदी</button>
-    </div>
-  </div>
-</div>'''
+<script src="/js/ads-manager.js" defer></script>'''
 
 
 def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: str = '') -> str:
@@ -1787,7 +1776,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
 
     apply_btn = (
         f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
-        f'class="btn btn--primary btn--large">🚀 Apply Online / आवेदन करें</a>'
+        f'class="btn btn--primary btn--large">🚀 Apply Online</a>'
         + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 0;text-align:center;">'
            f'Opens the official portal — check the Apply / Recruitment section there.</p>'
            if _apply_is_portal else '')
@@ -1809,7 +1798,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
         )
         if rows:
             extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links / महत्वपूर्ण लिंक</h3>
+          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
           <ul style="line-height:2.4;">{rows}</ul>
         </div>'''
 
@@ -1864,7 +1853,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     faq_html, faq_ld = build_job_faq(d)
 
     html = f'''<!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 {_seo_head(title, desc, canon, dept)}
     <script type="application/ld+json">{ld_job}</script>
@@ -1922,7 +1911,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
       </div>
 
       <div style="border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;margin:1.5rem 0;">
-        <h2 style="color:var(--primary);margin-top:0;">📋 Important Dates / महत्वपूर्ण तिथियां</h2>
+        <h2 style="color:var(--primary);margin-top:0;">📋 Important Dates</h2>
         <table style="width:100%;border-collapse:collapse;">
           <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;width:55%;">Application Begin</td><td style="font-weight:bold;">{d["app_begin"]}</td></tr>
           <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Last Date to Apply Online</td><td style="font-weight:bold;color:var(--danger);">{d["last_date"]}</td></tr>
@@ -1937,22 +1926,22 @@ def build_job_page(d: dict) -> tuple[str, str]:
       <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
 
       <div class="calculator">
-        <h3 style="margin-top:0;">🎯 Age Eligibility Calculator / आयु कैलकुलेटर</h3>
+        <h3 style="margin-top:0;">🎯 Age Eligibility Calculator</h3>
         <p style="color:#666;font-size:.875rem;">Age limit: {d["age_min"]}–{d["age_max"]} years. OBC +3 yrs, SC/ST +5 yrs relaxation.</p>
         <div class="form-group">
-          <label>Date of Birth / जन्म तिथि:</label>
+          <label>Date of Birth:</label>
           <input type="date" id="dob-input">
         </div>
         <div class="form-group">
-          <label>Category / वर्ग:</label>
+          <label>Category:</label>
           <select id="category-select">
-            <option value="general">General / सामान्य</option>
+            <option value="general">General</option>
             <option value="obc">OBC (+3 years)</option>
             <option value="sc">SC (+5 years)</option>
             <option value="st">ST (+5 years)</option>
           </select>
         </div>
-        <button onclick="checkEligibility({d['age_min']}, {d['age_max']})" class="btn btn--primary">Check Eligibility / योग्यता जांचें</button>
+        <button onclick="checkEligibility({d['age_min']}, {d['age_max']})" class="btn btn--primary">Check Eligibility</button>
         <div id="eligibility-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:4px;"></div>
       </div>
 
@@ -1960,11 +1949,11 @@ def build_job_page(d: dict) -> tuple[str, str]:
       {_downloads_html(d)}
 
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-        <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply / आवेदन कैसे करें</h3>
+        <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply</h3>
         <ol style="line-height:2.2;">
           <li>Use the official authority portal linked above, not third-party mirrors.</li>
           <li>Verify district, category, and document rules before you create an account.</li>
-          <li>Fill the application form carefully / फॉर्म ध्यानपूर्वक भरें</li>
+          <li>Fill the application form carefully</li>
           <li>Upload only the files and dimensions allowed in the official notice.</li>
           <li>Pay the fee only after you confirm the form preview and eligibility details.</li>
           <li>Save the final application number, preview, and receipt for later stages.</li>
@@ -2010,7 +1999,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     check_btn = (
         f'<a href="{result_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
-        f'🎯 Check Result / परिणाम देखें</a>'
+        f'🎯 Check Result</a>'
         + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
            f'Opens the official portal — check the Latest Results section there.</p>'
            if _result_is_portal else '')
@@ -2057,7 +2046,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     faq_html, faq_ld = build_result_faq(d)
 
     html = f'''<!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 {_seo_head(title + ' - Result', desc, canon, dept)}
     <script type="application/ld+json">{ld_ev}</script>
@@ -2081,7 +2070,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
       <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
 
       <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared / घोषित</div>
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared</div>
         {'<p style="color:#666;margin-bottom:1.5rem;">Result Date: ' + d["result_date"] + '</p>' if d["result_date"] not in ("Check Notification", "") else ''}
         {check_btn}
         {scorecard_btn}
@@ -2094,7 +2083,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
       {_downloads_html(d)}
 
       <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-        <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result / परिणाम कैसे देखें</h3>
+        <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result</h3>
         <ol style="line-height:2.2;">
           <li>Open the official result portal linked above.</li>
           <li>Keep your roll number or registration number ready before loading the page.</li>
@@ -2142,7 +2131,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     dl_btn = (
         f'<a href="{admit_href}" target="_blank" rel="nofollow noopener noreferrer" '
         f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
-        f'📥 Download Admit Card / हॉल टिकट डाउनलोड करें</a>'
+        f'📥 Download Admit Card</a>'
         + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
            f'Opens the official portal — check the Admit Card / Hall Ticket section there.</p>'
            if _admit_is_portal else '')
@@ -2183,7 +2172,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     faq_html, faq_ld = build_admit_faq(d)
 
     html = f'''<!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 {_seo_head(title + ' - Admit Card', desc, canon, dept)}
     <script type="application/ld+json">{ld_ev}</script>
@@ -2207,7 +2196,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
 
       <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Available / उपलब्ध</div>
+        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Available</div>
         <p style="color:#666;margin-bottom:.5rem;">Released: {d["admit_release"]}</p>
         <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">📅 Exam Date: {d["exam_date"]}</p>
         {dl_btn}
@@ -2220,7 +2209,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
       {_downloads_html(d)}
 
       <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
-        <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions / महत्वपूर्ण निर्देश</h3>
+        <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions</h3>
         <ul style="line-height:1.8;">
           <li>Carry a printed admit card exactly as required in the official instructions.</li>
           <li>Bring a valid photo ID that matches the admit-card identity details.</li>
