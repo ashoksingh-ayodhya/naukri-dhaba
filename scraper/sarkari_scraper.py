@@ -2315,6 +2315,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
 
     new_rows   = []
     new_cards  = []
+    today = date.today()
 
     for e in entries[:30]:   # max 30 new entries per run
         title = e.get('title', '')
@@ -2342,10 +2343,21 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             date_label = e.get('exam_date', '') or e.get('admit_release', '')
             btn  = 'Download'
 
+        date_label = re.sub(r'\s*🔴\s*', '', date_label).strip()
+        parsed_date = _parse_sort_date(date_label)
+        is_expired = parsed_date is not None and parsed_date < today
+
+        if is_expired:
+            date_display = f'<span style="color:var(--danger);">{date_label} 🔴</span>'
+            date_card = f'<p style="color:var(--danger);font-size:.875rem;">📅 {date_label} 🔴</p>'
+        else:
+            date_display = date_label
+            date_card = f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
+
         new_rows.append(
             f'<tr><td>{dept}</td>'
             f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
-            f'<td>{date_label}</td>'
+            f'<td>{date_display}</td>'
             f'<td><a href="{path}" class="btn btn--small btn--primary">{btn}</a></td></tr>'
         )
         posts_val = e.get('total_posts', '')
@@ -2354,7 +2366,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             f'<div class="card">'
             f'<div class="card__header"><span class="badge">{dept}</span>{posts_tag}</div>'
             f'<h3 class="card__title">{title}</h3>'
-            f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
+            f'{date_card}'
             f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{btn}</a>'
             f'</div>'
         )
@@ -2377,9 +2389,9 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
     entries = prepare_listing_entries(entries, kind, limit)
     rows = []
     cards = []
-    iterable = entries
+    today = date.today()
 
-    for e in iterable:
+    for e in entries:
         title = normalize_title(e.get('title', ''))
         dept = e.get('dept', 'Government').upper()
 
@@ -2405,17 +2417,32 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
             button = 'Download'
 
+        # Strip any existing emoji from date_label to avoid duplicates
+        date_label = re.sub(r'\s*🔴\s*', '', date_label).strip()
+
+        # Determine if the date has expired
+        parsed_date = _parse_sort_date(date_label)
+        is_expired = parsed_date is not None and parsed_date < today
+
+        # Build date display with expired indicator
+        if is_expired:
+            date_display = f'<span style="color:var(--danger);">{date_label} 🔴</span>'
+            date_card = f'<p style="color:var(--danger);font-size:.875rem;">📅 {date_label} 🔴</p>'
+        else:
+            date_display = date_label
+            date_card = f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
+
         rows.append(
             f'<tr><td>{dept}</td>'
             f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
-            f'<td>{date_label}</td>'
+            f'<td>{date_display}</td>'
             f'<td><a href="{path}" class="btn btn--small btn--primary">{button}</a></td></tr>'
         )
         cards.append(
             f'<div class="card">'
             f'<div class="card__header"><span class="badge">{dept}</span></div>'
             f'<h3 class="card__title">{title}</h3>'
-            f'<p style="color:#666;font-size:.875rem;">{date_label}</p>'
+            f'{date_card}'
             f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
             f'</div>'
         )
