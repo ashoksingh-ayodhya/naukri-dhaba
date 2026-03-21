@@ -468,6 +468,24 @@ def _extract_embedded_official_url(url: str) -> str:
 # Cache for resolved redirects to avoid repeat HEAD requests
 _redirect_cache: dict[str, str] = {}
 
+# Separate session for redirect resolution — keeps the main scraping session clean
+_resolve_session: requests.Session | None = None
+
+
+def _get_resolve_session() -> requests.Session:
+    """Lazy-init a dedicated session for redirect resolution.
+
+    Uses a separate session so cookies/headers from redirect targets
+    never pollute the main scraping session.
+    """
+    global _resolve_session
+    if _resolve_session is None:
+        _resolve_session = requests.Session()
+        _resolve_session.trust_env = False
+        _resolve_session.headers.update(HEADERS)
+        _resolve_session.max_redirects = 5  # don't follow infinite chains
+    return _resolve_session
+
 
 def _resolve_source_redirect(url: str) -> str:
     """Follow a source-site URL (e.g. sarkariresult.com/xxx) via HEAD request
@@ -476,41 +494,42 @@ def _resolve_source_redirect(url: str) -> str:
     Source sites wrap official links in their own redirect pages. This follows
     the redirect chain (without downloading the body) to find where it lands.
     Returns the final URL if it's an official site, else ''.
+
+    Safety:
+    - Uses a SEPARATE session (not the main scraper session)
+    - Short timeout (5s) so it never blocks the scraper
+    - Caches results so each URL is resolved at most once
+    - Only activates for source-site URLs (never for official/unknown URLs)
     """
     if not url or not is_source_url(url):
         return ''
     if url in _redirect_cache:
         return _redirect_cache[url]
 
+    sess = _get_resolve_session()
+
+    # Try HEAD first (lightweight, no body download)
     try:
-        # Use HEAD with allow_redirects to follow the chain cheaply
-        r = _session.head(url, timeout=8, allow_redirects=True, proxies=_NO_PROXY)
+        r = sess.head(url, timeout=5, allow_redirects=True, proxies=_NO_PROXY)
         final = r.url
         if final and final != url and is_official_url(final):
             _redirect_cache[url] = final
             log.info(f'  [resolve] {url[:60]}... -> {final}')
             return final
-        # Some sites use JS redirects — check Location header on 3xx even if
-        # allow_redirects followed them already
-        if r.status_code in (301, 302, 303, 307, 308):
-            loc = r.headers.get('Location', '')
-            if loc and is_official_url(loc):
-                _redirect_cache[url] = loc
-                return loc
     except Exception as exc:
         log.debug(f'  [resolve] HEAD failed for {url}: {exc}')
 
-    # Also try GET with stream=True (some servers don't support HEAD)
+    # Some servers reject HEAD — try GET with stream (don't download body)
     try:
-        r = _session.get(url, timeout=8, allow_redirects=True, stream=True, proxies=_NO_PROXY)
+        r = sess.get(url, timeout=5, allow_redirects=True, stream=True, proxies=_NO_PROXY)
         final = r.url
-        r.close()
+        r.close()  # close immediately, we only need the final URL
         if final and final != url and is_official_url(final):
             _redirect_cache[url] = final
             log.info(f'  [resolve] {url[:60]}... -> {final}')
             return final
-    except Exception as exc:
-        log.debug(f'  [resolve] GET failed for {url}: {exc}')
+    except Exception:
+        pass  # already logged HEAD failure, no need to spam
 
     _redirect_cache[url] = ''
     return ''
