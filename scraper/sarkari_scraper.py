@@ -2789,19 +2789,25 @@ from email.utils import formatdate as _rfc822
 def _rss_item(item: dict, kind: str) -> str:
     cat    = get_category(item.get('dept', ''))
     slug   = slugify(item.get('title', ''))
-    url    = f'{SITE_URL}/{kind}s/{cat}/{slug}.html'
-    title  = escape(item.get('title', ''))
-    dept   = escape(item.get('dept', ''))
+    kind_dir = 'admit-cards' if kind == 'admit' else f'{kind}s'
+    url    = f'{SITE_URL}/{kind_dir}/{cat}/{slug}.html'
+    raw_title = item.get('title', '')
+    raw_dept  = item.get('dept', '')
     date   = item.get('last_date') or item.get('result_date') or item.get('admit_release') or ''
-    pub    = _rfc822(localtime=True)
-    desc   = f'{title} — {dept}. Date: {date}. More details at {SITE_URL}.'
+    # Use item's date for pubDate if available, else current time
+    iso = to_iso_date(date)
+    if iso:
+        pub = _rfc822(time.mktime(datetime.strptime(iso, '%Y-%m-%d').timetuple()))
+    else:
+        pub = _rfc822(localtime=True)
+    desc   = f'{raw_title} — {raw_dept}. Date: {date}. More details at {SITE_URL}.'
     return (
         f'<item>'
-        f'<title>{title}</title>'
+        f'<title>{escape(raw_title)}</title>'
         f'<link>{url}</link>'
         f'<guid isPermaLink="true">{url}</guid>'
         f'<description>{escape(desc)}</description>'
-        f'<category>{escape(dept)}</category>'
+        f'<category>{escape(raw_dept)}</category>'
         f'<pubDate>{pub}</pubDate>'
         f'</item>'
     )
@@ -2812,7 +2818,7 @@ def generate_rss_feed(site_root: Path, jobs: list, results: list, admits: list) 
     feed_dir = site_root / 'feed'
     feed_dir.mkdir(exist_ok=True)
 
-    def _channel(title: str, desc: str, items_xml: str) -> str:
+    def _channel(title: str, desc: str, items_xml: str, feed_path: str = 'feed.xml') -> str:
         return (
             '<?xml version="1.0" encoding="UTF-8"?>'
             '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">'
@@ -2821,7 +2827,7 @@ def generate_rss_feed(site_root: Path, jobs: list, results: list, admits: list) 
             f'<link>{SITE_URL}</link>'
             f'<description>{escape(desc)}</description>'
             '<language>en-IN</language>'
-            f'<atom:link href="{SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>'
+            f'<atom:link href="{SITE_URL}/{feed_path}" rel="self" type="application/rss+xml"/>'
             f'{items_xml}'
             '</channel></rss>'
         )
@@ -2840,15 +2846,15 @@ def generate_rss_feed(site_root: Path, jobs: list, results: list, admits: list) 
         encoding='utf-8'
     )
     (feed_dir / 'jobs.xml').write_text(
-        _channel(f'{SITE_NAME} — Latest Jobs', f'Latest government job notifications from {SITE_URL}', jobs_xml),
+        _channel(f'{SITE_NAME} — Latest Jobs', f'Latest government job notifications from {SITE_URL}', jobs_xml, 'feed/jobs.xml'),
         encoding='utf-8'
     )
     (feed_dir / 'results.xml').write_text(
-        _channel(f'{SITE_NAME} — Results', f'Latest exam results from {SITE_URL}', results_xml),
+        _channel(f'{SITE_NAME} — Results', f'Latest exam results from {SITE_URL}', results_xml, 'feed/results.xml'),
         encoding='utf-8'
     )
     (feed_dir / 'admit-cards.xml').write_text(
-        _channel(f'{SITE_NAME} — Admit Cards', f'Latest admit card releases from {SITE_URL}', admits_xml),
+        _channel(f'{SITE_NAME} — Admit Cards', f'Latest admit card releases from {SITE_URL}', admits_xml, 'feed/admit-cards.xml'),
         encoding='utf-8'
     )
     log.info(f'RSS feeds generated: feed.xml + feed/jobs|results|admit-cards.xml')
@@ -2868,7 +2874,7 @@ def generate_api_json(site_root: Path, jobs: list, results: list, admits: list) 
             'type':     kind,
             'category': cat,
             'date':     item.get('last_date') or item.get('result_date') or item.get('admit_release') or '',
-            'url':      f'{SITE_URL}/{kind}s/{cat}/{slug}.html',
+            'url':      f'{SITE_URL}/{"admit-cards" if kind == "admit" else kind + "s"}/{cat}/{slug}.html',
         }
 
     payload = {
