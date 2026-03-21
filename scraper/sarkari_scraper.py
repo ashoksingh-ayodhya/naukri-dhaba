@@ -440,6 +440,9 @@ def to_public_url(url: str) -> str:
     embedded = _extract_embedded_official_url(normalized)
     if embedded:
         return embedded
+    resolved = _resolve_source_redirect(normalized)
+    if resolved:
+        return resolved
     return ''
 
 
@@ -462,19 +465,75 @@ def _extract_embedded_official_url(url: str) -> str:
     return ''
 
 
+# Cache for resolved redirects to avoid repeat HEAD requests
+_redirect_cache: dict[str, str] = {}
+
+
+def _resolve_source_redirect(url: str) -> str:
+    """Follow a source-site URL (e.g. sarkariresult.com/xxx) via HEAD request
+    to discover the actual official destination URL.
+
+    Source sites wrap official links in their own redirect pages. This follows
+    the redirect chain (without downloading the body) to find where it lands.
+    Returns the final URL if it's an official site, else ''.
+    """
+    if not url or not is_source_url(url):
+        return ''
+    if url in _redirect_cache:
+        return _redirect_cache[url]
+
+    try:
+        # Use HEAD with allow_redirects to follow the chain cheaply
+        r = _session.head(url, timeout=8, allow_redirects=True, proxies=_NO_PROXY)
+        final = r.url
+        if final and final != url and is_official_url(final):
+            _redirect_cache[url] = final
+            log.info(f'  [resolve] {url[:60]}... -> {final}')
+            return final
+        # Some sites use JS redirects — check Location header on 3xx even if
+        # allow_redirects followed them already
+        if r.status_code in (301, 302, 303, 307, 308):
+            loc = r.headers.get('Location', '')
+            if loc and is_official_url(loc):
+                _redirect_cache[url] = loc
+                return loc
+    except Exception as exc:
+        log.debug(f'  [resolve] HEAD failed for {url}: {exc}')
+
+    # Also try GET with stream=True (some servers don't support HEAD)
+    try:
+        r = _session.get(url, timeout=8, allow_redirects=True, stream=True, proxies=_NO_PROXY)
+        final = r.url
+        r.close()
+        if final and final != url and is_official_url(final):
+            _redirect_cache[url] = final
+            log.info(f'  [resolve] {url[:60]}... -> {final}')
+            return final
+    except Exception as exc:
+        log.debug(f'  [resolve] GET failed for {url}: {exc}')
+
+    _redirect_cache[url] = ''
+    return ''
+
+
 def primary_cta_url(url: str, source_detail_url: str) -> str:
     if is_public_redirect(url):
         return ''
     normalized = normalize_url(url)
     if is_public_redirect(normalized):
         return ''
+    # 1. Direct official URL — use as-is
     official = official_url_or_empty(normalized)
     if official:
         return official
-    # Try to extract official URL embedded in source redirect parameters
+    # 2. Extract official URL from query params of source redirect
     embedded = _extract_embedded_official_url(normalized)
     if embedded:
         return embedded
+    # 3. Follow the source-site redirect via HTTP to find actual destination
+    resolved = _resolve_source_redirect(normalized)
+    if resolved:
+        return resolved
     return ''
 
 
@@ -1406,13 +1465,21 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
                     lbl = sanitize(label or link_text) or 'Official Link'
                     d['extra_links'].append({'label': lbl.title(), 'url': href})
 
-    # ── Deduplicate extra_links ────────────────────────────
+    # ── Resolve & deduplicate extra_links ─────────────────
     seen_urls = set()
     unique_links = []
     for lnk in d['extra_links']:
-        if lnk['url'] not in seen_urls:
-            seen_urls.add(lnk['url'])
-            unique_links.append(lnk)
+        raw = lnk['url']
+        # Resolve source-site URLs to their official destinations
+        resolved = official_url_or_empty(raw)
+        if not resolved:
+            resolved = _extract_embedded_official_url(raw)
+        if not resolved:
+            resolved = _resolve_source_redirect(raw)
+        url = resolved or raw
+        if url and url != '#' and url not in seen_urls and not is_source_url(url):
+            seen_urls.add(url)
+            unique_links.append({'label': lnk['label'], 'url': url})
     d['extra_links'] = unique_links
 
     # ── Full-page anchor scan as fallback ─────────────────
