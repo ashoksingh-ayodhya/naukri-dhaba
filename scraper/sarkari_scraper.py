@@ -1156,6 +1156,7 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
 def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) -> list[dict]:
     """Extract all rows from a listing page. Works across all supported sources."""
     items = []
+    skipped_titles = []
 
     # Try several known wrapper selectors in priority order.
     # Covers sarkariresult (TableLi/post-list) table-based layout.
@@ -1217,6 +1218,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
             continue
 
         if not kind_matches_title(title, page_type):
+            skipped_titles.append(title[:80])
             continue
 
         items.append({
@@ -1228,7 +1230,9 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
             'page_type':  page_type,
         })
 
-    log.info(f'  Listing parser found {len(items)} raw rows')
+    log.info(f'  Listing parser found {len(items)} raw rows (skipped {len(skipped_titles)} non-matching titles)')
+    if skipped_titles:
+        log.info(f'  Skipped titles sample: {skipped_titles[:5]}')
     if len(items) <= 3:
         items = parse_listing_from_anchors(soup, page_type)
         log.info(f'  Anchor fallback found {len(items)} raw rows')
