@@ -24,6 +24,16 @@ function initFooter(){
   +'<div class="footer__bottom"><p>&copy; 2026 Naukri Dhaba. All rights reserved.</p>'
   +'<p>Disclaimer: We are not affiliated with any government organization. We only provide information.</p></div></div>';
 }
+function cleanPlaceholders(){
+  var map={'Check Notification':'Yet to be announced','As per Schedule':'Yet to be announced','As per Government Norms':'Yet to be announced'};
+  // Fix info-grid values, table cells, card text, role snapshot
+  document.querySelectorAll('.info-item__value, td, .card p, ul li').forEach(function(el){
+    var t=el.textContent.trim();
+    if(map[t])el.textContent=map[t];
+    // Fix nan-nan Years
+    if(/nan[–-]nan/i.test(t))el.textContent='Yet to be announced';
+  });
+}
 function labelDates(){
   document.querySelectorAll('.card p').forEach(function(p){
     var t=p.textContent.trim();
@@ -32,7 +42,7 @@ function labelDates(){
   });
 }
 document.addEventListener('DOMContentLoaded',function(){
-  initTheme();initFooter();labelDates();
+  initTheme();initFooter();cleanPlaceholders();labelDates();
   document.querySelectorAll('.nav--mobile a').forEach(function(a){a.addEventListener('click',closeMobileMenu);});
   var inp=document.getElementById('search-input');
   if(inp){
