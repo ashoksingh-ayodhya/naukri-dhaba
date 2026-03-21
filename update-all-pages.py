@@ -1080,7 +1080,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
     <meta property="og:description" content="{og_desc}">
     <meta property="og:url" content="{canonical_url}">
     <meta property="og:site_name" content="{SITE_NAME}">
-    <meta property="og:locale" content="hi_IN">
+    <meta property="og:locale" content="en_IN">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{og_title}">
