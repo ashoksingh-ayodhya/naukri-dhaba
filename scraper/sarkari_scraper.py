@@ -39,7 +39,7 @@ import argparse
 from datetime import datetime, date
 from html import escape
 from pathlib import Path
-from urllib.parse import quote, urljoin, urlparse
+from urllib.parse import quote, urljoin, urlparse, parse_qs
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -146,30 +146,34 @@ SEO_KW = {
 # Used as a fallback when no specific apply/result/admit URL is extracted from source pages.
 # Order matters: more-specific keys first, so 'UPSSSC' matches before 'SSC'.
 BOARD_PORTALS: dict[str, str] = {
+    # ── Public Service Commissions ──
     'UPSSSC':  'https://upsssc.gov.in',
     'UPSC':    'https://upsc.gov.in',
     'SSC':     'https://ssc.nic.in',
-    'SBI':     'https://sbi.co.in/careers',
-    'IBPS':    'https://www.ibps.in',
-    'RBI':     'https://www.rbi.org.in/Scripts/Vacancies.aspx',
-    'NABARD':  'https://www.nabard.org/career.aspx',
-    'RRB':     'https://www.rrbcdg.gov.in',
-    'RRC':     'https://www.rrcb.gov.in',
-    'DRDO':    'https://www.drdo.gov.in/careers',
-    'CISF':    'https://cisfrectt.in',
-    'BSF':     'https://bsf.gov.in/recruitment.html',
-    'CRPF':    'https://www.crpf.gov.in/Recruitment.htm',
-    'NVS':     'https://navodaya.gov.in/nvs/en/Recruitment',
-    'NTA':     'https://nta.ac.in',
     'BPSC':    'https://bpsc.bih.nic.in',
     'UPPSC':   'https://uppsc.up.nic.in',
     'MPPSC':   'https://mppsc.mp.gov.in',
     'RPSC':    'https://rpsc.rajasthan.gov.in',
     'JPSC':    'https://www.jpsc.gov.in',
     'HSSC':    'https://hssc.gov.in',
+    'HPSC':    'https://hpsc.gov.in',
     'JSSC':    'https://jssc.nic.in',
     'PPSC':    'https://ppsc.gov.in',
+    # ── Banking / Finance ──
+    'SBI':     'https://sbi.co.in/careers',
+    'IBPS':    'https://www.ibps.in',
+    'RBI':     'https://www.rbi.org.in/Scripts/Vacancies.aspx',
+    'NABARD':  'https://www.nabard.org/career.aspx',
     'LIC':     'https://licindia.in/Bottom-Links/Recruitment',
+    'ECGC':    'https://www.ecgc.in',
+    # ── Railways ──
+    'RRB':     'https://www.rrbcdg.gov.in',
+    'RRC':     'https://www.rrcb.gov.in',
+    # ── Defence / Police ──
+    'DRDO':    'https://www.drdo.gov.in/careers',
+    'CISF':    'https://cisfrectt.in',
+    'BSF':     'https://bsf.gov.in/recruitment.html',
+    'CRPF':    'https://www.crpf.gov.in/Recruitment.htm',
     'AFCAT':   'https://afcat.cdac.in',
     'HAL':     'https://hal-india.co.in/Career',
     'ARMY':    'https://joinindianarmy.nic.in',
@@ -177,6 +181,94 @@ BOARD_PORTALS: dict[str, str] = {
     'IAF':     'https://airmenselection.cdac.in',
     'NDA':     'https://upsc.gov.in',
     'CDS':     'https://upsc.gov.in',
+    'ASSAM RIFLES': 'https://assamrifles.gov.in',
+    'DGAFMS':  'https://dgafms.gov.in',
+    'MHA':     'https://www.mha.gov.in',
+    # ── Education boards ──
+    'CBSE':    'https://www.cbse.gov.in',
+    'CISCE':   'https://www.cisce.org',
+    'ICSE':    'https://www.cisce.org',
+    'BSEB':    'https://biharboardonline.bihar.gov.in',
+    'BIHAR BOARD': 'https://biharboardonline.bihar.gov.in',
+    'BSEH':    'https://bseh.org.in',
+    'HARYANA BOARD': 'https://bseh.org.in',
+    'HBSE':    'https://bseh.org.in',
+    'CGBSE':   'https://cgbse.nic.in',
+    'CHHATTISGARH BOARD': 'https://cgbse.nic.in',
+    'JAC':     'https://jac.jharkhand.gov.in',
+    'JHARKHAND BOARD': 'https://jac.jharkhand.gov.in',
+    'MAHARASHTRA BOARD': 'https://mahahsscboard.in',
+    'MP BOARD': 'https://mpbse.nic.in',
+    'MPBSE':   'https://mpbse.nic.in',
+    'RAJASTHAN BOARD': 'https://rajeduboard.rajasthan.gov.in',
+    'RBSE':    'https://rajeduboard.rajasthan.gov.in',
+    'UP BOARD': 'https://upmsp.edu.in',
+    'UPMSP':   'https://upmsp.edu.in',
+    'UTTARAKHAND BOARD': 'https://ubse.uk.gov.in',
+    'UBSE':    'https://ubse.uk.gov.in',
+    'UP MADARSA': 'https://madarsaboard.upsdc.gov.in',
+    # ── NTA exams ──
+    'NTA':     'https://nta.ac.in',
+    'CUET':    'https://cuet.nta.nic.in',
+    'JEE':     'https://jeemain.nta.ac.in',
+    'NEET':    'https://neet.nta.nic.in',
+    'GATE':    'https://gate2025.iitr.ac.in',
+    'GPAT':    'https://gpat.nta.nic.in',
+    'CTET':    'https://ctet.nic.in',
+    'CLAT':    'https://consortiumofnlus.ac.in',
+    'IIT JAM': 'https://jam.iitb.ac.in',
+    'NCHMJEE': 'https://nchmjee.nta.nic.in',
+    'NTET':    'https://nta.ac.in',
+    # ── Universities / Institutions ──
+    'AIIMS':   'https://aiimsexams.ac.in',
+    'NORCET':  'https://aiimsexams.ac.in',
+    'BHU':     'https://www.bhu.ac.in',
+    'ALLAHABAD UNIVERSITY': 'https://www.allduniv.ac.in',
+    'CIPET':   'https://www.cipet.gov.in',
+    'DUVASU':  'https://www.duvasu.org',
+    'IERT':    'https://iert.ac.in',
+    'UPBED':   'https://www.lkouniv.ac.in',
+    'UP CNET': 'https://www.lkouniv.ac.in',
+    'UP CPET': 'https://www.lkouniv.ac.in',
+    'UPCATET': 'https://upcatet.org',
+    'JEECUP':  'https://jeecup.admissions.nic.in',
+    'UP POLYTECHNIC': 'https://jeecup.admissions.nic.in',
+    'UP GNM':  'https://upsmfac.org',
+    'UPGET':   'https://upsmfac.org',
+    'UP RTE':  'https://rte25.upsdc.gov.in',
+    # ── Autonomous bodies ──
+    'NVS':     'https://navodaya.gov.in/nvs/en/Recruitment',
+    'KVS':     'https://kvsangathan.nic.in',
+    'EMRS':    'https://emrs.tribal.gov.in',
+    'INDIA POST': 'https://indiapostgdsonline.gov.in',
+    'GDS':     'https://indiapostgdsonline.gov.in',
+    'IOCL':    'https://iocl.com',
+    'NCL':     'https://www.nclcil.in',
+    'CIL':     'https://www.coalindia.in',
+    'AAI':     'https://www.aai.aero',
+    # ── Courts ──
+    'SUPREME COURT': 'https://main.sci.gov.in',
+    'SCI':     'https://main.sci.gov.in',
+    'PATNA HIGH COURT': 'https://patnahighcourt.gov.in',
+    # ── State-specific ──
+    'BTSC':    'https://btsc.bih.nic.in',
+    'OFSS':    'https://ofssbihar.in',
+    'BIHAR':   'https://bceceboard.bihar.gov.in',
+    'MPESB':   'https://peb.mp.gov.in',
+    'RSSB':    'https://rsmssb.rajasthan.gov.in',
+    'RAJASTHAN PTET': 'https://ptetdcb.com',
+    'BIHAR DELED': 'https://deledbihar.com',
+    'BIHAR ITICAT': 'https://bceceboard.bihar.gov.in',
+    'SWD UP':  'https://socialwelfare.up.gov.in',
+    'JEE ADVANCED': 'https://jeeadv.ac.in',
+    # ── CSIR labs ──
+    'CSIR-CDRI': 'https://cdri.res.in',
+    'CSIR CDRI': 'https://cdri.res.in',
+    'CSIR-CRRI': 'https://crridom.gov.in',
+    'CSIR CRRI': 'https://crridom.gov.in',
+    'CSIR-IITR': 'https://iitr.res.in',
+    'CSIR IITR': 'https://iitr.res.in',
+    'CSIR':    'https://www.csir.res.in',
 }
 
 # Category-level fallback (less specific than BOARD_PORTALS)
@@ -187,7 +279,7 @@ OFFICIAL_PORTALS: dict[str, str] = {
     'banking':    'https://www.ibps.in',
     'police':     'https://www.crpf.gov.in/Recruitment.htm',
     'defence':    'https://joinindianarmy.nic.in',
-    'government': 'https://www.india.gov.in',
+    'government': '',
 }
 
 
@@ -342,7 +434,32 @@ def to_public_url(url: str) -> str:
         return ''
     if is_public_redirect(normalized):
         return ''
-    return official_url_or_empty(normalized)
+    official = official_url_or_empty(normalized)
+    if official:
+        return official
+    embedded = _extract_embedded_official_url(normalized)
+    if embedded:
+        return embedded
+    return ''
+
+
+def _extract_embedded_official_url(url: str) -> str:
+    """Extract embedded official URL from source-site redirect URLs.
+
+    Source sites like sarkariresult.com wrap official links in redirects,
+    e.g. sarkariresult.com/redirect.php?url=https://upsc.gov.in/apply.
+    This function extracts the embedded target URL if it is an official site.
+    """
+    if not url:
+        return ''
+    parsed = urlparse(url)
+    qs = parse_qs(parsed.query)
+    for param in ('url', 'target', 'redirect', 'link', 'go', 'u', 'r', 'to'):
+        vals = qs.get(param, [])
+        for v in vals:
+            if is_official_url(v):
+                return v
+    return ''
 
 
 def primary_cta_url(url: str, source_detail_url: str) -> str:
@@ -354,6 +471,10 @@ def primary_cta_url(url: str, source_detail_url: str) -> str:
     official = official_url_or_empty(normalized)
     if official:
         return official
+    # Try to extract official URL embedded in source redirect parameters
+    embedded = _extract_embedded_official_url(normalized)
+    if embedded:
+        return embedded
     return ''
 
 
@@ -1576,6 +1697,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     # JSON-LD
     _valid_through = to_iso_date(d['last_date'])
     _org_name = cat.title() + ' Recruitment' if cat != 'government' else dept or 'Government of India'
+    _org_url = official_portal_for(title, cat) or SITE_URL
     ld_job_dict = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
@@ -1583,12 +1705,17 @@ def build_job_page(d: dict) -> tuple[str, str]:
         "description": desc,
         "datePosted": date.today().isoformat(),
         "employmentType": "FULL_TIME",
-        "hiringOrganization": {"@type": "Organization", "name": _org_name, "sameAs": SITE_URL},
+        "hiringOrganization": {"@type": "Organization", "name": _org_name, "sameAs": _org_url},
         "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "India", "addressRegion": "India", "addressCountry": "IN"}},
-        "url": canon
+        "url": canon,
+        "directApply": bool(d.get('apply_url'))
     }
     if _valid_through and _valid_through >= date.today().isoformat():
         ld_job_dict["validThrough"] = _valid_through
+    if d.get('salary') and d['salary'] != 'Check Notification':
+        ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary']}}
+    if d.get('vacancy') and d['vacancy'] != 'Check Notification':
+        ld_job_dict["totalJobOpenings"] = d['vacancy']
     ld_job = json.dumps(ld_job_dict, ensure_ascii=False)
 
     ld_bc = json.dumps({

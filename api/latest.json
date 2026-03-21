@@ -28,14 +28,6 @@
       "url": "https://naukridhaba.in/jobs/ssc/bihar-police-bpssc-havildar-clerk-home-guard-online-form-2026.html"
     },
     {
-      "title": "SSC Selection Post 13th Result 2026",
-      "dept": "SSC",
-      "type": "job",
-      "category": "ssc",
-      "date": "23/06/2025 🔴",
-      "url": "https://naukridhaba.in/jobs/ssc/ssc-selection-post-13th-result-2026.html"
-    },
-    {
       "title": "HSSC Stenographer Online Form 2026",
       "dept": "SSC",
       "type": "job",
@@ -87,9 +79,9 @@
       "title": "UP Police Constable Edit Correction Form 2026",
       "dept": "Government",
       "type": "job",
-      "category": "government",
+      "category": "police",
       "date": "30/01/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/up-police-constable-edit-correction-form-2026.html"
+      "url": "https://naukridhaba.in/jobs/police/up-police-constable-edit-correction-form-2026.html"
     },
     {
       "title": "UP RTE Nursery, LKG, UKG, Class 1 Free Admissions Online Form 2026",
@@ -105,7 +97,7 @@
       "type": "job",
       "category": "government",
       "date": "10/03/2026",
-      "url": "https://naukridhaba.in/jobs/government/upbed-2026-online-form-2026.html"
+      "url": "https://naukridhaba.in/jobs/government/upbed-2026-online-form.html"
     },
     {
       "title": "Yantra India Ltd YIL Ordnance Factory Apprentices Online Form 2026",
@@ -129,7 +121,7 @@
       "type": "job",
       "category": "government",
       "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/iert-admissions-2026-online-form-2026.html"
+      "url": "https://naukridhaba.in/jobs/government/iert-admissions-2026-online-form.html"
     },
     {
       "title": "NTA CUET PG 2026 Correction / Edit Form 2026",
@@ -137,7 +129,7 @@
       "type": "job",
       "category": "government",
       "date": "20/01/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/nta-cuet-pg-2026-correction-edit-form-2026.html"
+      "url": "https://naukridhaba.in/jobs/government/nta-cuet-pg-2026-correction-edit-form.html"
     },
     {
       "title": "Haryana HPSC HCS Online Form 2026",
@@ -230,14 +222,6 @@
       "url": "https://naukridhaba.in/results/ssc/bihar-bssc-field-assistant-result-2026.html"
     },
     {
-      "title": "Railway RRB Assistant Loco Pilot ALP Result 2025 with Marks / Score Card",
-      "dept": "RAILWAY",
-      "type": "result",
-      "category": "railway",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/railway/railway-rrb-assistant-loco-pilot-alp-result-2025-with-marks-score-card.html"
-    },
-    {
       "title": "RRB Junior Engineer JE Result 2025",
       "dept": "RAILWAY",
       "type": "result",
@@ -278,14 +262,6 @@
       "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
-      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
-    },
-    {
       "title": "NTA NIFT 2025 Result / Score Card",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -313,9 +289,9 @@
       "title": "RSSB NHM Contractual Various Post Result 2026",
       "dept": "RSSB",
       "type": "result",
-      "category": "police",
+      "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
+      "url": "https://naukridhaba.in/results/government/rssb-nhm-contractual-various-post-result-2026.html"
     },
     {
       "title": "Patna High Court Stenographer 2025 Result",
@@ -324,16 +300,40 @@
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
+    },
+    {
+      "title": "SSC Selection Post 13th Result 2026",
+      "dept": "SSC",
+      "type": "job",
+      "category": "ssc",
+      "date": "23/06/2025 🔴",
+      "url": "https://naukridhaba.in/results/ssc/ssc-selection-post-13th-result-2026.html"
+    },
+    {
+      "title": "Railway RRB Assistant Loco Pilot ALP Result 2025 with Marks / Score Card",
+      "dept": "Railway",
+      "type": "result",
+      "category": "railway",
+      "date": "",
+      "url": "https://naukridhaba.in/results/railway/railway-rrb-assistant-loco-pilot-alp-result-2025-with-marks-.html"
+    },
+    {
+      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
+      "dept": "Government",
+      "type": "result",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-202.html"
     }
   ],
-  "admits": [
+  "admit_cards": [
     {
       "title": "UPSC IES / ISS Admit Card 2025",
       "dept": "UPSC",
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-ies-iss-admit-card-2025.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-ies-iss-admit-card-2025.html"
     },
     {
       "title": "UPSC IAS / IFS Pre Admit Card 2025",
@@ -341,7 +341,7 @@
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-ias-ifs-pre-admit-card-2025.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-ias-ifs-pre-admit-card-2025.html"
     },
     {
       "title": "UPSC NDA I 2025 Admit Card",
@@ -349,7 +349,7 @@
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-nda-i-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-nda-i-2025-admit-card.html"
     },
     {
       "title": "UPSC Engineering Services Pre 2025 Admit Card",
@@ -357,7 +357,7 @@
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-engineering-services-pre-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2025-admit-card.html"
     },
     {
       "title": "UPSC Engineering Services Pre 2026 Admit Card",
@@ -365,7 +365,7 @@
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-engineering-services-pre-2026-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2026-admit-card.html"
     },
     {
       "title": "UPSC Geo Scientist 2025 Admit Card",
@@ -373,7 +373,7 @@
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-geo-scientist-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-geo-scientist-2025-admit-card.html"
     },
     {
       "title": "UPSC Combined Geo Scientist Pre Admit Card 2026",
@@ -381,7 +381,7 @@
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-combined-geo-scientist-pre-admit-card-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-combined-geo-scientist-pre-admit-card-2026.html"
     },
     {
       "title": "UPSC CDS I 2025 Admit Card",
@@ -389,7 +389,7 @@
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/upsc/upsc-cds-i-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-cds-i-2025-admit-card.html"
     },
     {
       "title": "SSC MTS, Havaldar 2025 Admit Card",
@@ -397,15 +397,7 @@
       "type": "admit",
       "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/ssc/ssc-mts-havaldar-2025-admit-card.html"
-    },
-    {
-      "title": "Bihar Police BPSSC Sub Inspector SI Prohibition Admit Card 2025",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/ssc/bihar-police-bpssc-sub-inspector-si-prohibition-admit-card-2025.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
     },
     {
       "title": "Bihar Police BPSSC Enforcement SI PET Admit Card 2026",
@@ -413,7 +405,7 @@
       "type": "admit",
       "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admits/ssc/bihar-police-bpssc-enforcement-si-pet-admit-card-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/bihar-police-bpssc-enforcement-si-pet-admit-card-2026.html"
     },
     {
       "title": "Railway RRB Section Controller Admit Card 2026",
@@ -421,7 +413,7 @@
       "type": "admit",
       "category": "railway",
       "date": "",
-      "url": "https://naukridhaba.in/admits/railway/railway-rrb-section-controller-admit-card-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/railway/railway-rrb-section-controller-admit-card-2026.html"
     },
     {
       "title": "IBPS RRB 14th Office Assistant Mains Admit Card",
@@ -429,7 +421,7 @@
       "type": "admit",
       "category": "railway",
       "date": "",
-      "url": "https://naukridhaba.in/admits/railway/ibps-rrb-14th-office-assistant-mains-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/railway/ibps-rrb-14th-office-assistant-mains-admit-card.html"
     },
     {
       "title": "SCI Junior Court Assistant Admit Card 2025",
@@ -437,7 +429,7 @@
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/government/sci-junior-court-assistant-admit-card-2025.html"
+      "url": "https://naukridhaba.in/admit-cards/government/sci-junior-court-assistant-admit-card-2025.html"
     },
     {
       "title": "UP CPET 2025 Admit Card",
@@ -445,7 +437,7 @@
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-cpet-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/government/up-cpet-2025-admit-card.html"
     },
     {
       "title": "UP CNET 2025 Admit Card",
@@ -453,7 +445,7 @@
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-cnet-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/government/up-cnet-2025-admit-card.html"
     },
     {
       "title": "RPSC Assistant Engineer AE 2024 Main Exam City / Admit Card",
@@ -461,15 +453,15 @@
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/government/rpsc-assistant-engineer-ae-2024-main-exam-city-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/government/rpsc-assistant-engineer-ae-2024-main-exam-city-admit-card.html"
     },
     {
       "title": "RSSB NHM Various Post Admit Card 2025",
       "dept": "RSSB",
       "type": "admit",
-      "category": "police",
+      "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/police/rssb-nhm-various-post-admit-card-2025.html"
+      "url": "https://naukridhaba.in/admit-cards/government/rssb-nhm-various-post-admit-card-2025.html"
     },
     {
       "title": "UPBED 2025 Admit Card",
@@ -477,7 +469,7 @@
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/government/upbed-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/government/upbed-2025-admit-card.html"
     },
     {
       "title": "UP Polytechnic JEECUP 2025 Admit Card",
@@ -485,7 +477,15 @@
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-polytechnic-jeecup-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/government/up-polytechnic-jeecup-2025-admit-card.html"
+    },
+    {
+      "title": "Bihar Police BPSSC Sub Inspector SI Prohibition Admit Card 2025",
+      "dept": "Ssc",
+      "type": "admit_card",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/bihar-police-bpssc-sub-inspector-si-prohibition-admit-card-2.html"
     }
   ]
 }
