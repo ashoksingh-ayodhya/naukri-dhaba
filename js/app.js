@@ -25,11 +25,10 @@ function initFooter(){
   +'<p>Disclaimer: We are not affiliated with any government organization. We only provide information.</p></div></div>';
 }
 function labelDates(){
-  // Add "Last Date: " to card date paragraphs that show raw dates
   document.querySelectorAll('.card p').forEach(function(p){
     var t=p.textContent.trim();
     if(/^\d{2}\/\d{2}\/\d{4}/.test(t)&&t.indexOf('Last Date')===-1)p.textContent='Last Date: '+t;
-    else if(/^Check /i.test(t)&&t.indexOf('Status')===-1)p.textContent='Status: '+t;
+    else if(/^Yet to be/i.test(t))p.textContent='Last Date: '+t;
   });
 }
 document.addEventListener('DOMContentLoaded',function(){

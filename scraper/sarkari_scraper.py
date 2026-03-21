@@ -572,7 +572,7 @@ def google_search_url(title: str, suffix: str = '') -> str:
 
 
 def parse_display_date(text: str) -> str:
-    return clean(text) or 'Check Notification'
+    return clean(text) or 'Yet to be announced'
 
 
 def to_iso_date(text: str) -> str | None:
@@ -630,15 +630,15 @@ def build_job_overview(d: dict) -> str:
     posts = str(d.get('total_posts') or '').strip()
     parts = [
         f"{title} is listed under {dept} recruitment updates on {SITE_NAME}.",
-        f"The current application deadline is {d.get('last_date', 'Check Notification')}.",
+        f"The current application deadline is {d.get('last_date', 'Yet to be announced')}.",
         f"Total advertised posts: {posts}." if posts else '',
         f"Baseline age range in the extracted notice is {d.get('age_min', 18)} to {d.get('age_max', 35)} years.",
         "Use the official notification and authority portal below to verify the latest eligibility, category relaxation, and document rules before applying.",
     ]
     bullets = [
         f"<li><strong>Department:</strong> {dept}</li>",
-        f"<li><strong>Application window:</strong> {d.get('app_begin', 'Check Notification')} to {d.get('last_date', 'Check Notification')}</li>",
-        f"<li><strong>Qualification:</strong> {d.get('qualification', 'Check Notification')}</li>",
+        f"<li><strong>Application window:</strong> {d.get('app_begin', 'Yet to be announced')} to {d.get('last_date', 'Yet to be announced')}</li>",
+        f"<li><strong>Qualification:</strong> {d.get('qualification', 'Yet to be announced')}</li>",
         f"<li><strong>Selection context:</strong> Track updates here, but submit only on the official authority site.</li>",
     ]
     return (
@@ -655,12 +655,12 @@ def build_result_overview(d: dict) -> str:
     dept = clean(d.get('dept', 'Government'))
     parts = [
         f"{title} has been added to the {SITE_NAME} result tracker for {dept}.",
-        f"The extracted result update date is {d.get('result_date', 'Check Notification')}.",
+        f"The extracted result update date is {d.get('result_date', 'Yet to be announced')}.",
         "Use the official result portal or scorecard link below to validate roll number lookup, cutoff, and final selection status.",
     ]
     bullets = [
         f"<li><strong>Authority:</strong> {dept}</li>",
-        f"<li><strong>Result date:</strong> {d.get('result_date', 'Check Notification')}</li>",
+        f"<li><strong>Result date:</strong> {d.get('result_date', 'Yet to be announced')}</li>",
         f"<li><strong>Best next step:</strong> keep your registration details ready before opening the official result portal.</li>",
     ]
     return (
@@ -677,13 +677,13 @@ def build_admit_overview(d: dict) -> str:
     dept = clean(d.get('dept', 'Government'))
     parts = [
         f"{title} is available in the {SITE_NAME} admit-card tracker for {dept}.",
-        f"The extracted release date is {d.get('admit_release', 'Check Notification')}.",
+        f"The extracted release date is {d.get('admit_release', 'Yet to be announced')}.",
         f"The current exam schedule reference is {d.get('exam_date', 'As per Schedule')}.",
         "Verify reporting time, exam city, and document rules on the official authority page before travelling.",
     ]
     bullets = [
         f"<li><strong>Authority:</strong> {dept}</li>",
-        f"<li><strong>Release date:</strong> {d.get('admit_release', 'Check Notification')}</li>",
+        f"<li><strong>Release date:</strong> {d.get('admit_release', 'Yet to be announced')}</li>",
         f"<li><strong>Exam schedule:</strong> {d.get('exam_date', 'As per Schedule')}</li>",
     ]
     return (
@@ -699,13 +699,13 @@ def build_job_faq(d: dict) -> tuple[str, str]:
     """Return (faq_html, faq_json_ld) for a job detail page."""
     title  = normalize_title(d.get('title', ''))
     dept   = clean(d.get('dept', 'Government'))
-    last_d = d.get('last_date', 'Check Notification')
+    last_d = d.get('last_date', 'Yet to be announced')
     posts  = str(d.get('total_posts') or '').strip()
     age_min = d.get('age_min', 18)
     age_max = d.get('age_max', 35)
     fee_g  = d.get('fee_general', '')
     fee_s  = d.get('fee_sc_st', '')
-    qual   = d.get('qualification', 'Check Notification')
+    qual   = d.get('qualification', 'Yet to be announced')
 
     qas = [
         (
@@ -762,11 +762,11 @@ def build_result_faq(d: dict) -> tuple[str, str]:
     """Return (faq_html, faq_json_ld) for a result detail page."""
     title   = normalize_title(d.get('title', ''))
     dept    = clean(d.get('dept', 'Government'))
-    r_date  = d.get('result_date', 'Check Notification')
+    r_date  = d.get('result_date', 'Yet to be announced')
 
     date_answer = (
         f"The {title} was declared on {r_date}. Candidates can check the result using the official link provided on this page."
-        if r_date not in ('Check Notification', '')
+        if r_date not in ('Yet to be announced', '')
         else f"The {title} has been declared. Visit the official link on this page to check your result."
     )
     qas = [
@@ -820,7 +820,7 @@ def build_admit_faq(d: dict) -> tuple[str, str]:
     """Return (faq_html, faq_json_ld) for an admit card detail page."""
     title    = normalize_title(d.get('title', ''))
     dept     = clean(d.get('dept', 'Government'))
-    release  = d.get('admit_release', 'Check Notification')
+    release  = d.get('admit_release', 'Yet to be announced')
     exam_dt  = d.get('exam_date', 'As per Schedule')
 
     qas = [
@@ -1294,7 +1294,7 @@ def parse_listing_from_anchors(soup: BeautifulSoup, page_type: str) -> list[dict
         items.append({
             'title': normalize_title(title),
             'dept': infer_dept(title),
-            'date_str': 'Check Notification',
+            'date_str': 'Yet to be announced',
             'detail_url': detail_url,
             'source_detail_url': detail_url,
             'page_type': page_type,
@@ -1361,18 +1361,18 @@ def parse_detail(soup: BeautifulSoup, item: dict) -> dict:
     d.setdefault('scorecard_url',     '#')
     d.setdefault('admit_url',         '#')
     d.setdefault('source_detail_url', d.get('detail_url', ''))
-    d.setdefault('app_begin',         'Check Notification')
-    d.setdefault('last_date',         d.get('date_str', 'Check Notification'))
-    d.setdefault('exam_date',         'As per Schedule')
+    d.setdefault('app_begin',         'Yet to be announced')
+    d.setdefault('last_date',         d.get('date_str', 'Yet to be announced'))
+    d.setdefault('exam_date',         'Yet to be announced')
     d.setdefault('result_date',       d.get('date_str', date.today().strftime('%d/%m/%Y')))
     d.setdefault('admit_release',     d.get('date_str', date.today().strftime('%d/%m/%Y')))
     d.setdefault('total_posts',       '')
-    d.setdefault('age_min',           18)
-    d.setdefault('age_max',           35)
+    d.setdefault('age_min',           '')
+    d.setdefault('age_max',           '')
     d.setdefault('fee_general',       '')
     d.setdefault('fee_sc_st',         '')
-    d.setdefault('qualification',     'Check Notification')
-    d.setdefault('salary',            'As per Government Norms')
+    d.setdefault('qualification',     'Yet to be announced')
+    d.setdefault('salary',            'Yet to be announced')
     d.setdefault('extra_links',       [])    # [{label, url}]
     d.setdefault('download_links',    [])    # [{label, url}] — PDFs, syllabus, answer keys, etc.
 
@@ -1709,17 +1709,17 @@ def build_job_page(d: dict) -> tuple[str, str]:
     canon  = f'{SITE_URL}/{rel}'
     year   = date.today().year
 
-    posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
+    posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Yet to be announced'
     desc_parts = [f"{title} — official recruitment notification from {dept}."]
     if d.get('total_posts'):
         desc_parts.append(f"Total vacancies: {d['total_posts']}.")
-    if d.get('qualification') and d['qualification'] != 'Check Notification':
+    if d.get('qualification') and d['qualification'] != 'Yet to be announced':
         desc_parts.append(f"Qualification: {d['qualification']}.")
     if d.get('age_min') and d.get('age_max'):
         desc_parts.append(f"Age limit: {d['age_min']} to {d['age_max']} years.")
-    if d.get('app_begin') and d['app_begin'] != 'Check Notification':
+    if d.get('app_begin') and d['app_begin'] != 'Yet to be announced':
         desc_parts.append(f"Application start: {d['app_begin']}.")
-    if d.get('last_date') and d['last_date'] != 'Check Notification':
+    if d.get('last_date') and d['last_date'] != 'Yet to be announced':
         desc_parts.append(f"Last date to apply: {d['last_date']}.")
     desc_parts.append(f"Apply online at {SITE_NAME}.")
     desc = ' '.join(desc_parts)
@@ -1787,9 +1787,9 @@ def build_job_page(d: dict) -> tuple[str, str]:
     }
     if _valid_through and _valid_through >= date.today().isoformat():
         ld_job_dict["validThrough"] = _valid_through
-    if d.get('salary') and d['salary'] != 'Check Notification':
+    if d.get('salary') and d['salary'] != 'Yet to be announced':
         ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary']}}
-    if d.get('vacancy') and d['vacancy'] != 'Check Notification':
+    if d.get('vacancy') and d['vacancy'] != 'Yet to be announced':
         ld_job_dict["totalJobOpenings"] = d['vacancy']
     ld_job = json.dumps(ld_job_dict, ensure_ascii=False)
 
@@ -1847,7 +1847,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
         </div>
         <div class="info-item">
           <span class="info-item__label">👤 Age Limit</span>
-          <span class="info-item__value">{d["age_min"]}–{d["age_max"]} Years</span>
+          <span class="info-item__value">{str(d["age_min"]) + '–' + str(d["age_max"]) + ' Years' if d["age_min"] and d["age_max"] and str(d["age_min"]) not in ('nan', '') else 'Yet to be announced'}</span>
         </div>
         <div class="info-item">
           <span class="info-item__label">🎓 Qualification</span>
@@ -2025,7 +2025,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
 
       <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
         <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared</div>
-        {'<p style="color:#666;margin-bottom:1.5rem;">Result Date: ' + d["result_date"] + '</p>' if d["result_date"] not in ("Check Notification", "") else ''}
+        {'<p style="color:#666;margin-bottom:1.5rem;">Result Date: ' + d["result_date"] + '</p>' if d["result_date"] not in ("Yet to be announced", "") else ''}
         {check_btn}
         {scorecard_btn}
         <div style="margin-top:1rem;">
@@ -2495,20 +2495,20 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         elif dept.upper() == 'NTA':
             inferred = infer_dept(title)
             dept = inferred if inferred.upper() not in ('NTA', 'GOVERNMENT') else 'GOVERNMENT'
-        date_label = 'Check Notification'
+        date_label = 'Yet to be announced'
 
         actual_url = '/' + rel  # actual on-disk path, used to avoid slug mismatch
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
-            date_label = clean(match.group(1)) if match else 'Check Notification'
+            date_label = clean(match.group(1)) if match else 'Yet to be announced'
             entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
-            date_label = clean(match.group(1)) if match else 'Check Notification'
+            date_label = clean(match.group(1)) if match else 'Yet to be announced'
             entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
-            date_label = clean(match.group(1)) if match else 'Check Notification'
+            date_label = clean(match.group(1)) if match else 'Yet to be announced'
             entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url})
 
     return entries
