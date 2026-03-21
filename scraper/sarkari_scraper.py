@@ -2254,9 +2254,11 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             f'<td>{date_label}</td>'
             f'<td><a href="{path}" class="btn btn--small btn--primary">{btn}</a></td></tr>'
         )
+        posts_val = e.get('total_posts', '')
+        posts_tag = f' <span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:600;">{posts_val} Posts</span>' if posts_val and str(posts_val) not in ('', '0', 'Check Notification') else ''
         new_cards.append(
             f'<div class="card">'
-            f'<div class="card__header"><span class="badge">{dept}</span></div>'
+            f'<div class="card__header"><span class="badge">{dept}</span>{posts_tag}</div>'
             f'<h3 class="card__title">{title}</h3>'
             f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
             f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{btn}</a>'
