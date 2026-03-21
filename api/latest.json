@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-21T13:30:32Z",
+  "updated": "2026-03-21T14:01:08Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -100,36 +100,12 @@
       "url": "https://naukridhaba.in/jobs/government/rssb-forester-online-form-2026.html"
     },
     {
-      "title": "NTA CUET UG 2026 Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "04/02/2026 🔴",
-      "url": "https://naukridhaba.in/jobs/government/nta-cuet-ug-2026-online-form-2026.html"
-    },
-    {
       "title": "UP RTE Nursery, LKG, UKG, Class 1 Free Admissions Online Form 2026",
       "dept": "Government",
       "type": "job",
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/jobs/government/up-rte-nursery-lkg-ukg-class-1-free-admissions-online-form-2026.html"
-    },
-    {
-      "title": "NTA NCHMJEE 2026 Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "25/03/2026",
-      "url": "https://naukridhaba.in/jobs/government/nta-nchmjee-2026-online-form-2026.html"
-    },
-    {
-      "title": "NTA JEE MAIN Apply Online 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "25/02/2026",
-      "url": "https://naukridhaba.in/jobs/government/nta-jee-main-apply-online-2026.html"
     },
     {
       "title": "Rajasthan RSSB Women Supervisor Online Form 2026",
@@ -162,6 +138,30 @@
       "category": "government",
       "date": "03/03/2026",
       "url": "https://naukridhaba.in/jobs/government/yantra-india-ltd-yil-ordnance-factory-apprentices-online-form-2026.html"
+    },
+    {
+      "title": "IERT Admissions 2026 Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "30/04/2026",
+      "url": "https://naukridhaba.in/jobs/government/iert-admissions-2026-online-form-2026.html"
+    },
+    {
+      "title": "NTA CUET PG 2026 Correction / Edit Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "20/01/2026 🔴",
+      "url": "https://naukridhaba.in/jobs/government/nta-cuet-pg-2026-correction-edit-form-2026.html"
+    },
+    {
+      "title": "Haryana HPSC HCS Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "26/02/2026",
+      "url": "https://naukridhaba.in/jobs/government/haryana-hpsc-hcs-online-form-2026.html"
     }
   ],
   "results": [
@@ -230,6 +230,14 @@
       "url": "https://naukridhaba.in/results/ssc/bihar-bssc-field-assistant-result-2026.html"
     },
     {
+      "title": "Railway RRB Assistant Loco Pilot ALP Result 2025 with Marks / Score Card",
+      "dept": "RAILWAY",
+      "type": "result",
+      "category": "railway",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/railway/railway-rrb-assistant-loco-pilot-alp-result-2025-with-marks-score-card.html"
+    },
+    {
       "title": "RRB Junior Engineer JE Result 2025",
       "dept": "RAILWAY",
       "type": "result",
@@ -252,14 +260,6 @@
       "category": "railway",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/railway/railway-rrb-technician-grade-iii-result-2025.html"
-    },
-    {
-      "title": "Railway RRB Assistant Loco Pilot ALP Result 2025 with Marks / Score Card",
-      "dept": "RAILWAY",
-      "type": "result",
-      "category": "railway",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/railway/railway-rrb-assistant-loco-pilot-alp-result-2025-with-marks-score-card.html"
     },
     {
       "title": "MPESB MP Police Constable Result 2026",
@@ -440,6 +440,14 @@
       "url": "https://naukridhaba.in/admits/government/sci-junior-court-assistant-admit-card-2025.html"
     },
     {
+      "title": "Rajasthan PTET Admit Card 2025",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/rajasthan-ptet-admit-card-2025.html"
+    },
+    {
       "title": "UP CPET 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
@@ -456,36 +464,28 @@
       "url": "https://naukridhaba.in/admits/government/up-cnet-2025-admit-card.html"
     },
     {
+      "title": "RPSC Assistant Engineer AE 2024 Main Exam City / Admit Card",
+      "dept": "Government",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/government/rpsc-assistant-engineer-ae-2024-main-exam-city-admit-card.html"
+    },
+    {
+      "title": "RSSB NHM Various Post Admit Card 2025",
+      "dept": "RSSB",
+      "type": "admit",
+      "category": "police",
+      "date": "",
+      "url": "https://naukridhaba.in/admits/police/rssb-nhm-various-post-admit-card-2025.html"
+    },
+    {
       "title": "UPBED 2025 Admit Card",
       "dept": "GOVERNMENT",
       "type": "admit",
       "category": "government",
       "date": "",
       "url": "https://naukridhaba.in/admits/government/upbed-2025-admit-card.html"
-    },
-    {
-      "title": "UP Polytechnic JEECUP 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-polytechnic-jeecup-2025-admit-card.html"
-    },
-    {
-      "title": "UPPSC Computer Assistant Admit Card 2026",
-      "dept": "PPSC",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/uppsc-computer-assistant-admit-card-2026.html"
-    },
-    {
-      "title": "UP GNM Entrance Test UPGET 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admits/government/up-gnm-entrance-test-upget-2025-admit-card.html"
     }
   ]
 }
