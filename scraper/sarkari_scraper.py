@@ -1709,18 +1709,32 @@ def build_job_page(d: dict) -> tuple[str, str]:
     canon  = f'{SITE_URL}/{rel}'
     year   = date.today().year
 
-    posts_disp = str(d['total_posts']) if d.get('total_posts') else 'Check Notification'
-    desc_parts = [f"{title} — official recruitment notification from {dept}."]
-    if d.get('total_posts'):
-        desc_parts.append(f"Total vacancies: {d['total_posts']}.")
+    posts_val = str(d['total_posts']).strip() if d.get('total_posts') else ''
+    posts_disp = posts_val or 'Check Notification'
+    posts_num = int(posts_val) if posts_val.isdigit() else 0
+    # Engaging prefix based on vacancy count
+    if posts_num >= 10000:
+        seo_prefix = f'Mega Hiring: {posts_num:,}+ Vacancies'
+        h1_prefix = f'🔥 Mega Hiring — {posts_num:,} Posts'
+    elif posts_num >= 1000:
+        seo_prefix = f'Hiring Alert: {posts_num:,} Vacancies'
+        h1_prefix = f'📢 Hiring Alert — {posts_num:,} Posts'
+    elif posts_num > 0:
+        seo_prefix = f'{posts_num} Vacancies'
+        h1_prefix = f'📋 {posts_num} Posts'
+    else:
+        seo_prefix = ''
+        h1_prefix = ''
+    # SEO description
+    desc_parts = []
+    if seo_prefix:
+        desc_parts.append(f"{seo_prefix} — {title}!")
+    else:
+        desc_parts.append(f"{title} — official recruitment notification from {dept}.")
+    if d.get('last_date') and d['last_date'] != 'Check Notification':
+        desc_parts.append(f"Last date: {d['last_date']}.")
     if d.get('qualification') and d['qualification'] != 'Check Notification':
         desc_parts.append(f"Qualification: {d['qualification']}.")
-    if d.get('age_min') and d.get('age_max'):
-        desc_parts.append(f"Age limit: {d['age_min']} to {d['age_max']} years.")
-    if d.get('app_begin') and d['app_begin'] != 'Check Notification':
-        desc_parts.append(f"Application start: {d['app_begin']}.")
-    if d.get('last_date') and d['last_date'] != 'Check Notification':
-        desc_parts.append(f"Last date to apply: {d['last_date']}.")
     desc_parts.append(f"Apply online at {SITE_NAME}.")
     desc = ' '.join(desc_parts)
     _portal = official_portal_for(title, cat)
