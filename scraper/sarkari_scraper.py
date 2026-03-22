@@ -283,12 +283,14 @@ OFFICIAL_PORTALS: dict[str, str] = {
 }
 
 
+_BOARD_PORTALS_SORTED = sorted(BOARD_PORTALS.items(), key=lambda kv: len(kv[0]), reverse=True)
+
 def official_portal_for(title: str, cat: str) -> str:
     """Return the best known official govt portal URL for this exam/dept, or ''."""
     tu = title.upper()
-    # Use word-boundary regex to avoid substring false positives
-    # e.g. "LIC" must not match inside "POLICE"
-    for board, url in BOARD_PORTALS.items():
+    # Iterate longest keys first so "UPSSSC" matches before "SSC", "MPPSC" before "PPSC", etc.
+    # Word-boundary regex prevents substring false positives like "LIC" inside "POLICE".
+    for board, url in _BOARD_PORTALS_SORTED:
         if re.search(rf'\b{re.escape(board)}\b', tu):
             return url
     return OFFICIAL_PORTALS.get(cat, '')
