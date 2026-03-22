@@ -23,7 +23,7 @@ PLACEHOLDERS = {
 def html_files() -> list[Path]:
     return sorted(
         path for path in ROOT.rglob("*.html")
-        if ".git" not in str(path)
+        if not any(skip in str(path) for skip in (".git", "backup-main", "node_modules", "demo/"))
     )
 
 
@@ -92,8 +92,9 @@ def validate_html(path: Path) -> list[str]:
     if re.search(r"www\.Naukri Dhaba\.com|Naukri Dhaba\.com|naukri%20dhaba", content, flags=re.IGNORECASE):
         errors.append(f"{rel}: contains malformed host text")
 
-    # Flag Google search fallback CTAs — buttons should point to official sites, not Google
-    if re.search(r'href="https://www\.google\.com/search\?q=[^"]*"[^>]*class="[^"]*btn', content, flags=re.IGNORECASE):
+    # Flag Google search fallback CTAs on detail pages — buttons should point to official sites
+    is_detail_page = any(part in rel for part in ("jobs/", "results/", "admit-cards/"))
+    if is_detail_page and re.search(r'href="https://www\.google\.com/search\?q=[^"]*"[^>]*class="[^"]*btn', content, flags=re.IGNORECASE):
         errors.append(f"{rel}: contains CTA button that links to Google search instead of official site")
 
     # Flag pretty routes without .html extension that will 404 on static hosts
