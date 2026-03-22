@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-22T20:11:20Z",
+  "updated": "2026-03-22T20:20:27Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -166,20 +166,20 @@
   ],
   "results": [
     {
-      "title": "UPSC Geo Scientist Pre Result 2025",
-      "dept": "UPSC",
-      "type": "result",
-      "category": "upsc",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/upsc/upsc-geo-scientist-pre-result-2025.html"
-    },
-    {
       "title": "UPSC NDA I Result 2025",
       "dept": "UPSC",
       "type": "result",
       "category": "upsc",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/upsc/upsc-nda-i-result-2025.html"
+    },
+    {
+      "title": "UPSC Geo Scientist Pre Result 2025",
+      "dept": "UPSC",
+      "type": "result",
+      "category": "upsc",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/upsc/upsc-geo-scientist-pre-result-2025.html"
     },
     {
       "title": "UPSC Civil Services IAS / IFS Pre Result 2025",
@@ -254,6 +254,14 @@
       "url": "https://naukridhaba.in/results/railway/railway-rrb-technician-grade-i-result-score-card-2025.html"
     },
     {
+      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
+      "dept": "RAILWAY",
+      "type": "result",
+      "category": "railway",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
+    },
+    {
       "title": "Railway RRB Technician Grade III Result 2025",
       "dept": "RAILWAY",
       "type": "result",
@@ -270,12 +278,36 @@
       "url": "https://naukridhaba.in/results/police/mpesb-mp-police-constable-result-2026.html"
     },
     {
-      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
-      "dept": "RAILWAY",
+      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
+      "dept": "GOVERNMENT",
       "type": "result",
-      "category": "railway",
+      "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
+      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
+    },
+    {
+      "title": "NVS Class 9th Result 2025",
+      "dept": "NVS",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
+    },
+    {
+      "title": "RSSB NHM Contractual Various Post Result 2026",
+      "dept": "RSSB",
+      "type": "result",
+      "category": "police",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
+    },
+    {
+      "title": "Patna High Court Stenographer 2025 Result",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
     },
     {
       "title": "UP CNET 2025 Result",
@@ -286,44 +318,12 @@
       "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
     },
     {
-      "title": "UP Madarsa Board Result 2025",
+      "title": "Rajasthan Board RBSE Class 10th Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
-    },
-    {
-      "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
-    },
-    {
-      "title": "UPPSC LT Grade Assistant Teacher Result 2026",
-      "dept": "PPSC",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/uppsc-lt-grade-assistant-teacher-result-2026.html"
-    },
-    {
-      "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
-    },
-    {
-      "title": "NTA NIFT 2025 Result / Score Card",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
+      "url": "https://naukridhaba.in/results/government/rajasthan-board-rbse-class-10th-result-2025.html"
     }
   ],
   "admits": [
