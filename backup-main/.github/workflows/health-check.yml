@@ -1,0 +1,33 @@
+name: Website Health Check
+
+on:
+  # Run after scraper completes
+  workflow_run:
+    workflows: ["Daily Scraper - 10 AM IST"]
+    types: [completed]
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why running manually?"
+        required: false
+        default: "Manual health check"
+
+jobs:
+  health-check:
+    name: Check naukridhaba.in
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run health check
+        run: python3 scraper/health_check.py
