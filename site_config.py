@@ -12,6 +12,9 @@ SOURCE_BASE_URL = "https://www.sarkariresult.com"
 # "primary": True  → pages go live immediately after validation.
 # "primary": False → pages land in staging/ and require manual promotion.
 SOURCES = [
+    # SarkariResult is the PRIMARY source — always scraped first.
+    # Other sources are FALLBACKS — only used to fill gaps when
+    # sarkariresult is down or missing a listing.
     {
         "name": "sarkariresult",
         "base": "https://www.sarkariresult.com",
@@ -25,7 +28,7 @@ SOURCES = [
     {
         "name": "freejobalert",
         "base": "https://www.freejobalert.com",
-        "primary": True,
+        "primary": False,
         "urls": {
             "job":    "https://www.freejobalert.com/government-jobs/",
             "result": "https://www.freejobalert.com/sarkariresult/",
@@ -35,7 +38,7 @@ SOURCES = [
     {
         "name": "rojgarresult",
         "base": "https://www.rojgarresult.com",
-        "primary": True,
+        "primary": False,
         "urls": {
             "job":    "https://www.rojgarresult.com/recruitments/",
             "result": "https://www.rojgarresult.com/latest-result/",
@@ -45,7 +48,7 @@ SOURCES = [
     {
         "name": "sarkariexam",
         "base": "https://www.sarkariexam.com",
-        "primary": True,
+        "primary": False,
         "urls": {
             "job":    "https://www.sarkariexam.com/category/jobs",
             "result": "https://www.sarkariexam.com/exam-result",
