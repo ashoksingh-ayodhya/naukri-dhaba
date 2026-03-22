@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-22T05:33:12Z",
+  "updated": "2026-03-22T06:29:43Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -286,30 +286,6 @@
       "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
     },
     {
-      "title": "NTA NIFT 2025 Result / Score Card",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
-    },
-    {
-      "title": "NTA UGC NET December 2025 Result",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
-    },
-    {
-      "title": "NVS Class 9th Result 2025",
-      "dept": "NVS",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
-    },
-    {
       "title": "RSSB NHM Contractual Various Post Result 2026",
       "dept": "RSSB",
       "type": "result",
@@ -324,6 +300,30 @@
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
+    },
+    {
+      "title": "UP CNET 2025 Result",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
+    },
+    {
+      "title": "Rajasthan Board RBSE Class 10th Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/rajasthan-board-rbse-class-10th-result-2025.html"
+    },
+    {
+      "title": "UP Madarsa Board Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
     }
   ],
   "admits": [
