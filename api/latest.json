@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-22T08:38:18Z",
+  "updated": "2026-03-22T09:04:13Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -286,6 +286,14 @@
       "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
     },
     {
+      "title": "UPPSC LT Grade Assistant Teacher Result 2026",
+      "dept": "PPSC",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uppsc-lt-grade-assistant-teacher-result-2026.html"
+    },
+    {
       "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -316,14 +324,6 @@
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/government/nta-jeemain-session-i-paper-2-result-2025.html"
-    },
-    {
-      "title": "NTA CUET PG 2025 Result / Score Card",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-cuet-pg-2025-result-score-card.html"
     }
   ],
   "admits": [
@@ -432,44 +432,12 @@
       "url": "https://naukridhaba.in/admit-cards/railway/ibps-rrb-14th-office-assistant-mains-admit-card.html"
     },
     {
-      "title": "UPBED 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/upbed-2025-admit-card.html"
-    },
-    {
-      "title": "UPPSC Computer Assistant Admit Card 2026",
-      "dept": "PPSC",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/uppsc-computer-assistant-admit-card-2026.html"
-    },
-    {
-      "title": "UPCATET 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/upcatet-2025-admit-card.html"
-    },
-    {
       "title": "SCI Junior Court Assistant Admit Card 2025",
       "dept": "GOVERNMENT",
       "type": "admit",
       "category": "government",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/government/sci-junior-court-assistant-admit-card-2025.html"
-    },
-    {
-      "title": "NTA JEEMAIN Admit Card 2026",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/nta-jeemain-admit-card-2026.html"
     },
     {
       "title": "Rajasthan PTET Admit Card 2025",
@@ -486,6 +454,38 @@
       "category": "government",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/government/up-cpet-2025-admit-card.html"
+    },
+    {
+      "title": "UP CNET 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/up-cnet-2025-admit-card.html"
+    },
+    {
+      "title": "RPSC Assistant Engineer AE 2024 Main Exam City / Admit Card",
+      "dept": "Government",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/rpsc-assistant-engineer-ae-2024-main-exam-city-admit-card.html"
+    },
+    {
+      "title": "NTA JIPMAT 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/nta-jipmat-2025-admit-card.html"
+    },
+    {
+      "title": "RSSB NHM Various Post Admit Card 2025",
+      "dept": "RSSB",
+      "type": "admit",
+      "category": "police",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/police/rssb-nhm-various-post-admit-card-2025.html"
     }
   ]
 }
