@@ -870,6 +870,382 @@ def build_admit_faq(d: dict) -> tuple[str, str]:
     return faq_html, faq_ld
 
 
+# ══════════════════════════════════════════════════════════
+# Detail Page v2 — shared CSS & content builder
+# ══════════════════════════════════════════════════════════
+
+def _detail_v2_css() -> str:
+    """Return the <style> block for the v2 detail page design."""
+    return '''<style>
+    .detail-page { max-width: 900px; margin: 0 auto; padding: 1rem; }
+    .status-strip { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: 1.25rem; }
+    .status-chip { display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .75rem; border-radius: 20px; font-size: .8rem; font-weight: 600; }
+    .status-chip--result { background: #e8f5e9; color: #2e7d32; }
+    .status-chip--date   { background: #e3f2fd; color: #1565c0; }
+    .status-chip--posts  { background: #fff3e0; color: #e65100; }
+    .status-chip--org    { background: #f3e5f5; color: #7b1fa2; }
+    .detail-title { font-size: 1.5rem; line-height: 1.35; color: var(--primary); margin: 0 0 .75rem; font-weight: 700; }
+    @media (max-width: 600px) { .detail-title { font-size: 1.25rem; } }
+    .short-info { background: var(--surface); border-left: 4px solid var(--primary); padding: 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 0 8px 8px 0; font-size: .925rem; line-height: 1.7; color: #444; }
+    .short-info strong { color: var(--text); }
+    .section-card { background: var(--surface); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    .section-card__title { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin: 0 0 1rem; padding-bottom: .6rem; border-bottom: 2px solid var(--secondary); display: flex; align-items: center; gap: .5rem; }
+    .kv-table { width: 100%; border-collapse: collapse; }
+    .kv-table td { padding: .6rem 0; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    .kv-table tr:last-child td { border-bottom: none; }
+    .kv-label { color: #666; font-size: .9rem; width: 55%; padding-right: .75rem; }
+    .kv-value { font-weight: 600; color: var(--text); font-size: .9rem; }
+    .kv-value--danger { color: var(--danger); }
+    .kv-value--success { color: var(--success); }
+    @media (max-width: 480px) { .kv-label { width: 50%; font-size: .825rem; } .kv-value { font-size: .825rem; } }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+    .vacancy-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    .vacancy-table th { background: var(--primary); color: #fff; padding: .6rem .5rem; text-align: center; font-weight: 600; font-size: .8rem; }
+    .vacancy-table th:first-child { text-align: left; border-radius: 6px 0 0 0; }
+    .vacancy-table th:last-child { border-radius: 0 6px 0 0; }
+    .vacancy-table td { padding: .6rem .5rem; border-bottom: 1px solid #eee; text-align: center; }
+    .vacancy-table td:first-child { text-align: left; font-weight: 500; }
+    .vacancy-table .total-row td { font-weight: 700; background: #f5f5f5; }
+    @media (max-width: 480px) { .vacancy-table { font-size: .8rem; } .vacancy-table th, .vacancy-table td { padding: .45rem .3rem; } }
+    .quick-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .75rem; margin-bottom: 1.25rem; }
+    .stat-card { background: var(--surface); border-radius: 10px; padding: 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.07); border-top: 3px solid var(--primary); }
+    .stat-card__value { font-size: 1.35rem; font-weight: 800; color: var(--primary); margin-bottom: .15rem; }
+    .stat-card__label { font-size: .75rem; color: #888; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-card--danger { border-top-color: var(--danger); } .stat-card--danger .stat-card__value { color: var(--danger); }
+    .stat-card--success { border-top-color: var(--success); } .stat-card--success .stat-card__value { color: var(--success); }
+    .stat-card--warning { border-top-color: var(--secondary); } .stat-card--warning .stat-card__value { color: var(--secondary); }
+    .cta-bar { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1.25rem; }
+    .cta-btn { display: inline-flex; align-items: center; gap: .4rem; padding: .7rem 1.5rem; border-radius: 8px; font-weight: 600; font-size: .925rem; text-decoration: none; color: #fff; transition: transform .1s, box-shadow .2s; border: none; cursor: pointer; }
+    .cta-btn:active { transform: scale(.97); }
+    .cta-btn--primary { background: var(--success); box-shadow: 0 2px 8px rgba(46,125,50,.3); }
+    .cta-btn--secondary { background: var(--primary); box-shadow: 0 2px 8px rgba(26,35,126,.3); }
+    .cta-btn--outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+    @media (max-width: 480px) { .cta-btn { width: 100%; justify-content: center; font-size: .875rem; padding: .65rem 1rem; } }
+    .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    @media (max-width: 600px) { .links-grid { grid-template-columns: 1fr; } }
+    .link-item { display: flex; align-items: center; gap: .5rem; padding: .6rem .75rem; background: #f8f9fa; border-radius: 6px; text-decoration: none; color: var(--primary); font-weight: 500; font-size: .875rem; transition: background .15s; border: 1px solid #e8eaf6; }
+    .link-item:hover { background: #e8eaf6; }
+    .link-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: .8rem; flex-shrink: 0; }
+    .link-icon--result  { background: #e8f5e9; } .link-icon--admit   { background: #e3f2fd; }
+    .link-icon--apply   { background: #fff3e0; } .link-icon--doc     { background: #fce4ec; }
+    .link-icon--key     { background: #f3e5f5; } .link-icon--other   { background: #e0f2f1; }
+    .steps-list { padding-left: 0; list-style: none; counter-reset: step; }
+    .steps-list li { counter-increment: step; position: relative; padding: .75rem .75rem .75rem 3rem; margin-bottom: .5rem; background: #f8f9fa; border-radius: 8px; font-size: .9rem; line-height: 1.6; color: #444; }
+    .steps-list li::before { content: counter(step); position: absolute; left: .75rem; top: .75rem; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--primary); color: #fff; font-size: .75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .eligibility-list { padding-left: 1.25rem; }
+    .eligibility-list li { padding: .3rem 0; font-size: .9rem; line-height: 1.6; color: #444; }
+    .age-info { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+    .age-badge { display: inline-flex; align-items: center; gap: .3rem; padding: .4rem .75rem; background: #e3f2fd; border-radius: 6px; font-size: .875rem; font-weight: 600; color: #1565c0; }
+    .fee-note { margin-top: .75rem; padding: .6rem .75rem; background: #fff8e1; border-radius: 6px; font-size: .825rem; color: #795548; line-height: 1.5; }
+    .org-banner { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; background: #e8eaf6; border-radius: 8px; margin-bottom: 1.25rem; }
+    .org-banner__icon { width: 40px; height: 40px; border-radius: 8px; background: var(--primary); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; }
+    .org-banner__text { font-size: .875rem; line-height: 1.4; }
+    .org-banner__name { font-weight: 700; color: var(--primary); }
+    .org-banner__advt { color: #666; font-size: .8rem; }
+    </style>'''
+
+
+def _link_icon_class(link_type: str) -> str:
+    """Map link_type to CSS icon class."""
+    _map = {
+        'result': 'link-icon--result', 'admit': 'link-icon--admit',
+        'apply': 'link-icon--apply', 'notification': 'link-icon--doc',
+        'answer_key': 'link-icon--key', 'syllabus': 'link-icon--doc',
+        'exam_city': 'link-icon--other', 'eligibility': 'link-icon--result',
+        'official_website': 'link-icon--other', 'scorecard': 'link-icon--result',
+        'download': 'link-icon--doc',
+    }
+    return _map.get(link_type, 'link-icon--other')
+
+
+def _link_icon_emoji(link_type: str) -> str:
+    """Map link_type to an icon character."""
+    _map = {
+        'result': '&#x2713;', 'admit': '&#x1F3AB;',
+        'apply': '&#x270D;', 'notification': '&#x1F4CB;',
+        'answer_key': '&#x1F511;', 'syllabus': '&#x1F4DA;',
+        'exam_city': '&#x1F4CD;', 'eligibility': '&#x2713;',
+        'official_website': '&#x1F310;', 'scorecard': '&#x1F4C4;',
+        'download': '&#x1F4E5;',
+    }
+    return _map.get(link_type, '&#x2139;')
+
+
+def _build_detail_content_v2(d: dict, page_type: str, breadcrumb_section: str, breadcrumb_url: str, faq_html: str) -> str:
+    """Build the main content HTML for a v2 detail page.
+
+    Works for all page types (job, result, admit). Renders all available data
+    dynamically — dates, fees, vacancy breakdown, links, etc.
+    """
+    title = d.get('title', '')
+    dept = d.get('dept', 'Government')
+    org_name = d.get('organization_full_name', '') or dept
+    advt = d.get('advertisement_number', '')
+    post_date = d.get('post_date', '')
+    update_date = d.get('update_date', '')
+    total_posts = str(d.get('total_posts', '')).strip()
+    dates = d.get('dates', {})
+    fees = d.get('fees', {})
+    fee_method = d.get('fee_payment_method', '')
+    age_min = d.get('age_min')
+    age_max = d.get('age_max')
+    age_ref = d.get('age_reference_date', '')
+    age_relax = d.get('age_relaxation_notes', '')
+    vacancy_bd = d.get('vacancy_breakdown', [])
+    qual_items = d.get('qualification_items', [])
+    qualification = d.get('qualification', 'Check Notification')
+    how_to = d.get('how_to_apply', [])
+    imp_links = d.get('important_links', [])
+    extra_links = d.get('extra_links', [])
+    dl_links = d.get('download_links', [])
+    short_desc = d.get('short_description', '')
+
+    parts = []
+
+    # Breadcrumb
+    parts.append(f'''  <nav class="breadcrumb" aria-label="Breadcrumb" style="margin-bottom: .75rem;">
+    <a href="/">Home</a> &gt; <a href="{breadcrumb_url}">{breadcrumb_section}</a> &gt; <span>{title}</span>
+  </nav>''')
+
+    # Title
+    parts.append(f'  <h1 class="detail-title">{title}</h1>')
+
+    # Status chips
+    chips = []
+    if page_type == 'job':
+        chips.append('<span class="status-chip status-chip--result">Active Recruitment</span>')
+    elif page_type == 'result':
+        chips.append('<span class="status-chip status-chip--result">Result Declared</span>')
+    elif page_type == 'admit':
+        chips.append('<span class="status-chip status-chip--result">Admit Card Available</span>')
+    date_display = update_date or post_date
+    if date_display:
+        chips.append(f'<span class="status-chip status-chip--date">Updated: {date_display}</span>')
+    if total_posts:
+        chips.append(f'<span class="status-chip status-chip--posts">{total_posts} Posts</span>')
+    # Short org name for chip
+    org_short = org_name.split('(')[-1].rstrip(')') if '(' in org_name else (org_name[:30] + '...' if len(org_name) > 30 else org_name)
+    if org_short and org_short != 'Government':
+        chips.append(f'<span class="status-chip status-chip--org">{org_short}</span>')
+    if chips:
+        parts.append(f'  <div class="status-strip">\n    ' + '\n    '.join(chips) + '\n  </div>')
+
+    # Org banner
+    if org_name and org_name != 'Government':
+        org_initials = ''.join(w[0] for w in org_name.split() if w[0].isupper())[:3] or org_name[:2].upper()
+        advt_line = f'Advt No. {advt}' if advt else ''
+        parts.append(f'''  <div class="org-banner">
+    <div class="org-banner__icon">{org_initials}</div>
+    <div class="org-banner__text">
+      <div class="org-banner__name">{org_name}</div>
+      {f'<div class="org-banner__advt">{advt_line}</div>' if advt_line else ''}
+    </div>
+  </div>''')
+
+    # Short description
+    if short_desc:
+        parts.append(f'''  <div class="short-info">
+    {short_desc}
+  </div>''')
+
+    # Quick stats
+    stats = []
+    if total_posts:
+        stats.append(f'<div class="stat-card"><div class="stat-card__value">{total_posts}</div><div class="stat-card__label">Total Posts</div></div>')
+    last_date = d.get('last_date', '')
+    if last_date and last_date != 'Check Notification':
+        stats.append(f'<div class="stat-card stat-card--danger"><div class="stat-card__value">{last_date}</div><div class="stat-card__label">Last Date</div></div>')
+    if page_type == 'result':
+        rd = d.get('result_date', '')
+        if rd and rd != 'Check Notification':
+            stats.append(f'<div class="stat-card stat-card--success"><div class="stat-card__value">{rd}</div><div class="stat-card__label">Result Date</div></div>')
+    elif page_type == 'admit':
+        ed = d.get('exam_date', '')
+        if ed and ed != 'As per Schedule':
+            stats.append(f'<div class="stat-card stat-card--success"><div class="stat-card__value">{ed}</div><div class="stat-card__label">Exam Date</div></div>')
+    else:
+        ed = d.get('exam_date', '')
+        if ed and ed != 'As per Schedule':
+            stats.append(f'<div class="stat-card stat-card--success"><div class="stat-card__value">{ed}</div><div class="stat-card__label">Exam Date</div></div>')
+    if age_min and age_max:
+        stats.append(f'<div class="stat-card stat-card--warning"><div class="stat-card__value">{age_min}-{age_max} Yrs</div><div class="stat-card__label">Age Limit</div></div>')
+    if stats:
+        parts.append(f'  <div class="quick-stats">\n    ' + '\n    '.join(stats) + '\n  </div>')
+
+    # CTA buttons
+    cta_buttons = []
+    if page_type == 'job':
+        apply_url = d.get('apply_url', '#')
+        if apply_url and apply_url != '#':
+            cta_buttons.append(f'<a href="{apply_url}" class="cta-btn cta-btn--primary" target="_blank" rel="nofollow noopener">Apply Online</a>')
+        notif_url = d.get('notification_url', '')
+        if notif_url and notif_url != '#':
+            cta_buttons.append(f'<a href="{notif_url}" class="cta-btn cta-btn--secondary" target="_blank" rel="nofollow noopener">Download Notification</a>')
+    elif page_type == 'result':
+        result_url = d.get('result_url', '#')
+        if result_url and result_url != '#':
+            cta_buttons.append(f'<a href="{result_url}" class="cta-btn cta-btn--primary" target="_blank" rel="nofollow noopener">Check Result</a>')
+        sc_url = d.get('scorecard_url', '')
+        if sc_url and sc_url != '#':
+            cta_buttons.append(f'<a href="{sc_url}" class="cta-btn cta-btn--secondary" target="_blank" rel="nofollow noopener">Download Scorecard</a>')
+    elif page_type == 'admit':
+        admit_url = d.get('admit_url', '#')
+        if admit_url and admit_url != '#':
+            cta_buttons.append(f'<a href="{admit_url}" class="cta-btn cta-btn--primary" target="_blank" rel="nofollow noopener">Download Admit Card</a>')
+    if cta_buttons:
+        parts.append(f'  <div class="cta-bar">\n    ' + '\n    '.join(cta_buttons) + '\n  </div>')
+
+    parts.append('  <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>')
+
+    # Dates + Fees two-column
+    has_dates = bool(dates)
+    has_fees = bool(fees)
+    if has_dates or has_fees:
+        parts.append('  <div class="two-col">')
+        # Dates
+        if has_dates:
+            date_rows = []
+            for label, val in dates.items():
+                cls = ''
+                ll = label.lower()
+                if 'last date' in ll or 'closing' in ll:
+                    cls = ' kv-value--danger'
+                elif 'result' in ll or 'final' in ll:
+                    cls = ' kv-value--success'
+                date_rows.append(f'        <tr><td class="kv-label">{label}</td><td class="kv-value{cls}">{val}</td></tr>')
+            parts.append(f'''    <div class="section-card">
+      <h2 class="section-card__title">Important Dates</h2>
+      <table class="kv-table">
+{chr(10).join(date_rows)}
+      </table>
+    </div>''')
+
+        # Fees + Age column
+        col2_parts = []
+        if has_fees:
+            fee_rows = []
+            for label, val in fees.items():
+                fee_rows.append(f'          <tr><td class="kv-label">{label}</td><td class="kv-value">{val}</td></tr>')
+            fee_note = ''
+            if fee_method:
+                fee_note = f'\n        <div class="fee-note">{fee_method}</div>'
+            col2_parts.append(f'''      <div class="section-card">
+        <h2 class="section-card__title">Application Fee</h2>
+        <table class="kv-table">
+{chr(10).join(fee_rows)}
+        </table>{fee_note}
+      </div>''')
+
+        # Age section in second column
+        if age_min and age_max:
+            age_parts_inner = [f'<span class="age-badge">Min: {age_min} Years</span>', f'<span class="age-badge">Max: {age_max} Years</span>']
+            age_note = ''
+            if age_ref or age_relax:
+                note_text = f'As on <strong>{age_ref}</strong>.' if age_ref else ''
+                if age_relax:
+                    note_text += f' {age_relax}'
+                age_note = f'\n        <p style="margin: .6rem 0 0; font-size: .85rem; color: #666; line-height: 1.5;">{note_text.strip()}</p>'
+            col2_parts.append(f'''      <div class="section-card">
+        <h2 class="section-card__title">Age Limit</h2>
+        <div class="age-info">
+          {" ".join(age_parts_inner)}
+        </div>{age_note}
+      </div>''')
+
+        if col2_parts:
+            parts.append(f'    <div>\n{chr(10).join(col2_parts)}\n    </div>')
+        parts.append('  </div>')  # close .two-col
+
+    # Vacancy breakdown
+    if vacancy_bd:
+        total_display = f' &mdash; Total: {total_posts} Posts' if total_posts else ''
+        # Detect which category columns have data
+        cat_cols = ['general', 'ews', 'obc', 'sc', 'st']
+        active_cols = [c for c in cat_cols if any(str(row.get(c, '')).strip() for row in vacancy_bd)]
+        headers = ['<th>Post Name</th>']
+        for c in active_cols:
+            headers.append(f'<th>{c.upper()}</th>')
+        headers.append('<th>Total</th>')
+        tbody_rows = []
+        for row in vacancy_bd:
+            cells = [f'<td>{row.get("post_name", "—")}</td>']
+            for c in active_cols:
+                cells.append(f'<td>{row.get(c, "—")}</td>')
+            cells.append(f'<td><strong>{row.get("total", "—")}</strong></td>')
+            tbody_rows.append(f'        <tr>{"".join(cells)}</tr>')
+        parts.append(f'''  <div class="section-card">
+    <h2 class="section-card__title">Vacancy Details{total_display}</h2>
+    <table class="vacancy-table">
+      <thead><tr>{"".join(headers)}</tr></thead>
+      <tbody>
+{chr(10).join(tbody_rows)}
+      </tbody>
+    </table>
+  </div>''')
+
+    # Qualification
+    if qual_items:
+        items = '\n'.join(f'      <li>{item}</li>' for item in qual_items)
+        parts.append(f'''  <div class="section-card">
+    <h2 class="section-card__title">Eligibility / Qualification</h2>
+    <ul class="eligibility-list">
+{items}
+    </ul>
+  </div>''')
+    elif qualification and qualification != 'Check Notification':
+        parts.append(f'''  <div class="section-card">
+    <h2 class="section-card__title">Eligibility / Qualification</h2>
+    <p style="font-size:.9rem;color:#444;line-height:1.7;">{qualification}</p>
+  </div>''')
+
+    parts.append('  <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>')
+
+    # How to apply
+    if how_to:
+        steps = '\n'.join(f'      <li>{step}</li>' for step in how_to)
+        parts.append(f'''  <div class="section-card">
+    <h2 class="section-card__title">How to Apply</h2>
+    <ol class="steps-list">
+{steps}
+    </ol>
+  </div>''')
+
+    # Important links grid
+    all_links = list(imp_links) + list(extra_links) + list(dl_links)
+    if all_links:
+        link_items = []
+        seen_urls = set()
+        for lnk in all_links:
+            url = lnk.get('url', '')
+            label = lnk.get('label', 'Link')
+            if not url or url == '#' or url in seen_urls:
+                continue
+            seen_urls.add(url)
+            lt = lnk.get('link_type', 'other')
+            icon_cls = _link_icon_class(lt)
+            icon_char = _link_icon_emoji(lt)
+            link_items.append(
+                f'      <a href="{url}" class="link-item" target="_blank" rel="nofollow noopener">'
+                f'<span class="link-icon {icon_cls}">{icon_char}</span>{label}</a>'
+            )
+        if link_items:
+            parts.append(f'''  <div class="section-card">
+    <h2 class="section-card__title">Important Links</h2>
+    <div class="links-grid">
+{chr(10).join(link_items)}
+    </div>
+  </div>''')
+
+    # FAQ
+    if faq_html:
+        parts.append(f'  {faq_html}')
+
+    parts.append('  <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>')
+
+    return '\n\n'.join(parts)
+
+
 def dedupe_keywords(*parts: str) -> str:
     seen = set()
     items = []
@@ -1787,25 +2163,17 @@ def build_job_page(d: dict) -> tuple[str, str]:
     slug   = slugify(title)
     rel    = f'jobs/{cat}/{slug}.html'
     canon  = f'{SITE_URL}/{rel}'
-    year   = date.today().year
 
     posts_val = str(d['total_posts']).strip() if d.get('total_posts') else ''
-    posts_disp = posts_val or 'Check Notification'
     posts_num = int(posts_val) if posts_val.isdigit() else 0
-    # Engaging prefix based on vacancy count
     if posts_num >= 10000:
         seo_prefix = f'Mega Hiring: {posts_num:,}+ Vacancies'
-        h1_prefix = f'🔥 Mega Hiring — {posts_num:,} Posts'
     elif posts_num >= 1000:
         seo_prefix = f'Hiring Alert: {posts_num:,} Vacancies'
-        h1_prefix = f'📢 Hiring Alert — {posts_num:,} Posts'
     elif posts_num > 0:
         seo_prefix = f'{posts_num} Vacancies'
-        h1_prefix = f'📋 {posts_num} Posts'
     else:
         seo_prefix = ''
-        h1_prefix = ''
-    # SEO description
     desc_parts = []
     if seo_prefix:
         desc_parts.append(f"{seo_prefix} — {title}!")
@@ -1817,51 +2185,13 @@ def build_job_page(d: dict) -> tuple[str, str]:
         desc_parts.append(f"Qualification: {d['qualification']}.")
     desc_parts.append(f"Apply online at {SITE_NAME}.")
     desc = ' '.join(desc_parts)
+
+    # Ensure CTA URLs fall back to portal / google search
     _portal = official_portal_for(title, cat)
-    apply_href = d.get('apply_url') or _portal or google_search_url(title, 'apply online official site')
-    notification_href = d.get('notification_url') or google_search_url(title, 'notification PDF')
-    _apply_is_portal = not d.get('apply_url') and bool(_portal)
-
-    apply_btn = (
-        f'<a href="{apply_href}" target="_blank" rel="nofollow noopener noreferrer" '
-        f'class="btn btn--primary btn--large">🚀 Apply Online</a>'
-        + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 0;text-align:center;">'
-           f'Opens the official portal — check the Apply / Recruitment section there.</p>'
-           if _apply_is_portal else '')
-    )
-    notif_btn = (
-        f'<a href="{notification_href}" target="_blank" rel="nofollow noopener noreferrer" '
-        f'class="btn btn--secondary btn--large">📄 Download Notification</a>'
-        if notification_href and notification_href != '#'
-        else ''
-    )
-
-    # Extra links section
-    extra_html = ''
-    if d.get('extra_links'):
-        rows = '\n'.join(
-            f'<li><a href="{lnk["url"] if lnk.get("url") and lnk["url"] != "#" else google_search_url(title, lnk.get("label", ""))}" target="_blank" rel="noopener">'
-            f'{clean(lnk["label"])}</a></li>'
-            for lnk in d['extra_links'] if lnk.get('label')
-        )
-        if rows:
-            extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
-          <ul style="line-height:2.4;">{rows}</ul>
-        </div>'''
-
-    # Fee info
-    fee_rows = ''
-    if d.get('fee_general'):
-        fee_rows += f'<tr><td style="padding:8px 0;color:#666;">General / OBC / EWS</td><td style="padding:8px 0;font-weight:bold;">{d["fee_general"]}</td></tr>'
-    if d.get('fee_sc_st'):
-        fee_rows += f'<tr><td style="padding:8px 0;color:#666;">SC / ST / PH</td><td style="padding:8px 0;font-weight:bold;">{d["fee_sc_st"]}</td></tr>'
-    fee_section = ''
-    if fee_rows:
-        fee_section = f'''<div style="border-left:4px solid var(--warning);background:#fff8e1;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">💳 Application Fee</h3>
-          <table style="width:100%;">{fee_rows}</table>
-        </div>'''
+    if not d.get('apply_url') or d['apply_url'] == '#':
+        d['apply_url'] = _portal or google_search_url(title, 'apply online official site')
+    if not d.get('notification_url') or d['notification_url'] == '#':
+        d['notification_url'] = google_search_url(title, 'notification PDF')
 
     # JSON-LD
     _valid_through = to_iso_date(d['last_date'])
@@ -1899,11 +2229,13 @@ def build_job_page(d: dict) -> tuple[str, str]:
     }, ensure_ascii=False)
 
     faq_html, faq_ld = build_job_faq(d)
+    detail_content = _build_detail_content_v2(d, 'job', 'Latest Jobs', '/latest-jobs', faq_html)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
 {_seo_head(title, desc, canon, dept)}
+{_detail_v2_css()}
     <script type="application/ld+json">{ld_job}</script>
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
@@ -1913,112 +2245,8 @@ def build_job_page(d: dict) -> tuple[str, str]:
 {detail_body_tracking_markup()}
 {_header('jobs')}
 
-<div class="content-wrapper container" style="margin-top:2rem;">
-  <main>
-    <article class="job-detail">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/latest-jobs">Jobs</a> &gt; <span>{title}</span>
-      </nav>
-
-      <h1 style="color:var(--primary);margin-bottom:.5rem;">
-        {title} <span style="background:var(--secondary);color:#fff;padding:4px 12px;border-radius:4px;font-size:1rem;">{year}</span>
-      </h1>
-
-      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
-
-      <div class="info-grid">
-        <div class="info-item">
-          <span class="info-item__label">📅 Last Date</span>
-          <span class="info-item__value" style="color:var(--danger);">{d["last_date"]}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-item__label">🏢 Department</span>
-          <span class="info-item__value">{dept}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-item__label">📊 Total Posts</span>
-          <span class="info-item__value">{posts_disp}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-item__label">👤 Age Limit</span>
-          <span class="info-item__value">{str(d["age_min"]) + '–' + str(d["age_max"]) + ' Years' if d["age_min"] and d["age_max"] and str(d["age_min"]) not in ('nan', '') else 'Check Notification'}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-item__label">🎓 Qualification</span>
-          <span class="info-item__value" style="font-size:.95rem;">{d["qualification"]}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-item__label">💰 Salary / Pay Scale</span>
-          <span class="info-item__value" style="font-size:.95rem;">{d["salary"]}</span>
-        </div>
-      </div>
-
-      <div class="action-bar">
-        {apply_btn}
-        {notif_btn}
-      </div>
-
-      <div style="border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;margin:1.5rem 0;">
-        <h2 style="color:var(--primary);margin-top:0;">📋 Important Dates</h2>
-        <table style="width:100%;border-collapse:collapse;">
-          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;width:55%;">Application Begin</td><td style="font-weight:bold;">{d["app_begin"]}</td></tr>
-          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Last Date to Apply Online</td><td style="font-weight:bold;color:var(--danger);">{d["last_date"]}</td></tr>
-          <tr style="border-bottom:1px solid #eee;"><td style="padding:10px 0;color:#666;">Exam Date</td><td style="font-weight:bold;">{d["exam_date"]}</td></tr>
-        </table>
-      </div>
-
-      {fee_section}
-
-      {build_job_overview(d)}
-
-      <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>
-
-      <div class="calculator">
-        <h3 style="margin-top:0;">🎯 Age Eligibility Calculator</h3>
-        <p style="color:#666;font-size:.875rem;">Age limit: {d["age_min"]}–{d["age_max"]} years. OBC +3 yrs, SC/ST +5 yrs relaxation.</p>
-        <div class="form-group">
-          <label>Date of Birth:</label>
-          <input type="date" id="dob-input">
-        </div>
-        <div class="form-group">
-          <label>Category:</label>
-          <select id="category-select">
-            <option value="general">General</option>
-            <option value="obc">OBC (+3 years)</option>
-            <option value="sc">SC (+5 years)</option>
-            <option value="st">ST (+5 years)</option>
-          </select>
-        </div>
-        <button onclick="checkEligibility({d['age_min']}, {d['age_max']})" class="btn btn--primary">Check Eligibility</button>
-        <div id="eligibility-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:4px;"></div>
-      </div>
-
-      {extra_html}
-      {_downloads_html(d)}
-
-      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-        <h3 style="color:var(--primary);margin-top:0;">📝 How to Apply</h3>
-        <ol style="line-height:2.2;">
-          <li>Use the official authority portal linked above, not third-party mirrors.</li>
-          <li>Verify district, category, and document rules before you create an account.</li>
-          <li>Fill the application form carefully</li>
-          <li>Upload only the files and dimensions allowed in the official notice.</li>
-          <li>Pay the fee only after you confirm the form preview and eligibility details.</li>
-          <li>Save the final application number, preview, and receipt for later stages.</li>
-        </ol>
-      </div>
-
-      {faq_html}
-
-      <div class="share-section">
-        <h3>📢 Share this Job</h3>
-        <button onclick="sharePost(window.location.href,'{title.replace(chr(39),chr(96))}')" class="share-btn">Share</button>
-      </div>
-
-      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
-    </article>
-  </main>
-  {_sidebar()}
+<div class="detail-page" style="margin-top: 1.5rem;">
+{detail_content}
 </div>
 
 {_footer()}
@@ -2039,37 +2267,13 @@ def build_result_page(d: dict) -> tuple[str, str]:
     rel   = f'results/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"{title}: Result declared. Check your result at {SITE_NAME}. Result date: {d['result_date']}."
+
+    # Ensure CTA URLs fall back
     _rportal = official_portal_for(title, cat)
-    result_href = d.get('result_url') or _rportal or google_search_url(title, 'result')
-    scorecard_href = d.get('scorecard_url') or google_search_url(title, 'scorecard marks')
-    _result_is_portal = not d.get('result_url') and bool(_rportal)
-
-    check_btn = (
-        f'<a href="{result_href}" target="_blank" rel="nofollow noopener noreferrer" '
-        f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
-        f'🎯 Check Result</a>'
-        + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
-           f'Opens the official portal — check the Latest Results section there.</p>'
-           if _result_is_portal else '')
-    )
-    scorecard_btn = (
-        f'<a href="{scorecard_href}" target="_blank" rel="nofollow noopener noreferrer" '
-        f'class="btn btn--secondary btn--large" style="display:inline-block;margin-bottom:1rem;">📄 Download Scorecard</a>'
-        if scorecard_href and scorecard_href != '#'
-        else ''
-    )
-
-    extra_html = ''
-    if d.get('extra_links'):
-        rows = '\n'.join(
-            f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener">{clean(lnk["label"])}</a></li>'
-            for lnk in d['extra_links'] if lnk.get('url') and lnk['url'] != '#'
-        )
-        if rows:
-            extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
-          <ul style="line-height:2.4;">{rows}</ul>
-        </div>'''
+    if not d.get('result_url') or d['result_url'] == '#':
+        d['result_url'] = _rportal or google_search_url(title, 'result')
+    if not d.get('scorecard_url') or d['scorecard_url'] == '#':
+        d['scorecard_url'] = google_search_url(title, 'scorecard marks')
 
     ld_ev = json.dumps({
         "@context": "https://schema.org",
@@ -2092,11 +2296,13 @@ def build_result_page(d: dict) -> tuple[str, str]:
     }, ensure_ascii=False)
 
     faq_html, faq_ld = build_result_faq(d)
+    detail_content = _build_detail_content_v2(d, 'result', 'Results', '/results', faq_html)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
 {_seo_head(title + ' - Result', desc, canon, dept)}
+{_detail_v2_css()}
     <script type="application/ld+json">{ld_ev}</script>
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
@@ -2106,52 +2312,8 @@ def build_result_page(d: dict) -> tuple[str, str]:
 {detail_body_tracking_markup()}
 {_header('results')}
 
-<div class="content-wrapper container" style="margin-top:2rem;">
-  <main>
-    <article class="result-detail">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/results">Results</a> &gt; <span>{title}</span>
-      </nav>
-
-      <h1 style="color:var(--primary);">📊 {title}</h1>
-
-      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
-
-      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Declared</div>
-        {'<p style="color:#666;margin-bottom:1.5rem;">Result Date: ' + d["result_date"] + '</p>' if d["result_date"] not in ("Check Notification", "") else ''}
-        {check_btn}
-        {scorecard_btn}
-        <div style="margin-top:1rem;">
-          <a href="/latest-jobs" class="btn btn--secondary">🔍 Browse Latest Jobs</a>
-        </div>
-      </div>
-
-      {extra_html}
-      {_downloads_html(d)}
-
-      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-        <h3 style="color:var(--primary);margin-top:0;">📋 How to Check Result</h3>
-        <ol style="line-height:2.2;">
-          <li>Open the official result portal linked above.</li>
-          <li>Keep your roll number or registration number ready before loading the page.</li>
-          <li>Match your name, category, and stage of exam carefully after login.</li>
-          <li>Download the result or scorecard PDF from the authority site when available.</li>
-          <li>Keep a saved copy for document verification, counselling, or joining steps.</li>
-        </ol>
-      </div>
-
-      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
-
-      {faq_html}
-
-      <div class="share-section">
-        <h3>📢 Share this Result</h3>
-        <button onclick="sharePost(window.location.href,'{title.replace(chr(39),chr(96))} Result Declared')" class="share-btn">Share</button>
-      </div>
-    </article>
-  </main>
-  {_sidebar()}
+<div class="detail-page" style="margin-top: 1.5rem;">
+{detail_content}
 </div>
 
 {_footer()}
@@ -2172,30 +2334,11 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     rel   = f'admit-cards/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
     desc  = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {d['exam_date']}."
+
+    # Ensure CTA URLs fall back
     _aportal = official_portal_for(title, cat)
-    admit_href = d.get('admit_url') or _aportal or google_search_url(title, 'admit card download')
-    _admit_is_portal = not d.get('admit_url') and bool(_aportal)
-
-    dl_btn = (
-        f'<a href="{admit_href}" target="_blank" rel="nofollow noopener noreferrer" '
-        f'class="btn btn--primary btn--large" style="display:inline-block;margin-bottom:1rem;">'
-        f'📥 Download Admit Card</a>'
-        + (f'<p style="font-size:.8rem;color:#888;margin:.4rem 0 1rem;text-align:center;">'
-           f'Opens the official portal — check the Admit Card / Hall Ticket section there.</p>'
-           if _admit_is_portal else '')
-    )
-
-    extra_html = ''
-    if d.get('extra_links'):
-        rows = '\n'.join(
-            f'<li><a href="{lnk["url"]}" target="_blank" rel="noopener">{clean(lnk["label"])}</a></li>'
-            for lnk in d['extra_links'] if lnk.get('url') and lnk['url'] != '#'
-        )
-        if rows:
-            extra_html = f'''<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-          <h3 style="color:var(--primary);margin-top:0;">📎 Important Links</h3>
-          <ul style="line-height:2.4;">{rows}</ul>
-        </div>'''
+    if not d.get('admit_url') or d['admit_url'] == '#':
+        d['admit_url'] = _aportal or google_search_url(title, 'admit card download')
 
     ld_ev = json.dumps({
         "@context": "https://schema.org",
@@ -2218,11 +2361,13 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     }, ensure_ascii=False)
 
     faq_html, faq_ld = build_admit_faq(d)
+    detail_content = _build_detail_content_v2(d, 'admit', 'Admit Cards', '/admit-cards', faq_html)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
 {_seo_head(title + ' - Admit Card', desc, canon, dept)}
+{_detail_v2_css()}
     <script type="application/ld+json">{ld_ev}</script>
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
@@ -2232,63 +2377,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
 {detail_body_tracking_markup()}
 {_header('admit-cards')}
 
-<div class="content-wrapper container" style="margin-top:2rem;">
-  <main>
-    <article class="admit-detail">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/admit-cards">Admit Cards</a> &gt; <span>{title}</span>
-      </nav>
-
-      <h1 style="color:var(--primary);">🎫 {title}</h1>
-
-      <div class="nd-ad ad-slot" data-ad-slot="content-top"></div>
-
-      <div style="background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0;">
-        <div style="display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem;">✅ Available</div>
-        <p style="color:#666;margin-bottom:.5rem;">Released: {d["admit_release"]}</p>
-        <p style="color:#666;font-weight:bold;margin-bottom:1.5rem;">📅 Exam Date: {d["exam_date"]}</p>
-        {dl_btn}
-        <div style="margin-top:1rem;">
-          <a href="/results" class="btn btn--secondary">📊 Check Results</a>
-        </div>
-      </div>
-
-      {extra_html}
-      {_downloads_html(d)}
-
-      <div style="border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;">
-        <h3 style="color:var(--danger);margin-top:0;">⚠️ Important Instructions</h3>
-        <ul style="line-height:1.8;">
-          <li>Carry a printed admit card exactly as required in the official instructions.</li>
-          <li>Bring a valid photo ID that matches the admit-card identity details.</li>
-          <li>Check reporting time, gate closing time, and city or centre code before travel.</li>
-          <li>Verify exam date, shift timing, and venue address one more time on the official page.</li>
-          <li>Avoid restricted items such as phones, smartwatches, calculators, or loose papers.</li>
-        </ul>
-      </div>
-
-      <div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">
-        <h3 style="color:var(--primary);margin-top:0;">📋 Exam Day Checklist</h3>
-        <ul style="list-style:none;padding:0;">
-          <li style="padding:.4rem 0;">✅ Printed Admit Card (colour)</li>
-          <li style="padding:.4rem 0;">✅ Valid Photo ID Proof</li>
-          <li style="padding:.4rem 0;">✅ 2–3 Passport Size Photos</li>
-          <li style="padding:.4rem 0;">✅ Black Ball Point Pen (2 pens)</li>
-          <li style="padding:.4rem 0;">✅ Water Bottle (transparent, no label)</li>
-        </ul>
-      </div>
-
-      <div class="nd-ad ad-slot" data-ad-slot="content-bottom"></div>
-
-      {faq_html}
-
-      <div class="share-section">
-        <h3>📢 Share this Admit Card</h3>
-        <button onclick="sharePost(window.location.href,'{title.replace(chr(39),chr(96))} Admit Card Available')" class="share-btn">Share</button>
-      </div>
-    </article>
-  </main>
-  {_sidebar()}
+<div class="detail-page" style="margin-top: 1.5rem;">
+{detail_content}
 </div>
 
 {_footer()}
@@ -2315,6 +2405,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
 
     new_rows   = []
     new_cards  = []
+    today = date.today()
 
     for e in entries[:30]:   # max 30 new entries per run
         title = e.get('title', '')
@@ -2342,10 +2433,21 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             date_label = e.get('exam_date', '') or e.get('admit_release', '')
             btn  = 'Download'
 
+        date_label = re.sub(r'\s*🔴\s*', '', date_label).strip()
+        parsed_date = _parse_sort_date(date_label)
+        is_expired = parsed_date is not None and parsed_date < today
+
+        if is_expired:
+            date_display = f'<span style="color:var(--danger);">{date_label} 🔴</span>'
+            date_card = f'<p style="color:var(--danger);font-size:.875rem;">📅 {date_label} 🔴</p>'
+        else:
+            date_display = date_label
+            date_card = f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
+
         new_rows.append(
             f'<tr><td>{dept}</td>'
             f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
-            f'<td>{date_label}</td>'
+            f'<td>{date_display}</td>'
             f'<td><a href="{path}" class="btn btn--small btn--primary">{btn}</a></td></tr>'
         )
         posts_val = e.get('total_posts', '')
@@ -2354,7 +2456,7 @@ def prepend_to_listing(listing_file: Path, entries: list[dict], kind: str):
             f'<div class="card">'
             f'<div class="card__header"><span class="badge">{dept}</span>{posts_tag}</div>'
             f'<h3 class="card__title">{title}</h3>'
-            f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
+            f'{date_card}'
             f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{btn}</a>'
             f'</div>'
         )
@@ -2377,9 +2479,9 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
     entries = prepare_listing_entries(entries, kind, limit)
     rows = []
     cards = []
-    iterable = entries
+    today = date.today()
 
-    for e in iterable:
+    for e in entries:
         title = normalize_title(e.get('title', ''))
         dept = e.get('dept', 'Government').upper()
 
@@ -2388,6 +2490,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '') or e.get('date_str', '')
             button = 'Apply'
+            button_url = e.get('official_url') or path
         elif kind == 'result':
             cat = get_category(e.get('dept', ''))
             slug = slugify(title)
@@ -2396,6 +2499,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/results/{cat}/{slug}.html"
             date_label = e.get('result_date', '') or e.get('date_str', '')
             button = 'View'
+            button_url = e.get('official_url') or path
         else:
             cat = get_category(e.get('dept', ''))
             slug = slugify(title)
@@ -2404,19 +2508,38 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/admit-cards/{cat}/{slug}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
             button = 'Download'
+            button_url = e.get('official_url') or path
+
+        # Strip any existing emoji from date_label to avoid duplicates
+        date_label = re.sub(r'\s*🔴\s*', '', date_label).strip()
+
+        # Determine if the date has expired
+        parsed_date = _parse_sort_date(date_label)
+        is_expired = parsed_date is not None and parsed_date < today
+
+        # Build date display with expired indicator
+        if is_expired:
+            date_display = f'<span style="color:var(--danger);">{date_label} 🔴</span>'
+            date_card = f'<p style="color:var(--danger);font-size:.875rem;">📅 {date_label} 🔴</p>'
+        else:
+            date_display = date_label
+            date_card = f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
+
+        # Use target="_blank" for external official URLs
+        btn_target = ' target="_blank" rel="nofollow noopener noreferrer"' if button_url.startswith('http') else ''
 
         rows.append(
             f'<tr><td>{dept}</td>'
             f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
-            f'<td>{date_label}</td>'
-            f'<td><a href="{path}" class="btn btn--small btn--primary">{button}</a></td></tr>'
+            f'<td>{date_display}</td>'
+            f'<td><a href="{button_url}"{btn_target} class="btn btn--small btn--primary">{button}</a></td></tr>'
         )
         cards.append(
             f'<div class="card">'
             f'<div class="card__header"><span class="badge">{dept}</span></div>'
             f'<h3 class="card__title">{title}</h3>'
-            f'<p style="color:#666;font-size:.875rem;">{date_label}</p>'
-            f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
+            f'{date_card}'
+            f'<a href="{button_url}"{btn_target} class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
             f'</div>'
         )
 
@@ -2553,6 +2676,20 @@ def replace_home_jobs_section(index_file: Path, entries: list[dict], limit: int 
         log.info('  Rebuilt index.html latest jobs section cleanly')
 
 
+def _parse_sort_date(date_str: str) -> date | None:
+    """Parse a DD/MM/YYYY date string (possibly with trailing emoji/text) into a date object."""
+    if not date_str:
+        return None
+    # Strip trailing emoji / indicator text like " 🔴"
+    cleaned = re.sub(r'\s*[🔴🟢🟡⚠️✅❌].*$', '', date_str).strip()
+    for fmt in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
+        try:
+            return datetime.strptime(cleaned, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
 def load_existing_detail_entries(kind: str) -> list[dict]:
     if kind == 'job':
         base = SITE_ROOT / 'jobs'
@@ -2563,10 +2700,10 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
 
     entries = []
     seen_slugs: set[str] = set()   # deduplicate by filename slug
-    for path in sorted(base.rglob('*.html'), key=lambda p: p.stat().st_mtime, reverse=True):
+    # Initial scan — no particular order needed; we sort after collecting all entries.
+    for path in base.rglob('*.html'):
         slug = path.stem  # e.g. 'up-police-constable-edit-correction-form-2026'
         if slug in seen_slugs:
-            # Same slug already loaded from a newer file — skip this stale copy
             log.debug(f'  [dedup] Skipping duplicate slug in listings: {path.relative_to(SITE_ROOT)}')
             continue
         seen_slugs.add(slug)
@@ -2578,7 +2715,6 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         dept_match = re.search(r'info-item__label">[^<]*Department</span>\s*<span class="info-item__value">([^<]+)', html, re.I)
         dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
         # Override dept using URL path category when stored value is unreliable.
-        # e.g. results/railway/... → RAILWAY, jobs/ssc/... → SSC
         _path_cat = path.parent.name.upper()
         _cat_to_dept = {
             'RAILWAY': 'RAILWAY', 'SSC': 'SSC', 'UPSC': 'UPSC',
@@ -2586,26 +2722,77 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         }
         if _path_cat in _cat_to_dept:
             dept = _cat_to_dept[_path_cat]
-        # If stored dept is NTA (scraper bug from old runs), try title inference.
-        # If title also doesn't give a proper category, fall back to GOVERNMENT.
         elif dept.upper() == 'NTA':
             inferred = infer_dept(title)
             dept = inferred if inferred.upper() not in ('NTA', 'GOVERNMENT') else 'GOVERNMENT'
-        date_label = 'Check Notification'
 
-        actual_url = '/' + rel  # actual on-disk path, used to avoid slug mismatch
+        date_label = 'Check Notification'
+        file_mtime = path.stat().st_mtime
+
+        actual_url = '/' + rel
+
+        # Extract best official URL from detail page:
+        # 1. Try primary CTA button first
+        # 2. If it's just a base domain, scan Important Links for a deeper URL
+        # 3. Fall back to a Google search URL for the specific post
+        official_url = ''
+        btn_match = re.search(r'<a\s+href="(https?://[^"]+)"[^>]*class="btn btn--primary btn--large"', html, re.I)
+        if btn_match:
+            official_url = btn_match.group(1)
+
+        # Check if the URL is just a base domain (no meaningful path)
+        from urllib.parse import urlparse as _urlparse
+        _parsed = _urlparse(official_url) if official_url else None
+        _is_base_domain = _parsed and _parsed.path in ('', '/') and not _parsed.query
+
+        if _is_base_domain or not official_url:
+            # Scan Important Links for a deeper official URL
+            imp_links = re.findall(r'Important Links.*?<a\s+href="(https?://[^"]+)"', html, re.I | re.S)
+            for imp_url in imp_links:
+                if 'google.com/search' in imp_url:
+                    continue
+                _ip = _urlparse(imp_url)
+                if _ip.path not in ('', '/') or _ip.query:
+                    official_url = imp_url
+                    break
+
+        # If still a base domain, use Google search as it's more useful
+        _parsed2 = _urlparse(official_url) if official_url else None
+        if not official_url or (_parsed2 and _parsed2.path in ('', '/') and not _parsed2.query):
+            _search_suffix = {'job': 'apply online', 'result': 'result', 'admit': 'admit card download'}
+            official_url = f'https://www.google.com/search?q={quote(title + " " + _search_suffix.get(kind, ""))}'
+
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url})
+            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url})
+            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url})
+            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
+
+    # ── Sort by post date (newest first), unparseable dates fall back to file mtime ──
+    _date_key_map = {'job': 'last_date', 'result': 'result_date', 'admit': 'exam_date'}
+    date_field = _date_key_map.get(kind, 'last_date')
+    _epoch = date(2000, 1, 1)
+
+    def _sort_key(entry: dict) -> tuple:
+        parsed = _parse_sort_date(entry.get(date_field, ''))
+        if parsed:
+            # Real date found → sort group 0 (top), then by date descending
+            return (0, -parsed.toordinal())
+        # No parseable date → sort group 1 (bottom), then by file mtime descending
+        return (1, -entry.get('_mtime', 0))
+
+    entries.sort(key=_sort_key)
+
+    # Remove internal _mtime key before returning
+    for e in entries:
+        e.pop('_mtime', None)
 
     return entries
 
@@ -3160,7 +3347,21 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             detail_soup = fetch(item['detail_url'])
             if not detail_soup:
                 log.warning(f'  Detail page unavailable — generating from listing data: {item["detail_url"]}')
-            rich = parse_detail(detail_soup, item)
+
+            # ── New detail parser ──────────────────────────────
+            try:
+                from scraper.detail_parser import parse_detail_page
+                from scraper.detail_parser.link_resolver import resolve_links
+                detail_data = parse_detail_page(detail_soup, item, source_name=src_name)
+                resolve_links(detail_data)
+                rich = detail_data.to_legacy_dict()
+                # Persist structured JSON alongside HTML
+                _detail_data_cache = detail_data
+            except Exception as exc:
+                log.warning(f'  [detail_parser] Fallback to legacy parser: {exc}')
+                rich = parse_detail(detail_soup, item)
+                _detail_data_cache = None
+
             rich['dept'] = rich.get('dept') or infer_dept(rich['title'])
 
             # Re-validate kind after detail parse (title may have changed)
@@ -3193,6 +3394,13 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     out.parent.mkdir(parents=True, exist_ok=True)
                     out.write_text(html, encoding='utf-8')
                     log.info(f'  Written (LIVE): {rel}')
+
+                    # Persist structured JSON alongside HTML
+                    if _detail_data_cache is not None:
+                        json_out = out.with_suffix('.json')
+                        json_out.write_text(_detail_data_cache.to_json(), encoding='utf-8')
+                        log.info(f'  Written (JSON): {rel.replace(".html", ".json")}')
+
                     generated[kind].append(rich)
                 else:
                     # Secondary source → write to staging/ for manual review
