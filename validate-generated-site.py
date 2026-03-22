@@ -92,6 +92,17 @@ def validate_html(path: Path) -> list[str]:
     if re.search(r"www\.Naukri Dhaba\.com|Naukri Dhaba\.com|naukri%20dhaba", content, flags=re.IGNORECASE):
         errors.append(f"{rel}: contains malformed host text")
 
+    # Flag Google search fallback CTAs — buttons should point to official sites, not Google
+    if re.search(r'href="https://www\.google\.com/search\?q=[^"]*"[^>]*class="[^"]*btn', content, flags=re.IGNORECASE):
+        errors.append(f"{rel}: contains CTA button that links to Google search instead of official site")
+
+    # Flag pretty routes without .html extension that will 404 on static hosts
+    # Match href="/something" where "something" has no extension and is not just "/"
+    pretty_route_pattern = re.compile(r'href="/((?:latest-jobs|results|admit-cards|resources|previous-papers|eligibility-calculator|study-planner|syllabus|cut-off-marks))"', re.IGNORECASE)
+    if pretty_route_pattern.search(content):
+        matches = pretty_route_pattern.findall(content)
+        errors.append(f"{rel}: contains pretty routes without .html extension (will 404 on static host): /{', /'.join(set(matches))}")
+
     for source_host in SOURCE_HOSTS:
         if re.search(rf'''(?:href|src)=["'][^"']*{re.escape(source_host)}''', content, flags=re.IGNORECASE):
             errors.append(f"{rel}: contains direct source host link: {source_host}")

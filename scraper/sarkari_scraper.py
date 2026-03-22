@@ -286,8 +286,10 @@ OFFICIAL_PORTALS: dict[str, str] = {
 def official_portal_for(title: str, cat: str) -> str:
     """Return the best known official govt portal URL for this exam/dept, or ''."""
     tu = title.upper()
+    # Use word-boundary regex to avoid substring false positives
+    # e.g. "LIC" must not match inside "POLICE"
     for board, url in BOARD_PORTALS.items():
-        if board in tu:
+        if re.search(rf'\b{re.escape(board)}\b', tu):
             return url
     return OFFICIAL_PORTALS.get(cat, '')
 
@@ -2084,9 +2086,9 @@ def _sidebar() -> str:
   <div class="widget">
     <h3 class="widget__title">🔗 Quick Links</h3>
     <div class="footer__links">
-      <a href="/latest-jobs">💼 Latest Jobs</a>
-      <a href="/results">📊 Results</a>
-      <a href="/admit-cards">🎫 Admit Cards</a>
+      <a href="/latest-jobs.html">💼 Latest Jobs</a>
+      <a href="/results.html">📊 Results</a>
+      <a href="/admit-cards.html">🎫 Admit Cards</a>
       <a href="/eligibility-calculator.html">🎯 Eligibility Check</a>
     </div>
   </div>
@@ -2186,12 +2188,12 @@ def build_job_page(d: dict) -> tuple[str, str]:
     desc_parts.append(f"Apply online at {SITE_NAME}.")
     desc = ' '.join(desc_parts)
 
-    # Ensure CTA URLs fall back to portal / google search
+    # Ensure CTA URLs fall back to official portal only — never Google search
     _portal = official_portal_for(title, cat)
     if not d.get('apply_url') or d['apply_url'] == '#':
-        d['apply_url'] = _portal or google_search_url(title, 'apply online official site')
+        d['apply_url'] = _portal or ''
     if not d.get('notification_url') or d['notification_url'] == '#':
-        d['notification_url'] = google_search_url(title, 'notification PDF')
+        d['notification_url'] = ''
 
     # JSON-LD
     _valid_through = to_iso_date(d['last_date'])
@@ -2268,12 +2270,12 @@ def build_result_page(d: dict) -> tuple[str, str]:
     canon = f'{SITE_URL}/{rel}'
     desc  = f"{title}: Result declared. Check your result at {SITE_NAME}. Result date: {d['result_date']}."
 
-    # Ensure CTA URLs fall back
+    # Ensure CTA URLs fall back to official portal only — never Google search
     _rportal = official_portal_for(title, cat)
     if not d.get('result_url') or d['result_url'] == '#':
-        d['result_url'] = _rportal or google_search_url(title, 'result')
+        d['result_url'] = _rportal or ''
     if not d.get('scorecard_url') or d['scorecard_url'] == '#':
-        d['scorecard_url'] = google_search_url(title, 'scorecard marks')
+        d['scorecard_url'] = ''
 
     ld_ev = json.dumps({
         "@context": "https://schema.org",
@@ -2335,10 +2337,10 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     canon = f'{SITE_URL}/{rel}'
     desc  = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {d['exam_date']}."
 
-    # Ensure CTA URLs fall back
+    # Ensure CTA URLs fall back to official portal only — never Google search
     _aportal = official_portal_for(title, cat)
     if not d.get('admit_url') or d['admit_url'] == '#':
-        d['admit_url'] = _aportal or google_search_url(title, 'admit card download')
+        d['admit_url'] = _aportal or ''
 
     ld_ev = json.dumps({
         "@context": "https://schema.org",
@@ -2659,7 +2661,7 @@ def replace_home_jobs_section(index_file: Path, entries: list[dict], limit: int 
 </div>
 <div class="cards">{cards_str}</div>
 <div style="text-align:center;margin-top:1.5rem;">
-<a class="btn btn--primary" href="/latest-jobs">View All Jobs →</a>
+<a class="btn btn--primary" href="/latest-jobs.html">View All Jobs →</a>
 </div>
 </div>'''
 
