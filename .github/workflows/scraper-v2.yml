@@ -1,11 +1,7 @@
-name: Daily Scraper - 10 AM IST
+name: Scraper Update v2
 
 on:
-  # ── Auto: every 5 minutes ────────────────────────────────
-  schedule:
-    - cron: '*/5 * * * *'
-
-  # ── Manual: tap "Run workflow" on GitHub from your phone ─
+  # ── Manual only: tap "Run workflow" on GitHub ────────────
   workflow_dispatch:
     inputs:
       reason:
@@ -14,7 +10,7 @@ on:
         default: "Manual trigger"
 
 concurrency:
-  group: daily-scraper
+  group: scraper-v2
   cancel-in-progress: false
 
 permissions:
@@ -22,7 +18,7 @@ permissions:
 
 jobs:
   scrape-and-publish:
-    name: Scrape all sources → Generate HTML
+    name: Scrape all sources → Generate HTML (v2)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -65,7 +61,7 @@ jobs:
           CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
           CF_WORKER_SECRET: ${{ secrets.CF_WORKER_SECRET }}
         run: |
-          echo "=== Naukri Dhaba Scraper ==="
+          echo "=== Naukri Dhaba Scraper v2 ==="
           echo "Time (IST): $(date)"
           python3 scraper/sarkari_scraper.py --refresh-existing
           echo "=== Scraper done ==="
@@ -86,22 +82,18 @@ jobs:
         if: steps.source_check.outputs.sources_down != 'true'
         run: python3 validate-generated-site.py
 
-      - name: Commit new pages (primary sources only)
+      - name: Commit new pages
         if: steps.source_check.outputs.sources_down != 'true'
         run: |
-          git config user.name "Manual Job Post Bot"
+          git config user.name "Scraper v2 Bot"
           git config user.email "bot@naukridhaba.in"
-          # Only stage live site files — staging/ is gitignored
           git add -A
           if git diff --staged --quiet; then
-            echo "No new pages generated today."
+            echo "No new pages generated."
           else
             COUNT=$(git diff --staged --name-only | wc -l)
-            git commit -m "Auto-scrape $(date +'%d %b %Y %I:%M %p IST') - $COUNT files"
-            # Retry push up to 4 times with exponential backoff
-            # Use merge (not rebase) to avoid conflicts on auto-generated files
+            git commit -m "Scraper-v2 $(date +'%d %b %Y %I:%M %p IST') - $COUNT files"
             for attempt in 1 2 3 4; do
-              # Abort any stuck rebase from a previous attempt
               git rebase --abort 2>/dev/null || true
               git pull --no-rebase origin main -X theirs && git push && break
               echo "Push attempt $attempt failed, retrying in $((attempt * 2))s..."
@@ -116,7 +108,6 @@ jobs:
           if [ -f staging/manifest.json ]; then
             STAGED=$(python3 -c "import json; m=json.load(open('staging/manifest.json')); print(len(m))")
             echo "Staging: $STAGED item(s) pending review from secondary sources."
-            echo "Run 'python3 promote-staging.py --list' to see them."
           else
             echo "No staged items from secondary sources."
           fi
