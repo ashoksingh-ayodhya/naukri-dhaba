@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-22T06:29:43Z",
+  "updated": "2026-03-22T07:25:27Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -278,6 +278,14 @@
       "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
+      "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
+    },
+    {
       "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -286,44 +294,36 @@
       "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
     },
     {
-      "title": "RSSB NHM Contractual Various Post Result 2026",
-      "dept": "RSSB",
-      "type": "result",
-      "category": "police",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
-    },
-    {
-      "title": "Patna High Court Stenographer 2025 Result",
+      "title": "NTA NIFT 2025 Result / Score Card",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
+      "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
     },
     {
-      "title": "UP CNET 2025 Result",
+      "title": "NTA UGC NET December 2025 Result",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
+      "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
     },
     {
-      "title": "Rajasthan Board RBSE Class 10th Result 2025",
+      "title": "NTA JEEMAIN Session I Paper 2 Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/rajasthan-board-rbse-class-10th-result-2025.html"
+      "url": "https://naukridhaba.in/results/government/nta-jeemain-session-i-paper-2-result-2025.html"
     },
     {
-      "title": "UP Madarsa Board Result 2025",
-      "dept": "GOVERNMENT",
+      "title": "NVS Class 9th Result 2025",
+      "dept": "NVS",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
+      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
     }
   ],
   "admits": [
@@ -432,6 +432,22 @@
       "url": "https://naukridhaba.in/admit-cards/railway/ibps-rrb-14th-office-assistant-mains-admit-card.html"
     },
     {
+      "title": "UPPSC Computer Assistant Admit Card 2026",
+      "dept": "PPSC",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/uppsc-computer-assistant-admit-card-2026.html"
+    },
+    {
+      "title": "UPCATET 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/upcatet-2025-admit-card.html"
+    },
+    {
       "title": "SCI Junior Court Assistant Admit Card 2025",
       "dept": "GOVERNMENT",
       "type": "admit",
@@ -470,22 +486,6 @@
       "category": "government",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/government/rpsc-assistant-engineer-ae-2024-main-exam-city-admit-card.html"
-    },
-    {
-      "title": "RSSB NHM Various Post Admit Card 2025",
-      "dept": "RSSB",
-      "type": "admit",
-      "category": "police",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/police/rssb-nhm-various-post-admit-card-2025.html"
-    },
-    {
-      "title": "UPBED 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/upbed-2025-admit-card.html"
     }
   ]
 }
