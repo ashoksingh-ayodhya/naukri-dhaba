@@ -2641,11 +2641,36 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
 
         actual_url = '/' + rel
 
-        # Extract official URL from primary CTA button in detail page
+        # Extract best official URL from detail page:
+        # 1. Try primary CTA button first
+        # 2. If it's just a base domain, scan Important Links for a deeper URL
+        # 3. Fall back to a Google search URL for the specific post
         official_url = ''
         btn_match = re.search(r'<a\s+href="(https?://[^"]+)"[^>]*class="btn btn--primary btn--large"', html, re.I)
         if btn_match:
             official_url = btn_match.group(1)
+
+        # Check if the URL is just a base domain (no meaningful path)
+        from urllib.parse import urlparse as _urlparse
+        _parsed = _urlparse(official_url) if official_url else None
+        _is_base_domain = _parsed and _parsed.path in ('', '/') and not _parsed.query
+
+        if _is_base_domain or not official_url:
+            # Scan Important Links for a deeper official URL
+            imp_links = re.findall(r'Important Links.*?<a\s+href="(https?://[^"]+)"', html, re.I | re.S)
+            for imp_url in imp_links:
+                if 'google.com/search' in imp_url:
+                    continue
+                _ip = _urlparse(imp_url)
+                if _ip.path not in ('', '/') or _ip.query:
+                    official_url = imp_url
+                    break
+
+        # If still a base domain, use Google search as it's more useful
+        _parsed2 = _urlparse(official_url) if official_url else None
+        if not official_url or (_parsed2 and _parsed2.path in ('', '/') and not _parsed2.query):
+            _search_suffix = {'job': 'apply online', 'result': 'result', 'admit': 'admit card download'}
+            official_url = f'https://www.google.com/search?q={quote(title + " " + _search_suffix.get(kind, ""))}'
 
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
