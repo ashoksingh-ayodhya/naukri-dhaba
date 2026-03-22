@@ -251,7 +251,7 @@ content = normalize_root_links(content)
 
 | Fix | Status | Root Cause |
 |-----|--------|------------|
-| Pretty route .html fix | ❌ WILL BREAK | `update-all-pages.py` `normalize_root_links()` converts .html back to pretty routes on every workflow run |
+| Pretty route .html fix | ✅ NOW FIXED | `a4736e4` — Fixed at the source: site_config.py, update-all-pages.py, js/app.js, generate-state-pages.py all use .html. normalize_root_links() reversed to convert pretty→.html. |
 | Google CTAs in existing pages | ❌ 156 PAGES BROKEN | Old pages not regenerated yet |
 | Scraper v2 against real sites | ❌ UNTESTED | No internet access in this environment |
 
@@ -268,18 +268,13 @@ content = normalize_root_links(content)
 
 # PART 5: WHAT MUST BE DONE BEFORE MERGE
 
-## CRITICAL (will break the site if not done)
+## CRITICAL — RESOLVED (commit a4736e4)
 
-1. **Fix `update-all-pages.py`:**
-   - Remove or reverse `normalize_root_links()` — stop converting .html to pretty routes
-   - Fix `build_standard_sidebar()` — change pretty routes to .html
-   - Fix `build_standard_footer()` — change pretty routes to .html
-   - OR: Add GitHub Pages `_redirects` or configure routing properly for extensionless URLs
-
-2. **Decide routing strategy:**
-   - Option A: Use `.html` everywhere (simpler, no hosting config needed)
-   - Option B: Use pretty routes + configure GitHub Pages rewrites (cleaner URLs but needs hosting setup)
-   - Currently it's a mix of both, which is why things break
+1. **Fixed `update-all-pages.py`** — `normalize_root_links()` reversed to convert pretty→.html, sidebar/footer templates use .html
+2. **Fixed `site_config.py`** — PRETTY_ROUTE_MAP values now .html
+3. **Fixed `js/app.js`** — footer links use .html
+4. **Fixed `generate-state-pages.py`** — nav links use .html
+5. **Routing strategy decided:** `.html` everywhere (simpler, no hosting config needed)
 
 ## IMPORTANT (should be done)
 
