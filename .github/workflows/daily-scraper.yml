@@ -1,9 +1,9 @@
 name: Daily Scraper - 10 AM IST
 
 on:
-  # ── Auto: every 5 minutes ────────────────────────────────
+  # ── Auto: daily at 10:00 AM IST (4:30 AM UTC) ────────────
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '30 4 * * *'
 
   # ── Manual: tap "Run workflow" on GitHub from your phone ─
   workflow_dispatch:

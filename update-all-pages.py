@@ -655,10 +655,10 @@ def build_standard_sidebar():
   <div class="widget">
     <h3 class="widget__title">Quick Links</h3>
     <div class="footer__links">
-      <a href="/latest-jobs">Latest Jobs</a>
-      <a href="/results">Results</a>
-      <a href="/admit-cards">Admit Cards</a>
-      <a href="/eligibility-calculator">Eligibility Check</a>
+      <a href="/latest-jobs.html">Latest Jobs</a>
+      <a href="/results.html">Results</a>
+      <a href="/admit-cards.html">Admit Cards</a>
+      <a href="/eligibility-calculator.html">Eligibility Check</a>
     </div>
   </div>
   <div class="nd-ad ad-slot" data-ad-slot="sidebar-top" style="min-height:250px;"></div>
@@ -677,21 +677,21 @@ def build_standard_footer():
       <div>
         <h3 class="footer__title">Quick Links</h3>
         <div class="footer__links">
-          <a href="/latest-jobs">Latest Jobs</a>
-          <a href="/results">Results</a>
-          <a href="/admit-cards">Admit Cards</a>
-          <a href="/resources">Resources</a>
+          <a href="/latest-jobs.html">Latest Jobs</a>
+          <a href="/results.html">Results</a>
+          <a href="/admit-cards.html">Admit Cards</a>
+          <a href="/resources.html">Resources</a>
         </div>
       </div>
       <div>
         <h3 class="footer__title">Categories</h3>
         <div class="footer__links">
-          <a href="/latest-jobs">UPSC Jobs</a>
-          <a href="/latest-jobs">SSC Jobs</a>
-          <a href="/latest-jobs">Railway Jobs</a>
-          <a href="/latest-jobs">Banking Jobs</a>
-          <a href="/latest-jobs">Defence Jobs</a>
-          <a href="/latest-jobs">Police Jobs</a>
+          <a href="/latest-jobs.html">UPSC Jobs</a>
+          <a href="/latest-jobs.html">SSC Jobs</a>
+          <a href="/latest-jobs.html">Railway Jobs</a>
+          <a href="/latest-jobs.html">Banking Jobs</a>
+          <a href="/latest-jobs.html">Defence Jobs</a>
+          <a href="/latest-jobs.html">Police Jobs</a>
         </div>
       </div>
       <div>
@@ -777,34 +777,33 @@ def site_route(filename):
 
 
 def normalize_root_links(content):
-    """Convert top-level .html links to deployed extensionless routes."""
-    filename_to_path = {name: pretty_root_path(name) for name in PRETTY_ROUTE_MAP if name != 'index.html'}
-    filename_to_path['index.html'] = '/'
+    """Convert extensionless pretty routes to .html links (GitHub Pages compatible)."""
+    _ROUTE_NAMES = (
+        'latest-jobs', 'results', 'admit-cards', 'resources',
+        'previous-papers', 'eligibility-calculator', 'study-planner',
+    )
 
     def repl(match):
         attr = match.group('attr')
         quote = match.group('quote')
         url = match.group('url')
         suffix = match.group('suffix') or ''
-        parsed = url
+
         prefix = ''
-
-        if parsed.startswith(SITE_URL + '/'):
+        path = url
+        if path.startswith(SITE_URL):
             prefix = SITE_URL
-            parsed = parsed[len(SITE_URL):]
+            path = path[len(SITE_URL):]
 
-        filename = parsed.split('/')[-1]
-        if filename not in filename_to_path:
-            return match.group(0)
+        # path is now e.g. "/latest-jobs"
+        new_path = path + '.html'
+        return f'{attr}={quote}{prefix}{new_path}{suffix}{quote}'
 
-        new_url = filename_to_path[filename] + suffix
-        if prefix:
-            new_url = prefix + new_url
-        return f'{attr}={quote}{new_url}{quote}'
-
+    # Match extensionless pretty routes (no trailing slash, no .html)
+    route_alt = '|'.join(re.escape(r) for r in _ROUTE_NAMES)
     pattern = re.compile(
-        r'(?P<attr>href|src)=(?P<quote>["\'])(?P<url>(?:https://naukridhaba\.in/)?(?:/|(?:\.\./)*)'
-        r'(?:index|latest-jobs|results|admit-cards|resources|previous-papers|eligibility-calculator|study-planner)\.html)'
+        r'(?P<attr>href|src)=(?P<quote>["\'])(?P<url>(?:' + re.escape(SITE_URL) + r')?'
+        r'/(?:' + route_alt + r'))'
         r'(?P<suffix>[?#][^"\']*)?(?P=quote)',
         flags=re.IGNORECASE
     )
