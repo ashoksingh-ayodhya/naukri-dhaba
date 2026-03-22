@@ -5,3 +5,6 @@ output/playwright/
 .playwright-cli/
 # Staging directory — secondary source pages pending manual review
 staging/
+node_modules/
+package.json
+package-lock.json
