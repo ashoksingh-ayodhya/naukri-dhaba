@@ -243,17 +243,17 @@ def generate_state_page(slug: str, info: dict,
 <div class="container header__container">
 <a class="logo" href="/">&#x1F4CB; Naukri Dhaba</a>
 <nav class="nav nav--desktop">
-<a class="" href="/latest-jobs">&#x1F4BC; Latest Jobs</a>
-<a class="" href="/results">&#x1F4CA; Results</a>
-<a class="" href="/admit-cards">&#x1F3AB; Admit Cards</a>
-<a class="" href="/resources">&#x1F4DA; Resources</a>
+<a class="" href="/latest-jobs.html">&#x1F4BC; Latest Jobs</a>
+<a class="" href="/results.html">&#x1F4CA; Results</a>
+<a class="" href="/admit-cards.html">&#x1F3AB; Admit Cards</a>
+<a class="" href="/resources.html">&#x1F4DA; Resources</a>
 </nav>
 <div style="display:flex;gap:1rem;align-items:center;">
 <button class="btn--icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">&#x1F313;</button>
 <button class="btn--icon menu-toggle" onclick="toggleMobileMenu()" style="display:none;font-size:1.5rem;cursor:pointer;" aria-label="Open menu">&#x2630;</button>
 </div>
 </div>
-<nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">&#x2715;</button><a href="/">&#x1F3E0; Home</a><a href="/latest-jobs">&#x1F4BC; Latest Jobs</a><a href="/results">&#x1F4CA; Results</a><a href="/admit-cards">&#x1F3AB; Admit Cards</a><a href="/resources">&#x1F4DA; Resources</a></nav>
+<nav class="nav--mobile"><button onclick="closeMobileMenu()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;">&#x2715;</button><a href="/">&#x1F3E0; Home</a><a href="/latest-jobs.html">&#x1F4BC; Latest Jobs</a><a href="/results.html">&#x1F4CA; Results</a><a href="/admit-cards.html">&#x1F3AB; Admit Cards</a><a href="/resources.html">&#x1F4DA; Resources</a></nav>
 <style>.menu-toggle{{display:none!important}}@media(max-width:768px){{.nav--desktop{{display:none}}.menu-toggle{{display:block!important}}}}</style>
 <div id="menu-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;"></div>
 </header>

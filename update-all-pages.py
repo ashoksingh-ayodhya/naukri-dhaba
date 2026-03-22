@@ -655,10 +655,10 @@ def build_standard_sidebar():
   <div class="widget">
     <h3 class="widget__title">Quick Links</h3>
     <div class="footer__links">
-      <a href="/latest-jobs">Latest Jobs</a>
-      <a href="/results">Results</a>
-      <a href="/admit-cards">Admit Cards</a>
-      <a href="/eligibility-calculator">Eligibility Check</a>
+      <a href="/latest-jobs.html">Latest Jobs</a>
+      <a href="/results.html">Results</a>
+      <a href="/admit-cards.html">Admit Cards</a>
+      <a href="/eligibility-calculator.html">Eligibility Check</a>
     </div>
   </div>
   <div class="nd-ad ad-slot" data-ad-slot="sidebar-top" style="min-height:250px;"></div>
@@ -677,21 +677,21 @@ def build_standard_footer():
       <div>
         <h3 class="footer__title">Quick Links</h3>
         <div class="footer__links">
-          <a href="/latest-jobs">Latest Jobs</a>
-          <a href="/results">Results</a>
-          <a href="/admit-cards">Admit Cards</a>
-          <a href="/resources">Resources</a>
+          <a href="/latest-jobs.html">Latest Jobs</a>
+          <a href="/results.html">Results</a>
+          <a href="/admit-cards.html">Admit Cards</a>
+          <a href="/resources.html">Resources</a>
         </div>
       </div>
       <div>
         <h3 class="footer__title">Categories</h3>
         <div class="footer__links">
-          <a href="/latest-jobs">UPSC Jobs</a>
-          <a href="/latest-jobs">SSC Jobs</a>
-          <a href="/latest-jobs">Railway Jobs</a>
-          <a href="/latest-jobs">Banking Jobs</a>
-          <a href="/latest-jobs">Defence Jobs</a>
-          <a href="/latest-jobs">Police Jobs</a>
+          <a href="/latest-jobs.html">UPSC Jobs</a>
+          <a href="/latest-jobs.html">SSC Jobs</a>
+          <a href="/latest-jobs.html">Railway Jobs</a>
+          <a href="/latest-jobs.html">Banking Jobs</a>
+          <a href="/latest-jobs.html">Defence Jobs</a>
+          <a href="/latest-jobs.html">Police Jobs</a>
         </div>
       </div>
       <div>
@@ -777,9 +777,15 @@ def site_route(filename):
 
 
 def normalize_root_links(content):
-    """Convert top-level .html links to deployed extensionless routes."""
-    filename_to_path = {name: pretty_root_path(name) for name in PRETTY_ROUTE_MAP if name != 'index.html'}
-    filename_to_path['index.html'] = '/'
+    """Convert extensionless pretty routes to .html links for GitHub Pages compatibility."""
+    # Map: pretty route -> .html filename
+    pretty_to_html = {}
+    for filename, route in PRETTY_ROUTE_MAP.items():
+        if filename == 'index.html':
+            continue
+        # Extract the extensionless name (e.g. "/latest-jobs" from "/latest-jobs.html" or "/latest-jobs")
+        name = route.rstrip('/').rsplit('/', 1)[-1].replace('.html', '')
+        pretty_to_html[name] = '/' + filename
 
     def repl(match):
         attr = match.group('attr')
@@ -793,19 +799,22 @@ def normalize_root_links(content):
             prefix = SITE_URL
             parsed = parsed[len(SITE_URL):]
 
-        filename = parsed.split('/')[-1]
-        if filename not in filename_to_path:
+        # Extract the last path segment (e.g. "latest-jobs" from "/latest-jobs")
+        name = parsed.rstrip('/').rsplit('/', 1)[-1]
+        if name not in pretty_to_html:
             return match.group(0)
 
-        new_url = filename_to_path[filename] + suffix
+        new_url = pretty_to_html[name] + suffix
         if prefix:
             new_url = prefix + new_url
         return f'{attr}={quote}{new_url}{quote}'
 
+    # Match extensionless routes like /latest-jobs, /results, /admit-cards etc.
+    names = '|'.join(re.escape(n) for n in pretty_to_html)
     pattern = re.compile(
-        r'(?P<attr>href|src)=(?P<quote>["\'])(?P<url>(?:https://naukridhaba\.in/)?(?:/|(?:\.\./)*)'
-        r'(?:index|latest-jobs|results|admit-cards|resources|previous-papers|eligibility-calculator|study-planner)\.html)'
-        r'(?P<suffix>[?#][^"\']*)?(?P=quote)',
+        r'(?P<attr>href|src)=(?P<quote>["\'])(?P<url>(?:https://naukridhaba\.in/)?/(?:'
+        + names +
+        r'))(?P<suffix>[?#][^"\']*)?(?P=quote)',
         flags=re.IGNORECASE
     )
     return pattern.sub(repl, content)

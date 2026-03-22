@@ -73,11 +73,11 @@ STAGING_DIR = "staging"
 REDIRECT_PATH = "/go.html"
 PRETTY_ROUTE_MAP = {
     "index.html": "/",
-    "latest-jobs.html": "/latest-jobs",
-    "results.html": "/results",
-    "admit-cards.html": "/admit-cards",
-    "resources.html": "/resources",
-    "previous-papers.html": "/previous-papers",
-    "eligibility-calculator.html": "/eligibility-calculator",
-    "study-planner.html": "/study-planner",
+    "latest-jobs.html": "/latest-jobs.html",
+    "results.html": "/results.html",
+    "admit-cards.html": "/admit-cards.html",
+    "resources.html": "/resources.html",
+    "previous-papers.html": "/previous-papers.html",
+    "eligibility-calculator.html": "/eligibility-calculator.html",
+    "study-planner.html": "/study-planner.html",
 }
