@@ -2400,6 +2400,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '') or e.get('date_str', '')
             button = 'Apply'
+            button_url = e.get('official_url') or path
         elif kind == 'result':
             cat = get_category(e.get('dept', ''))
             slug = slugify(title)
@@ -2408,6 +2409,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/results/{cat}/{slug}.html"
             date_label = e.get('result_date', '') or e.get('date_str', '')
             button = 'View'
+            button_url = e.get('official_url') or path
         else:
             cat = get_category(e.get('dept', ''))
             slug = slugify(title)
@@ -2416,6 +2418,7 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/admit-cards/{cat}/{slug}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
             button = 'Download'
+            button_url = e.get('official_url') or path
 
         # Strip any existing emoji from date_label to avoid duplicates
         date_label = re.sub(r'\s*🔴\s*', '', date_label).strip()
@@ -2432,18 +2435,21 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             date_display = date_label
             date_card = f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
 
+        # Use target="_blank" for external official URLs
+        btn_target = ' target="_blank" rel="nofollow noopener noreferrer"' if button_url.startswith('http') else ''
+
         rows.append(
             f'<tr><td>{dept}</td>'
             f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
             f'<td>{date_display}</td>'
-            f'<td><a href="{path}" class="btn btn--small btn--primary">{button}</a></td></tr>'
+            f'<td><a href="{button_url}"{btn_target} class="btn btn--small btn--primary">{button}</a></td></tr>'
         )
         cards.append(
             f'<div class="card">'
             f'<div class="card__header"><span class="badge">{dept}</span></div>'
             f'<h3 class="card__title">{title}</h3>'
             f'{date_card}'
-            f'<a href="{path}" class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
+            f'<a href="{button_url}"{btn_target} class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
             f'</div>'
         )
 
@@ -2634,18 +2640,25 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         file_mtime = path.stat().st_mtime
 
         actual_url = '/' + rel
+
+        # Extract official URL from primary CTA button in detail page
+        official_url = ''
+        btn_match = re.search(r'<a\s+href="(https?://[^"]+)"[^>]*class="btn btn--primary btn--large"', html, re.I)
+        if btn_match:
+            official_url = btn_match.group(1)
+
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url, '_mtime': file_mtime})
+            entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url, '_mtime': file_mtime})
+            entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
-            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url, '_mtime': file_mtime})
+            entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
 
     # ── Sort by post date (newest first), unparseable dates fall back to file mtime ──
     _date_key_map = {'job': 'last_date', 'result': 'result_date', 'admit': 'exam_date'}
