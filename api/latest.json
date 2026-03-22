@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-22T15:01:25Z",
+  "updated": "2026-03-22T15:35:08Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -286,6 +286,30 @@
       "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
     },
     {
+      "title": "NVS Class 9th Result 2025",
+      "dept": "NVS",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
+    },
+    {
+      "title": "RSSB NHM Contractual Various Post Result 2026",
+      "dept": "RSSB",
+      "type": "result",
+      "category": "police",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
+    },
+    {
+      "title": "Patna High Court Stenographer 2025 Result",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
+    },
+    {
       "title": "UP CNET 2025 Result",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -294,36 +318,12 @@
       "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
     },
     {
-      "title": "UP Madarsa Board Result 2025",
+      "title": "Rajasthan Board RBSE Class 10th Result 2025",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
-    },
-    {
-      "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
-    },
-    {
-      "title": "UPPSC LT Grade Assistant Teacher Result 2026",
-      "dept": "PPSC",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/uppsc-lt-grade-assistant-teacher-result-2026.html"
-    },
-    {
-      "title": "UP Board Class 10th, 12th Result 2025",
-      "dept": "UP BOARD",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/up-board-class-10th-12th-result-2025.html"
+      "url": "https://naukridhaba.in/results/government/rajasthan-board-rbse-class-10th-result-2025.html"
     }
   ],
   "admits": [
