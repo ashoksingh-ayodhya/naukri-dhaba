@@ -1,0 +1,48 @@
+User-agent: *
+Allow: /
+
+# Explicitly allow major AI crawlers and model fetchers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# Allow important crawlable paths
+Allow: /jobs/
+Allow: /results/
+Allow: /admit-cards/
+Allow: /latest-jobs
+Allow: /results
+Allow: /admit-cards
+Allow: /resources
+Allow: /latest-jobs.html
+Allow: /results.html
+Allow: /admit-cards.html
+
+# Sitemap location
+Sitemap: https://naukridhaba.in/sitemap.xml
+
+# Crawl delay (be polite to server)
+Crawl-delay: 1
