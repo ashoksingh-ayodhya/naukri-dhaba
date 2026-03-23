@@ -2084,9 +2084,9 @@ def _sidebar() -> str:
   <div class="widget">
     <h3 class="widget__title">🔗 Quick Links</h3>
     <div class="footer__links">
-      <a href="/latest-jobs">💼 Latest Jobs</a>
-      <a href="/results">📊 Results</a>
-      <a href="/admit-cards">🎫 Admit Cards</a>
+      <a href="/latest-jobs.html">💼 Latest Jobs</a>
+      <a href="/results.html">📊 Results</a>
+      <a href="/admit-cards.html">🎫 Admit Cards</a>
       <a href="/eligibility-calculator.html">🎯 Eligibility Check</a>
     </div>
   </div>
@@ -2117,6 +2117,7 @@ def _downloads_html(d: dict) -> str:
 def _footer() -> str:
     return '''<footer class="footer" id="site-footer"></footer>
 <script src="/js/app.js"></script>
+<script src="/js/header-footer.js" defer></script>
 <script src="/js/ads-manager.js" defer></script>'''
 
 
@@ -2222,14 +2223,14 @@ def build_job_page(d: dict) -> tuple[str, str]:
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE_URL + '/latest-jobs'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/latest-jobs'},
+            {"@type": "ListItem", "position": 2, "name": "Jobs", "item": SITE_URL + '/latest-jobs.html'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/latest-jobs.html'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
 
     faq_html, faq_ld = build_job_faq(d)
-    detail_content = _build_detail_content_v2(d, 'job', 'Latest Jobs', '/latest-jobs', faq_html)
+    detail_content = _build_detail_content_v2(d, 'job', 'Latest Jobs', '/latest-jobs.html', faq_html)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -2240,6 +2241,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
+    <script src="../../js/header-footer.js" defer></script>
 </head>
 <body>
 {detail_body_tracking_markup()}
@@ -2289,14 +2291,14 @@ def build_result_page(d: dict) -> tuple[str, str]:
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Results", "item": SITE_URL + '/results'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/results'},
+            {"@type": "ListItem", "position": 2, "name": "Results", "item": SITE_URL + '/results.html'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/results.html'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
 
     faq_html, faq_ld = build_result_faq(d)
-    detail_content = _build_detail_content_v2(d, 'result', 'Results', '/results', faq_html)
+    detail_content = _build_detail_content_v2(d, 'result', 'Results', '/results.html', faq_html)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -2307,6 +2309,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
+    <script src="../../js/header-footer.js" defer></script>
 </head>
 <body>
 {detail_body_tracking_markup()}
@@ -2354,14 +2357,14 @@ def build_admit_page(d: dict) -> tuple[str, str]:
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": SITE_URL + '/'},
-            {"@type": "ListItem", "position": 2, "name": "Admit Cards", "item": SITE_URL + '/admit-cards'},
-            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/admit-cards'},
+            {"@type": "ListItem", "position": 2, "name": "Admit Cards", "item": SITE_URL + '/admit-cards.html'},
+            {"@type": "ListItem", "position": 3, "name": dept, "item": SITE_URL + '/admit-cards.html'},
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
 
     faq_html, faq_ld = build_admit_faq(d)
-    detail_content = _build_detail_content_v2(d, 'admit', 'Admit Cards', '/admit-cards', faq_html)
+    detail_content = _build_detail_content_v2(d, 'admit', 'Admit Cards', '/admit-cards.html', faq_html)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -2372,6 +2375,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
+    <script src="../../js/header-footer.js" defer></script>
 </head>
 <body>
 {detail_body_tracking_markup()}
@@ -2570,9 +2574,9 @@ def prepare_listing_entries(entries: list[dict], kind: str, limit: int | None = 
 
 
 _LISTING_META = {
-    'latest-jobs.html':  ('Latest Government Jobs',  SITE_URL + '/latest-jobs'),
-    'results.html':      ('Government Exam Results',  SITE_URL + '/results'),
-    'admit-cards.html':  ('Government Admit Cards',   SITE_URL + '/admit-cards'),
+    'latest-jobs.html':  ('Latest Government Jobs',  SITE_URL + '/latest-jobs.html'),
+    'results.html':      ('Government Exam Results',  SITE_URL + '/results.html'),
+    'admit-cards.html':  ('Government Admit Cards',   SITE_URL + '/admit-cards.html'),
 }
 
 
@@ -2659,7 +2663,7 @@ def replace_home_jobs_section(index_file: Path, entries: list[dict], limit: int 
 </div>
 <div class="cards">{cards_str}</div>
 <div style="text-align:center;margin-top:1.5rem;">
-<a class="btn btn--primary" href="/latest-jobs">View All Jobs →</a>
+<a class="btn btn--primary" href="/latest-jobs.html">View All Jobs →</a>
 </div>
 </div>'''
 

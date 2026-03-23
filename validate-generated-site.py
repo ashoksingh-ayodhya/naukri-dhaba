@@ -89,6 +89,14 @@ def validate_html(path: Path) -> list[str]:
     if re.search(rf"{re.escape(REDIRECT_PATH)}\?target=.*{re.escape(REDIRECT_PATH)}%3Ftarget", content, flags=re.IGNORECASE):
         errors.append(f"{rel}: contains nested redirect target")
 
+    # Detect extensionless pretty routes that won't load on GitHub Pages
+    _PRETTY_ROUTE_PAT = re.compile(
+        r'href=["\'](?:https://naukridhaba\.in)?/(?:latest-jobs|results|admit-cards|resources|previous-papers|eligibility-calculator|study-planner)["\']',
+        re.IGNORECASE,
+    )
+    if _PRETTY_ROUTE_PAT.search(content):
+        errors.append(f"{rel}: contains extensionless pretty route (use .html suffix)")
+
     if re.search(r"www\.Naukri Dhaba\.com|Naukri Dhaba\.com|naukri%20dhaba", content, flags=re.IGNORECASE):
         errors.append(f"{rel}: contains malformed host text")
 
