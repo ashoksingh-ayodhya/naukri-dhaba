@@ -2117,6 +2117,7 @@ def _downloads_html(d: dict) -> str:
 def _footer() -> str:
     return '''<footer class="footer" id="site-footer"></footer>
 <script src="/js/app.js"></script>
+<script src="/js/header-footer.js" defer></script>
 <script src="/js/ads-manager.js" defer></script>'''
 
 
@@ -2240,6 +2241,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
+    <script src="../../js/header-footer.js" defer></script>
 </head>
 <body>
 {detail_body_tracking_markup()}
@@ -2307,6 +2309,7 @@ def build_result_page(d: dict) -> tuple[str, str]:
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
+    <script src="../../js/header-footer.js" defer></script>
 </head>
 <body>
 {detail_body_tracking_markup()}
@@ -2372,6 +2375,7 @@ def build_admit_page(d: dict) -> tuple[str, str]:
     <script type="application/ld+json">{ld_bc}</script>
     <script type="application/ld+json">{faq_ld}</script>
     <script src="../../js/ads-manager.js" defer></script>
+    <script src="../../js/header-footer.js" defer></script>
 </head>
 <body>
 {detail_body_tracking_markup()}
