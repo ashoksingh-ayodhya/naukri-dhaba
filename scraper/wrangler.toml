@@ -13,12 +13,16 @@ crons = ["30 4 * * *"]
 
 # ── Environment variables ──────────────────────────────────────────────────────
 [vars]
-GITHUB_OWNER       = "ashoksingh-ayodhya"
-GITHUB_REPO        = "naukri-dhaba"
-SITE_URL           = "https://naukridhaba.in"
-SITE_NAME          = "Naukri Dhaba"
+GITHUB_OWNER          = "ashoksingh-ayodhya"
+GITHUB_REPO           = "naukri-dhaba"
+GITHUB_BRANCH         = "main"
+SITE_URL              = "https://naukridhaba.in"
+SITE_NAME             = "Naukri Dhaba"
 # Max pages generated per cron run (free tier CPU limits apply; increase for Paid plan)
-MAX_ITEMS_PER_RUN  = "20"
+MAX_ITEMS_PER_RUN     = "20"
+# GitHub Actions workflow file to dispatch for post-scrape processing
+# (rebuilds listing pages, state pages, sitemap after new pages are pushed)
+POST_PROCESS_WORKFLOW = "post-scrape-update.yml"
 
 # ── KV namespace for tracking scraped items ───────────────────────────────────
 # Create with: wrangler kv:namespace create SEEN_ITEMS
@@ -28,12 +32,16 @@ binding = "SEEN_ITEMS"
 id      = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
 
 # ── Secrets (set via CLI, never stored here) ──────────────────────────────────
-# wrangler secret put GITHUB_TOKEN     ← GitHub PAT with "contents: write" scope
+# wrangler secret put GITHUB_TOKEN     ← GitHub PAT with "contents: write" AND "actions: write" scopes
 # wrangler secret put TRIGGER_SECRET   ← optional; protects the HTTP POST trigger
 
 # ── Notes ─────────────────────────────────────────────────────────────────────
 # This worker replaces the Python sarkari_scraper.py for environments where
 # only JavaScript can run (Cloudflare Workers does not support Python).
+#
+# After the worker pushes new individual pages to GitHub it dispatches the
+# post-scrape-update.yml GitHub Actions workflow which regenerates listing pages
+# (latest-jobs.html, results.html, admit-cards.html), state pages, and sitemap.
 #
 # The existing cf-proxy-worker.js is a separate, simpler worker that acts as an
 # HTTP proxy for the Python GitHub Actions scraper. They serve different purposes:
@@ -43,3 +51,4 @@ id      = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
 #
 # You only need ONE of these setups. If you deploy cf-scraper-worker.js you can
 # disable the GitHub Actions daily-scraper.yml workflow.
+
