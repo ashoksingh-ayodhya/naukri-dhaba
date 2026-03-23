@@ -157,6 +157,13 @@ async function runScraper(env) {
 
   const total = stats.jobs + stats.results + stats.admits;
   console.log(`[NaukriDhaba] Done — Jobs:${stats.jobs} Results:${stats.results} Admits:${stats.admits} Skipped:${stats.skipped}`);
+
+  // Trigger post-processing workflow in GitHub Actions (updates listing pages,
+  // state pages, and sitemap now that new pages have been pushed to the repo).
+  if (total > 0) {
+    await triggerPostProcessing(cfg, env, stats);
+  }
+
   return { ...stats, total };
 }
 
@@ -609,7 +616,7 @@ async function pushToGitHub(filePath, content, cfg, env) {
   const body = {
     message: `Auto-scrape: ${filePath}`,
     content: encoded,
-    branch: 'main',
+    branch: cfg.branch,
   };
   if (sha) body.sha = sha;
 
@@ -634,6 +641,55 @@ async function pushToGitHub(filePath, content, cfg, env) {
   } catch (err) {
     console.error(`[NaukriDhaba] GitHub push failed for ${filePath}: ${err.message}`);
     return false;
+  }
+}
+
+/**
+ * Dispatch the post-scrape-update GitHub Actions workflow so it can rebuild
+ * listing pages, state pages, and the sitemap after new pages are pushed.
+ *
+ * Requires GITHUB_TOKEN to have `actions: write` scope in addition to
+ * `contents: write`.  The workflow file must exist at
+ * .github/workflows/post-scrape-update.yml.
+ */
+async function triggerPostProcessing(cfg, env, stats) {
+  const token = env.GITHUB_TOKEN;
+  if (!token) {
+    console.warn('[NaukriDhaba] Skipping post-processing trigger — GITHUB_TOKEN not set');
+    return;
+  }
+
+  const workflow = env.POST_PROCESS_WORKFLOW ?? 'post-scrape-update.yml';
+  const apiUrl   = `${GITHUB_API}/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${workflow}/dispatches`;
+
+  try {
+    const resp = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+      body: JSON.stringify({
+        ref: cfg.branch,
+        inputs: {
+          triggered_by: 'cf-scraper-worker',
+          jobs_added:    String(stats.jobs),
+          results_added: String(stats.results),
+          admits_added:  String(stats.admits),
+        },
+      }),
+    });
+
+    if (resp.status === 204) {
+      console.log('[NaukriDhaba] Post-processing workflow dispatched successfully.');
+    } else {
+      const body = await resp.text();
+      console.warn(`[NaukriDhaba] Workflow dispatch returned ${resp.status}: ${body}`);
+    }
+  } catch (err) {
+    console.warn(`[NaukriDhaba] Could not trigger post-processing workflow: ${err.message}`);
   }
 }
 
@@ -942,6 +998,7 @@ function getConfig(env) {
   return {
     owner:    env.GITHUB_OWNER    ?? 'ashoksingh-ayodhya',
     repo:     env.GITHUB_REPO     ?? 'naukri-dhaba',
+    branch:   env.GITHUB_BRANCH   ?? 'main',
     siteUrl:  (env.SITE_URL       ?? 'https://naukridhaba.in').replace(/\/$/, ''),
     siteName: env.SITE_NAME       ?? 'Naukri Dhaba',
     maxItems: parseInt(env.MAX_ITEMS_PER_RUN ?? '20', 10),

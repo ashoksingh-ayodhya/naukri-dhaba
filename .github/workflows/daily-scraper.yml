@@ -34,7 +34,24 @@ jobs:
         with:
           fetch-depth: 0
 
+      # ── Skip Python scraper when CF Worker is the primary ─
+      # Set repo secret CF_SCRAPER_MODE=cloudflare to skip this job
+      # (the Cloudflare Worker runs at the same cron and handles scraping).
+      - name: Check scraper mode
+        id: mode_check
+        run: |
+          MODE="${{ secrets.CF_SCRAPER_MODE }}"
+          if [ "$MODE" = "cloudflare" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "CF_SCRAPER_MODE=cloudflare — Cloudflare Worker is the primary scraper."
+            echo "Skipping Python scraper. The CF Worker triggers post-scrape-update.yml directly."
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "CF_SCRAPER_MODE not set to 'cloudflare' — running Python scraper."
+          fi
+
       - name: Set up Python 3.11
+        if: steps.mode_check.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -42,6 +59,7 @@ jobs:
           cache-dependency-path: "scraper/requirements.txt"
 
       - name: Install Python dependencies
+        if: steps.mode_check.outputs.skip != 'true'
         run: pip install -r scraper/requirements.txt
 
       - name: Install Playwright for JS-rendered page fallback
@@ -51,6 +69,7 @@ jobs:
 
       # ── Pre-flight: check if source sites are reachable ──
       - name: Check source accessibility
+        if: steps.mode_check.outputs.skip != 'true'
         id: source_check
         env:
           CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
@@ -65,7 +84,7 @@ jobs:
 
       # ── Normal scraper run ────────────────────────────────
       - name: Run Naukri Dhaba scraper
-        if: steps.source_check.outputs.sources_down != 'true'
+        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         env:
           CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
           CF_WORKER_SECRET: ${{ secrets.CF_WORKER_SECRET }}
@@ -76,23 +95,23 @@ jobs:
           echo "=== Scraper done ==="
 
       - name: Regenerate state pages
-        if: steps.source_check.outputs.sources_down != 'true'
+        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         run: python3 generate-state-pages.py
 
       - name: Normalize generated pages
-        if: steps.source_check.outputs.sources_down != 'true'
+        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         run: python3 update-all-pages.py
 
       - name: Rebuild sitemap
-        if: steps.source_check.outputs.sources_down != 'true'
+        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         run: python3 generate-sitemap.py
 
       - name: Validate generated output
-        if: steps.source_check.outputs.sources_down != 'true'
+        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         run: python3 validate-generated-site.py
 
       - name: Commit new pages (primary sources only)
-        if: steps.source_check.outputs.sources_down != 'true'
+        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         run: |
           git config user.name "Manual Job Post Bot"
           git config user.email "bot@naukridhaba.in"
@@ -112,7 +131,7 @@ jobs:
           fi
 
       - name: Report staging summary
-        if: steps.source_check.outputs.sources_down != 'true'
+        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         run: |
           if [ -f staging/manifest.json ]; then
             STAGED=$(python3 -c "import json; m=json.load(open('staging/manifest.json')); print(len(m))")
