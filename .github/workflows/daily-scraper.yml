@@ -98,8 +98,11 @@ jobs:
           else
             COUNT=$(git diff --staged --name-only | wc -l)
             git commit -m "Auto-scrape $(date +'%d %b %Y %I:%M %p IST') - $COUNT files"
-            git pull --rebase origin main
-            git push
+            # Fetch remote and merge, preferring our generated content on conflict.
+            # Using merge instead of rebase to avoid conflicts when two runs overlap.
+            git fetch origin main
+            git merge -X ours FETCH_HEAD --no-edit -m "Merge remote into auto-scrape $(date +'%d %b %Y %I:%M %p IST')" || true
+            git push origin HEAD:main
             echo "Pushed $COUNT new/updated files."
           fi
 
