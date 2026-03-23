@@ -1181,18 +1181,17 @@ def build_admit_faq_data(detail):
 
 
 def build_faq_html(qas):
-    """Generate FAQ HTML with microdata for a list of (question, answer) tuples."""
+    """Generate FAQ HTML for a list of (question, answer) tuples."""
     items = '\n'.join(
-        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="border-bottom:1px solid #eee;padding:1rem 0;">'
-        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .4rem;font-size:1rem;">{q}</h3>'
-        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
-        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'<div style="border-bottom:1px solid #eee;padding:1rem 0;">'
+        f'<h3 style="color:var(--primary);margin:0 0 .4rem;font-size:1rem;">{q}</h3>'
+        f'<div>'
+        f'<p style="color:#444;line-height:1.8;margin:0;">{a}</p>'
         f'</div></div>'
         for q, a in qas
     )
     return (
-        '<div itemscope itemtype="https://schema.org/FAQPage" '
-        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
         '<h2 style="color:var(--primary);margin-top:0;">Frequently Asked Questions</h2>'
         + items + '</div>'
     )

@@ -731,16 +731,15 @@ def build_job_faq(d: dict) -> tuple[str, str]:
     ]
 
     html_items = '\n'.join(
-        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">'
-        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
-        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
-        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'<div style="border-bottom:1px solid #eee;padding:1rem 0;">'
+        f'<h3 style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
+        f'<div>'
+        f'<p style="color:#444;line-height:1.8;margin:0;">{a}</p>'
         f'</div></div>'
         for q, a in qas
     )
     faq_html = (
-        '<div itemscope itemtype="https://schema.org/FAQPage" '
-        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
         '<h2 style="color:var(--primary);margin-top:0;">❓ Frequently Asked Questions</h2>'
         + html_items +
         '</div>'
@@ -789,16 +788,15 @@ def build_result_faq(d: dict) -> tuple[str, str]:
     ]
 
     html_items = '\n'.join(
-        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">'
-        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
-        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
-        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'<div style="border-bottom:1px solid #eee;padding:1rem 0;">'
+        f'<h3 style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
+        f'<div>'
+        f'<p style="color:#444;line-height:1.8;margin:0;">{a}</p>'
         f'</div></div>'
         for q, a in qas
     )
     faq_html = (
-        '<div itemscope itemtype="https://schema.org/FAQPage" '
-        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
         '<h2 style="color:var(--primary);margin-top:0;">❓ Frequently Asked Questions</h2>'
         + html_items +
         '</div>'
@@ -843,16 +841,15 @@ def build_admit_faq(d: dict) -> tuple[str, str]:
     ]
 
     html_items = '\n'.join(
-        f'<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">'
-        f'<h3 itemprop="name" style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
-        f'<div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
-        f'<p itemprop="text" style="color:#444;line-height:1.8;margin:0;">{a}</p>'
+        f'<div style="border-bottom:1px solid #eee;padding:1rem 0;">'
+        f'<h3 style="color:var(--primary);margin:0 0 .5rem;">{q}</h3>'
+        f'<div>'
+        f'<p style="color:#444;line-height:1.8;margin:0;">{a}</p>'
         f'</div></div>'
         for q, a in qas
     )
     faq_html = (
-        '<div itemscope itemtype="https://schema.org/FAQPage" '
-        'style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
+        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
         '<h2 style="color:var(--primary);margin-top:0;">❓ Frequently Asked Questions</h2>'
         + html_items +
         '</div>'
