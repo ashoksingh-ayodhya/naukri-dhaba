@@ -42,6 +42,22 @@ const CHALLENGE_MARKERS = [
   'Checking if the site connection is secure',
   'DDoS protection by Cloudflare',
   'Enable JavaScript and cookies to continue',
+  // Cloudflare Turnstile / newer challenge variants
+  'cf-turnstile',
+  'challenges.cloudflare.com',
+  'turnstile.cloudflare.com',
+  // hCaptcha
+  'hcaptcha.com',
+  'h-captcha',
+  // Generic bot-protection pages (minimal content returned when blocked)
+  'Access denied',
+  'Please wait',
+  'Just a moment',
+  'Verifying you are human',
+  'Please enable JavaScript',
+  'Please enable cookies',
+  'Your request has been blocked',
+  'Too many requests',
 ];
 
 export default {
@@ -74,7 +90,7 @@ export default {
     }
 
     // ── Fetch from Cloudflare edge with realistic headers ─
-    // Try up to 2 times with slightly different headers
+    // Try up to 3 times with progressively different headers
     const attempts = [
       {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -98,6 +114,15 @@ export default {
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
       },
+      // Third attempt: mobile Safari UA — some sites serve simpler HTML to mobile
+      {
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-IN,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+      },
     ];
 
     let lastError = null;
@@ -115,14 +140,19 @@ export default {
         // ── Detect challenge page ─────────────────────────
         const isChallenge = CHALLENGE_MARKERS.some(marker => body.includes(marker));
         if (isChallenge) {
-          // Return a clear error so the scraper knows it got a challenge
-          return new Response(
-            JSON.stringify({ error: 'cloudflare_challenge', attempt: i + 1, status: response.status }),
-            {
-              status: 503,
-              headers: { 'Content-Type': 'application/json', 'X-Challenge-Detected': '1' },
-            }
-          );
+          // If this is the last attempt, tell the scraper it's a challenge
+          if (i === attempts.length - 1) {
+            return new Response(
+              JSON.stringify({ error: 'cloudflare_challenge', attempt: i + 1, status: response.status }),
+              {
+                status: 503,
+                headers: { 'Content-Type': 'application/json', 'X-Challenge-Detected': '1' },
+              }
+            );
+          }
+          // Otherwise try next set of headers
+          await new Promise(r => setTimeout(r, 800));
+          continue;
         }
 
         // ── Return actual content ─────────────────────────
