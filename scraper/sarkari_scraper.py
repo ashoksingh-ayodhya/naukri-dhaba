@@ -1694,7 +1694,7 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
         all_anchors = soup.find_all('a', href=True)
         all_tables  = soup.find_all('table')
         text_snip   = soup.get_text(' ', strip=True)[:600].replace('\n', ' ')
-        log.warning(
+        log.info(
             f'  [DIAG] 0 items found — '
             f'{len(all_anchors)} anchors, {len(all_tables)} tables. '
             f'HTML text: {text_snip!r}'
