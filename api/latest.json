@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-22T23:59:42Z",
+  "updated": "2026-03-23T01:14:23Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -310,20 +310,20 @@
       "url": "https://naukridhaba.in/results/government/nta-jeemain-session-i-paper-2-result-2025.html"
     },
     {
-      "title": "NTA CUET PG 2025 Result / Score Card",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-cuet-pg-2025-result-score-card.html"
-    },
-    {
       "title": "NVS Class 9th Result 2025",
       "dept": "NVS",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
+    },
+    {
+      "title": "RSSB NHM Contractual Various Post Result 2026",
+      "dept": "RSSB",
+      "type": "result",
+      "category": "police",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
     }
   ],
   "admits": [
@@ -472,20 +472,20 @@
       "url": "https://naukridhaba.in/admit-cards/government/rpsc-assistant-engineer-ae-2024-main-exam-city-admit-card.html"
     },
     {
+      "title": "NTA JIPMAT 2025 Admit Card",
+      "dept": "GOVERNMENT",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/nta-jipmat-2025-admit-card.html"
+    },
+    {
       "title": "RSSB NHM Various Post Admit Card 2025",
       "dept": "RSSB",
       "type": "admit",
       "category": "police",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/police/rssb-nhm-various-post-admit-card-2025.html"
-    },
-    {
-      "title": "UPBED 2025 Admit Card",
-      "dept": "GOVERNMENT",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/upbed-2025-admit-card.html"
     }
   ]
 }
