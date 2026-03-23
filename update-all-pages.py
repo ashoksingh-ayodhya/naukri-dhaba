@@ -376,9 +376,9 @@ def render_link_list(links, heading):
     if not rows:
         return ''
     return (
-        '<div style="background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;">'
-        f'<h3 style="color:var(--primary);margin-top:0;">{heading}</h3>'
-        f'<ul style="line-height:2.3;">{rows}</ul>'
+        '<div class="links-section">'
+        f'<h3 class="links-section__title">{heading}</h3>'
+        f'<ul class="links-list">{rows}</ul>'
         '</div>'
     )
 
@@ -969,12 +969,13 @@ def build_body_tracking_markup():
     )
 
 
-def get_keywords(page_type, title, dept):
+def get_keywords(page_type, title, dept, filepath=None):
     """Auto-generate SEO keywords."""
     dept_lower = dept.lower()
+    path_str = str(filepath).lower().replace('\\', '/') if filepath else ''
     base_kws = SEO_KEYWORDS_MAP.get('government', '')
     for key, kws in SEO_KEYWORDS_MAP.items():
-        if key in dept_lower or key in title.lower():
+        if key in dept_lower or key in title.lower() or f'/{key}/' in path_str:
             base_kws = kws
             break
 
@@ -1046,7 +1047,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
         og_desc = page_defaults[page_type]['description']
         keywords = page_defaults[page_type]['keywords']
     else:
-        keywords = get_keywords(page_type, title, dept)
+        keywords = get_keywords(page_type, title, dept, filepath)
         og_title = f"{title} | {SITE_NAME}"
         og_desc = (description[:160] if description else og_title)
 
