@@ -1472,10 +1472,75 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
             return None
         r.raise_for_status()
         origin_status = r.headers.get('X-Origin-Status', '?')
-        log.info(f'CF Worker OK for {url} (origin status: {origin_status}, size: {len(r.content)} bytes)')
-        return BeautifulSoup(r.content, 'lxml')
+        size = len(r.content)
+        log.info(f'CF Worker OK for {url} (origin status: {origin_status}, size: {size} bytes)')
+        soup = BeautifulSoup(r.content, 'lxml')
+        # Sanity check: if the page has very few anchors it may be a bot-protection
+        # page that slipped past the challenge marker check.
+        anchors = soup.find_all('a', href=True)
+        if len(anchors) < 5 and size > 1000:
+            snippet = soup.get_text(' ', strip=True)[:300]
+            log.warning(
+                f'CF Worker returned suspicious page for {url} '
+                f'(only {len(anchors)} anchors in {size}B). '
+                f'HTML snippet: {snippet!r}'
+            )
+            return None
+        return soup
     except Exception as exc:
         log.warning(f'CF Worker fetch failed for {url}: {exc}')
+        return None
+
+
+def _fetch_with_playwright(url: str) -> BeautifulSoup | None:
+    """Fetch URL using headless Chromium for JavaScript-rendered pages.
+
+    Used as a last-resort fallback when the normal HTTP fetch returns HTML
+    with no parseable job listings (i.e., the page content is loaded via JS).
+    Requires 'playwright' package and 'playwright install chromium'.
+    """
+    try:
+        from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
+    except ImportError:
+        log.debug('Playwright not installed — skipping JS-render fallback')
+        return None
+    try:
+        log.info(f'  [Playwright] Launching headless Chrome for {url}')
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                args=[
+                    '--no-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-blink-features=AutomationControlled',
+                ]
+            )
+            context = browser.new_context(
+                user_agent=HEADERS['User-Agent'],
+                extra_http_headers={
+                    'Accept-Language': HEADERS.get('Accept-Language', 'en-IN,en;q=0.9'),
+                    'Accept':          HEADERS.get('Accept', 'text/html,application/xhtml+xml,*/*'),
+                    'Accept-Encoding': HEADERS.get('Accept-Encoding', 'gzip, deflate'),
+                },
+            )
+            page = context.new_page()
+            page.goto(url, wait_until='domcontentloaded', timeout=20_000)
+            # Give JS a moment to populate the listing
+            try:
+                page.wait_for_selector(
+                    'table tr td a, ul li a, .post-list a, #post-list a',
+                    timeout=8_000,
+                )
+            except PWTimeout:
+                log.debug('  [Playwright] Selector wait timed out — using what we have')
+            page.wait_for_timeout(500)
+            html = page.content()
+            browser.close()
+        soup = BeautifulSoup(html, 'lxml')
+        anchors = soup.find_all('a', href=True)
+        log.info(f'  [Playwright] Got {len(html)} bytes, {len(anchors)} anchors')
+        return soup
+    except Exception as exc:
+        log.warning(f'  [Playwright] fetch failed for {url}: {exc}')
         return None
 
 def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
@@ -1621,6 +1686,20 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
     if len(items) <= 3:
         items = parse_listing_from_anchors(soup, page_type, source_base=source_base)
         log.info(f'  Anchor fallback found {len(items)} raw rows')
+
+    # Diagnostics: when all fallbacks returned nothing, log an HTML snippet so the
+    # next reader can see what the page actually looks like (bot-protection page, empty
+    # JS-rendered skeleton, etc.).
+    if len(items) == 0:
+        all_anchors = soup.find_all('a', href=True)
+        all_tables  = soup.find_all('table')
+        text_snip   = soup.get_text(' ', strip=True)[:600].replace('\n', ' ')
+        log.warning(
+            f'  [DIAG] 0 items found — '
+            f'{len(all_anchors)} anchors, {len(all_tables)} tables. '
+            f'HTML text: {text_snip!r}'
+        )
+
     return items
 
 
@@ -3292,6 +3371,18 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 continue
             successful_listings += 1
             raw = parse_listing(soup, kind, source_base=src_base)
+
+            # Playwright fallback: when normal fetch returns 0 items the page is likely
+            # JavaScript-rendered.  Try a headless-browser render before giving up.
+            if len(raw) == 0:
+                log.info(f'  [{src_name}] 0 items from HTTP fetch — trying Playwright JS-render fallback')
+                pw_soup = _fetch_with_playwright(url)
+                if pw_soup:
+                    pw_raw = parse_listing(pw_soup, kind, source_base=src_base)
+                    log.info(f'  Playwright fallback found {len(pw_raw)} raw rows')
+                    if len(pw_raw) > len(raw):
+                        raw = pw_raw
+
             log.info(f'  Raw items from {src_name}: {len(raw)}')
 
             accepted = 0

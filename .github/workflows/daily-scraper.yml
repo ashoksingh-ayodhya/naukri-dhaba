@@ -44,6 +44,11 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scraper/requirements.txt
 
+      - name: Install Playwright for JS-rendered page fallback
+        run: |
+          pip install playwright
+          playwright install chromium --with-deps
+
       # ── Pre-flight: check if source sites are reachable ──
       - name: Check source accessibility
         id: source_check
@@ -117,8 +122,8 @@ jobs:
             echo "No staged items from secondary sources."
           fi
 
-      - name: Show scraper log (last 50 lines)
+      - name: Show scraper log (last 100 lines)
         if: always()
         run: |
           echo "--- SCRAPER LOG ---"
-          tail -50 scraper/logs/scraper.log 2>/dev/null || echo "(no log file)"
+          tail -100 scraper/logs/scraper.log 2>/dev/null || echo "(no log file)"
