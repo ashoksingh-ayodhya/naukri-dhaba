@@ -79,8 +79,55 @@
 .ad-slot{background:#f0f0f0;border:2px dashed #ccc;padding:2rem;text-align:center;color:#999;margin:1.5rem 0}
 /* Share — single native share button */
 .share-section{background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0}
-.share-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 2rem;border-radius:25px;color:#fff;background:var(--primary);border:none;font-weight:600;cursor:pointer;font-size:1rem;transition:background 0.2s,transform 0.1s}
-.share-btn:hover{background:#283593}.share-btn:active{transform:scale(0.96)}
+.share-section h3{margin-top:0;color:var(--primary)}
+.share-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 2rem;border-radius:25px;color:#fff;background:var(--primary);border:none;font-weight:600;cursor:pointer;font-size:1rem;transition:background 0.2s,transform 0.1s;margin:0.25rem}
+.share-btn:hover{filter:brightness(1.1)}.share-btn:active{transform:scale(0.96)}
+.share-btn--whatsapp{background:#25d366}.share-btn--whatsapp:hover{background:#1ebe5d}
+.share-btn--telegram{background:#0088cc}.share-btn--telegram:hover{background:#0077b5}
+.share-btn--copy{background:#546e7a}.share-btn--copy:hover{background:#455a64}
+/* Detail page sections */
+.detail-section{background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.detail-section__title{color:var(--primary);margin-top:0;font-size:1.1rem}
+.dates-section{border-left:4px solid var(--primary);background:var(--surface);padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.dates-section__title{color:var(--primary);margin-top:0}
+.dates-table{width:100%;border-collapse:collapse}
+.dates-table td{padding:10px 0;border-bottom:1px solid #eee}
+.dates-table td:first-child{color:#666;width:55%}
+.dates-table td:last-child{font-weight:bold}
+.fee-section{border-left:4px solid var(--warning);background:#fff8e1;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0}
+.fee-section__title{color:var(--primary);margin-top:0}
+.fee-table{width:100%;border-collapse:collapse}
+.fee-table td{padding:8px 0;color:#666}
+.fee-table td:last-child{font-weight:bold;color:var(--text)}
+.status-box{background:#e8f5e9;padding:1.5rem;border-radius:8px;text-align:center;margin:1.5rem 0}
+.status-badge{display:inline-block;background:var(--success);color:#fff;padding:.5rem 1rem;border-radius:4px;font-weight:bold;margin-bottom:1rem}
+.instructions-section{border-left:4px solid var(--danger);background:#fff3e0;padding:1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0}
+.instructions-section__title{color:var(--danger);margin-top:0}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:.4rem 0;border-bottom:1px solid #eee}
+.checklist li:last-child{border-bottom:none}
+.how-to-apply ol{line-height:2.2}
+.snapshot-list{line-height:2;margin:0;padding-left:1.2rem}
+.faq-section{background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.faq-section__title{color:var(--primary);margin-top:0}
+.faq-item{border-bottom:1px solid #eee;padding:1rem 0}
+.faq-item:last-child{border-bottom:none}
+.faq-question{color:var(--primary);margin:0 0 .4rem;font-size:1rem}
+.faq-answer{color:#444;line-height:1.8;margin:0}
+.links-section{background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.links-section__title{color:var(--primary);margin-top:0}
+.links-list{line-height:2.3;padding-left:1.2rem}
+.links-list a{color:var(--primary);font-weight:500}
+/* Telegram widget */
+.widget--telegram{background:#e3f2fd;border-left:4px solid #0088cc}
+.widget--telegram .widget__title{color:#0088cc;border-bottom-color:#0088cc}
+.widget--telegram .btn{background:#0088cc;color:#fff;width:100%;text-align:center}
+/* Mobile quick links — visible when sidebar is hidden */
+.mobile-quick-links{display:none;background:var(--surface);padding:1.5rem;border-radius:8px;margin:1.5rem 0;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.mobile-quick-links h3{color:var(--primary);margin-top:0;font-size:1rem;border-bottom:2px solid var(--secondary);padding-bottom:.5rem;display:inline-block}
+.mobile-quick-links .footer__links{flex-direction:row;flex-wrap:wrap;gap:.75rem}
+.mobile-quick-links .footer__links a{background:var(--primary);color:#fff;padding:.4rem .9rem;border-radius:20px;font-size:.85rem;text-decoration:none;font-weight:500}
+@media(max-width:1024px){.mobile-quick-links{display:block}}
 /* Footer */
 .footer{background:#212121;color:#fff;padding:3rem 0 2rem;margin-top:3rem}
 .footer__about{margin-bottom:2rem}
