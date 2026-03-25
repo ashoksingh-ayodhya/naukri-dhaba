@@ -2214,9 +2214,13 @@ def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: 
     <title>{title} | {SITE_NAME}</title>
     <meta name="description" content="{desc_safe}">
     <meta name="keywords" content="{kw}">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="{SITE_NAME}">
     <link rel="canonical" href="{canonical}">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{og_title}">
     <meta property="og:description" content="{desc_safe}">
@@ -2228,7 +2232,6 @@ def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: 
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="{SITE_URL}/img/og-default.png">
-    <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{og_title}">
     <meta name="twitter:description" content="{desc_safe}">
     <meta name="geo.region" content="IN">
@@ -2454,10 +2457,21 @@ def build_job_page(d: dict) -> tuple[str, str]:
         "@type": "JobPosting",
         "title": title,
         "description": desc,
+        "identifier": {
+            "@type": "PropertyValue",
+            "name": _org_name,
+            "value": slug
+        },
         "datePosted": date.today().isoformat(),
         "employmentType": "FULL_TIME",
-        "hiringOrganization": {"@type": "Organization", "name": _org_name, "sameAs": _org_url},
+        "hiringOrganization": {
+            "@type": "Organization",
+            "name": _org_name,
+            "sameAs": _org_url,
+            "logo": f"{SITE_URL}/img/og-default.png"
+        },
         "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "India", "addressRegion": "India", "addressCountry": "IN"}},
+        "applicantLocationRequirements": {"@type": "Country", "name": "India"},
         "url": canon,
         "directApply": bool(d.get('apply_url'))
     }
@@ -2467,6 +2481,14 @@ def build_job_page(d: dict) -> tuple[str, str]:
         ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary']}}
     if d.get('vacancy') and d['vacancy'] != 'Check Notification':
         ld_job_dict["totalJobOpenings"] = d['vacancy']
+    if d.get('qualification') and d['qualification'] != 'Check Notification':
+        ld_job_dict["qualifications"] = d['qualification']
+        ld_job_dict["educationRequirements"] = {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": d['qualification']
+        }
+    if d.get('age_limit') and d['age_limit'] != 'Check Notification':
+        ld_job_dict["eligibilityToWorkRequirement"] = d['age_limit']
     ld_job = json.dumps(ld_job_dict, ensure_ascii=False)
 
     ld_bc = json.dumps({
