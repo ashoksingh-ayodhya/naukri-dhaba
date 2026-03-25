@@ -63,6 +63,7 @@ jobs:
         run: pip install -r scraper/requirements.txt
 
       - name: Install Playwright for JS-rendered page fallback
+        if: steps.mode_check.outputs.skip != 'true'
         run: |
           pip install playwright
           playwright install chromium --with-deps
@@ -110,8 +111,62 @@ jobs:
         if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
         run: python3 validate-generated-site.py
 
+      # ── FORCE REBUILD: always sync listing pages with detail pages ──
+      # Runs even when sources are down to ensure listing pages stay current
+      - name: Force rebuild listing pages
+        if: always() && steps.mode_check.outputs.skip != 'true'
+        run: |
+          echo "=== Force Rebuild Listing Pages ==="
+          echo "Time (IST): $(date)"
+          python3 scraper/sarkari_scraper.py --rebuild-only
+          echo "=== Listing rebuild done ==="
+
+      # ── Validate listing pages match detail page directories ──
+      - name: Validate listing page counts
+        if: always() && steps.mode_check.outputs.skip != 'true'
+        run: |
+          echo "=== Listing Page Validation ==="
+          python3 -c "
+          import re, sys, pathlib
+
+          errors = []
+          checks = [
+              ('latest-jobs.html', 'jobs', 'job'),
+              ('results.html', 'results', 'result'),
+              ('admit-cards.html', 'admit-cards', 'admit'),
+          ]
+          for html_file, detail_dir, kind in checks:
+              p = pathlib.Path(html_file)
+              d = pathlib.Path(detail_dir)
+              if not p.exists() or not d.exists():
+                  print(f'SKIP: {html_file} or {detail_dir}/ missing')
+                  continue
+
+              # Count detail pages
+              detail_count = len(list(d.rglob('*.html')))
+
+              # Count tbody rows in listing page
+              content = p.read_text(encoding='utf-8')
+              tbody_match = re.search(r'<tbody>(.*?)</tbody>', content, re.DOTALL)
+              listing_count = len(re.findall(r'<tr>', tbody_match.group(1))) if tbody_match else 0
+
+              pct = abs(listing_count - detail_count) / max(detail_count, 1) * 100
+              status = 'OK' if pct <= 20 else 'MISMATCH'
+              print(f'{html_file}: {listing_count} rows vs {detail_count} detail pages ({pct:.0f}% diff) [{status}]')
+              if pct > 20:
+                  errors.append(f'{html_file}: {listing_count} rows vs {detail_count} pages ({pct:.0f}% diff)')
+
+          if errors:
+              print(f'\nFAILED: Listing page mismatch exceeds 20%:')
+              for e in errors:
+                  print(f'  - {e}')
+              sys.exit(1)
+          else:
+              print('\nAll listing pages are in sync with detail pages.')
+          "
+
       - name: Commit new pages (primary sources only)
-        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
+        if: always() && steps.mode_check.outputs.skip != 'true'
         run: |
           git config user.name "Manual Job Post Bot"
           git config user.email "bot@naukridhaba.in"
@@ -131,7 +186,7 @@ jobs:
           fi
 
       - name: Report staging summary
-        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
+        if: always() && steps.mode_check.outputs.skip != 'true'
         run: |
           if [ -f staging/manifest.json ]; then
             STAGED=$(python3 -c "import json; m=json.load(open('staging/manifest.json')); print(len(m))")

@@ -2233,6 +2233,129 @@ def _seo_head(title: str, desc: str, canonical: str, dept: str, keywords_extra: 
 
 
 # ── Job Page ───────────────────────────────────────────────
+def _enrich_detail_dict(d: dict, page_type: str) -> dict:
+    """Auto-populate enriched V2 fields from basic input when not already set.
+
+    Ensures ``_build_detail_content_v2`` receives the rich dict it expects
+    (dates, fees, age_min/max, how_to_apply, important_links, short_description)
+    even when the caller only supplies the minimal flat fields.
+    """
+    # --- dates dict ---
+    if not d.get('dates'):
+        dates: dict[str, str] = {}
+        if page_type == 'job':
+            if d.get('apply_begin') and d['apply_begin'] != 'Check Notification':
+                dates['Application Begin'] = d['apply_begin']
+            if d.get('last_date') and d['last_date'] != 'Check Notification':
+                dates['Last Date to Apply Online'] = d['last_date']
+            if d.get('pay_exam_fee_date'):
+                dates['Pay Exam Fee Last Date'] = d['pay_exam_fee_date']
+            if d.get('correction_date'):
+                dates['Correction / Edit Last Date'] = d['correction_date']
+            if d.get('exam_date') and d['exam_date'] not in ('Check Notification', 'As per Schedule', ''):
+                dates['Exam Date'] = d['exam_date']
+            if d.get('admit_card_date'):
+                dates['Admit Card Available'] = d['admit_card_date']
+        elif page_type == 'result':
+            if d.get('result_date') and d['result_date'] != 'Check Notification':
+                dates['Result Date'] = d['result_date']
+            if d.get('exam_date') and d['exam_date'] not in ('Check Notification', 'As per Schedule', ''):
+                dates['Exam Date'] = d['exam_date']
+        elif page_type == 'admit':
+            if d.get('admit_release') and d['admit_release'] != 'Check Notification':
+                dates['Admit Card Release'] = d['admit_release']
+            if d.get('exam_date') and d['exam_date'] not in ('Check Notification', 'As per Schedule', ''):
+                dates['Exam Date'] = d['exam_date']
+        if dates:
+            d['dates'] = dates
+
+    # --- fees dict ---
+    if not d.get('fees') and d.get('fee'):
+        fee_str = str(d['fee']).strip()
+        if fee_str and fee_str != 'Check Notification':
+            fees: dict[str, str] = {}
+            # Try parsing "Gen/OBC: Rs. 100, SC/ST/Women: Nil" style
+            parts = re.split(r'[,;]\s*', fee_str)
+            for part in parts:
+                if ':' in part:
+                    k, v = part.split(':', 1)
+                    fees[k.strip()] = v.strip()
+                elif part.strip():
+                    fees['Application Fee'] = part.strip()
+            if fees:
+                d['fees'] = fees
+
+    # --- age_min / age_max ---
+    if (not d.get('age_min') or not d.get('age_max')) and d.get('age_limit'):
+        age_str = str(d['age_limit']).strip()
+        m = re.search(r'(\d+(?:\.\d+)?)\s*[-–to]+\s*(\d+(?:\.\d+)?)', age_str)
+        if m:
+            d.setdefault('age_min', m.group(1))
+            d.setdefault('age_max', m.group(2))
+        elif 'no upper' in age_str.lower() or 'no age' in age_str.lower():
+            d.setdefault('age_min', '—')
+            d.setdefault('age_max', 'No Limit')
+
+    # --- organization_full_name ---
+    if not d.get('organization_full_name'):
+        d['organization_full_name'] = d.get('dept', 'Government')
+
+    # --- how_to_apply ---
+    if not d.get('how_to_apply') and page_type == 'job':
+        title = d.get('title', '')
+        portal = official_portal_for(title, get_category(d.get('dept', '')))
+        portal_text = f' ({portal})' if portal else ''
+        d['how_to_apply'] = [
+            f'Visit the official website{portal_text} or use the Apply Online link on this page.',
+            'Register / login with a valid email ID and mobile number.',
+            'Fill in all required details — personal, educational, and post preferences.',
+            'Upload scanned photo, signature, and documents as per notification specifications.',
+            'Pay the application fee using the available online modes (Debit Card / Credit Card / Net Banking / UPI).',
+            'Review the form carefully and submit. Save / print the confirmation page for future reference.',
+        ]
+
+    # --- important_links ---
+    if not d.get('important_links'):
+        links = []
+        if page_type == 'job':
+            if d.get('apply_url') and d['apply_url'] != '#':
+                links.append({'url': d['apply_url'], 'label': 'Apply Online', 'link_type': 'apply'})
+            if d.get('notification_url') and d['notification_url'] != '#':
+                links.append({'url': d['notification_url'], 'label': 'Download Notification', 'link_type': 'notification'})
+        elif page_type == 'result':
+            if d.get('result_url') and d['result_url'] != '#':
+                links.append({'url': d['result_url'], 'label': 'Check Result', 'link_type': 'result'})
+            if d.get('scorecard_url') and d['scorecard_url'] != '#':
+                links.append({'url': d['scorecard_url'], 'label': 'Download Scorecard', 'link_type': 'scorecard'})
+        elif page_type == 'admit':
+            if d.get('admit_url') and d['admit_url'] != '#':
+                links.append({'url': d['admit_url'], 'label': 'Download Admit Card', 'link_type': 'admit'})
+        _portal = official_portal_for(d.get('title', ''), get_category(d.get('dept', '')))
+        if _portal:
+            links.append({'url': _portal, 'label': 'Official Website', 'link_type': 'official_website'})
+        if links:
+            d['important_links'] = links
+
+    # --- short_description ---
+    if not d.get('short_description'):
+        title = d.get('title', '')
+        dept = d.get('dept', 'Government')
+        last_date = d.get('last_date', '')
+        total_posts = d.get('total_posts', '')
+        qualification = d.get('qualification', '')
+        parts = [f'<strong>{dept}</strong> has released the notification for <strong>{title}</strong>.']
+        if total_posts and str(total_posts) not in ('', '0', 'Check Notification'):
+            parts.append(f'A total of <strong>{total_posts} vacancies</strong> are available.')
+        if last_date and last_date != 'Check Notification':
+            parts.append(f'The last date to apply online is <strong>{last_date}</strong>.')
+        if qualification and qualification != 'Check Notification':
+            parts.append(f'Required qualification: <strong>{qualification}</strong>.')
+        parts.append('Read the full notification and apply through the official links below.')
+        d['short_description'] = ' '.join(parts)
+
+    return d
+
+
 def build_job_page(d: dict) -> tuple[str, str]:
     title  = normalize_title(d['title'])
     dept   = d.get('dept', 'Government')
@@ -2305,6 +2428,8 @@ def build_job_page(d: dict) -> tuple[str, str]:
         ]
     }, ensure_ascii=False)
 
+    d = _enrich_detail_dict(d, 'job')
+
     faq_html, faq_ld = build_job_faq(d)
     detail_content = _build_detail_content_v2(d, 'job', 'Latest Jobs', '/latest-jobs.html', faq_html)
 
@@ -2373,6 +2498,8 @@ def build_result_page(d: dict) -> tuple[str, str]:
         ]
     }, ensure_ascii=False)
 
+    d = _enrich_detail_dict(d, 'result')
+
     faq_html, faq_ld = build_result_faq(d)
     detail_content = _build_detail_content_v2(d, 'result', 'Results', '/results.html', faq_html)
 
@@ -2438,6 +2565,8 @@ def build_admit_page(d: dict) -> tuple[str, str]:
             {"@type": "ListItem", "position": 4, "name": title, "item": canon},
         ]
     }, ensure_ascii=False)
+
+    d = _enrich_detail_dict(d, 'admit')
 
     faq_html, faq_ld = build_admit_faq(d)
     detail_content = _build_detail_content_v2(d, 'admit', 'Admit Cards', '/admit-cards.html', faq_html)
@@ -2842,14 +2971,23 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
 
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
+            if not match:
+                # V2 detail template uses stat-card layout for dates
+                match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Last Date', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
             entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
+            if not match:
+                # V2 detail template uses stat-card layout for dates
+                match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Result Date', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
             entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
+            if not match:
+                # V2 detail template uses stat-card layout for dates
+                match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
             entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
 
