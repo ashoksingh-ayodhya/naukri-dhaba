@@ -2842,14 +2842,23 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
 
         if kind == 'job':
             match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
+            if not match:
+                # V2 detail template uses stat-card layout for dates
+                match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Last Date', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
             entries.append({'title': title, 'dept': dept, 'last_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         elif kind == 'result':
             match = re.search(r'Result Date:\s*([^<]+)</p>', html, re.I)
+            if not match:
+                # V2 detail template uses stat-card layout for dates
+                match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Result Date', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
             entries.append({'title': title, 'dept': dept, 'result_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
         else:
             match = re.search(r'Exam Date:\s*([^<]+)</p>', html, re.I)
+            if not match:
+                # V2 detail template uses stat-card layout for dates
+                match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
             date_label = clean(match.group(1)) if match else 'Check Notification'
             entries.append({'title': title, 'dept': dept, 'exam_date': date_label, 'url': actual_url, 'official_url': official_url, '_mtime': file_mtime})
 
