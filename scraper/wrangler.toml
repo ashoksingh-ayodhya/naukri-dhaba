@@ -19,7 +19,7 @@ GITHUB_BRANCH         = "main"
 SITE_URL              = "https://naukridhaba.in"
 SITE_NAME             = "Naukri Dhaba"
 # Max pages generated per cron run (free tier CPU limits apply; increase for Paid plan)
-MAX_ITEMS_PER_RUN     = "20"
+MAX_ITEMS_PER_RUN     = "50"
 # GitHub Actions workflow file to dispatch for post-scrape processing
 # (rebuilds listing pages, state pages, sitemap after new pages are pushed)
 POST_PROCESS_WORKFLOW = "post-scrape-update.yml"

@@ -254,7 +254,9 @@ function parseListing(html, pageType, sourceBase) {
 
     const detailUrl = toAbsoluteUrl(href, sourceBase);
     const parsedDate = parseDateStr(dateStr);
-    if (parsedDate && parsedDate.getFullYear() < 2025) continue;
+    // Skip items older than the previous year (dynamic cutoff so it stays current)
+    const cutoffYear = new Date().getFullYear() - 1;
+    if (parsedDate && parsedDate.getFullYear() < cutoffYear) continue;
 
     items.push({
       title,
