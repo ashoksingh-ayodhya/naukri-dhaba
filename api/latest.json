@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-25T04:33:18Z",
+  "updated": "2026-03-25T05:31:26Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -262,14 +262,6 @@
       "url": "https://naukridhaba.in/results/railway/railway-rrb-technician-grade-iii-result-2025.html"
     },
     {
-      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
-      "dept": "RAILWAY",
-      "type": "result",
-      "category": "railway",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
-    },
-    {
       "title": "MPESB MP Police Constable Result 2026",
       "dept": "POLICE",
       "type": "result",
@@ -278,12 +270,12 @@
       "url": "https://naukridhaba.in/results/police/mpesb-mp-police-constable-result-2026.html"
     },
     {
-      "title": "IIT JAM 2025 Result",
-      "dept": "GOVERNMENT",
+      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
+      "dept": "RAILWAY",
       "type": "result",
-      "category": "government",
+      "category": "railway",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/iit-jam-2025-result.html"
+      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
       "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
@@ -294,22 +286,6 @@
       "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
     },
     {
-      "title": "India Post GDS 3rd Merit List / Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/india-post-gds-3rd-merit-list-result-2025.html"
-    },
-    {
-      "title": "Jharkhand Board JAC Class 10th Matric Result 2025",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/jharkhand-board-jac-class-10th-matric-result-2025.html"
-    },
-    {
       "title": "NTA NIFT 2025 Result / Score Card",
       "dept": "GOVERNMENT",
       "type": "result",
@@ -318,12 +294,36 @@
       "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
     },
     {
-      "title": "MPPSC Pre 2025 Result",
-      "dept": "MPPSC",
+      "title": "NTA UGC NET December 2025 Result",
+      "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/mppsc-pre-2025-result.html"
+      "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
+    },
+    {
+      "title": "NVS Class 9th Result 2025",
+      "dept": "NVS",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
+    },
+    {
+      "title": "RSSB NHM Contractual Various Post Result 2026",
+      "dept": "RSSB",
+      "type": "result",
+      "category": "police",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
+    },
+    {
+      "title": "Patna High Court Stenographer 2025 Result",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
     }
   ],
   "admits": [
