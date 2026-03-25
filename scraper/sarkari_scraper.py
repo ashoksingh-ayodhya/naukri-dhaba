@@ -2570,7 +2570,6 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/jobs/{cat}/{slugify(title)}.html"
             date_label = e.get('last_date', '') or e.get('date_str', '')
             button = 'Apply'
-            button_url = e.get('official_url') or path
         elif kind == 'result':
             cat = get_category(e.get('dept', ''))
             slug = slugify(title)
@@ -2579,7 +2578,6 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/results/{cat}/{slug}.html"
             date_label = e.get('result_date', '') or e.get('date_str', '')
             button = 'View'
-            button_url = e.get('official_url') or path
         else:
             cat = get_category(e.get('dept', ''))
             slug = slugify(title)
@@ -2588,7 +2586,10 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             path = e.get('url') or f"/admit-cards/{cat}/{slug}.html"
             date_label = e.get('exam_date', '') or e.get('admit_release', '') or e.get('date_str', '')
             button = 'Download'
-            button_url = e.get('official_url') or path
+
+        # Listing pages always link to detail pages (CTA flow convention).
+        # External official URLs are only shown on the detail pages themselves.
+        button_url = path
 
         # Strip any existing emoji from date_label to avoid duplicates
         date_label = re.sub(r'\s*🔴\s*', '', date_label).strip()
@@ -2605,21 +2606,18 @@ def build_listing_markup(entries: list[dict], kind: str, limit: int | None = Non
             date_display = date_label
             date_card = f'<p style="color:#666;font-size:.875rem;">📅 {date_label}</p>'
 
-        # Use target="_blank" for external official URLs
-        btn_target = ' target="_blank" rel="nofollow noopener noreferrer"' if button_url.startswith('http') else ''
-
         rows.append(
             f'<tr><td>{dept}</td>'
             f'<td><a href="{path}" style="color:var(--primary);font-weight:600;">{title}</a></td>'
             f'<td>{date_display}</td>'
-            f'<td><a href="{button_url}"{btn_target} class="btn btn--small btn--primary">{button}</a></td></tr>'
+            f'<td><a href="{button_url}" class="btn btn--small btn--primary">{button}</a></td></tr>'
         )
         cards.append(
             f'<div class="card">'
             f'<div class="card__header"><span class="badge">{dept}</span></div>'
             f'<h3 class="card__title">{title}</h3>'
             f'{date_card}'
-            f'<a href="{button_url}"{btn_target} class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
+            f'<a href="{button_url}" class="btn btn--primary btn--block" style="margin-top:1rem;">{button}</a>'
             f'</div>'
         )
 
@@ -3386,10 +3384,11 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             for item in raw:
                 if not kind_matches_title(item.get('title', ''), kind):
                     continue
-                # Skip items older than 2025
+                # Skip items older than the previous year (dynamic, so it stays current)
+                _cutoff_year = datetime.now().year - 1
                 iso = to_iso_date(item.get('date_str', ''))
-                if iso and int(iso[:4]) < 2025:
-                    log.debug(f'  [skip] pre-2025 item: {item["title"][:50]} ({iso})')
+                if iso and int(iso[:4]) < _cutoff_year:
+                    log.debug(f'  [skip] pre-{_cutoff_year} item: {item["title"][:50]} ({iso})')
                     continue
                 iid = item_id(item['title'], item['dept'])
                 if not refresh_existing and iid in seen:

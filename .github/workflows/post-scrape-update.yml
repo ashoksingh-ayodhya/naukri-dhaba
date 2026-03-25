@@ -65,6 +65,9 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scraper/requirements.txt
 
+      - name: Rebuild listing pages from detail pages
+        run: python3 scraper/sarkari_scraper.py --rebuild-only
+
       - name: Regenerate state pages
         run: python3 generate-state-pages.py
 
