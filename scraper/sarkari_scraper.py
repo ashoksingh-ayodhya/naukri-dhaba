@@ -1198,11 +1198,16 @@ def _build_detail_content_v2(d: dict, page_type: str, breadcrumb_section: str, b
 
     parts.append('  <div class="nd-ad ad-slot" data-ad-slot="content-mid"></div>')
 
-    # How to apply
+    # How to apply / check result / download admit
     if how_to:
+        how_to_title = 'How to Apply'
+        if page_type == 'result':
+            how_to_title = 'How to Check Result'
+        elif page_type == 'admit':
+            how_to_title = 'How to Download Admit Card'
         steps = '\n'.join(f'      <li>{step}</li>' for step in how_to)
         parts.append(f'''  <div class="section-card">
-    <h2 class="section-card__title">How to Apply</h2>
+    <h2 class="section-card__title">{how_to_title}</h2>
     <ol class="steps-list">
 {steps}
     </ol>
@@ -2301,18 +2306,37 @@ def _enrich_detail_dict(d: dict, page_type: str) -> dict:
         d['organization_full_name'] = d.get('dept', 'Government')
 
     # --- how_to_apply ---
-    if not d.get('how_to_apply') and page_type == 'job':
+    if not d.get('how_to_apply'):
         title = d.get('title', '')
         portal = official_portal_for(title, get_category(d.get('dept', '')))
         portal_text = f' ({portal})' if portal else ''
-        d['how_to_apply'] = [
-            f'Visit the official website{portal_text} or use the Apply Online link on this page.',
-            'Register / login with a valid email ID and mobile number.',
-            'Fill in all required details — personal, educational, and post preferences.',
-            'Upload scanned photo, signature, and documents as per notification specifications.',
-            'Pay the application fee using the available online modes (Debit Card / Credit Card / Net Banking / UPI).',
-            'Review the form carefully and submit. Save / print the confirmation page for future reference.',
-        ]
+        if page_type == 'job':
+            d['how_to_apply'] = [
+                f'Visit the official website{portal_text} or use the Apply Online link on this page.',
+                'Register / login with a valid email ID and mobile number.',
+                'Fill in all required details — personal, educational, and post preferences.',
+                'Upload scanned photo, signature, and documents as per notification specifications.',
+                'Pay the application fee using the available online modes (Debit Card / Credit Card / Net Banking / UPI).',
+                'Review the form carefully and submit. Save / print the confirmation page for future reference.',
+            ]
+        elif page_type == 'result':
+            d['how_to_apply'] = [
+                f'Visit the official website{portal_text} or use the Check Result link on this page.',
+                'Enter your Roll Number / Registration Number and Date of Birth as printed on your admit card.',
+                'Verify your name, category, and other details displayed on screen.',
+                'Check your marks / score and overall result status (Qualified / Not Qualified).',
+                'Download and save the result PDF or scorecard for future reference.',
+                'If selected, keep all original documents ready for the next stage — document verification, interview, or joining.',
+            ]
+        elif page_type == 'admit':
+            d['how_to_apply'] = [
+                f'Visit the official website{portal_text} or use the Download Admit Card link on this page.',
+                'Log in using your Registration Number / Roll Number and Date of Birth or Password.',
+                'Verify all details on the admit card — name, photo, exam centre, reporting time.',
+                'Download the admit card and take a clear colour printout on A4 paper.',
+                'If any detail is incorrect, contact the exam authority immediately before the exam date.',
+                'On exam day, carry the printed admit card along with a valid photo ID (Aadhaar / PAN / Passport / Voter ID).',
+            ]
 
     # --- important_links ---
     if not d.get('important_links'):
@@ -2327,9 +2351,13 @@ def _enrich_detail_dict(d: dict, page_type: str) -> dict:
                 links.append({'url': d['result_url'], 'label': 'Check Result', 'link_type': 'result'})
             if d.get('scorecard_url') and d['scorecard_url'] != '#':
                 links.append({'url': d['scorecard_url'], 'label': 'Download Scorecard', 'link_type': 'scorecard'})
+            if d.get('notification_url') and d['notification_url'] != '#':
+                links.append({'url': d['notification_url'], 'label': 'Download Notification', 'link_type': 'notification'})
         elif page_type == 'admit':
             if d.get('admit_url') and d['admit_url'] != '#':
                 links.append({'url': d['admit_url'], 'label': 'Download Admit Card', 'link_type': 'admit'})
+            if d.get('notification_url') and d['notification_url'] != '#':
+                links.append({'url': d['notification_url'], 'label': 'Download Notification', 'link_type': 'notification'})
         _portal = official_portal_for(d.get('title', ''), get_category(d.get('dept', '')))
         if _portal:
             links.append({'url': _portal, 'label': 'Official Website', 'link_type': 'official_website'})
@@ -2340,17 +2368,41 @@ def _enrich_detail_dict(d: dict, page_type: str) -> dict:
     if not d.get('short_description'):
         title = d.get('title', '')
         dept = d.get('dept', 'Government')
-        last_date = d.get('last_date', '')
-        total_posts = d.get('total_posts', '')
-        qualification = d.get('qualification', '')
-        parts = [f'<strong>{dept}</strong> has released the notification for <strong>{title}</strong>.']
-        if total_posts and str(total_posts) not in ('', '0', 'Check Notification'):
-            parts.append(f'A total of <strong>{total_posts} vacancies</strong> are available.')
-        if last_date and last_date != 'Check Notification':
-            parts.append(f'The last date to apply online is <strong>{last_date}</strong>.')
-        if qualification and qualification != 'Check Notification':
-            parts.append(f'Required qualification: <strong>{qualification}</strong>.')
-        parts.append('Read the full notification and apply through the official links below.')
+        if page_type == 'job':
+            last_date = d.get('last_date', '')
+            total_posts = d.get('total_posts', '')
+            qualification = d.get('qualification', '')
+            parts = [f'<strong>{dept}</strong> has released the notification for <strong>{title}</strong>.']
+            if total_posts and str(total_posts) not in ('', '0', 'Check Notification'):
+                parts.append(f'A total of <strong>{total_posts} vacancies</strong> are available.')
+            if last_date and last_date != 'Check Notification':
+                parts.append(f'The last date to apply online is <strong>{last_date}</strong>.')
+            if qualification and qualification != 'Check Notification':
+                parts.append(f'Required qualification: <strong>{qualification}</strong>.')
+            parts.append('Read the full notification and apply through the official links below.')
+        elif page_type == 'result':
+            result_date = d.get('result_date', '')
+            exam_date = d.get('exam_date', '')
+            parts = [f'<strong>{dept}</strong> has declared the result for <strong>{title}</strong>.']
+            if result_date and result_date != 'Check Notification':
+                parts.append(f'The result was published on <strong>{result_date}</strong>.')
+            if exam_date and exam_date not in ('Check Notification', 'As per Schedule', ''):
+                parts.append(f'The examination was held on <strong>{exam_date}</strong>.')
+            parts.append('Candidates can check their result, download scorecard, and view cut-off marks using the links below.')
+            parts.append('Keep your Roll Number and Registration ID ready before checking the result.')
+        elif page_type == 'admit':
+            admit_release = d.get('admit_release', '')
+            exam_date = d.get('exam_date', '')
+            parts = [f'<strong>{dept}</strong> has released the admit card for <strong>{title}</strong>.']
+            if admit_release and admit_release != 'Check Notification':
+                parts.append(f'The admit card was released on <strong>{admit_release}</strong>.')
+            if exam_date and exam_date not in ('Check Notification', 'As per Schedule', ''):
+                parts.append(f'The examination is scheduled for <strong>{exam_date}</strong>.')
+            parts.append('Download your admit card / hall ticket using the link below and take a colour printout.')
+            parts.append('Verify all details on the admit card and report any discrepancy to the exam authority immediately.')
+        else:
+            parts = [f'<strong>{dept}</strong> has released the notification for <strong>{title}</strong>.']
+            parts.append('Read the full notification and apply through the official links below.')
         d['short_description'] = ' '.join(parts)
 
     return d
@@ -2469,7 +2521,15 @@ def build_result_page(d: dict) -> tuple[str, str]:
         slug += '-result'
     rel   = f'results/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
-    desc  = f"{title}: Result declared. Check your result at {SITE_NAME}. Result date: {d['result_date']}."
+    desc_parts = [f"{title} — Result declared by {dept}."]
+    r_date = d.get('result_date', 'Check Notification')
+    if r_date and r_date != 'Check Notification':
+        desc_parts.append(f"Result date: {r_date}.")
+    exam_dt = d.get('exam_date', '')
+    if exam_dt and exam_dt not in ('Check Notification', 'As per Schedule', ''):
+        desc_parts.append(f"Exam date: {exam_dt}.")
+    desc_parts.append(f"Check result, download scorecard & cut-off marks at {SITE_NAME}.")
+    desc = ' '.join(desc_parts)
 
     # Ensure CTA URLs fall back
     _rportal = official_portal_for(title, cat)
@@ -2539,7 +2599,15 @@ def build_admit_page(d: dict) -> tuple[str, str]:
         slug += '-admit-card'
     rel   = f'admit-cards/{cat}/{slug}.html'
     canon = f'{SITE_URL}/{rel}'
-    desc  = f"Download {title} admit card / hall ticket at {SITE_NAME}. Exam date: {d['exam_date']}."
+    desc_parts = [f"Download {title} admit card / hall ticket from {dept}."]
+    admit_rel = d.get('admit_release', '')
+    if admit_rel and admit_rel != 'Check Notification':
+        desc_parts.append(f"Released on: {admit_rel}.")
+    exam_dt = d.get('exam_date', '')
+    if exam_dt and exam_dt not in ('Check Notification', 'As per Schedule', ''):
+        desc_parts.append(f"Exam date: {exam_dt}.")
+    desc_parts.append(f"Download hall ticket, check exam centre & instructions at {SITE_NAME}.")
+    desc = ' '.join(desc_parts)
 
     # Ensure CTA URLs fall back
     _aportal = official_portal_for(title, cat)
@@ -3011,6 +3079,142 @@ def load_existing_detail_entries(kind: str) -> list[dict]:
         e.pop('_mtime', None)
 
     return entries
+
+
+# ══════════════════════════════════════════════════════════
+# REGENERATE DETAIL PAGES FROM EXISTING HTML
+# ══════════════════════════════════════════════════════════
+
+def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
+    """Re-read existing detail pages, extract basic data, and rebuild them
+    using the current enriched builders.  Returns count of pages regenerated."""
+    from urllib.parse import urlparse as _urlparse
+    if kinds is None:
+        kinds = ['result', 'admit']
+
+    _base_map = {'job': SITE_ROOT / 'jobs', 'result': SITE_ROOT / 'results', 'admit': SITE_ROOT / 'admit-cards'}
+    total = 0
+
+    for kind in kinds:
+        base = _base_map[kind]
+        if not base.exists():
+            continue
+
+        for path in sorted(base.rglob('*.html')):
+            html = path.read_text(encoding='utf-8', errors='replace')
+
+            # --- Extract title ---
+            title_match = re.search(r'<h1[^>]*>(.*?)</h1>', html, re.I | re.S)
+            title = clean(re.sub(r'<[^>]+>', '', title_match.group(1))) if title_match else normalize_title(path.stem.replace('-', ' '))
+
+            # --- Extract department ---
+            dept_match = re.search(r'info-item__label">[^<]*Department</span>\s*<span class="info-item__value">([^<]+)', html, re.I)
+            dept = clean(dept_match.group(1)) if dept_match else infer_dept(title)
+            _path_cat = path.parent.name.upper()
+            _cat_to_dept = {
+                'RAILWAY': 'RAILWAY', 'SSC': 'SSC', 'UPSC': 'UPSC',
+                'BANKING': 'BANKING', 'POLICE': 'POLICE', 'DEFENCE': 'DEFENCE',
+            }
+            if _path_cat in _cat_to_dept:
+                dept = _cat_to_dept[_path_cat]
+            elif dept.upper() == 'NTA':
+                inferred = infer_dept(title)
+                dept = inferred if inferred.upper() not in ('NTA', 'GOVERNMENT') else 'GOVERNMENT'
+
+            # --- Extract CTA URLs from existing HTML ---
+            def _extract_url(label_pattern: str) -> str:
+                """Extract URL from CTA button or Important Links by label."""
+                # Try CTA buttons first
+                m = re.search(
+                    rf'<a\s+href="(https?://[^"]+)"[^>]*class="cta-btn[^"]*"[^>]*>[^<]*{label_pattern}',
+                    html, re.I
+                )
+                if m:
+                    return m.group(1)
+                # Try Important Links section
+                m = re.search(
+                    rf'<a\s+href="(https?://[^"]+)"[^>]*class="link-item"[^>]*>[^<]*<span[^>]*>[^<]*</span>\s*{label_pattern}',
+                    html, re.I
+                )
+                if m:
+                    return m.group(1)
+                return ''
+
+            d: dict = {'title': title, 'dept': dept}
+
+            if kind == 'result':
+                # Extract dates
+                rd_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Result Date', html, re.I)
+                d['result_date'] = clean(rd_match.group(1)) if rd_match else 'Check Notification'
+                ed_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
+                if ed_match:
+                    d['exam_date'] = clean(ed_match.group(1))
+                # Extract URLs
+                d['result_url'] = _extract_url('Check Result') or '#'
+                d['scorecard_url'] = _extract_url('Download Scorecard') or '#'
+
+                try:
+                    _rel, new_html = build_result_page(d)
+                    path.write_text(new_html, encoding='utf-8')
+                    total += 1
+                except Exception as e:
+                    log.warning(f'  Failed to regenerate result page {path}: {e}')
+
+            elif kind == 'admit':
+                # Extract dates
+                ed_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
+                d['exam_date'] = clean(ed_match.group(1)) if ed_match else 'As per Schedule'
+                ar_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Admit Card Release', html, re.I)
+                if ar_match:
+                    d['admit_release'] = clean(ar_match.group(1))
+                else:
+                    d['admit_release'] = 'Check Notification'
+                # Extract URLs
+                d['admit_url'] = _extract_url('Download Admit Card') or '#'
+
+                try:
+                    _rel, new_html = build_admit_page(d)
+                    path.write_text(new_html, encoding='utf-8')
+                    total += 1
+                except Exception as e:
+                    log.warning(f'  Failed to regenerate admit page {path}: {e}')
+
+            elif kind == 'job':
+                # Extract dates
+                ld_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Last Date', html, re.I)
+                d['last_date'] = clean(ld_match.group(1)) if ld_match else 'Check Notification'
+                if not ld_match:
+                    ld_match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
+                    if ld_match:
+                        d['last_date'] = clean(ld_match.group(1))
+                ed_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
+                if ed_match:
+                    d['exam_date'] = clean(ed_match.group(1))
+                # Extract total posts
+                tp_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Total Posts', html, re.I)
+                if tp_match:
+                    d['total_posts'] = clean(tp_match.group(1))
+                # Extract age limit
+                age_min_m = re.search(r'Min:\s*(\d+)\s*Years', html, re.I)
+                age_max_m = re.search(r'Max:\s*(\d+)\s*Years', html, re.I)
+                if age_min_m:
+                    d['age_min'] = age_min_m.group(1)
+                if age_max_m:
+                    d['age_max'] = age_max_m.group(1)
+                # Extract URLs
+                d['apply_url'] = _extract_url('Apply Online') or '#'
+                d['notification_url'] = _extract_url('Download Notification') or '#'
+
+                try:
+                    _rel, new_html = build_job_page(d)
+                    path.write_text(new_html, encoding='utf-8')
+                    total += 1
+                except Exception as e:
+                    log.warning(f'  Failed to regenerate job page {path}: {e}')
+
+        log.info(f'  Regenerated {total} {kind} detail pages')
+
+    return total
 
 
 # ══════════════════════════════════════════════════════════
@@ -3775,5 +3979,17 @@ if __name__ == '__main__':
                         help='Rebuild pages for items currently present on the source listings')
     parser.add_argument('--rebuild-only', action='store_true',
                         help='Skip source scraping and rebuild listing pages from local detail pages')
+    parser.add_argument('--regenerate-details', nargs='*', default=None,
+                        metavar='KIND',
+                        help='Regenerate detail pages from existing HTML with enriched content. '
+                             'Optionally specify page types: result admit job (default: result admit)')
     args = parser.parse_args()
+
+    if args.regenerate_details is not None:
+        kinds = args.regenerate_details if args.regenerate_details else ['result', 'admit']
+        log.info(f'Regenerating detail pages for: {", ".join(kinds)}')
+        count = regenerate_detail_pages(kinds)
+        log.info(f'Regenerated {count} detail pages total')
+        raise SystemExit(0)
+
     raise SystemExit(run(refresh_existing=args.refresh_existing, rebuild_only=args.rebuild_only))
