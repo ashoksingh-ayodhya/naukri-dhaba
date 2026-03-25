@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-25T05:31:26Z",
+  "updated": "2026-03-25T05:51:52Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -254,6 +254,14 @@
       "url": "https://naukridhaba.in/results/railway/railway-rrb-technician-grade-i-result-score-card-2025.html"
     },
     {
+      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
+      "dept": "RAILWAY",
+      "type": "result",
+      "category": "railway",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
+    },
+    {
       "title": "Railway RRB Technician Grade III Result 2025",
       "dept": "RAILWAY",
       "type": "result",
@@ -268,14 +276,6 @@
       "category": "police",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/police/mpesb-mp-police-constable-result-2026.html"
-    },
-    {
-      "title": "IBPS RRB 14th Office Assistant, Scale II, III Score Card",
-      "dept": "RAILWAY",
-      "type": "result",
-      "category": "railway",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/railway/ibps-rrb-14th-office-assistant-scale-ii-iii-score-card.html"
     },
     {
       "title": "Supreme Court of India Junior Court Assistant JCA Result 2025",
@@ -302,6 +302,14 @@
       "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
     },
     {
+      "title": "NTA JEEMAIN Session I Paper 2 Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/nta-jeemain-session-i-paper-2-result-2025.html"
+    },
+    {
       "title": "NVS Class 9th Result 2025",
       "dept": "NVS",
       "type": "result",
@@ -316,14 +324,6 @@
       "category": "police",
       "date": "Check Notification",
       "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
-    },
-    {
-      "title": "Patna High Court Stenographer 2025 Result",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
     }
   ],
   "admits": [
