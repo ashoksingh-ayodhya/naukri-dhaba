@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "scraped_at": "2026-03-26T11:32:11.461192",
+  "source": "sarkariresult",
+  "source_detail_url": "https://www.sarkariresult.com/2026/nielit-ccc-online-form/",
+  "page_type": "job",
+  "title": "NIELIT CCC Online Form 2026",
+  "post_name": "NIELIT CCC Exam 2026 Apply Online Form for Course on Computer Concepts CCC",
+  "post_date": "",
+  "update_date": "",
+  "organization_full_name": "",
+  "advertisement_number": "",
+  "short_description": "",
+  "dept": "Government",
+  "dates": {},
+  "fees": {
+    "General / OBC": "500/-",
+    "SC / ST / PH": "500/-"
+  },
+  "fee_payment_method": "Pay the Examination Fee Through Debit Card, Credit Card, Net Banking Fee Mode Only",
+  "age_min": null,
+  "age_max": null,
+  "age_reference_date": "",
+  "age_relaxation_notes": "",
+  "total_posts": "",
+  "vacancy_breakdown": [],
+  "qualification": "",
+  "qualification_items": [],
+  "salary": "",
+  "how_to_apply": [
+    "Candidate Can Click on the Apply Online Form",
+    "Fill the All Basic Details Name, Father Name, Date of Birth and Aadhar Card, Contact Details",
+    "Upload Candidate Passport Size Photo, Signature and Thumb Impression",
+    "Take A Print Out of Application Form",
+    "Next Month First Week You have Download Admit Card to Enter Your Application No. and DOB"
+  ],
+  "important_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://student.nielit.gov.in/CAND/CertificateRegistration.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVaNggbU53Sxu",
+      "link_type": "apply"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://youtu.be/M-1HZZRxSCA",
+      "link_type": "other"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/2ubbbj9w",
+      "link_type": "other"
+    },
+    {
+      "label": "Pay Exam Fee",
+      "url": "https://student.nielit.gov.in/WEB/ApplicationStatus.aspx?qs=ZzfoVTgbzutyVFaoDZ1PTMlQ2Cl7jmlp",
+      "link_type": "other"
+    },
+    {
+      "label": "Re Print Application Form",
+      "url": "https://student.nielit.gov.in/WEB/FilledForm.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVcH+F8pDLkEC",
+      "link_type": "other"
+    },
+    {
+      "label": "Download Result",
+      "url": "https://student.nielit.gov.in/WEB/Result.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVaNggbU53Sxu",
+      "link_type": "result"
+    },
+    {
+      "label": "Download E Certificate",
+      "url": "https://www.nielit.gov.in/certificate/",
+      "link_type": "other"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://student.nielit.gov.in/",
+      "link_type": "official_website"
+    }
+  ],
+  "apply_url": "https://student.nielit.gov.in/CAND/CertificateRegistration.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVaNggbU53Sxu",
+  "notification_url": "",
+  "result_url": "https://student.nielit.gov.in/WEB/Result.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVaNggbU53Sxu",
+  "scorecard_url": "",
+  "admit_url": "",
+  "official_website_url": "https://student.nielit.gov.in/",
+  "extra_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://student.nielit.gov.in/CAND/CertificateRegistration.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVaNggbU53Sxu"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://youtu.be/M-1HZZRxSCA"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/2ubbbj9w"
+    },
+    {
+      "label": "Pay Exam Fee",
+      "url": "https://student.nielit.gov.in/WEB/ApplicationStatus.aspx?qs=ZzfoVTgbzutyVFaoDZ1PTMlQ2Cl7jmlp"
+    },
+    {
+      "label": "Re Print Application Form",
+      "url": "https://student.nielit.gov.in/WEB/FilledForm.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVcH+F8pDLkEC"
+    },
+    {
+      "label": "Download Result",
+      "url": "https://student.nielit.gov.in/WEB/Result.aspx?qs=XhKiZ9Tp1NEo8Y+yOzlb6G6IUX8CzY7S81jz99mCt8GPB/ixGvOPVaNggbU53Sxu"
+    },
+    {
+      "label": "Download E Certificate",
+      "url": "https://www.nielit.gov.in/certificate/"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://student.nielit.gov.in/"
+    }
+  ],
+  "download_links": []
+}

@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "scraped_at": "2026-03-26T11:33:28.269403",
+  "source": "sarkariresult",
+  "source_detail_url": "https://www.sarkariresult.com/mp/mppsc-pre-2026/",
+  "page_type": "job",
+  "title": "MPPSC Pre 2026 Online Form",
+  "post_name": "Madhya Pradesh State Service Exam SSE MPPSC Pre Recruitment 2026 Apply Online for 155 Post",
+  "post_date": "",
+  "update_date": "",
+  "organization_full_name": "Madhya Pradesh Public Service Commission (MPPSC)",
+  "advertisement_number": "29/2025",
+  "short_description": "",
+  "dept": "MPPSC",
+  "dates": {
+    "Application Begin": "10/01/2026",
+    "Last Date for Apply Online": "09/02/2026",
+    "Last Date Pay Exam Fee": "09/02/2026",
+    "Form Correction Last Date": "11/02/2026",
+    "With Late Fee Phase I Last Date": "16/02/2026",
+    "With Late Fee Phase II Last Date": "01/04/2026",
+    "Exam Date": "26/04/2026",
+    "Admit Card Available": "16/04/2026"
+  },
+  "fees": {
+    "General / Other State": "540/-",
+    "OBC / EWS / SC / ST": "Rs. 290/–",
+    "Note": "Portal Charges Include: Rs. 40/-",
+    "Correction Charge": "Rs. 50/-",
+    "Phase I": "3000/- + Portal Fee",
+    "Phase II": "25000/- + Portal Fee"
+  },
+  "fee_payment_method": "Pay the Examination Fee Through Cast at E Challan or Debit Card, Credit Card, Net Banking, Authorized Kiosk",
+  "age_min": null,
+  "age_max": null,
+  "age_reference_date": "01/01/2026",
+  "age_relaxation_notes": "Age Relaxation Extra as per MPPSC State Service Exam SSE Recruitment Rules.",
+  "total_posts": "155",
+  "vacancy_breakdown": [],
+  "qualification": "",
+  "qualification_items": [],
+  "salary": "",
+  "how_to_apply": [
+    "MPPSC State Service Exam SSE Recruitment for Various Post Candidate Can Apply Between 10/01/2026 to 09/02/2026",
+    "Candidate Read the Notification Before Apply the Recruitment Application Form in MPPSC State Service Exam SSE Recruitment 2026.",
+    "Kindly Check and Collect the All Document - Eligibility, ID Proof, Address Details, Basic Details.",
+    "Kindly Ready Scan Document Related to Recruitment Form - Photo, Sign, ID Proof, Etc.",
+    "Before Submit the Application Form Must Check the Preview and All Column Carefully.",
+    "If Candidate Required to Paying the Application Fee Must Submit. If You have Not the Required Application Fees Your Form is Not Completed.",
+    "Take A Print Out of Final Submitted Form."
+  ],
+  "important_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx",
+      "link_type": "apply"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/4esphsv3",
+      "link_type": "other"
+    },
+    {
+      "label": "Download Notification",
+      "url": "https://mppsc.mp.gov.in/uploads/advertisement/Advt_State_Service_Exam_2026_Dated_31_12_2025.pdf",
+      "link_type": "notification"
+    },
+    {
+      "label": "Sarkari Result PDF Tool Portal | Remove Background",
+      "url": "https://sarkariresultportal.com/",
+      "link_type": "result"
+    }
+  ],
+  "apply_url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx",
+  "notification_url": "https://mppsc.mp.gov.in/uploads/advertisement/Advt_State_Service_Exam_2026_Dated_31_12_2025.pdf",
+  "result_url": "https://sarkariresultportal.com/",
+  "scorecard_url": "",
+  "admit_url": "",
+  "official_website_url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx",
+  "extra_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/4esphsv3"
+    },
+    {
+      "label": "Download Notification",
+      "url": "https://mppsc.mp.gov.in/uploads/advertisement/Advt_State_Service_Exam_2026_Dated_31_12_2025.pdf"
+    },
+    {
+      "label": "Sarkari Result PDF Tool Portal | Remove Background",
+      "url": "https://sarkariresultportal.com/"
+    }
+  ],
+  "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://mppsc.mp.gov.in/uploads/advertisement/Advt_State_Service_Exam_2026_Dated_31_12_2025.pdf"
+    }
+  ]
+}

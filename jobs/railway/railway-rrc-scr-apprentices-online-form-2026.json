@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "scraped_at": "2026-03-26T11:30:33.108476",
+  "source": "sarkariresult",
+  "source_detail_url": "https://www.sarkariresult.com/railway/rrc-scr-apprentices-mar26/",
+  "page_type": "job",
+  "title": "Railway RRC SCR Apprentices Online Form 2026",
+  "post_name": "South Central Railway RRC SCR Various Trade Apprentices 2026 Apply Online for 2801 Post",
+  "post_date": "",
+  "update_date": "",
+  "organization_full_name": "",
+  "advertisement_number": "",
+  "short_description": "",
+  "dept": "RAILWAY",
+  "dates": {
+    "Application Begin": "12/03/2026",
+    "Last Date for Apply Online": "11/04/2026",
+    "Pay Exam Fee Last Date": "11/04/2026"
+  },
+  "fees": {
+    "Gen / OBC / EWS": "100/-",
+    "SC / ST / PH": "0/-",
+    "All Category Female": "0/-"
+  },
+  "fee_payment_method": "Pay the Exam Fee Through Debit Card / Credit Card / Net Banking / UPI Only.",
+  "age_min": null,
+  "age_max": null,
+  "age_reference_date": "11/04/2026",
+  "age_relaxation_notes": "Age Relaxation Extra as per Railway Recruitment Cell RRC South Central Railway SCR Act Apprentice Rules 2026..",
+  "total_posts": "2801",
+  "vacancy_breakdown": [],
+  "qualification": "",
+  "qualification_items": [],
+  "salary": "",
+  "how_to_apply": [],
+  "important_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://scr.onlineregister.org.in/login",
+      "link_type": "apply"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://www.youtube.com/watch?v=6PMtU5Ec5-c",
+      "link_type": "other"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://scr.indianrailways.gov.in/",
+      "link_type": "official_website"
+    }
+  ],
+  "apply_url": "https://scr.onlineregister.org.in/login",
+  "notification_url": "https://www.sarkariresult.com/upload/RRC_SCR_Apprentices_Mar26_6.pdf",
+  "result_url": "",
+  "scorecard_url": "",
+  "admit_url": "",
+  "official_website_url": "https://scr.indianrailways.gov.in/",
+  "extra_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://scr.onlineregister.org.in/login"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://www.youtube.com/watch?v=6PMtU5Ec5-c"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://scr.indianrailways.gov.in/"
+    }
+  ],
+  "download_links": []
+}

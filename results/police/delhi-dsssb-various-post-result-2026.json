@@ -1,0 +1,788 @@
+{
+  "version": 1,
+  "scraped_at": "2026-03-26T11:46:40.213137",
+  "source": "sarkariresult",
+  "source_detail_url": "https://www.sarkariresult.com/delhi/dsssb-latest-result/",
+  "page_type": "result",
+  "title": "Delhi DSSSB Various Post Result 2026",
+  "post_name": "Delhi DSSSB New Latest Result, Upcoming Results Date 2026",
+  "post_date": "",
+  "update_date": "",
+  "organization_full_name": "Delhi Subordinate Service Selection Board (DSSSB)",
+  "advertisement_number": "04/2024",
+  "short_description": "",
+  "dept": "SSB",
+  "dates": {},
+  "fees": {},
+  "fee_payment_method": "",
+  "age_min": null,
+  "age_max": null,
+  "age_reference_date": "",
+  "age_relaxation_notes": "",
+  "total_posts": "",
+  "vacancy_breakdown": [],
+  "qualification": "Result",
+  "qualification_items": [],
+  "salary": "",
+  "how_to_apply": [],
+  "important_links": [
+    {
+      "label": "DSSSB PGT History Post Code 811/23",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260323_15563958.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB PGT History Post Code 811/23",
+      "url": "https://dsssbonline.nic.in/",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB TGT Special Education Post Code 20/22",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260202_16385381.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB Junior Engineer JE Electrical / Mechanical Post Code 15/21",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260128_17104116.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB Draftsman Grade III Civil Post Code 817/24",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260128_17111786.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB Vaccinator Post Code 72/24",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/117.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB Architectural Assistant Post Code 92/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/308.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Nursing Officer Post Code 30/24 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/310.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Technician OT/CSSD Post Code 48/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/995.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Nursing Officer Advt No 04/2024 Result",
+      "url": "https://doc.sarkariresults.org.in/Delhi_DSSSB_Nursing_officer_Result_2025.pdf",
+      "link_type": "notification"
+    },
+    {
+      "label": "DSSSB Assistant Engineer Civil Post Code 802/22 Result",
+      "url": "https://doc.sarkariresults.org.in/DSSSB_AE_Civil_Post_803_22_Result.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB SUB STATION ATTENDANT (GRADE II) Post Code 76/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20241224_14582275.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Assistant Superintendent Post Code 111/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20241119_0087.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Assistant Grade III Result Post Code 58/23",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240927_0008.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB District COurt Junior Judicial Assistant Tier II Result Post Code 802/24",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240822_0178_4.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Senior Personal Assistant SPA & Personal Assistant PA Post Code 801/24 Tier II Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/notice_no_1500.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Senior Personal Assistant SPA & Personal Assistant PA Post Code 801/24 Tier II Result",
+      "url": "http://dsssbonline.nic.in/",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Senior Personal Assistant SPA & Personal Assistant PA Post Code 801/24 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240515_0006.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Computer Science Post Code 39/22 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/tgt_39-22_1.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Junior Engineer Civil Post Code 801/22 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20230720_17085765.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Laboratory Attendant Post Code 12/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0055.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Junior Secretariat Assistant Post COde 44/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0047.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Assistant Teacher Primary 42/21 Result Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0144.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Junior Clerk Post Code 13/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0112.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Assistant Engineer E&M Post Code 14/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0106.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Assistant Engineer Electrical Post Code 01/19 Supplementary Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0104.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Asst Grade II 22/21, Asst Teacher Primary 42/21, Junior Clerk 13/20 Result Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0092_0.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Junior Engineer Electrical Post Code 24/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0089.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Assistant Teacher (Primary) Post Code 47/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0093.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Draftsman Grade I Post Code 16/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0083.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Security Supervisor Post Code 26/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0085.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Social Science Female (40/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/204720220824_17044593.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Pharmacist (20/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/img20220823_15563596.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Librarian (92/20) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/ResN.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Hindi Female (33/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/165-3321.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Sanskrit Female (55) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/img20220816_14423993.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Social Science Female (40/21) Result Revised Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/rn0024.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male (34/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/02-08_0001.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male (34/21) & TGT Social Science Female (40/21) Result Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/29-7_0011.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Math (Female) Post Code 37/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/29-7_0008.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Laboratory Assistant Post Code 46/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0079.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Natural Science Post Code 35/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0074.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Math Post Code 38/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/27-7_0011.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Upcoming Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/21-7_0001.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Grade II DASS 90/09 Eligible Candidate List",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/eligible%2B9009.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB Grade II DASS 90/09 OARS Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Notice909.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "DSSSB Special Educator Primary 32/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/1401_0001.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Physical Education Teacher 87/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0009.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Upcoming Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0012.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Pharmacist Unani 19/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0007_0.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Assistant Teacher Nursery 43/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/24-6_0004.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Sanskrit 54/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/20-6_0005.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB PGT Hindi Male 68/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/17-5_0003.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Social Science Female 40/21 Result",
+      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/RN0045.pdf",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male 34/21 Result",
+      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-220015-scaled.jpg",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male 34/21 Result",
+      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-2200151-scaled.jpg",
+      "link_type": "result"
+    },
+    {
+      "label": "How to Check Result / Marks",
+      "url": "https://www.youtube.com/watch?v=M_m2v_gU5LE",
+      "link_type": "guide"
+    },
+    {
+      "label": "Other DSSSB Exam Result",
+      "url": "https://dsssb.delhi.gov.in/latest-result/Delhi-Subordinate-Services-Selection-Board",
+      "link_type": "result"
+    },
+    {
+      "label": "DSSSB Official Website",
+      "url": "http://dsssb.delhi.gov.in",
+      "link_type": "official_website"
+    },
+    {
+      "label": "Join Our Telegram Channel",
+      "url": "https://t.me/SarkariResult2012",
+      "link_type": "other"
+    }
+  ],
+  "apply_url": "",
+  "notification_url": "https://doc.sarkariresults.org.in/Delhi_DSSSB_Nursing_officer_Result_2025.pdf",
+  "result_url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/308.pdf",
+  "scorecard_url": "",
+  "admit_url": "",
+  "official_website_url": "http://dsssb.delhi.gov.in",
+  "extra_links": [
+    {
+      "label": "DSSSB PGT History Post Code 811/23",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260323_15563958.pdf"
+    },
+    {
+      "label": "DSSSB PGT History Post Code 811/23",
+      "url": "https://dsssbonline.nic.in/"
+    },
+    {
+      "label": "DSSSB TGT Special Education Post Code 20/22",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260202_16385381.pdf"
+    },
+    {
+      "label": "DSSSB Junior Engineer JE Electrical / Mechanical Post Code 15/21",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260128_17104116.pdf"
+    },
+    {
+      "label": "DSSSB Draftsman Grade III Civil Post Code 817/24",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260128_17111786.pdf"
+    },
+    {
+      "label": "DSSSB Vaccinator Post Code 72/24",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/117.pdf"
+    },
+    {
+      "label": "DSSSB Architectural Assistant Post Code 92/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/308.pdf"
+    },
+    {
+      "label": "DSSSB Nursing Officer Post Code 30/24 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/310.pdf"
+    },
+    {
+      "label": "DSSSB Technician OT/CSSD Post Code 48/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/995.pdf"
+    },
+    {
+      "label": "DSSSB Nursing Officer Advt No 04/2024 Result",
+      "url": "https://doc.sarkariresults.org.in/Delhi_DSSSB_Nursing_officer_Result_2025.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Engineer Civil Post Code 802/22 Result",
+      "url": "https://doc.sarkariresults.org.in/DSSSB_AE_Civil_Post_803_22_Result.pdf"
+    },
+    {
+      "label": "DSSSB SUB STATION ATTENDANT (GRADE II) Post Code 76/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20241224_14582275.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Superintendent Post Code 111/23 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20241119_0087.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Grade III Result Post Code 58/23",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240927_0008.pdf"
+    },
+    {
+      "label": "DSSSB District COurt Junior Judicial Assistant Tier II Result Post Code 802/24",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240822_0178_4.pdf"
+    },
+    {
+      "label": "DSSSB Senior Personal Assistant SPA & Personal Assistant PA Post Code 801/24 Tier II Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/notice_no_1500.pdf"
+    },
+    {
+      "label": "DSSSB Senior Personal Assistant SPA & Personal Assistant PA Post Code 801/24 Tier II Result",
+      "url": "http://dsssbonline.nic.in/"
+    },
+    {
+      "label": "DSSSB Senior Personal Assistant SPA & Personal Assistant PA Post Code 801/24 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240515_0006.pdf"
+    },
+    {
+      "label": "DSSSB TGT Computer Science Post Code 39/22 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/tgt_39-22_1.pdf"
+    },
+    {
+      "label": "DSSSB Junior Engineer Civil Post Code 801/22 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20230720_17085765.pdf"
+    },
+    {
+      "label": "DSSSB Laboratory Attendant Post Code 12/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0055.pdf"
+    },
+    {
+      "label": "DSSSB Junior Secretariat Assistant Post COde 44/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0047.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Teacher Primary 42/21 Result Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0144.pdf"
+    },
+    {
+      "label": "DSSSB Junior Clerk Post Code 13/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0112.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Engineer E&M Post Code 14/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0106.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Engineer Electrical Post Code 01/19 Supplementary Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0104.pdf"
+    },
+    {
+      "label": "DSSSB Asst Grade II 22/21, Asst Teacher Primary 42/21, Junior Clerk 13/20 Result Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0092_0.pdf"
+    },
+    {
+      "label": "DSSSB Junior Engineer Electrical Post Code 24/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0089.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Teacher (Primary) Post Code 47/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0093.pdf"
+    },
+    {
+      "label": "DSSSB Draftsman Grade I Post Code 16/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0083.pdf"
+    },
+    {
+      "label": "DSSSB Security Supervisor Post Code 26/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0085.pdf"
+    },
+    {
+      "label": "DSSSB TGT Social Science Female (40/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/204720220824_17044593.pdf"
+    },
+    {
+      "label": "DSSSB Pharmacist (20/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/img20220823_15563596.pdf"
+    },
+    {
+      "label": "DSSSB Librarian (92/20) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/ResN.pdf"
+    },
+    {
+      "label": "DSSSB TGT Hindi Female (33/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/165-3321.pdf"
+    },
+    {
+      "label": "DSSSB TGT Sanskrit Female (55) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/img20220816_14423993.pdf"
+    },
+    {
+      "label": "DSSSB TGT Social Science Female (40/21) Result Revised Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/rn0024.pdf"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male (34/21) Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/02-08_0001.pdf"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male (34/21) & TGT Social Science Female (40/21) Result Date",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/29-7_0011.pdf"
+    },
+    {
+      "label": "DSSSB TGT Math (Female) Post Code 37/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/29-7_0008.pdf"
+    },
+    {
+      "label": "DSSSB Laboratory Assistant Post Code 46/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0079.pdf"
+    },
+    {
+      "label": "DSSSB TGT Natural Science Post Code 35/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0074.pdf"
+    },
+    {
+      "label": "DSSSB TGT Math Post Code 38/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/27-7_0011.pdf"
+    },
+    {
+      "label": "DSSSB Upcoming Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/21-7_0001.pdf"
+    },
+    {
+      "label": "DSSSB Grade II DASS 90/09 Eligible Candidate List",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/eligible%2B9009.pdf"
+    },
+    {
+      "label": "DSSSB Grade II DASS 90/09 OARS Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Notice909.pdf"
+    },
+    {
+      "label": "DSSSB Special Educator Primary 32/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/1401_0001.pdf"
+    },
+    {
+      "label": "DSSSB Physical Education Teacher 87/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0009.pdf"
+    },
+    {
+      "label": "DSSSB Upcoming Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0012.pdf"
+    },
+    {
+      "label": "DSSSB Pharmacist Unani 19/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0007_0.pdf"
+    },
+    {
+      "label": "DSSSB Assistant Teacher Nursery 43/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/24-6_0004.pdf"
+    },
+    {
+      "label": "DSSSB TGT Sanskrit 54/21 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/20-6_0005.pdf"
+    },
+    {
+      "label": "DSSSB PGT Hindi Male 68/20 Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/17-5_0003.pdf"
+    },
+    {
+      "label": "DSSSB TGT Social Science Female 40/21 Result",
+      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/RN0045.pdf"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male 34/21 Result",
+      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-220015-scaled.jpg"
+    },
+    {
+      "label": "DSSSB TGT Hindi Male 34/21 Result",
+      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-2200151-scaled.jpg"
+    },
+    {
+      "label": "How to Check Result / Marks",
+      "url": "https://www.youtube.com/watch?v=M_m2v_gU5LE"
+    },
+    {
+      "label": "Other DSSSB Exam Result",
+      "url": "https://dsssb.delhi.gov.in/latest-result/Delhi-Subordinate-Services-Selection-Board"
+    },
+    {
+      "label": "DSSSB Official Website",
+      "url": "http://dsssb.delhi.gov.in"
+    },
+    {
+      "label": "Join Our Telegram Channel",
+      "url": "https://t.me/SarkariResult2012"
+    }
+  ],
+  "download_links": [
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260323_15563958.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260202_16385381.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260128_17104116.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20260128_17111786.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/117.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/308.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/310.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/995.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://doc.sarkariresults.org.in/Delhi_DSSSB_Nursing_officer_Result_2025.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://doc.sarkariresults.org.in/DSSSB_AE_Civil_Post_803_22_Result.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20241224_14582275.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20241119_0087.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240927_0008.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240822_0178_4.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/notice_no_1500.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/scan20240515_0006.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/tgt_39-22_1.pdf"
+    },
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/img20230720_17085765.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0055.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0047.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0144.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0112.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0106.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0104.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0092_0.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0089.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0093.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0083.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0085.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/204720220824_17044593.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/img20220823_15563596.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/ResN.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/165-3321.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/img20220816_14423993.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/rn0024.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/02-08_0001.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/29-7_0011.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/29-7_0008.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0079.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Scan_0074.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/27-7_0011.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/21-7_0001.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/eligible%2B9009.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/Notice909.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/1401_0001.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0009.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0012.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/30-6_0007_0.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/24-6_0004.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/20-6_0005.pdf"
+    },
+    {
+      "label": "Result",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/17-5_0003.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/RN0045.pdf"
+    }
+  ]
+}
