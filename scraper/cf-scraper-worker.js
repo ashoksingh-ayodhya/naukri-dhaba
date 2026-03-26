@@ -598,7 +598,10 @@ async function pushToGitHub(filePath, content, cfg, env) {
   const apiUrl = `${GITHUB_API}/repos/${cfg.owner}/${cfg.repo}/contents/${filePath}`;
   const encoded = btoa(unescape(encodeURIComponent(content))); // UTF-8 → base64
 
-  // Check if the file already exists (to get its SHA for update)
+  // Check if the file already exists.
+  // If it does, skip writing — the Python scraper owns existing V2 detail pages.
+  // The CF worker only creates NEW pages to avoid overwriting enriched V2 content
+  // with its simpler template, which would revert the site to the issue fixed in #105.
   let sha;
   try {
     const existing = await fetch(apiUrl, {
@@ -611,16 +614,18 @@ async function pushToGitHub(filePath, content, cfg, env) {
     if (existing.ok) {
       const data = await existing.json();
       sha = data.sha;
+      // Page already exists — skip to prevent overwriting V2 enriched content.
+      console.log(`[NaukriDhaba]   Skipping (already exists): ${filePath}`);
+      return false;
     }
-  } catch (_) { /* file does not exist yet */ }
+  } catch (_) { /* file does not exist yet — proceed to create */ }
 
-  // Create or update the file
+  // Create the file (new pages only)
   const body = {
     message: `Auto-scrape: ${filePath}`,
     content: encoded,
     branch: cfg.branch,
   };
-  if (sha) body.sha = sha;
 
   try {
     const resp = await fetch(apiUrl, {

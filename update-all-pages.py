@@ -1421,6 +1421,15 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
             (dept, site_route('admit-cards.html')),
             (title, canonical_url)
         ])
+    elif page_type in {'jobs_list', 'results_list', 'admits_list'}:
+        # Preserve the existing ItemList JSON-LD that replace_listing_sections() injects.
+        # Rebuilding the head would otherwise wipe the structured data listing.
+        existing_jsonld = re.search(
+            r'<script type="application/ld\+json">.*?</script>',
+            content, re.DOTALL
+        )
+        if existing_jsonld:
+            json_ld_blocks = existing_jsonld.group(0)
 
     # Build complete new head content
     new_head = f'''<head>
