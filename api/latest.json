@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-25T05:31:26Z",
+  "updated": "2026-03-26T03:13:19Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -286,30 +286,6 @@
       "url": "https://naukridhaba.in/results/government/supreme-court-of-india-junior-court-assistant-jca-result-2025.html"
     },
     {
-      "title": "NTA NIFT 2025 Result / Score Card",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-nift-2025-result-score-card.html"
-    },
-    {
-      "title": "NTA UGC NET December 2025 Result",
-      "dept": "GOVERNMENT",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nta-ugc-net-december-2025-result.html"
-    },
-    {
-      "title": "NVS Class 9th Result 2025",
-      "dept": "NVS",
-      "type": "result",
-      "category": "government",
-      "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/nvs-class-9th-result-2025.html"
-    },
-    {
       "title": "RSSB NHM Contractual Various Post Result 2026",
       "dept": "RSSB",
       "type": "result",
@@ -318,12 +294,36 @@
       "url": "https://naukridhaba.in/results/police/rssb-nhm-contractual-various-post-result-2026.html"
     },
     {
-      "title": "Patna High Court Stenographer 2025 Result",
+      "title": "UP CNET 2025 Result",
       "dept": "GOVERNMENT",
       "type": "result",
       "category": "government",
       "date": "Check Notification",
-      "url": "https://naukridhaba.in/results/government/patna-high-court-stenographer-2025-result.html"
+      "url": "https://naukridhaba.in/results/government/up-cnet-2025-result.html"
+    },
+    {
+      "title": "UP Madarsa Board Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/up-madarsa-board-result-2025.html"
+    },
+    {
+      "title": "SEBI Assistant Manager Phase I Result 2026",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/sebi-assistant-manager-phase-i-result-2026.html"
+    },
+    {
+      "title": "Uttarakhand Board UBSE Class 10th, 12th Result 2025",
+      "dept": "GOVERNMENT",
+      "type": "result",
+      "category": "government",
+      "date": "Check Notification",
+      "url": "https://naukridhaba.in/results/government/uttarakhand-board-ubse-class-10th-12th-result-2025.html"
     }
   ],
   "admits": [
