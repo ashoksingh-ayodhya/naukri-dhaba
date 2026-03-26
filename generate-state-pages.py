@@ -219,9 +219,13 @@ def generate_state_page(slug: str, info: dict,
     <title>{name} Govt Jobs, Results & Admit Cards 2026 | Naukri Dhaba</title>
     <meta name="description" content="Latest government jobs, exam results, and admit cards for {name} ({hi}) 2026. Sarkari naukri updates for {name} on Naukri Dhaba.">
     <meta name="keywords" content="{name} Govt Jobs 2026, {name} Sarkari Result, {name} Admit Card, {hi} Naukri, Naukri Dhaba">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="Naukri Dhaba">
     <link rel="canonical" href="{canonical}">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="{name} Govt Jobs, Results & Admit Cards 2026 | Naukri Dhaba">
@@ -229,8 +233,12 @@ def generate_state_page(slug: str, info: dict,
     <meta property="og:url" content="{canonical}">
     <meta property="og:site_name" content="Naukri Dhaba">
     <meta property="og:locale" content="en_IN">
+    <meta property="og:image" content="https://naukridhaba.in/img/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://naukridhaba.in/img/og-default.png">
     <meta name="twitter:title" content="{name} Govt Jobs, Results & Admit Cards 2026 | Naukri Dhaba">
     <meta name="twitter:description" content="Latest government jobs, exam results, and admit cards for {name} 2026 on Naukri Dhaba.">
     <!-- India Geo -->
