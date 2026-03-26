@@ -51,7 +51,6 @@ jobs:
           fi
 
       - name: Set up Python 3.11
-        if: steps.mode_check.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -59,7 +58,6 @@ jobs:
           cache-dependency-path: "scraper/requirements.txt"
 
       - name: Install Python dependencies
-        if: steps.mode_check.outputs.skip != 'true'
         run: pip install -r scraper/requirements.txt
 
       - name: Install Playwright for JS-rendered page fallback
@@ -112,9 +110,10 @@ jobs:
         run: python3 validate-generated-site.py
 
       # ── FORCE REBUILD: always sync listing pages with detail pages ──
-      # Runs even when sources are down to ensure listing pages stay current
+      # Runs even when sources are down or in cloudflare mode to ensure listing
+      # pages always reflect all detail pages in the repository.
       - name: Force rebuild listing pages
-        if: always() && steps.mode_check.outputs.skip != 'true'
+        if: always()
         run: |
           echo "=== Force Rebuild Listing Pages ==="
           echo "Time (IST): $(date)"
@@ -123,7 +122,7 @@ jobs:
 
       # ── Validate listing pages match detail page directories ──
       - name: Validate listing page counts
-        if: always() && steps.mode_check.outputs.skip != 'true'
+        if: always()
         run: |
           echo "=== Listing Page Validation ==="
           python3 -c "
@@ -166,7 +165,7 @@ jobs:
           "
 
       - name: Commit new pages (primary sources only)
-        if: always() && steps.mode_check.outputs.skip != 'true'
+        if: always()
         run: |
           git config user.name "Manual Job Post Bot"
           git config user.email "bot@naukridhaba.in"

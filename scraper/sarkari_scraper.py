@@ -3145,15 +3145,29 @@ def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
 
             # --- Extract CTA URLs from existing HTML ---
             def _extract_url(label_pattern: str) -> str:
-                """Extract URL from CTA button or Important Links by label."""
-                # Try CTA buttons first
+                """Extract URL from CTA button or Important Links by label.
+
+                Handles multiple page templates:
+                  - V2 Python scraper: class="cta-btn …"
+                  - CF Worker: class="btn btn-primary" / class="btn btn-secondary"
+                  - Old template: class="btn btn--primary btn--large"
+                  - Important Links grid: class="link-item"
+                """
+                # 1. V2 template CTA buttons (cta-btn class)
                 m = re.search(
                     rf'<a\s+href="(https?://[^"]+)"[^>]*class="cta-btn[^"]*"[^>]*>[^<]*{label_pattern}',
                     html, re.I
                 )
                 if m:
                     return m.group(1)
-                # Try Important Links section
+                # 2. CF Worker / old template primary buttons (btn-primary or btn--primary)
+                m = re.search(
+                    rf'<a\s+href="(https?://[^"]+)"[^>]*class="btn[^"]*"[^>]*>[^<]*{label_pattern}',
+                    html, re.I
+                )
+                if m:
+                    return m.group(1)
+                # 3. Important Links section (link-item class)
                 m = re.search(
                     rf'<a\s+href="(https?://[^"]+)"[^>]*class="link-item"[^>]*>[^<]*<span[^>]*>[^<]*</span>\s*{label_pattern}',
                     html, re.I
@@ -3165,10 +3179,14 @@ def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
             d: dict = {'title': title, 'dept': dept}
 
             if kind == 'result':
-                # Extract dates
+                # Extract dates — try V2 stat-card layout, fall back to table cell layout
                 rd_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Result Date', html, re.I)
+                if not rd_match:
+                    rd_match = re.search(r'<th[^>]*>Result Date</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
                 d['result_date'] = clean(rd_match.group(1)) if rd_match else 'Check Notification'
                 ed_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
+                if not ed_match:
+                    ed_match = re.search(r'<th[^>]*>Exam Date</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
                 if ed_match:
                     d['exam_date'] = clean(ed_match.group(1))
                 # Extract URLs
@@ -3183,10 +3201,14 @@ def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
                     log.warning(f'  Failed to regenerate result page {path}: {e}')
 
             elif kind == 'admit':
-                # Extract dates
+                # Extract dates — try V2 stat-card layout, fall back to table cell layout
                 ed_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
+                if not ed_match:
+                    ed_match = re.search(r'<th[^>]*>Exam Date</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
                 d['exam_date'] = clean(ed_match.group(1)) if ed_match else 'As per Schedule'
                 ar_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Admit Card Release', html, re.I)
+                if not ar_match:
+                    ar_match = re.search(r'<th[^>]*>Admit Card(?:\s+Date)?</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
                 if ar_match:
                     d['admit_release'] = clean(ar_match.group(1))
                 else:
@@ -3202,18 +3224,27 @@ def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
                     log.warning(f'  Failed to regenerate admit page {path}: {e}')
 
             elif kind == 'job':
-                # Extract dates
+                # Extract dates — try V2 stat-card layout, then old table layout, then CF-worker table
                 ld_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Last Date', html, re.I)
                 d['last_date'] = clean(ld_match.group(1)) if ld_match else 'Check Notification'
                 if not ld_match:
                     ld_match = re.search(r'Last Date to Apply Online</td><td[^>]*>([^<]+)</td>', html, re.I)
                     if ld_match:
                         d['last_date'] = clean(ld_match.group(1))
+                if not ld_match:
+                    # CF Worker style: <th>Last Date</th><td>value</td>
+                    ld_match = re.search(r'<th[^>]*>Last Date</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
+                    if ld_match:
+                        d['last_date'] = clean(ld_match.group(1))
                 ed_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Exam Date', html, re.I)
+                if not ed_match:
+                    ed_match = re.search(r'<th[^>]*>Exam Date</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
                 if ed_match:
                     d['exam_date'] = clean(ed_match.group(1))
                 # Extract total posts
                 tp_match = re.search(r'stat-card__value">([^<]+)</div>\s*<div class="stat-card__label">Total Posts', html, re.I)
+                if not tp_match:
+                    tp_match = re.search(r'<th[^>]*>Total Posts?</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
                 if tp_match:
                     d['total_posts'] = clean(tp_match.group(1))
                 # Extract age limit
