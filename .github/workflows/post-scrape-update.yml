@@ -65,6 +65,9 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scraper/requirements.txt
 
+      - name: Regenerate detail pages with V2 template and enriched SEO
+        run: python3 scraper/sarkari_scraper.py --regenerate-details result admit job
+
       - name: Rebuild listing pages from detail pages
         run: python3 scraper/sarkari_scraper.py --rebuild-only
 
