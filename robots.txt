@@ -1,6 +1,20 @@
 User-agent: *
 Allow: /
 
+# Google-specific rules (Googlebot ignores Crawl-delay)
+User-agent: Googlebot
+Allow: /
+Disallow: /staging/
+
+User-agent: Googlebot-Image
+Allow: /img/
+
+# Bing-specific rules
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+Disallow: /staging/
+
 # Explicitly allow major AI crawlers and model fetchers
 User-agent: GPTBot
 Allow: /
@@ -33,16 +47,23 @@ Allow: /
 Allow: /jobs/
 Allow: /results/
 Allow: /admit-cards/
-Allow: /latest-jobs
-Allow: /results
-Allow: /admit-cards
-Allow: /resources
 Allow: /latest-jobs.html
 Allow: /results.html
 Allow: /admit-cards.html
+Allow: /resources.html
+Allow: /feed.xml
+Allow: /feed/
+Allow: /api/
+Allow: /sitemap.xml
+
+# Block staging and internal paths
+Disallow: /staging/
+Disallow: /node_modules/
 
 # Sitemap location
 Sitemap: https://naukridhaba.in/sitemap.xml
 
-# Crawl delay (be polite to server)
-Crawl-delay: 1
+# RSS Feed discovery
+# Jobs:    https://naukridhaba.in/feed/jobs.xml
+# Results: https://naukridhaba.in/feed/results.xml
+# Admits:  https://naukridhaba.in/feed/admit-cards.xml

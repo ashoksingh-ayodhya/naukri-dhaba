@@ -44,6 +44,12 @@ EXCLUDE_PATTERNS = [
     "study-planner.html",
     "previous-papers.html",
     "go.html",
+    "node_modules/",
+    "staging/",
+    "backup-main/",
+    "share-diff-preview.html",
+    "widget.html",
+    "404.html",
 ]
 
 
@@ -152,7 +158,29 @@ def generate_sitemap() -> int:
     print(f"   Result pages: {results_count}")
     print(f"   Admit Card pages: {admits_count}")
     print(f"   Last updated: {today}")
+
+    # Ping search engines about updated sitemap
+    ping_search_engines()
+
     return len(html_files)
+
+
+def ping_search_engines() -> None:
+    """Notify Google and Bing that the sitemap has been updated."""
+    import urllib.request
+
+    sitemap_url = f"{BASE_URL}/sitemap.xml"
+    ping_urls = [
+        f"https://www.google.com/ping?sitemap={sitemap_url}",
+        f"https://www.bing.com/ping?sitemap={sitemap_url}",
+    ]
+    for url in ping_urls:
+        try:
+            req = urllib.request.Request(url, method="GET")
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                print(f"   Pinged {url.split('?')[0].split('/')[-1]} → HTTP {resp.status}")
+        except Exception as e:
+            print(f"   Ping failed for {url}: {e}")
 
 
 if __name__ == "__main__":
