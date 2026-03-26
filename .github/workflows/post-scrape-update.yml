@@ -77,6 +77,11 @@ jobs:
       - name: Normalize all generated pages
         run: python3 update-all-pages.py
 
+      # Re-sync listing pages after update-all-pages.py (which replaces <head> and may
+      # disturb the ItemList JSON-LD we inserted in the rebuild step above).
+      - name: Re-sync listing pages after normalization
+        run: python3 scraper/sarkari_scraper.py --rebuild-only
+
       - name: Rebuild sitemap
         run: python3 generate-sitemap.py
 
