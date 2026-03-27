@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-26T11:44:05.230734",
+  "scraped_at": "2026-03-27T11:45:38.638702",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/uppsc-lt-grade-teacher-2025/",
   "page_type": "result",
   "title": "UPPSC LT Grade Assistant Teacher Result 2026",
-  "post_name": "UPPSC Assistant Grade LT Grade Teacher Recruitment 2025 Download Result Updated",
+  "post_name": "UPPSC Assistant Grade LT Grade Teacher Recruitment 2025 Download Admit Card",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Uttar Pradesh Public Service Commission (UPPSC)",
@@ -21,7 +21,9 @@
     "Science, Sanskrit, Home Science, Commerce Result Available": "18/02/2026",
     "English, Biology Result Available": "24/02/2026",
     "Urdu, Music, Arts, Agri / Horti Result Available": "12/03/2026",
-    "Physical Education Result Available": "19/03/2026"
+    "Physical Education Result Available": "19/03/2026",
+    "Computer Subject Exam Date": "05/04/2026",
+    "Admit Card Available": "26/03/2026"
   },
   "fees": {
     "General / OBC / EWS": "125/-",
@@ -55,6 +57,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwTFMai3JQ+K3Bs0O6859Z9AS8bETbXQJjhNiKVH/IJoMSChX5fc6nRwZEYvGPZM/Ea1Yc5hVcTDZjyzLb54Rq2kqdU+1V1eRmoSs9n/VpovVyKHOVKSXbKVdXUc7gag5usvluv/8deN2Q==",
+      "link_type": "admit"
+    },
     {
       "label": "How to Check Result (Video Hindi)",
       "url": "https://youtu.be/JKpQ8xxpdmw",
@@ -155,9 +162,13 @@
   "notification_url": "https://tinyurl.com/5c43hk7p",
   "result_url": "/upload/UPPSC_LT_BPED_Result_2026.pdf",
   "scorecard_url": "",
-  "admit_url": "https://uppsc.up.nic.in/CandidatePages/Advertismentwise_DownloadDocument.aspx?inptprmtr=ac",
+  "admit_url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwTFMai3JQ+K3Bs0O6859Z9AS8bETbXQJjhNiKVH/IJoMSChX5fc6nRwZEYvGPZM/Ea1Yc5hVcTDZjyzLb54Rq2kqdU+1V1eRmoSs9n/VpovVyKHOVKSXbKVdXUc7gag5usvluv/8deN2Q==",
   "official_website_url": "https://uppsc.up.nic.in/",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwTFMai3JQ+K3Bs0O6859Z9AS8bETbXQJjhNiKVH/IJoMSChX5fc6nRwZEYvGPZM/Ea1Yc5hVcTDZjyzLb54Rq2kqdU+1V1eRmoSs9n/VpovVyKHOVKSXbKVdXUc7gag5usvluv/8deN2Q=="
+    },
     {
       "label": "How to Check Result (Video Hindi)",
       "url": "https://youtu.be/JKpQ8xxpdmw"
@@ -236,6 +247,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Physical Education",
+      "url": "/upload/Sarkari_Result_UPPSC_LT_Computer_Exam_notice.pdf"
+    },
     {
       "label": "Physical Education",
       "url": "/upload/UPPSC_LT_BPED_Result_2026.pdf"

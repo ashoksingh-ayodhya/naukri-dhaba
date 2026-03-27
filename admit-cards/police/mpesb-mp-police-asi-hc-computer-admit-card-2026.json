@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-26T11:53:44.408689",
+  "scraped_at": "2026-03-27T11:56:10.028419",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mpesb-asi-hc-computer-feb26/",
   "page_type": "admit",
   "title": "MPESB MP Police ASI HC Computer Admit Card 2026",
-  "post_name": "MPESB MP Police Assistant Sub Inspector ASI (Computer) and Head Constable Computer Recruitment 2026 Download Admit Card for 89 Post",
+  "post_name": "MPESB MP Police Assistant Sub Inspector ASI (Computer) and Head Constable Computer Recruitment 2026 Download Answer Key for 89 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Madhya Pradesh Employee Selection Board (MPESB)",
@@ -17,7 +17,8 @@
     "Last Date for Apply Online": "19/02/2026",
     "Last Date Pay Exam Fee": "19/02/2026",
     "Form Correction Last Date": "24/02/2026",
-    "Admit Card Available": "18/03/2026"
+    "Admit Card Available": "18/03/2026",
+    "Answer Key Available": "26/03/2026"
   },
   "fees": {
     "General / Other State": "560/-",
@@ -44,6 +45,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Answer Key",
+      "url": "https://asicompandhccomp.cbtexam.in/",
+      "link_type": "answer_key"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://esb.mp.gov.in/tacs/tac_2026/ASI_Computer_TAC26/default_tac.htm",
@@ -77,6 +83,10 @@
   "admit_url": "https://esb.mp.gov.in/tacs/tac_2026/ASI_Computer_TAC26/default_tac.htm",
   "official_website_url": "https://esb.mp.gov.in/e_default.html",
   "extra_links": [
+    {
+      "label": "Download Answer Key",
+      "url": "https://asicompandhccomp.cbtexam.in/"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://esb.mp.gov.in/tacs/tac_2026/ASI_Computer_TAC26/default_tac.htm"
