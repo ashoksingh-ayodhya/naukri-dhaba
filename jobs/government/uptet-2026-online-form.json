@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-27T11:29:47.685193",
+  "scraped_at": "2026-03-29T02:27:25.833583",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/uptet-2026/",
   "page_type": "job",
   "title": "UPTET 2026 Online Form",
-  "post_name": "Uttar Pradesh Teacher Eligibility Test UPTET 2026 Apply Online Form",
+  "post_name": "Uttar Pradesh Teacher Eligibility Test UPTET 2026 Apply Online Form | Syllabus Download",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Uttar Pradesh Education Service Selection Commission (UPESSC)",
@@ -56,13 +56,13 @@
   "important_links": [
     {
       "label": "Apply Online (OTR)",
-      "url": "https://uptet.upessc.org/otr/info/",
+      "url": "https://uptet.upessc.org/otr/",
       "link_type": "apply"
     },
     {
-      "label": "How to UPTET OTR Registration (Video Hindi)",
-      "url": "https://youtu.be/c0HEAyIxERQ",
-      "link_type": "apply"
+      "label": "How to UPTET OTR & Fill Form (Video Hindi)",
+      "url": "https://youtu.be/lYGEMnjN7Eo",
+      "link_type": "other"
     },
     {
       "label": "Download UPTET 2026 Corrigendum Notice",
@@ -80,7 +80,7 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://uptet.upessc.org/otr/info/",
+  "apply_url": "https://uptet.upessc.org/otr/",
   "notification_url": "/upload/UPTET_2026_Notification_SR.pdf",
   "result_url": "",
   "scorecard_url": "",
@@ -89,11 +89,11 @@
   "extra_links": [
     {
       "label": "Apply Online (OTR)",
-      "url": "https://uptet.upessc.org/otr/info/"
+      "url": "https://uptet.upessc.org/otr/"
     },
     {
-      "label": "How to UPTET OTR Registration (Video Hindi)",
-      "url": "https://youtu.be/c0HEAyIxERQ"
+      "label": "How to UPTET OTR & Fill Form (Video Hindi)",
+      "url": "https://youtu.be/lYGEMnjN7Eo"
     },
     {
       "label": "Download UPTET 2026 Corrigendum Notice",

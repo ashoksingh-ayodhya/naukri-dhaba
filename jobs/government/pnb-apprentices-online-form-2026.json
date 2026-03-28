@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-27T11:33:13.883378",
+  "scraped_at": "2026-03-29T02:30:45.170514",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/pnb-apprentice-feb26/",
   "page_type": "job",
   "title": "PNB Apprentices Online Form 2026",
-  "post_name": "Punjab National Bank PNB Recruitment 2026 Apply Online for 5138 Apprentice Post",
+  "post_name": "Punjab National Bank PNB Recruitment 2026 Result for 5138 Apprentice Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -44,6 +44,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Result",
+      "url": "https://tinyurl.com/4dj8kbb8",
+      "link_type": "result"
+    },
+    {
       "label": "Apply Online",
       "url": "https://beep.bfsissc.com/candidate_register/AMT",
       "link_type": "apply"
@@ -66,11 +71,15 @@
   ],
   "apply_url": "https://beep.bfsissc.com/candidate_register/AMT",
   "notification_url": "https://doc.sarkariresults.org.in/PNB_Apprentice_25%20(1).pdf",
-  "result_url": "",
+  "result_url": "https://tinyurl.com/4dj8kbb8",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "https://pnb.bank.in/recruitments.aspx",
   "extra_links": [
+    {
+      "label": "Download Result",
+      "url": "https://tinyurl.com/4dj8kbb8"
+    },
     {
       "label": "Apply Online",
       "url": "https://beep.bfsissc.com/candidate_register/AMT"
