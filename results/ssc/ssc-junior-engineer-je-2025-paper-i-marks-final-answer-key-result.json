@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-27T11:43:13.204665",
+  "scraped_at": "2026-03-28T14:34:57.125691",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-junior-engineer-je-2025/",
   "page_type": "result",
@@ -20,8 +20,7 @@
     "Answer Key Available": "19/12/2025",
     "Paper I Result Available": "06/03/2026",
     "Paper I Marks Available": "23/03/2026",
-    "Exam Date Tier II": "07/04/2026",
-    "Check Paper II Exam City": "Link Will be Activate on 27/03/2026"
+    "Exam Date Tier II": "07/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "100/-",
@@ -50,9 +49,9 @@
   ],
   "important_links": [
     {
-      "label": "Download Paper I Marks",
+      "label": "Download Paper II Exam City",
       "url": "https://ssc.gov.in/login",
-      "link_type": "other"
+      "link_type": "exam_city"
     },
     {
       "label": "Download Paper I Marks & Final Answer Key Notice",
@@ -128,7 +127,7 @@
   "official_website_url": "https://ssc.gov.in/",
   "extra_links": [
     {
-      "label": "Download Paper I Marks",
+      "label": "Download Paper II Exam City",
       "url": "https://ssc.gov.in/login"
     },
     {
