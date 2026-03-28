@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-26T11:56:39.310260",
+  "scraped_at": "2026-03-28T14:49:53.907997",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/railway/rrb-technician-cen-02-2025/",
   "page_type": "admit",
@@ -16,7 +16,8 @@
     "Application Begin": "28/06/2025",
     "Last Date for Apply Online": "07/08/2025",
     "Last Date Pay Exam Fee": "09/08/2025",
-    "Technician III Answer Key Available": "19/03/2026"
+    "Technician III Answer Key Available": "19/03/2026",
+    "Technician I Answer Key Available": "28/03/2026"
   },
   "fees": {
     "General / OBC / EWS": "500/-",
@@ -46,13 +47,18 @@
   ],
   "important_links": [
     {
-      "label": "Download Answer Key",
+      "label": "Download Answer Key (Technician Grade I)",
       "url": "https://rrb.digialm.com/EForms/configuredHtml/33128/98138/login.html",
       "link_type": "answer_key"
     },
     {
       "label": "How to Check Answer Key (Video Hindi)",
       "url": "https://youtu.be/uyJyJ-LV8TQ",
+      "link_type": "answer_key"
+    },
+    {
+      "label": "Download Answer Key Notice (Technician Grade I)",
+      "url": "https://www.rrbranchi.gov.in/upload/files/pdf/05_21_18pme8a2ceb861269ba9bf78279468fba6ca.pdf",
       "link_type": "answer_key"
     },
     {
@@ -144,12 +150,16 @@
   "official_website_url": "https://indianrailways.gov.in/",
   "extra_links": [
     {
-      "label": "Download Answer Key",
+      "label": "Download Answer Key (Technician Grade I)",
       "url": "https://rrb.digialm.com/EForms/configuredHtml/33128/98138/login.html"
     },
     {
       "label": "How to Check Answer Key (Video Hindi)",
       "url": "https://youtu.be/uyJyJ-LV8TQ"
+    },
+    {
+      "label": "Download Answer Key Notice (Technician Grade I)",
+      "url": "https://www.rrbranchi.gov.in/upload/files/pdf/05_21_18pme8a2ceb861269ba9bf78279468fba6ca.pdf"
     },
     {
       "label": "Check Exam City / Admit Card",
@@ -217,6 +227,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://www.rrbranchi.gov.in/upload/files/pdf/05_21_18pme8a2ceb861269ba9bf78279468fba6ca.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://www.rrbjammu.nic.in/02-2025/CEN-02-2025_Revised_Tentative%20schedule_Hindi_250226.pdf"
