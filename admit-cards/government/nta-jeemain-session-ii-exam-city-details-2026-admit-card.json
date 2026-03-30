@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-29T02:54:13.314154",
+  "scraped_at": "2026-03-30T12:14:19.935002",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/nta-jeemain-session-2/",
   "page_type": "admit",
   "title": "NTA JEEMAIN Session II Exam City Details 2026",
-  "post_name": "NTA JEEMAIN Session II Admissions April 2026 Check Exam City Details",
+  "post_name": "NTA JEEMAIN Session II Admissions April 2026 Download Admit Card",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -39,6 +39,11 @@
   "salary": "",
   "how_to_apply": [],
   "important_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://examinationservices.nic.in/AdmitCardService/AdmitCardJEE26S2/Login",
+      "link_type": "admit"
+    },
     {
       "label": "Check Exam City Details",
       "url": "https://examinationservices.nic.in/AdmitCard/AuthForCityJEE26S2/LogIn",
@@ -84,9 +89,13 @@
   "notification_url": "",
   "result_url": "https://sarkariresultportal.com/",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://examinationservices.nic.in/AdmitCardService/AdmitCardJEE26S2/Login",
   "official_website_url": "https://jeemain.nta.nic.in/",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://examinationservices.nic.in/AdmitCardService/AdmitCardJEE26S2/Login"
+    },
     {
       "label": "Check Exam City Details",
       "url": "https://examinationservices.nic.in/AdmitCard/AuthForCityJEE26S2/LogIn"
