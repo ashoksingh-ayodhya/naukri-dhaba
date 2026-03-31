@@ -237,6 +237,46 @@ def validate_html(path: Path) -> list[str]:
     return errors
 
 
+def validate_v2_css() -> list[str]:
+    """Ensure css/style.css contains all V2 detail-page CSS classes.
+
+    If these classes are missing, all internal detail pages (jobs, results,
+    admit-cards) will render unstyled because the pages rely on the global
+    stylesheet for their V2 template layout.
+
+    Returns:
+        List of error messages; empty if validation passes.
+    """
+    css_path = ROOT / "css" / "style.css"
+    if not css_path.exists():
+        return ["css/style.css: file is missing"]
+    content = css_path.read_text(encoding="utf-8", errors="replace")
+    required_classes = [
+        ".detail-page",
+        ".section-card",
+        ".stat-card",
+        ".cta-btn",
+        ".kv-table",
+        ".status-chip",
+        ".org-banner",
+        ".quick-stats",
+        ".cta-bar",
+        ".two-col",
+    ]
+    errors: list[str] = []
+    for cls in required_classes:
+        # Match the class as a CSS selector followed by a non-identifier character
+        # (e.g. "{", " ", ".", ":", ",") to avoid false positives like
+        # ".detail-page-header" matching ".detail-page".
+        pattern = re.escape(cls) + r'[\s\{:,\.]'
+        if not re.search(pattern, content):
+            errors.append(
+                f"css/style.css: missing V2 detail-page class '{cls}' — "
+                f"all internal pages will render unstyled"
+            )
+    return errors
+
+
 def validate_sitemap() -> list[str]:
     sitemap = ROOT / "sitemap.xml"
     if not sitemap.exists():
@@ -251,6 +291,7 @@ def validate_sitemap() -> list[str]:
 
 def main() -> int:
     errors: list[str] = []
+    errors.extend(validate_v2_css())
     for path in html_files():
         errors.extend(validate_html(path))
     errors.extend(validate_sitemap())
