@@ -47,7 +47,12 @@ def check(url, label, min_size=500, expect_type="html", check_content=None):
             if expect_type == "html":
                 if "<title>" not in text.lower():
                     issues.append("missing <title> tag")
-                if "sarkariresult" in text.lower() or "sarkari result" in text.lower():
+                # Check for branding leaks: sarkariresult in visible text or direct links
+                # (not inside properly-wrapped /go.html?target= redirect links)
+                import re as _re
+                # Strip go.html redirect URLs before checking — those are safe redirects
+                clean_text = _re.sub(r'/go\.html\?target=[^\s"\'<>]+', '', text, flags=_re.IGNORECASE)
+                if "sarkariresult" in clean_text.lower() or "sarkari result" in clean_text.lower():
                     issues.append("BRANDING LEAK: contains 'sarkariresult' text")
 
             if expect_type == "json":

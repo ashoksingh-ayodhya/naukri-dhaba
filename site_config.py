@@ -63,6 +63,16 @@ SOURCE_HOSTS = {
     "www.sarkariresult.com",
     "sarkariresults.com",
     "www.sarkariresults.com",
+    # .org.in variants (same network, different TLD)
+    "sarkariresult.org.in",
+    "www.sarkariresult.org.in",
+    "sarkariresults.org.in",
+    "www.sarkariresults.org.in",
+    # Document / CDN subdomains used by sarkariresult for PDF uploads
+    "doc.sarkariresult.com",
+    "doc.sarkariresults.com",
+    "doc.sarkariresult.org.in",
+    "doc.sarkariresults.org.in",
     "freejobalert.com",
     "www.freejobalert.com",
     "rojgarresult.com",

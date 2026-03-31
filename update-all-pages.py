@@ -1065,6 +1065,11 @@ def build_meta_block(data, page_type, filepath, canonical_url):
         )
 
     og_type = 'article' if page_type in {'job', 'result', 'admit_card'} else 'website'
+    is_detail_page = page_type in {'job', 'result', 'admit_card'}
+    preconnect_block = '''    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">''' if is_detail_page else ''
 
     return f'''    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1074,6 +1079,7 @@ def build_meta_block(data, page_type, filepath, canonical_url):
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
     <meta name="author" content="{SITE_NAME}">
     <link rel="canonical" href="{canonical_url}">
+{preconnect_block}
     <!-- Open Graph -->
     <meta property="og:type" content="{og_type}">
     <meta property="og:title" content="{og_title}">
@@ -1081,10 +1087,14 @@ def build_meta_block(data, page_type, filepath, canonical_url):
     <meta property="og:url" content="{canonical_url}">
     <meta property="og:site_name" content="{SITE_NAME}">
     <meta property="og:locale" content="en_IN">
+    <meta property="og:image" content="{SITE_URL}/img/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{og_title}">
     <meta name="twitter:description" content="{og_desc}">
+    <meta name="twitter:image" content="{SITE_URL}/img/og-default.png">
     <!-- India Geo -->
     <meta name="geo.region" content="IN">
     <meta name="geo.placename" content="{location}">'''
@@ -1297,15 +1307,36 @@ def remove_sarkariresult_urls(content):
 
 
 def wrap_source_links(content):
-    """Wrap any direct source host href/src through the redirect proxy."""
+    """Wrap any direct source host href/src through the redirect proxy.
+
+    Handles:
+    - Absolute URLs whose host is in SOURCE_HOSTS
+    - Absolute URLs from related org.in subdomains (www.sarkariresults.org.in)
+    - Relative paths that contain SarkariResult branding in the filename
+    """
+    _SARKARI_PATH_RE = re.compile(r'sarkariresult', re.IGNORECASE)
+
     def repl(match):
         attr = match.group(1)
         quote_char = match.group(2)
         url = match.group(3)
+        # Skip anchor links and already-wrapped redirects
+        if url.startswith('#') or REDIRECT_PATH in url:
+            return match.group(0)
         parsed = urlparse(url)
-        if parsed.netloc.lower() in SOURCE_HOSTS:
+        netloc = parsed.netloc.lower()
+        # Wrap absolute URLs whose host is in SOURCE_HOSTS
+        if netloc and netloc in SOURCE_HOSTS:
             wrapped = f'{REDIRECT_PATH}?target={quote(url, safe="")}'
             return f'{attr}={quote_char}{wrapped}{quote_char}'
+        # Wrap absolute URLs from sarkariresults.org.in variants
+        if netloc and _SARKARI_PATH_RE.search(netloc):
+            wrapped = f'{REDIRECT_PATH}?target={quote(url, safe="")}'
+            return f'{attr}={quote_char}{wrapped}{quote_char}'
+        # Remove relative paths that contain SarkariResult in the filename
+        # (e.g., /upload/SarkariResult.Com_SSB_...pdf)
+        if not netloc and _SARKARI_PATH_RE.search(parsed.path):
+            return f'{attr}={quote_char}#{quote_char}'
         return match.group(0)
 
     return re.sub(
@@ -1323,6 +1354,42 @@ def fix_malformed_redirect_hosts(content):
         'www.sarkariresult.com',
         content,
         flags=re.IGNORECASE
+    )
+
+
+def fix_source_redirect_targets(content):
+    """Replace go.html?target=<source-host-url> links with '#' to avoid validation failures.
+
+    Source-host PDF/upload links were scraped but cannot be legitimately served
+    through the redirect proxy — they point back to the scraping source.
+    """
+    from urllib.parse import unquote, parse_qs
+
+    def repl(match):
+        quote_char = match.group(1)
+        url = match.group(2)
+        # Decode the target parameter
+        if REDIRECT_PATH not in url:
+            return match.group(0)
+        try:
+            query = url.split('?', 1)[1] if '?' in url else ''
+            target = parse_qs(query).get('target', [None])[0]
+            if not target:
+                return match.group(0)
+            target = unquote(target)
+            from urllib.parse import urlparse as _up
+            netloc = _up(target).netloc.lower()
+            if netloc in SOURCE_HOSTS:
+                return f'href={quote_char}#{quote_char}'
+        except Exception:
+            pass
+        return match.group(0)
+
+    return re.sub(
+        r'href=(["\'])([^"\']*go\.html[^"\']*)\1',
+        repl,
+        content,
+        flags=re.IGNORECASE,
     )
 
 
@@ -1430,6 +1497,14 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
         )
         if existing_jsonld:
             json_ld_blocks = existing_jsonld.group(0)
+    elif page_type == 'home':
+        # Homepage requires Organization + WebSite schemas for validation
+        json_ld_blocks = f'''    <script type="application/ld+json">
+    {{"@context":"https://schema.org","@type":"Organization","name":"{SITE_NAME}","url":"{SITE_URL}/","logo":"{SITE_URL}/img/og-default.png","sameAs":[]}}
+    </script>
+    <script type="application/ld+json">
+    {{"@context":"https://schema.org","@type":"WebSite","name":"{SITE_NAME}","url":"{SITE_URL}/","potentialAction":{{"@type":"SearchAction","target":{{"@type":"EntryPoint","urlTemplate":"{SITE_URL}/latest-jobs.html?q={{search_term_string}}"}},"query-input":"required name=search_term_string"}}}}
+    </script>'''
 
     # Build complete new head content
     new_head = f'''<head>
@@ -1464,6 +1539,9 @@ def update_page(filepath, dry_run=False):
 
     # Step 0: Repair malformed redirect targets from earlier rewrites
     content = fix_malformed_redirect_hosts(content)
+
+    # Step 0b: Remove go.html redirect links that still target source hosts
+    content = fix_source_redirect_targets(content)
 
     # Step 1: Remove SarkariResult references
     content = remove_sarkariresult_urls(content)
