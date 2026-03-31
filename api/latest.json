@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-31T02:19:18Z",
+  "updated": "2026-03-31T04:16:18Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -392,28 +392,44 @@
       "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-junior-engineer-je-civil-2024-exam-date.html"
     },
     {
-      "title": "SSC Junior Engineer JE Paper II Exam Date 2026",
-      "dept": "SSC",
+      "title": "UP Police SI / ASI 2023 Typing Test Exam Date",
+      "dept": "POLICE",
       "type": "admit",
-      "category": "ssc",
+      "category": "police",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-paper-ii-exam-date-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/police/up-police-si-asi-2023-typing-test-exam-date.html"
     },
     {
-      "title": "SSC Junior Engineer JE 2025 Paper II Exam City Details",
-      "dept": "SSC",
+      "title": "UP Police SI / ASI 2023 Typing Test Admit Card 2026",
+      "dept": "POLICE",
       "type": "admit",
-      "category": "ssc",
+      "category": "police",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-2025-paper-ii-exam-city-details.html"
+      "url": "https://naukridhaba.in/admit-cards/police/up-police-si-asi-2023-typing-test-admit-card-2026.html"
     },
     {
-      "title": "SSC Delhi Police Head Constable AWO / TPO 2022 DME Exam Schedule",
-      "dept": "SSC",
+      "title": "UP Police SI / ASI 2023 Steno Test Admit Card 2026",
+      "dept": "POLICE",
       "type": "admit",
-      "category": "ssc",
+      "category": "police",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-delhi-police-head-constable-awo-tpo-2022-dme-exam-schedule.html"
+      "url": "https://naukridhaba.in/admit-cards/police/up-police-si-asi-2023-steno-test-admit-card-2026.html"
+    },
+    {
+      "title": "UP Police Constable Sports Quota 2023 DV / Sports Trial Admit Card",
+      "dept": "POLICE",
+      "type": "admit",
+      "category": "police",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/police/up-police-constable-sports-quota-2023-dv-sports-trial-admit-card.html"
+    },
+    {
+      "title": "UPPSC RO/ ARO 2023 Typing Test Admit Card",
+      "dept": "PPSC",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/uppsc-ro-aro-2023-typing-test-admit-card.html"
     },
     {
       "title": "SSC CHSL 2025 Tier II Exam Date",
@@ -430,6 +446,22 @@
       "category": "ssc",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/ssc/ssc-chsl-2025-tier-ii-exam-city-details.html"
+    },
+    {
+      "title": "RRB Technician CEN 02/2025 Revised Exam Schedule",
+      "dept": "RAILWAY",
+      "type": "admit",
+      "category": "railway",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/railway/rrb-technician-cen-022025-revised-exam-schedule.html"
+    },
+    {
+      "title": "RRB Technician CEN 02/2025 Revised Exam Date 2026",
+      "dept": "RAILWAY",
+      "type": "admit",
+      "category": "railway",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/railway/rrb-technician-cen-022025-revised-exam-date-2026.html"
     },
     {
       "title": "RRB Technician CEN 02/2025 Exam City Details",
@@ -454,38 +486,6 @@
       "category": "railway",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/railway/rrb-ntpc-graduate-level-cen-062025-exam-city-details.html"
-    },
-    {
-      "title": "RRB NTPC Graduate Level CEN 06/2025 Exam City / Admit Card",
-      "dept": "RAILWAY",
-      "type": "admit",
-      "category": "railway",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/railway/rrb-ntpc-graduate-level-cen-062025-exam-city-admit-card.html"
-    },
-    {
-      "title": "RRB ALP CEN 01/2025 Re Scheduled Candidate Exam City 2026",
-      "dept": "RAILWAY",
-      "type": "admit",
-      "category": "railway",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/railway/rrb-alp-cen-012025-re-scheduled-candidate-exam-city-2026.html"
-    },
-    {
-      "title": "Railway RRB Technician Grade I Exam City Details 2026",
-      "dept": "RAILWAY",
-      "type": "admit",
-      "category": "railway",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/railway/railway-rrb-technician-grade-i-exam-city-details-2026.html"
-    },
-    {
-      "title": "Railway RRB Paramedical Post Revised Exam Date 2026",
-      "dept": "RAILWAY",
-      "type": "admit",
-      "category": "railway",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/railway/railway-rrb-paramedical-post-revised-exam-date-2026.html"
     }
   ]
 }
