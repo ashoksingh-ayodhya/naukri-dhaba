@@ -85,7 +85,15 @@ def validate_html(path: Path) -> list[str]:
     rel = path.relative_to(ROOT).as_posix()
     errors: list[str] = []
     skip_redirect_checks = path.name == "go.html"
-    is_detail = any(part in rel for part in ("jobs/", "results/", "admit-cards/"))
+    # Directory index pages (jobs/index.html, results/index.html, etc.) are redirect
+    # helpers, not real detail pages — exclude them from all detail-page checks.
+    is_dir_index = path.name == "index.html" and any(
+        part in rel for part in ("jobs/", "results/", "admit-cards/")
+    )
+    is_detail = (
+        any(part in rel for part in ("jobs/", "results/", "admit-cards/"))
+        and not is_dir_index
+    )
     # SEO-critical pages: detail pages, listing pages, homepage, state pages
     _SEO_CRITICAL_FILES = {"index.html", "latest-jobs.html", "results.html", "admit-cards.html"}
     is_seo_critical = is_detail or path.name in _SEO_CRITICAL_FILES or rel.startswith("state/")
@@ -174,7 +182,7 @@ def validate_html(path: Path) -> list[str]:
     if is_detail and 'application/ld+json' not in content:
         errors.append(f"{rel}: missing JSON-LD")
 
-    if '/jobs/' in rel and 'application/ld+json' in content:
+    if '/jobs/' in rel and not is_dir_index and 'application/ld+json' in content:
         if '"JobPosting"' not in content:
             errors.append(f"{rel}: job page missing JobPosting JSON-LD schema")
         else:
@@ -183,10 +191,10 @@ def validate_html(path: Path) -> list[str]:
             if '"applicantLocationRequirements"' not in content:
                 errors.append(f"{rel}: JobPosting missing applicantLocationRequirements (required for Google Jobs)")
 
-    if '/jobs/' in rel and '"BreadcrumbList"' not in content:
+    if '/jobs/' in rel and not is_dir_index and '"BreadcrumbList"' not in content:
         errors.append(f"{rel}: job page missing BreadcrumbList JSON-LD")
 
-    if '/jobs/' in rel and '"FAQPage"' not in content:
+    if '/jobs/' in rel and not is_dir_index and '"FAQPage"' not in content:
         errors.append(f"{rel}: job page missing FAQPage JSON-LD")
 
     # Homepage must have Organization + WebSite schemas
@@ -222,15 +230,15 @@ def validate_html(path: Path) -> list[str]:
     if is_detail and 'class="detail-page"' not in content:
         errors.append(f"{rel}: detail page not using V2 template (missing .detail-page wrapper)")
 
-    if '/jobs/' in rel and 'class="job-detail"' in content:
+    if '/jobs/' in rel and not is_dir_index and 'class="job-detail"' in content:
         if 'Role Snapshot' not in content or 'How to Apply' not in content:
             errors.append(f"{rel}: job detail page still uses incomplete legacy layout")
 
-    if '/results/' in rel and 'class="result-detail"' in content:
+    if '/results/' in rel and not is_dir_index and 'class="result-detail"' in content:
         if 'Result Snapshot' not in content or 'How to Check Result' not in content:
             errors.append(f"{rel}: result detail page still uses incomplete legacy layout")
 
-    if '/admit-cards/' in rel and 'class="admit-detail"' in content:
+    if '/admit-cards/' in rel and not is_dir_index and 'class="admit-detail"' in content:
         if 'Admit Card Snapshot' not in content or 'Exam Day Checklist' not in content:
             errors.append(f"{rel}: admit-card detail page still uses incomplete legacy layout")
 
