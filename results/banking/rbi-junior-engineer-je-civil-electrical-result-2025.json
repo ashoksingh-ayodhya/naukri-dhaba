@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:35.655612",
+  "scraped_at": "2026-04-04T11:38:43.844220",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/rbi-junior-engineer-dec24/",
   "page_type": "result",
@@ -44,16 +44,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RBI_JE_Civil_2025_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RBI_JE_Electrical_Result_2025.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://ibpsonline.ibps.in/rbijenov24/oecla_jan25/login.php?appid=ca66c9e1ba4f774ec8b9f8752e448ff7",
       "link_type": "admit"
@@ -62,11 +52,6 @@
       "label": "Apply Online",
       "url": "https://ibpsonline.ibps.in/rbijenov24/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/06/rbi-je.jpg",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -82,14 +67,6 @@
   "official_website_url": "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx",
   "extra_links": [
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RBI_JE_Civil_2025_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RBI_JE_Electrical_Result_2025.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://ibpsonline.ibps.in/rbijenov24/oecla_jan25/login.php?appid=ca66c9e1ba4f774ec8b9f8752e448ff7"
     },
@@ -98,22 +75,9 @@
       "url": "https://ibpsonline.ibps.in/rbijenov24/"
     },
     {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/06/rbi-je.jpg"
-    },
-    {
       "label": "Official Website",
       "url": "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx"
     }
   ],
-  "download_links": [
-    {
-      "label": "Civil",
-      "url": "https://doc.sarkariresults.org.in/RBI_JE_Civil_2025_Result.pdf"
-    },
-    {
-      "label": "Electrical",
-      "url": "https://doc.sarkariresults.org.in/RBI_JE_Electrical_Result_2025.pdf"
-    }
-  ]
+  "download_links": []
 }

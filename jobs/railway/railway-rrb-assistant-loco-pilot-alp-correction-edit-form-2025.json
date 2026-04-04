@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:41.573739",
+  "scraped_at": "2026-04-04T11:23:57.464322",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/railway/rrb-alp-cen-01-2025/",
   "page_type": "job",
@@ -82,31 +82,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/CorrigendumCEN012025ALPEnglish-638824224301710145.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download FAQ",
-      "url": "https://doc.sarkariresults.org.in/FAQ%20CEN%2001-2025%20(ALP)_English.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download FAQ",
-      "url": "https://doc.sarkariresults.org.in/RRBA_LP_FAQ_Hindi_2025.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notification (English)",
-      "url": "https://doc.sarkariresults.org.in/RRB_ALP_CEN_01_2025.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification (Hindi)",
-      "url": "https://doc.sarkariresults.org.in/Final_CEN_01_2025_ALP.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "RRB Photo Resizer, Marriage Bio Data Maker and More Tools",
       "url": "https://sarkariresult.tools/",
       "link_type": "other"
@@ -153,26 +128,6 @@
       "url": "https://www.rrbapply.gov.in/"
     },
     {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/CorrigendumCEN012025ALPEnglish-638824224301710145.pdf"
-    },
-    {
-      "label": "Download FAQ",
-      "url": "https://doc.sarkariresults.org.in/FAQ%20CEN%2001-2025%20(ALP)_English.pdf"
-    },
-    {
-      "label": "Download FAQ",
-      "url": "https://doc.sarkariresults.org.in/RRBA_LP_FAQ_Hindi_2025.pdf"
-    },
-    {
-      "label": "Download Notification (English)",
-      "url": "https://doc.sarkariresults.org.in/RRB_ALP_CEN_01_2025.pdf"
-    },
-    {
-      "label": "Download Notification (Hindi)",
-      "url": "https://doc.sarkariresults.org.in/Final_CEN_01_2025_ALP.pdf"
-    },
-    {
       "label": "RRB Photo Resizer, Marriage Bio Data Maker and More Tools",
       "url": "https://sarkariresult.tools/"
     },
@@ -197,26 +152,6 @@
     {
       "label": "Click Here",
       "url": "https://rrbajmer.gov.in/Upload_PDF/Tentative%20dates_CEN%2001-2025(ALP)-639034683221181908.pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/CorrigendumCEN012025ALPEnglish-638824224301710145.pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/FAQ%20CEN%2001-2025%20(ALP)_English.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/RRBA_LP_FAQ_Hindi_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RRB_ALP_CEN_01_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Final_CEN_01_2025_ALP.pdf"
     }
   ]
 }

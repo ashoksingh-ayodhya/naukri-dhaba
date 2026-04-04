@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:53.646623",
+  "scraped_at": "2026-04-04T11:37:25.251552",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rsmssb-jr-instructor-09-2024/",
   "page_type": "result",
@@ -46,46 +46,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_Instructor_MECHANICAL%20DIESEL_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_Turner_Result_2025.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_EMPLOYABILITY%20SKILLS_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_Engineering%20Drawing_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_Instructor_Sewing_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_COMPUTER%20LAB%20IT%20LAB_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB%20WORKSHOP%20CALCULATION%20AND%20SCIENCE%20(1).pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_COSMETOLOGY_Result.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Exam Notice",
       "url": "https://rsmssb.rajasthan.gov.in/Static/files/JrInst2024_exam15072024.pdf",
       "link_type": "other"
@@ -119,38 +79,6 @@
   "official_website_url": "https://rsmssb.rajasthan.gov.in/",
   "extra_links": [
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_Instructor_MECHANICAL%20DIESEL_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_Turner_Result_2025.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_EMPLOYABILITY%20SKILLS_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_Engineering%20Drawing_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_Instructor_Sewing_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_COMPUTER%20LAB%20IT%20LAB_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB%20WORKSHOP%20CALCULATION%20AND%20SCIENCE%20(1).pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/RSSB_COSMETOLOGY_Result.pdf"
-    },
-    {
       "label": "Download Exam Notice",
       "url": "https://rsmssb.rajasthan.gov.in/Static/files/JrInst2024_exam15072024.pdf"
     },
@@ -172,38 +100,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "MECHANICAL DIESEL",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_Instructor_MECHANICAL%20DIESEL_Result.pdf"
-    },
-    {
-      "label": "Engineering Drawing",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_Turner_Result_2025.pdf"
-    },
-    {
-      "label": "EMPLOYABILITY SKILLS",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_EMPLOYABILITY%20SKILLS_Result.pdf"
-    },
-    {
-      "label": "Engineering Drawing",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_instructor_Engineering%20Drawing_Result.pdf"
-    },
-    {
-      "label": "Sewing",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Junior_Instructor_Sewing_Result.pdf"
-    },
-    {
-      "label": "COMPUTER LAB/ I.T. LAB",
-      "url": "https://doc.sarkariresults.org.in/RSSB_COMPUTER%20LAB%20IT%20LAB_Result.pdf"
-    },
-    {
-      "label": "WORKSHOP CALCULATION AND SCIENCE",
-      "url": "https://doc.sarkariresults.org.in/RSSB%20WORKSHOP%20CALCULATION%20AND%20SCIENCE%20(1).pdf"
-    },
-    {
-      "label": "COSMETOLOGY",
-      "url": "https://doc.sarkariresults.org.in/RSSB_COSMETOLOGY_Result.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://rsmssb.rajasthan.gov.in/Static/files/JrInst2024_exam15072024.pdf"

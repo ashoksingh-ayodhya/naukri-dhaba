@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:36.955423",
+  "scraped_at": "2026-04-04T11:40:20.934186",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/patna-hc-foreman-asstcash-june24/",
   "page_type": "result",
@@ -43,16 +43,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Final Result",
-      "url": "https://doc.sarkariresults.org.in/PHC_Assistant_Casher_Final_Result25.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/PHC_Assistant_Cashier_Exam_Date.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://cdn.digialm.com//EForms/configuredHtml/1149/85179/Index.html",
       "link_type": "apply"
@@ -61,16 +51,6 @@
       "label": "Apply Online",
       "url": "https://cdn.digialm.com//EForms/configuredHtml/1149/84927/Index.html",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-phc-foreman-recruitment-notification-2024.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-phc-assistant-cashier-notification-pdf.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -86,14 +66,6 @@
   "official_website_url": "https://patnahighcourt.gov.in/Recruitments.aspx",
   "extra_links": [
     {
-      "label": "Download Final Result",
-      "url": "https://doc.sarkariresults.org.in/PHC_Assistant_Casher_Final_Result25.pdf"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/PHC_Assistant_Cashier_Exam_Date.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://cdn.digialm.com//EForms/configuredHtml/1149/85179/Index.html"
     },
@@ -102,34 +74,9 @@
       "url": "https://cdn.digialm.com//EForms/configuredHtml/1149/84927/Index.html"
     },
     {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-phc-foreman-recruitment-notification-2024.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-phc-assistant-cashier-notification-pdf.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://patnahighcourt.gov.in/Recruitments.aspx"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/PHC_Assistant_Casher_Final_Result25.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/PHC_Assistant_Cashier_Exam_Date.pdf"
-    },
-    {
-      "label": "Foreman",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-phc-foreman-recruitment-notification-2024.pdf"
-    },
-    {
-      "label": "Assistant Cashier",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-phc-assistant-cashier-notification-pdf.pdf"
-    }
-  ]
+  "download_links": []
 }

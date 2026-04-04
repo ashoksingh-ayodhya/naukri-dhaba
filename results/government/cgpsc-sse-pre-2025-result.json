@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:01:33.957600",
+  "scraped_at": "2026-04-04T11:29:31.434154",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/cg/cgpsc-sse-2025/",
   "page_type": "result",
@@ -53,11 +53,6 @@
       "link_type": "result"
     },
     {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/CGPSC_pre_AnswerKey_2026.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "For Online Objection",
       "url": "https://online.ecgpsconline.in/",
       "link_type": "other"
@@ -95,10 +90,6 @@
       "url": "https://www.psc.cg.gov.in/PDFs/result/STATE_SERVICE_EXAMINATION-2025_PRELIMS_WRITTEN_EXAM_RESULT%20(25-03-2026).pdf"
     },
     {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/CGPSC_pre_AnswerKey_2026.pdf"
-    },
-    {
       "label": "For Online Objection",
       "url": "https://online.ecgpsconline.in/"
     },
@@ -123,10 +114,6 @@
     {
       "label": "Click Here",
       "url": "https://www.psc.cg.gov.in/PDFs/result/STATE_SERVICE_EXAMINATION-2025_PRELIMS_WRITTEN_EXAM_RESULT%20(25-03-2026).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/CGPSC_pre_AnswerKey_2026.pdf"
     },
     {
       "label": "Click Here",

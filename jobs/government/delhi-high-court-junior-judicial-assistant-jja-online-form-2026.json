@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:53:05.806560",
+  "scraped_at": "2026-04-04T11:19:05.370803",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/delhi/delhi-hc-jja-restorer-feb26/",
   "page_type": "job",
@@ -69,11 +69,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Delhi_High_Court_2026vacancy_notice_jja_0.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Sarkari Result PDF Tools Portal",
       "url": "https://sarkariresultportal.com/",
       "link_type": "result"
@@ -112,10 +107,6 @@
       "url": "https://www.youtube.com/watch?v=xpLNYJ1Z7ys"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Delhi_High_Court_2026vacancy_notice_jja_0.pdf"
-    },
-    {
       "label": "Sarkari Result PDF Tools Portal",
       "url": "https://sarkariresultportal.com/"
     },
@@ -132,10 +123,6 @@
     {
       "label": "Click Here",
       "url": "https://delhihighcourt.nic.in/files/2026-03/recuritment/jja_pre_notice.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Delhi_High_Court_2026vacancy_notice_jja_0.pdf"
     }
   ]
 }

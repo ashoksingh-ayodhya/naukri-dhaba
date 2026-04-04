@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:50:16.570079",
+  "scraped_at": "2026-04-04T11:15:53.830936",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/railway/rrc-cr-apprentices-2026/",
   "page_type": "job",
@@ -46,11 +46,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RRC_CR_Apprentices_2026.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://rrccr.com/",
       "link_type": "official_website"
@@ -72,18 +67,9 @@
       "url": "https://tinyurl.com/bde4yazd"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RRC_CR_Apprentices_2026.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://rrccr.com/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RRC_CR_Apprentices_2026.pdf"
-    }
-  ]
+  "download_links": []
 }

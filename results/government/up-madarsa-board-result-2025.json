@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:42.372468",
+  "scraped_at": "2026-04-04T11:38:56.678056",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/upmsp-up-board/",
   "page_type": "result",
@@ -37,11 +37,6 @@
       "link_type": "result"
     },
     {
-      "label": "Download UPMSP Class 10th & 12th Time Table 2025",
-      "url": "https://doc.sarkariresults.org.in/UPBoard_TimeTable2025.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://upmsp.edu.in/",
       "link_type": "official_website"
@@ -59,18 +54,9 @@
       "url": "https://madarsaboard.upsdc.gov.in/result_2021/OnlineResult_2021.aspx"
     },
     {
-      "label": "Download UPMSP Class 10th & 12th Time Table 2025",
-      "url": "https://doc.sarkariresults.org.in/UPBoard_TimeTable2025.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://upmsp.edu.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPBoard_TimeTable2025.pdf"
-    }
-  ]
+  "download_links": []
 }

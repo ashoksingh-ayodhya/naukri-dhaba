@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:52:37.342363",
+  "scraped_at": "2026-04-04T11:18:34.606049",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/rbi-non-csg-feb26/",
   "page_type": "job",
@@ -59,11 +59,6 @@
       "link_type": "notification"
     },
     {
-      "label": "Download Notice",
-      "url": "https://doc.sarkariresults.org.in/RBI%20NOn%20CSG%202026.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx",
       "link_type": "official_website"
@@ -89,10 +84,6 @@
       "url": "https://rbidocs.rbi.org.in/rdocs/Content/PDFs/NONCSG06022026D3A77897D23E46AE85686C96BC05207C.PDF"
     },
     {
-      "label": "Download Notice",
-      "url": "https://doc.sarkariresults.org.in/RBI%20NOn%20CSG%202026.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx"
     }
@@ -101,10 +92,6 @@
     {
       "label": "Click Here",
       "url": "https://rbidocs.rbi.org.in/rdocs/Content/PDFs/NONCSG06022026D3A77897D23E46AE85686C96BC05207C.PDF"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RBI%20NOn%20CSG%202026.pdf"
     }
   ]
 }

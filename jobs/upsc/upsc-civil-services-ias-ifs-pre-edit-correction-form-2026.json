@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:50:51.815358",
+  "scraped_at": "2026-04-04T11:16:33.579517",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-ias-ifs-pre-2026/",
   "page_type": "job",
@@ -70,26 +70,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Civil Services IAS Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IAS_2026_SarkariResult_Com_english_notification-compressed.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Civil Services IAS Notification",
-      "url": "https://doc.sarkariresults.org.in/hindi_notification-compressed.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Forest Services IFS Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_English_Notification_2026.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Forest Services IFS Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFS_Hindi_Notification_2026.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://upsc.gov.in/",
       "link_type": "official_website"
@@ -123,42 +103,9 @@
       "url": "https://tinyurl.com/y68r7efm"
     },
     {
-      "label": "Download Civil Services IAS Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IAS_2026_SarkariResult_Com_english_notification-compressed.pdf"
-    },
-    {
-      "label": "Download Civil Services IAS Notification",
-      "url": "https://doc.sarkariresults.org.in/hindi_notification-compressed.pdf"
-    },
-    {
-      "label": "Download Forest Services IFS Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_English_Notification_2026.pdf"
-    },
-    {
-      "label": "Download Forest Services IFS Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFS_Hindi_Notification_2026.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://upsc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IAS_2026_SarkariResult_Com_english_notification-compressed.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/hindi_notification-compressed.pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/UPSC_English_Notification_2026.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFS_Hindi_Notification_2026.pdf"
-    }
-  ]
+  "download_links": []
 }

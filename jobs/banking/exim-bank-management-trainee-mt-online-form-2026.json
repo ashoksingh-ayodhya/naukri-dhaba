@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:54:52.874926",
+  "scraped_at": "2026-04-04T11:21:06.635229",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/exim-bank-mt-jan26/",
   "page_type": "job",
   "title": "Exim Bank Management Trainee MT Online Form 2026",
-  "post_name": "India Exit Bank Management Trainee MT Recruitment 2026 Apply Online for 40 Post",
+  "post_name": "India Exit Bank Management Trainee MT Recruitment 2026 Download Admit Card for 40 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -17,7 +17,8 @@
     "Last Date for Apply Online": "01/02/2026",
     "Last Date Pay Exam Fee": "01/02/2026",
     "Reprint Last Date": "16/02/2026",
-    "Exam Date": "As per Schedule"
+    "Exam Date": "12/04/2026",
+    "Admit Card Available": "02/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "600/-",
@@ -44,6 +45,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/iebmtnov25/oecla_mar26/login.php?appid=51ccc8298674b82c28d881868b71932e",
+      "link_type": "admit"
+    },
+    {
       "label": "Apply Online",
       "url": "https://ibpsreg.ibps.in/iebmtnov25/",
       "link_type": "apply"
@@ -68,9 +74,13 @@
   "notification_url": "https://www.eximbankindia.in/sites/default/files/2026-01/Direct%20Recruitment%20Drive%20for%20Management%20Trainees%20%28MTs%29%20%202025-26.pdf",
   "result_url": "https://sarkariresultportal.com/",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://ibpsreg.ibps.in/iebmtnov25/oecla_mar26/login.php?appid=51ccc8298674b82c28d881868b71932e",
   "official_website_url": "https://www.eximbankindia.in/careers",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/iebmtnov25/oecla_mar26/login.php?appid=51ccc8298674b82c28d881868b71932e"
+    },
     {
       "label": "Apply Online",
       "url": "https://ibpsreg.ibps.in/iebmtnov25/"

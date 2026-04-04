@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:25.122838",
+  "scraped_at": "2026-04-04T11:35:04.852565",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2024/uppsc-asst-registrar-aug24/",
   "page_type": "result",
@@ -49,39 +49,14 @@
   ],
   "important_links": [
     {
-      "label": "Download Interview Letter",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_registrar_Result.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Interview Notice",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Registrar_Interview_Letter.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwQGcHdfp/pp8kTNZLS5jpOpurll/gZt9/XAMdWZzLZAJlUyJxKZdl7UYCGXipSD1rRuydF8PNZ4rpVsGAdwEhiI5ihJm58Bq6S2s5CqnbIMM6uTzGSaifB0Eb4WOVg4tyiAPpNZj2u11w==",
       "link_type": "admit"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_Registrar%20(1).pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.COm_UPPSC_Asst_Registrar_Notification_English_2024.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_Registrar_hindi_SarkariResult_Notification.pdf",
-      "link_type": "notification"
     },
     {
       "label": "UPPSC DashBoard Login",
@@ -102,32 +77,12 @@
   "official_website_url": "https://uppsc.up.nic.in/",
   "extra_links": [
     {
-      "label": "Download Interview Letter",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_registrar_Result.pdf"
-    },
-    {
-      "label": "Download Interview Notice",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Registrar_Interview_Letter.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwQGcHdfp/pp8kTNZLS5jpOpurll/gZt9/XAMdWZzLZAJlUyJxKZdl7UYCGXipSD1rRuydF8PNZ4rpVsGAdwEhiI5ihJm58Bq6S2s5CqnbIMM6uTzGSaifB0Eb4WOVg4tyiAPpNZj2u11w=="
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_Registrar%20(1).pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.COm_UPPSC_Asst_Registrar_Notification_English_2024.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_Registrar_hindi_SarkariResult_Notification.pdf"
     },
     {
       "label": "UPPSC DashBoard Login",
@@ -138,26 +93,5 @@
       "url": "https://uppsc.up.nic.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_registrar_Result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Registrar_Interview_Letter.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_Registrar%20(1).pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.COm_UPPSC_Asst_Registrar_Notification_English_2024.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Assistant_Registrar_hindi_SarkariResult_Notification.pdf"
-    }
-  ]
+  "download_links": []
 }

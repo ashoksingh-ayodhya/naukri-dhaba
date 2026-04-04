@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:06.330041",
+  "scraped_at": "2026-04-04T11:39:33.526024",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/jharkhand/jpsc-pre-01-2024/",
   "page_type": "result",
@@ -46,11 +46,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Mains Result",
-      "url": "https://doc.sarkariresults.org.in/Press_Release_and_Written_Result_01_24_dated_20_05_2025.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Mains Admit Card",
       "url": "https://www.jpsc.gov.in/admit_card_ccse_main_regular_01_2024/",
       "link_type": "admit"
@@ -94,10 +89,6 @@
   "official_website_url": "https://www.jpsc.gov.in/",
   "extra_links": [
     {
-      "label": "Download Mains Result",
-      "url": "https://doc.sarkariresults.org.in/Press_Release_and_Written_Result_01_24_dated_20_05_2025.pdf"
-    },
-    {
       "label": "Download Mains Admit Card",
       "url": "https://www.jpsc.gov.in/admit_card_ccse_main_regular_01_2024/"
     },
@@ -127,10 +118,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Press_Release_and_Written_Result_01_24_dated_20_05_2025.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://www.jpsc.gov.in/data/Press_Release_01_24_dated_11_06_2024.pdf"

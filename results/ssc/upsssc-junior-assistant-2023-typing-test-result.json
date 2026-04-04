@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:03:30.847762",
+  "scraped_at": "2026-04-04T11:32:08.270884",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-ja-08-exam-2023/",
   "page_type": "result",
@@ -60,16 +60,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Mains Exam Fee Payment Notice",
-      "url": "https://doc.sarkariresults.org.in/08_Exam_2023_Mains_Exam_fee_Notice.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_08Exam_date%20(1).pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx",
       "link_type": "eligibility"
@@ -77,11 +67,6 @@
     {
       "label": "How to Check Eligibility Result (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=CKumXCHWI9A",
-      "link_type": "eligibility"
-    },
-    {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/03/upsssc-result-notice.pdf",
       "link_type": "eligibility"
     },
     {
@@ -122,24 +107,12 @@
       "url": "https://upsssc.gov.in/Interface/Authentication.aspx?NO/WElvPxNJJ/MszfbTUoiya6+j+60nloRK/wJ+Hma/peo+LypGARxykN88mZ0GWnpIBcPHGPx6XKnMmy76dwCXeE3KYnOjOH3riGr1fN9P9B2Efupj9zX0CKJSMG6ToGn9MH0ABA3Sd9Ni7A20mRA=="
     },
     {
-      "label": "Download Mains Exam Fee Payment Notice",
-      "url": "https://doc.sarkariresults.org.in/08_Exam_2023_Mains_Exam_fee_Notice.pdf"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_08Exam_date%20(1).pdf"
-    },
-    {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx"
     },
     {
       "label": "How to Check Eligibility Result (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=CKumXCHWI9A"
-    },
-    {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/03/upsssc-result-notice.pdf"
     },
     {
       "label": "Apply Online",
@@ -163,22 +136,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_08_Exam_2023_Result%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/08_Exam_2023_Mains_Exam_fee_Notice.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_08Exam_date%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/03/upsssc-result-notice.pdf"
-    },
     {
       "label": "Click Here",
       "url": "http://164.100.181.233/document/Files/UP005/UploadNotices/2309221808072817_C.pdf"

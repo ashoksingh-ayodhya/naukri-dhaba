@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:52:59.081131",
+  "scraped_at": "2026-04-04T11:18:57.647447",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpssc-asi-operation-04-2026/",
   "page_type": "job",
@@ -49,11 +49,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Bihar_Police_BPSSC_Advt.-04-2026.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpssc.bihar.gov.in/",
       "link_type": "official_website"
@@ -71,18 +66,9 @@
       "url": "https://apply-bpssc.com/bpssc_asi_op_4_26_v1/applicationIndex"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Bihar_Police_BPSSC_Advt.-04-2026.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpssc.bihar.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Bihar_Police_BPSSC_Advt.-04-2026.pdf"
-    }
-  ]
+  "download_links": []
 }

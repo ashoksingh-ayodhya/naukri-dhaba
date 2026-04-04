@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:52.881443",
+  "scraped_at": "2026-04-04T11:39:13.130607",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/nta-aissee-2025/",
   "page_type": "result",
@@ -52,18 +52,8 @@
       "link_type": "result"
     },
     {
-      "label": "Download Result PDF File",
-      "url": "https://doc.sarkariresults.org.in/list-of-candidates-who-qualified-or-not-qualified-aissee-2025-exam-held-on-05042025-for-admission-to-class-vi-academic-year-2025-26.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Answer Key",
       "url": "https://expsainikschool2025.ntaonline.in/answer-key-challenge/login-answer",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/public-notice-display-of-omr-answer-sheets-recorded-responses-and-provisional-answer-keys-of-aissee-2025.pdf",
       "link_type": "answer_key"
     },
     {
@@ -114,16 +104,8 @@
       "url": "https://aissee2025.ntaonline.in/scorecard/index"
     },
     {
-      "label": "Download Result PDF File",
-      "url": "https://doc.sarkariresults.org.in/list-of-candidates-who-qualified-or-not-qualified-aissee-2025-exam-held-on-05042025-for-admission-to-class-vi-academic-year-2025-26.pdf"
-    },
-    {
       "label": "Download Answer Key",
       "url": "https://expsainikschool2025.ntaonline.in/answer-key-challenge/login-answer"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/public-notice-display-of-omr-answer-sheets-recorded-responses-and-provisional-answer-keys-of-aissee-2025.pdf"
     },
     {
       "label": "Download Admit Card",
@@ -155,14 +137,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/list-of-candidates-who-qualified-or-not-qualified-aissee-2025-exam-held-on-05042025-for-admission-to-class-vi-academic-year-2025-26.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/public-notice-display-of-omr-answer-sheets-recorded-responses-and-provisional-answer-keys-of-aissee-2025.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://exams.nta.ac.in/AISSEE/images/public-notice-extension-of-last-date-for-submission-of-online-application-form-for-aissee-25.pdf"

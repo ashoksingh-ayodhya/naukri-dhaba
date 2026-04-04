@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:52:09.675094",
+  "scraped_at": "2026-04-04T11:18:05.072803",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/aiims-norcet-10th/",
   "page_type": "job",
@@ -56,16 +56,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/AIIMS_NORCET_10_Notification.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Short Notice",
-      "url": "https://doc.sarkariresults.org.in/AIIMS10th%20(1).pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.aiimsexams.ac.in/",
       "link_type": "official_website"
@@ -87,26 +77,9 @@
       "url": "https://aiimsexams.ac.in/auth/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/AIIMS_NORCET_10_Notification.pdf"
-    },
-    {
-      "label": "Download Short Notice",
-      "url": "https://doc.sarkariresults.org.in/AIIMS10th%20(1).pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.aiimsexams.ac.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/AIIMS_NORCET_10_Notification.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/AIIMS10th%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

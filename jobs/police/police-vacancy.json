@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:48:36.159200",
+  "scraped_at": "2026-04-04T11:13:00.325707",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/policeall/",
   "page_type": "job",
@@ -33,10 +33,5 @@
   "admit_url": "",
   "official_website_url": "",
   "extra_links": [],
-  "download_links": [
-    {
-      "label": "UP Police Home Guard Sample OMR Sheet 2026",
-      "url": "https://doc.sarkariresults.org.in/UP_Police_Home_Guard_Sample_OMR_Sheet.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "scraped_at": "2026-04-04T11:28:19.672874",
+  "source": "sarkariresult",
+  "source_detail_url": "https://www.sarkariresult.com/delhi/dsssb-result-apr26/",
+  "page_type": "result",
+  "title": "DSSSB PGT Teacher Post Code 15/2024 Result",
+  "post_name": "Delhi DSSSB Latest Result 2026",
+  "post_date": "",
+  "update_date": "",
+  "organization_full_name": "Delhi Subordinate Service Selection Board (DSSSB)",
+  "advertisement_number": "",
+  "short_description": "",
+  "dept": "SSB",
+  "dates": {},
+  "fees": {},
+  "fee_payment_method": "",
+  "age_min": null,
+  "age_max": null,
+  "age_reference_date": "",
+  "age_relaxation_notes": "",
+  "total_posts": "",
+  "vacancy_breakdown": [],
+  "qualification": "",
+  "qualification_items": [],
+  "salary": "",
+  "how_to_apply": [],
+  "important_links": [
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/result_notice_no_328.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssbonline.nic.in/",
+      "link_type": "other"
+    },
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssb.delhi.gov.in/doit/dsssb/latest-result",
+      "link_type": "other"
+    },
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssb.delhi.gov.in/doit/tab-content/old-results",
+      "link_type": "other"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://dsssb.delhi.gov.in/",
+      "link_type": "official_website"
+    }
+  ],
+  "apply_url": "",
+  "notification_url": "",
+  "result_url": "",
+  "scorecard_url": "",
+  "admit_url": "",
+  "official_website_url": "https://dsssb.delhi.gov.in/",
+  "extra_links": [
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/result_notice_no_328.pdf"
+    },
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssbonline.nic.in/"
+    },
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssb.delhi.gov.in/doit/dsssb/latest-result"
+    },
+    {
+      "label": "02/04/2026",
+      "url": "https://dsssb.delhi.gov.in/doit/tab-content/old-results"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://dsssb.delhi.gov.in/"
+    }
+  ],
+  "download_links": [
+    {
+      "label": "Result Notice",
+      "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/result_notice_no_328.pdf"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:18.054072",
+  "scraped_at": "2026-04-04T11:38:14.603773",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mppkvvcl-various-post-dec24/",
   "page_type": "result",
@@ -46,11 +46,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/MPEZ_Results_29-05-2025.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://cdn3.digialm.com//EForms/configuredHtml/2552/93109/login.html",
       "link_type": "admit"
@@ -59,11 +54,6 @@
       "label": "Apply Online",
       "url": "https://iforms.mponline.gov.in/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/MPPKVVCL_Various_Post_Notification_Dec24.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Download Syllabus",
@@ -84,20 +74,12 @@
   "official_website_url": "https://www.mpez.co.in/",
   "extra_links": [
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/MPEZ_Results_29-05-2025.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://cdn3.digialm.com//EForms/configuredHtml/2552/93109/login.html"
     },
     {
       "label": "Apply Online",
       "url": "https://iforms.mponline.gov.in/"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/MPPKVVCL_Various_Post_Notification_Dec24.pdf"
     },
     {
       "label": "Download Syllabus",
@@ -108,14 +90,5 @@
       "url": "https://www.mpez.co.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/MPEZ_Results_29-05-2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/MPPKVVCL_Various_Post_Notification_Dec24.pdf"
-    }
-  ]
+  "download_links": []
 }

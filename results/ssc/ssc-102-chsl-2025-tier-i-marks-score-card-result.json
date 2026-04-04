@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:08.804399",
+  "scraped_at": "2026-04-04T11:30:17.656809",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-chsl-2025/",
   "page_type": "result",
@@ -21,8 +21,7 @@
     "Tier-1 Result Declared": "27/02/2026",
     "Tier-1 Marks Available": "19/03/2026",
     "Exam Date Tier II": "10/04/2026",
-    "Tier II Exam City Available": "01/04/2026",
-    "Check Tier II Exam City": "Link Will be Activate on 01/04/2026"
+    "Tier II Exam City Available": "01/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "100/-",

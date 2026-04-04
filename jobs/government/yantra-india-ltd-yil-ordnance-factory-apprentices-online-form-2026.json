@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:53:50.734320",
+  "scraped_at": "2026-04-04T11:19:57.016169",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/yil-apprentices-feb26/",
   "page_type": "job",
@@ -58,16 +58,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Yantra_India_Ltd_Apprentices_Notification_2026.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Trade / State Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/Yantra_India_Ltd_Apprentices_StateWiseVacancy_2026_22_P7.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://recruit-gov.com/",
       "link_type": "official_website"
@@ -93,26 +83,9 @@
       "url": "https://www.youtube.com/watch?v=DjBRR1TRUM4"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Yantra_India_Ltd_Apprentices_Notification_2026.pdf"
-    },
-    {
-      "label": "Download Trade / State Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/Yantra_India_Ltd_Apprentices_StateWiseVacancy_2026_22_P7.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://recruit-gov.com/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Yantra_India_Ltd_Apprentices_Notification_2026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Yantra_India_Ltd_Apprentices_StateWiseVacancy_2026_22_P7.pdf"
-    }
-  ]
+  "download_links": []
 }

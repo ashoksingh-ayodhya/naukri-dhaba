@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:45.163786",
+  "scraped_at": "2026-04-04T11:35:42.747651",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/nainital-bank-clerk-dec24/",
   "page_type": "result",
@@ -59,11 +59,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Nainital%20Bank%20Clerk%20Notification%202024.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.nainitalbank.co.in/english/recruitment.aspx",
       "link_type": "official_website"
@@ -89,18 +84,9 @@
       "url": "https://ibpsonline.ibps.in/nblcnov24/"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Nainital%20Bank%20Clerk%20Notification%202024.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.nainitalbank.co.in/english/recruitment.aspx"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Nainital%20Bank%20Clerk%20Notification%202024.pdf"
-    }
-  ]
+  "download_links": []
 }

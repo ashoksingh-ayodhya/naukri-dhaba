@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:30.323763",
+  "scraped_at": "2026-04-04T11:21:57.981651",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-jht-2025/",
   "page_type": "job",
@@ -49,11 +49,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SSC_Hindi_Translator_SarkariResult_COM_Notice_of_adv_cht_2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Join Our Telegram Channel",
       "url": "https://t.me/sarkari",
       "link_type": "other"
@@ -76,10 +71,6 @@
       "url": "https://ssc.gov.in/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SSC_Hindi_Translator_SarkariResult_COM_Notice_of_adv_cht_2025.pdf"
-    },
-    {
       "label": "Join Our Telegram Channel",
       "url": "https://t.me/sarkari"
     },
@@ -88,10 +79,5 @@
       "url": "https://ssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SSC_Hindi_Translator_SarkariResult_COM_Notice_of_adv_cht_2025.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:04:39.095036",
+  "scraped_at": "2026-04-04T11:34:02.891386",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-gd-constable-2024/",
   "page_type": "result",
@@ -56,11 +56,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Revised Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/Revised%20Tentative%20Vacancies%20in%20CT%20(GD),%202025%20as%20on%2021.04.2025.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Answer Key",
       "url": "https://ssc.digialm.com/EForms/configuredHtml/32874/89700/login.html",
       "link_type": "answer_key"
@@ -73,11 +68,6 @@
     {
       "label": "How to Check Answer Key (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=uJTdsiwDfE0",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/Write%20UP%20CTGD_2025%20Tentative%20Anser%20Keys_4325.pdf",
       "link_type": "answer_key"
     },
     {
@@ -116,11 +106,6 @@
       "link_type": "notification"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/10/SSC-GD-Constable-Syllabus-2022.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://ssc.gov.in/",
       "link_type": "official_website"
@@ -142,10 +127,6 @@
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Write%20Up_Final%20Marks_CTGD_2025.docx.pdf"
     },
     {
-      "label": "Download Revised Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/Revised%20Tentative%20Vacancies%20in%20CT%20(GD),%202025%20as%20on%2021.04.2025.pdf"
-    },
-    {
       "label": "Download Answer Key",
       "url": "https://ssc.digialm.com/EForms/configuredHtml/32874/89700/login.html"
     },
@@ -156,10 +137,6 @@
     {
       "label": "How to Check Answer Key (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=uJTdsiwDfE0"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/Write%20UP%20CTGD_2025%20Tentative%20Anser%20Keys_4325.pdf"
     },
     {
       "label": "Download Exam City Notice",
@@ -190,10 +167,6 @@
       "url": "https://tinyurl.com/uzvuh7n4"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/10/SSC-GD-Constable-Syllabus-2022.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://ssc.gov.in/"
     }
@@ -202,14 +175,6 @@
     {
       "label": "Click Here",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Write%20Up_Final%20Marks_CTGD_2025.docx.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Revised%20Tentative%20Vacancies%20in%20CT%20(GD),%202025%20as%20on%2021.04.2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Write%20UP%20CTGD_2025%20Tentative%20Anser%20Keys_4325.pdf"
     },
     {
       "label": "Click Here",
@@ -230,10 +195,6 @@
     {
       "label": "Click Here",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Tentative%20Vacancy%20_CT%20(GD)%20Exam%202025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/10/SSC-GD-Constable-Syllabus-2022.pdf"
     }
   ]
 }

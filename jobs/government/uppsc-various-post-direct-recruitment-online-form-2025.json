@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:57:12.637428",
+  "scraped_at": "2026-04-04T11:24:38.595688",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/uppsc-direct-may25/",
   "page_type": "job",
@@ -52,16 +52,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC%20D-2%20E-1%202025%20Notification%20English-.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC%20D-2%20E-1%202025%20Notification%20Hindi.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppsc.up.nic.in/",
       "link_type": "official_website"
@@ -79,26 +69,9 @@
       "url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC%20D-2%20E-1%202025%20Notification%20English-.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC%20D-2%20E-1%202025%20Notification%20Hindi.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppsc.up.nic.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/UPPSC%20D-2%20E-1%202025%20Notification%20English-.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/UPPSC%20D-2%20E-1%202025%20Notification%20Hindi.pdf"
-    }
-  ]
+  "download_links": []
 }

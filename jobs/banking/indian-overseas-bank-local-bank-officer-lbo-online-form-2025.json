@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:57:16.398822",
+  "scraped_at": "2026-04-04T11:24:44.631331",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/iob-local-bank-officer-may25/",
   "page_type": "job",
@@ -49,11 +49,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/IOB-Recruitment-of-Local-Bank-Officer-2025-26.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.iob.in/",
       "link_type": "official_website"
@@ -71,18 +66,9 @@
       "url": "https://ibpsonline.ibps.in/ioblboapr25/"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/IOB-Recruitment-of-Local-Bank-Officer-2025-26.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.iob.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/IOB-Recruitment-of-Local-Bank-Officer-2025-26.pdf"
-    }
-  ]
+  "download_links": []
 }

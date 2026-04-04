@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:52.678470",
+  "scraped_at": "2026-04-04T11:31:17.208853",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/phc-mazdoor-feb25/",
   "page_type": "result",
   "title": "Patna High Court Mazdoor 2025 Final Result",
-  "post_name": "Patna High Court Mazdoor Recruitment 2025 Download Final Result for 171 Post",
+  "post_name": "Patna High Court Mazdoor Recruitment 2025 Download Final Result Score Card and Marks for 171 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -18,7 +18,8 @@
     "Pay Exam Fee Last Date": "20/03/2025",
     "Exam Date": "22/06/2025",
     "Interview Letter Admit Card Available": "27/01/2026",
-    "Final Result Available": "11/03/2026"
+    "Final Result Available": "11/03/2026",
+    "Marks / Score Card Available": "30/03/2026"
   },
   "fees": {
     "General / OBC / EWS": "700/-",
@@ -44,6 +45,16 @@
   ],
   "important_links": [
     {
+      "label": "Download Marks / Score Card",
+      "url": "https://phc-recruitment.com/scorecard-rm-login.aspx",
+      "link_type": "scorecard"
+    },
+    {
+      "label": "Download Marks / Score Card Notice",
+      "url": "https://patnahighcourt.gov.in/Exam/Notice_RM_2025.pdf",
+      "link_type": "scorecard"
+    },
+    {
       "label": "Download Final Result",
       "url": "https://patnahighcourt.gov.in/getfile/MTAzODA=-dxn2Kr2HxPY=",
       "link_type": "result"
@@ -54,19 +65,9 @@
       "link_type": "other"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/PHC_Mazdoor_Exam_Date.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://phc-recruitment.com/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Patna_High_Court_Mazdoor_SarkariResult_Com.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -77,10 +78,18 @@
   "apply_url": "https://phc-recruitment.com/",
   "notification_url": "https://doc.sarkariresults.org.in/Patna_High_Court_Mazdoor_SarkariResult_Com.pdf",
   "result_url": "https://patnahighcourt.gov.in/getfile/MTAzODA=-dxn2Kr2HxPY=",
-  "scorecard_url": "",
+  "scorecard_url": "https://phc-recruitment.com/scorecard-rm-login.aspx",
   "admit_url": "",
   "official_website_url": "https://patnahighcourt.gov.in/Recruitments.aspx",
   "extra_links": [
+    {
+      "label": "Download Marks / Score Card",
+      "url": "https://phc-recruitment.com/scorecard-rm-login.aspx"
+    },
+    {
+      "label": "Download Marks / Score Card Notice",
+      "url": "https://patnahighcourt.gov.in/Exam/Notice_RM_2025.pdf"
+    },
     {
       "label": "Download Final Result",
       "url": "https://patnahighcourt.gov.in/getfile/MTAzODA=-dxn2Kr2HxPY="
@@ -90,16 +99,8 @@
       "url": "https://phc-recruitment.com/RMInterview-login.aspx"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/PHC_Mazdoor_Exam_Date.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://phc-recruitment.com/"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Patna_High_Court_Mazdoor_SarkariResult_Com.pdf"
     },
     {
       "label": "Official Website",
@@ -109,11 +110,7 @@
   "download_links": [
     {
       "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/PHC_Mazdoor_Exam_Date.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Patna_High_Court_Mazdoor_SarkariResult_Com.pdf"
+      "url": "https://patnahighcourt.gov.in/Exam/Notice_RM_2025.pdf"
     }
   ]
 }

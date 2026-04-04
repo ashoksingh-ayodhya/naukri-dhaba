@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:43.549015",
+  "scraped_at": "2026-04-04T11:37:10.992377",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/bihar-bed-2-year/",
   "page_type": "result",
@@ -58,24 +58,9 @@
       "link_type": "result"
     },
     {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/Bihar_b-ed-answer-key(1).pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/Bihar_BED_29May2025notice-for-answer-key.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download University Wise College List",
       "url": "https://biharcetbed-lnmu.in/college-list.php",
       "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Bihar_BEd_final-prospectus-2025_compressed.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -95,38 +80,13 @@
       "url": "https://lnmu.ucanapply.com/univer/public/secure?app_id=UElZMDAwMDA3NA=="
     },
     {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/Bihar_b-ed-answer-key(1).pdf"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/Bihar_BED_29May2025notice-for-answer-key.pdf"
-    },
-    {
       "label": "Download University Wise College List",
       "url": "https://biharcetbed-lnmu.in/college-list.php"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Bihar_BEd_final-prospectus-2025_compressed.pdf"
     },
     {
       "label": "Official Website",
       "url": "http://biharcetbed-lnmu.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Bihar_b-ed-answer-key(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Bihar_BED_29May2025notice-for-answer-key.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Bihar_BEd_final-prospectus-2025_compressed.pdf"
-    }
-  ]
+  "download_links": []
 }

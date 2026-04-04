@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:40.323424",
+  "scraped_at": "2026-04-04T11:40:29.301776",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-advt-11-2023/",
   "page_type": "result",
@@ -60,16 +60,6 @@
       "link_type": "eligibility"
     },
     {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC%2011%20Exam%202023%20Notice.pdf",
-      "link_type": "eligibility"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Nakshanveesh%20and%20Manchitrak_Syllabus_SarkariResult_Com.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Apply Online",
       "url": "https://bit.ly/3pA3Wgj",
       "link_type": "apply"
@@ -97,14 +87,6 @@
       "url": "https://upsssc.gov.in/ResultsDire.aspx"
     },
     {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC%2011%20Exam%202023%20Notice.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Nakshanveesh%20and%20Manchitrak_Syllabus_SarkariResult_Com.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://bit.ly/3pA3Wgj"
     },
@@ -118,14 +100,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC%2011%20Exam%202023%20Notice.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Nakshanveesh%20and%20Manchitrak_Syllabus_SarkariResult_Com.pdf"
-    },
     {
       "label": "Click Here",
       "url": "http://164.100.181.233/document/Files/UP005/UploadNotices/2312141709134138_C.pdf"

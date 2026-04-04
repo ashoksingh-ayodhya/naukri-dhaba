@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:03:54.110381",
+  "scraped_at": "2026-04-04T11:32:41.312903",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-ask-02-exam-2024/",
   "page_type": "result",
@@ -63,11 +63,6 @@
       "link_type": "answer_key"
     },
     {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/UKSSSC_02Exam_AnswerKey_Notice%20(1).pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://upsssc.gov.in/Online_App/AdmitCard.aspx?ID=MAIN",
       "link_type": "admit"
@@ -78,16 +73,6 @@
       "link_type": "exam_city"
     },
     {
-      "label": "Download Exam City Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_02_Exam_2024_ExamCity_SarkariResult_Com.pdf",
-      "link_type": "exam_city"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/upsssc_02_Exam_2024_ExamDate.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx",
       "link_type": "eligibility"
@@ -96,16 +81,6 @@
       "label": "How to Check Eligibility Result (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=CKumXCHWI9A",
       "link_type": "eligibility"
-    },
-    {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://doc.sarkariresults.org.in/upsssc_02_Exam_2024_Eligibility_Result.pdf",
-      "link_type": "eligibility"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSSSC_Asst_Store_Keeper_Syllabus_Advt_02-Exam_2024.pdf",
-      "link_type": "syllabus"
     },
     {
       "label": "Apply Online",
@@ -135,10 +110,6 @@
       "url": "https://drive.google.com/file/d/1llmhQn51lXpvy_GeftkLYtCQoqnc6nIQ/view"
     },
     {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/UKSSSC_02Exam_AnswerKey_Notice%20(1).pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://upsssc.gov.in/Online_App/AdmitCard.aspx?ID=MAIN"
     },
@@ -147,28 +118,12 @@
       "url": "https://upsssc.gov.in/upssscadvdistinti/AdmitCard_wc.aspx?ID=MAIN&L=ac"
     },
     {
-      "label": "Download Exam City Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_02_Exam_2024_ExamCity_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/upsssc_02_Exam_2024_ExamDate.pdf"
-    },
-    {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx"
     },
     {
       "label": "How to Check Eligibility Result (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=CKumXCHWI9A"
-    },
-    {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://doc.sarkariresults.org.in/upsssc_02_Exam_2024_Eligibility_Result.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSSSC_Asst_Store_Keeper_Syllabus_Advt_02-Exam_2024.pdf"
     },
     {
       "label": "Apply Online",
@@ -184,30 +139,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_02_Exam_2024_Result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UKSSSC_02Exam_AnswerKey_Notice%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_02_Exam_2024_ExamCity_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/upsssc_02_Exam_2024_ExamDate.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/upsssc_02_Exam_2024_Eligibility_Result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSSSC_Asst_Store_Keeper_Syllabus_Advt_02-Exam_2024.pdf"
-    },
     {
       "label": "Click Here",
       "url": "http://164.100.181.233/document/Files/UP005/UploadNotices/2402031804513654_C.pdf"

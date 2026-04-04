@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:04:51.855848",
+  "scraped_at": "2026-04-04T11:34:19.766702",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/dfccil-various-01-2025/",
   "page_type": "result",
@@ -95,16 +95,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/DFCCIL_Advertisement-2024-(09-01-2025-Final)-updated-Link_KFYD.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/DFCCIL_SarkariResult_Syllabus_2025.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://dfccil.com/",
       "link_type": "official_website"
@@ -158,14 +148,6 @@
       "url": "https://dfccil.com/upload/Notice_for_Extension-2_FZTB.pdf"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/DFCCIL_Advertisement-2024-(09-01-2025-Final)-updated-Link_KFYD.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/DFCCIL_SarkariResult_Syllabus_2025.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://dfccil.com/"
     }
@@ -202,14 +184,6 @@
     {
       "label": "Click Here",
       "url": "https://dfccil.com/upload/Notice_for_Extension-2_FZTB.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/DFCCIL_Advertisement-2024-(09-01-2025-Final)-updated-Link_KFYD.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/DFCCIL_SarkariResult_Syllabus_2025.pdf"
     }
   ]
 }

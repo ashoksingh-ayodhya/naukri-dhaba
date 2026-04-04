@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:35.385513",
+  "scraped_at": "2026-04-04T11:35:23.113425",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2024/uppsc-pre-2024/",
   "page_type": "result",
@@ -56,36 +56,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Interview Schedule",
-      "url": "https://doc.sarkariresults.org.in/uppsc_mains_Interview_Dates.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Mains Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_2024_Mains_Result_SarkariResult_COm.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Mains Exam Schedule",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Mains_Exam_Schedule_2025.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download PRe Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Pre_Result_Direct_link.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Pre_GS_I.pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_GS_II.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://epexams.pariksha.nic.in/CandidatePages/RedirectToDownloadAdmitCard.aspx?dtype=ac&rdurl=indirect",
       "link_type": "admit"
@@ -103,16 +73,6 @@
     {
       "label": "Download Exam Notice",
       "url": "https://uppsc.up.nic.in/Open_PDF_DB.aspx?I4PnQ0tBagmbNvqxg+G1lwtu5J9L0p2C",
-      "link_type": "other"
-    },
-    {
-      "label": "Download NOTICE REGARDING PROCESS OF EVALUATION IN OBJECTIVE EXAMS",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Notice_Evaluation_Process.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Exam Calendar",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-uppsc-exam-calendar-2024.pdf",
       "link_type": "other"
     },
     {
@@ -158,30 +118,6 @@
       "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back"
     },
     {
-      "label": "Download Interview Schedule",
-      "url": "https://doc.sarkariresults.org.in/uppsc_mains_Interview_Dates.pdf"
-    },
-    {
-      "label": "Download Mains Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_2024_Mains_Result_SarkariResult_COm.pdf"
-    },
-    {
-      "label": "Download Mains Exam Schedule",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Mains_Exam_Schedule_2025.pdf"
-    },
-    {
-      "label": "Download PRe Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Pre_Result_Direct_link.pdf"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Pre_GS_I.pdf"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_GS_II.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://epexams.pariksha.nic.in/CandidatePages/RedirectToDownloadAdmitCard.aspx?dtype=ac&rdurl=indirect"
     },
@@ -196,14 +132,6 @@
     {
       "label": "Download Exam Notice",
       "url": "https://uppsc.up.nic.in/Open_PDF_DB.aspx?I4PnQ0tBagmbNvqxg+G1lwtu5J9L0p2C"
-    },
-    {
-      "label": "Download NOTICE REGARDING PROCESS OF EVALUATION IN OBJECTIVE EXAMS",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Notice_Evaluation_Process.pdf"
-    },
-    {
-      "label": "Download Exam Calendar",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-uppsc-exam-calendar-2024.pdf"
     },
     {
       "label": "Download Postponed Notice",
@@ -234,38 +162,6 @@
     {
       "label": "Click Here",
       "url": "/upload/SarkariResult_UPPSC_2024_Final_Result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/uppsc_mains_Interview_Dates.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_2024_Mains_Result_SarkariResult_COm.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Mains_Exam_Schedule_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Pre_Result_Direct_link.pdf"
-    },
-    {
-      "label": "GS I",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Pre_GS_I.pdf"
-    },
-    {
-      "label": "GS II",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_GS_II.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Notice_Evaluation_Process.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/sarkariresult.com-uppsc-exam-calendar-2024.pdf"
     }
   ]
 }

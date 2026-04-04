@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:53:36.494494",
+  "scraped_at": "2026-04-04T11:19:40.091972",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpsc-auditor-09-2026/",
   "page_type": "job",
@@ -50,11 +50,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Advertisement-092026-Auditor-Panchayati-Raj-Vibhag_BPSC-20260128-xjn1g5.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "SR PDF Portal and Remove Background",
       "url": "https://sarkariresultportal.com/",
       "link_type": "other"
@@ -77,10 +72,6 @@
       "url": "https://bpsconline.bihar.gov.in/candidate/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Advertisement-092026-Auditor-Panchayati-Raj-Vibhag_BPSC-20260128-xjn1g5.pdf"
-    },
-    {
       "label": "SR PDF Portal and Remove Background",
       "url": "https://sarkariresultportal.com/"
     },
@@ -89,10 +80,5 @@
       "url": "https://bpsc.bihar.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Advertisement-092026-Auditor-Panchayati-Raj-Vibhag_BPSC-20260128-xjn1g5.pdf"
-    }
-  ]
+  "download_links": []
 }

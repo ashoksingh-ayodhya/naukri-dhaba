@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:02.403987",
+  "scraped_at": "2026-04-04T11:22:53.253140",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/afcat-02-2025/",
   "page_type": "job",
@@ -48,11 +48,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Detailed Notification",
-      "url": "https://doc.sarkariresults.org.in/Advertisement_AFCAT_02-2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://afcat.cdac.in/AFCAT/",
       "link_type": "official_website"
@@ -70,18 +65,9 @@
       "url": "https://afcat.cdac.in/afcatreg/candidate/login"
     },
     {
-      "label": "Download Detailed Notification",
-      "url": "https://doc.sarkariresults.org.in/Advertisement_AFCAT_02-2025.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://afcat.cdac.in/AFCAT/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Advertisement_AFCAT_02-2025.pdf"
-    }
-  ]
+  "download_links": []
 }

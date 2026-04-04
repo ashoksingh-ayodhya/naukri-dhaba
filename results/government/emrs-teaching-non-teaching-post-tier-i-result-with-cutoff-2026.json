@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:48.912467",
+  "scraped_at": "2026-04-04T11:35:47.388256",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/emrs-tgt-pgt-other-2025/",
   "page_type": "result",
@@ -65,16 +65,6 @@
     {
       "label": "Download Result",
       "url": "https://examinationservices.nic.in/recsys2025/root/CandidateLogin.aspx?enc=Ei4cajBkK1gZSfgr53ImFZ5JDNNIP7I8JbNwGOl976uPeIvr9X7G7iVESmo7y1L6",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Post Wise Wise Cutoff",
-      "url": "https://doc.sarkariresults.org.in/EMRS_Tier_I_SarkariResult_Com_Cutoff.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result Notice",
-      "url": "https://doc.sarkariresults.org.in/EMRS_Result_Ntoice_.pdf",
       "link_type": "result"
     },
     {
@@ -157,14 +147,6 @@
       "url": "https://examinationservices.nic.in/recsys2025/root/CandidateLogin.aspx?enc=Ei4cajBkK1gZSfgr53ImFZ5JDNNIP7I8JbNwGOl976uPeIvr9X7G7iVESmo7y1L6"
     },
     {
-      "label": "Download Post Wise Wise Cutoff",
-      "url": "https://doc.sarkariresults.org.in/EMRS_Tier_I_SarkariResult_Com_Cutoff.pdf"
-    },
-    {
-      "label": "Download Result Notice",
-      "url": "https://doc.sarkariresults.org.in/EMRS_Result_Ntoice_.pdf"
-    },
-    {
       "label": "Download Answer Key",
       "url": "https://cbseit.in/cbse/2025/emrskey/default.aspx"
     },
@@ -210,14 +192,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/EMRS_Tier_I_SarkariResult_Com_Cutoff.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/EMRS_Result_Ntoice_.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://nests.tribal.gov.in/WriteReadData/RTF1984/1760076918.pdf"

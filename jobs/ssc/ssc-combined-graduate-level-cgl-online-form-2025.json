@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:22.732720",
+  "scraped_at": "2026-04-04T11:21:46.356128",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-cgl-2025/",
   "page_type": "job",
@@ -54,21 +54,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Tier II Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/Tentative_answer_key_30012026.pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download SSC CGL Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_SSC_CGL_Notice_of_adv_cgl_2025.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/SarkariResult.Com-SSC-CGL-New-Syllabus-2024-for-tier-ii-and-tier-New-New.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://ssc.gov.in/",
       "link_type": "official_website"
@@ -86,34 +71,9 @@
       "url": "https://ssc.gov.in/login"
     },
     {
-      "label": "Download Tier II Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/Tentative_answer_key_30012026.pdf"
-    },
-    {
-      "label": "Download SSC CGL Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_SSC_CGL_Notice_of_adv_cgl_2025.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/SarkariResult.Com-SSC-CGL-New-Syllabus-2024-for-tier-ii-and-tier-New-New.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://ssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Tentative_answer_key_30012026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_SSC_CGL_Notice_of_adv_cgl_2025.pdf"
-    },
-    {
-      "label": "SSC CGL 2025 Tier I & II Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/06/SarkariResult.Com-SSC-CGL-New-Syllabus-2024-for-tier-ii-and-tier-New-New.pdf"
-    }
-  ]
+  "download_links": []
 }

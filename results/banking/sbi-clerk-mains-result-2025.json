@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:39.753577",
+  "scraped_at": "2026-04-04T11:37:06.826985",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/sbi-clerk-dec24/",
   "page_type": "result",
@@ -52,11 +52,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Result (Mains)",
-      "url": "https://doc.sarkariresults.org.in/SBI_Clerk_Junior%20Associates-mains-2024-RESULT-15%20FORMAT.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Admit Card (Mains)",
       "url": "https://ibpsonline.ibps.in/sbidrjadec24/oecla_mar25/login.php?appid=86e11f4eb15d758d161ed9a49f762d0b",
       "link_type": "admit"
@@ -92,11 +87,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SBI%20Clerk%202024.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.sbi.co.in/careers/",
       "link_type": "official_website"
@@ -112,10 +102,6 @@
     {
       "label": "Download Waiting List (3rd)",
       "url": "https://sbi.bank.in/documents/77530/52947104/05022026_Junior+Associates-WL-2-2024-RESULT-15+FORMAT.pdf/b82f59d3-4c96-87ec-46b6-74156aeb7f07?t=1770294554772"
-    },
-    {
-      "label": "Download Result (Mains)",
-      "url": "https://doc.sarkariresults.org.in/SBI_Clerk_Junior%20Associates-mains-2024-RESULT-15%20FORMAT.pdf"
     },
     {
       "label": "Download Admit Card (Mains)",
@@ -146,22 +132,9 @@
       "url": "https://www.youtube.com/watch?v=A7oABzsZJR8"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SBI%20Clerk%202024.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.sbi.co.in/careers/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SBI_Clerk_Junior%20Associates-mains-2024-RESULT-15%20FORMAT.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SBI%20Clerk%202024.pdf"
-    }
-  ]
+  "download_links": []
 }

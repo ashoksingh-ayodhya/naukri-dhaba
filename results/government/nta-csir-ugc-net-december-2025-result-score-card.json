@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:55.655124",
+  "scraped_at": "2026-04-04T11:36:10.408388",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/nta-csir-ugc-dec2025/",
   "page_type": "result",
@@ -69,31 +69,6 @@
       "label": "Download Notification",
       "url": "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2025/09/202510072139225285.pdf",
       "link_type": "notification"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/csir-net-ugc-syllabus-for-chemical-sciences.pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Earth-Sciences.pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Life-Sciens.pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Mathematical-Sciences.pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/physical-sciences.pdf",
-      "link_type": "syllabus"
     }
   ],
   "apply_url": "https://csirnet.nta.nic.in/",
@@ -122,26 +97,6 @@
     {
       "label": "Download Notification",
       "url": "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2025/09/202510072139225285.pdf"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/csir-net-ugc-syllabus-for-chemical-sciences.pdf"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Earth-Sciences.pdf"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Life-Sciens.pdf"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Mathematical-Sciences.pdf"
-    },
-    {
-      "label": "Download CSIR UGC NET Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/physical-sciences.pdf"
     }
   ],
   "download_links": [
@@ -156,26 +111,6 @@
     {
       "label": "Click Here",
       "url": "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2025/09/202510072139225285.pdf"
-    },
-    {
-      "label": "C",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/csir-net-ugc-syllabus-for-chemical-sciences.pdf"
-    },
-    {
-      "label": "Earth Science",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Earth-Sciences.pdf"
-    },
-    {
-      "label": "Life Science",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Life-Sciens.pdf"
-    },
-    {
-      "label": "Mathematics Science",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/Mathematical-Sciences.pdf"
-    },
-    {
-      "label": "Physical Science",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2021/12/physical-sciences.pdf"
     }
   ]
 }

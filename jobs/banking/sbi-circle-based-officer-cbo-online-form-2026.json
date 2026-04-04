@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:53:40.248826",
+  "scraped_at": "2026-04-04T11:19:45.044506",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/sbi-cbo-jan26/",
   "page_type": "job",
@@ -58,11 +58,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SBI_CBO_NOtification_2026.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://sbi.bank.in/",
       "link_type": "official_website"
@@ -88,18 +83,9 @@
       "url": "https://sbi.bank.in/documents/77530/0/11022026_Corrigendum.pdf/12908b56-4532-ba57-0564-c72a6498fdee?t=1770806003849"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SBI_CBO_NOtification_2026.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://sbi.bank.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SBI_CBO_NOtification_2026.pdf"
-    }
-  ]
+  "download_links": []
 }

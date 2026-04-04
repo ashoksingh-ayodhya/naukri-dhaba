@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:18.973018",
+  "scraped_at": "2026-04-04T11:21:39.248248",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/upessc-asst-professor-51/",
   "page_type": "job",
@@ -54,26 +54,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Revised Eligibility Notice",
-      "url": "https://doc.sarkariresults.org.in/70eb-447f-4a31-b5d4-2f3c.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/GtF5GUoWUAAE0WN.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPESSC_Assistant_Professor_Notification7_2025.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download College Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/UPESSC_COllege_Wise_Seat_Details.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://upessc.up.gov.in/",
       "link_type": "official_website"
@@ -95,42 +75,9 @@
       "url": "https://bed.uphesc51.com/#/login"
     },
     {
-      "label": "Download Revised Eligibility Notice",
-      "url": "https://doc.sarkariresults.org.in/70eb-447f-4a31-b5d4-2f3c.pdf"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/GtF5GUoWUAAE0WN.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPESSC_Assistant_Professor_Notification7_2025.pdf"
-    },
-    {
-      "label": "Download College Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/UPESSC_COllege_Wise_Seat_Details.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://upessc.up.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/70eb-447f-4a31-b5d4-2f3c.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/GtF5GUoWUAAE0WN.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPESSC_Assistant_Professor_Notification7_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPESSC_COllege_Wise_Seat_Details.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:12.920379",
+  "scraped_at": "2026-04-04T11:23:08.746959",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/hssc/htet-dec-2024/",
   "page_type": "job",
@@ -44,16 +44,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Re Open Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/HTET_RE_OPEN_information%20bulletin.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/HTET_Online_Exam_Date_Official_notice.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Fee Payment Date Extended Notice",
       "url": "https://bseh.org.in/uploads/files/0f4390b9b46d56d5f2a94a8d018ff081.pdf",
       "link_type": "other"
@@ -66,21 +56,6 @@
     {
       "label": "Download Date Extended Notice",
       "url": "https://bseh.org.in/uploads/files/69bdca4b6e8ba2c3bd95de87bd4f7dfd.jpg",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/HTET_DEC_2024_Notification.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/HTET_Syllabus.pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download Sample Question Paper and OMR Sheet",
-      "url": "https://doc.sarkariresults.org.in/HTET_Sample_Paper_OMR_Sheet.pdf",
       "link_type": "other"
     },
     {
@@ -106,14 +81,6 @@
       "url": "https://www.bsehhtet.com/"
     },
     {
-      "label": "Download Re Open Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/HTET_RE_OPEN_information%20bulletin.pdf"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/HTET_Online_Exam_Date_Official_notice.pdf"
-    },
-    {
       "label": "Download Fee Payment Date Extended Notice",
       "url": "https://bseh.org.in/uploads/files/0f4390b9b46d56d5f2a94a8d018ff081.pdf"
     },
@@ -124,18 +91,6 @@
     {
       "label": "Download Date Extended Notice",
       "url": "https://bseh.org.in/uploads/files/69bdca4b6e8ba2c3bd95de87bd4f7dfd.jpg"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/HTET_DEC_2024_Notification.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/HTET_Syllabus.pdf"
-    },
-    {
-      "label": "Download Sample Question Paper and OMR Sheet",
-      "url": "https://doc.sarkariresults.org.in/HTET_Sample_Paper_OMR_Sheet.pdf"
     },
     {
       "label": "Download Exam Schedule",
@@ -149,27 +104,7 @@
   "download_links": [
     {
       "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/HTET_RE_OPEN_information%20bulletin.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/HTET_Online_Exam_Date_Official_notice.pdf"
-    },
-    {
-      "label": "Click Here",
       "url": "https://bseh.org.in/uploads/files/0f4390b9b46d56d5f2a94a8d018ff081.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/HTET_DEC_2024_Notification.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/HTET_Syllabus.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/HTET_Sample_Paper_OMR_Sheet.pdf"
     },
     {
       "label": "Click Here",

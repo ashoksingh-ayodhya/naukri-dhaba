@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:01:57.901743",
+  "scraped_at": "2026-04-04T11:30:01.569244",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rrvunl-technician-feb25/",
   "page_type": "result",
@@ -54,19 +54,9 @@
       "link_type": "admit"
     },
     {
-      "label": "Download Mains Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/RVUNLMainsExamDate.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ibpsonline.ibps.in/rrvnlpajan25/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RVUNL_Technician_Detailed_notification_2025%20(1).pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -90,30 +80,13 @@
       "url": "https://ibpsonline.ibps.in/rrvnlpajan25/omecla_jan26/login.php?appid=518922c6c2bd7902d8f0be88fbb48dd2"
     },
     {
-      "label": "Download Mains Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/RVUNLMainsExamDate.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ibpsonline.ibps.in/rrvnlpajan25/"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RVUNL_Technician_Detailed_notification_2025%20(1).pdf"
     },
     {
       "label": "Official Website",
       "url": "https://energy.rajasthan.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RVUNLMainsExamDate.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RVUNL_Technician_Detailed_notification_2025%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

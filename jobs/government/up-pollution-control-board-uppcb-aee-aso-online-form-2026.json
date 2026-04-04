@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:50:33.746602",
+  "scraped_at": "2026-04-04T11:16:10.063184",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/uppcb-aee-aso-mar26/",
   "page_type": "job",
@@ -59,16 +59,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/639079618439323932.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/639079618463368707.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppcb.up.gov.in/",
       "link_type": "official_website"
@@ -94,26 +84,9 @@
       "url": "https://tinyurl.com/rmyab44x"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/639079618439323932.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/639079618463368707.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppcb.up.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/639079618439323932.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/639079618463368707.pdf"
-    }
-  ]
+  "download_links": []
 }

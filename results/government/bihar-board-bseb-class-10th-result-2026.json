@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:01:23.009657",
+  "scraped_at": "2026-04-04T11:29:15.493502",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/bseb-10-result-2026/",
   "page_type": "result",
   "title": "Bihar Board BSEB Class 10th Result 2026",
-  "post_name": "Bihar Board Class 10th Matric Exam Result Today at 01:15 PM 2026",
+  "post_name": "Bihar Board Class 10th Matric Exam Result, Scrutiny and Compartment Online Form 2026",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Bihar Board BSEB Xth Results 2026: Short Details of Notification",
@@ -26,6 +26,21 @@
   "salary": "",
   "how_to_apply": [],
   "important_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://matric.biharboardscrutiny.com/login",
+      "link_type": "apply"
+    },
+    {
+      "label": "Apply Online",
+      "url": "https://exam.biharboardonline.org/",
+      "link_type": "apply"
+    },
+    {
+      "label": "Download Compartment Special Exam Notice",
+      "url": "https://drive.google.com/file/d/13C-ZQYU33KfsJxTLY55yF7zRZ9UwcAEO/view",
+      "link_type": "other"
+    },
     {
       "label": "Download BSEB Class 10th Matric Result 2026",
       "url": "https://result.biharboardonline.org/",
@@ -57,13 +72,25 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "",
+  "apply_url": "https://matric.biharboardscrutiny.com/login",
   "notification_url": "",
   "result_url": "https://result.biharboardonline.org/",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "https://biharboardonline.com/",
   "extra_links": [
+    {
+      "label": "Apply Online",
+      "url": "https://matric.biharboardscrutiny.com/login"
+    },
+    {
+      "label": "Apply Online",
+      "url": "https://exam.biharboardonline.org/"
+    },
+    {
+      "label": "Download Compartment Special Exam Notice",
+      "url": "https://drive.google.com/file/d/13C-ZQYU33KfsJxTLY55yF7zRZ9UwcAEO/view"
+    },
     {
       "label": "Download BSEB Class 10th Matric Result 2026",
       "url": "https://result.biharboardonline.org/"

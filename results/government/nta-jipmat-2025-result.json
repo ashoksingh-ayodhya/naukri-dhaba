@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:39.017425",
+  "scraped_at": "2026-04-04T11:38:50.420247",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/nta-jipmat-2025/",
   "page_type": "result",
@@ -56,11 +56,6 @@
       "link_type": "answer_key"
     },
     {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/public-notice-jipmat-2025-provisional-answer-key-challenge.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://jipmat2025.ntaonline.in/admitcard/index",
       "link_type": "admit"
@@ -71,18 +66,8 @@
       "link_type": "exam_city"
     },
     {
-      "label": "Download Exam City Notice",
-      "url": "https://doc.sarkariresults.org.in/jipmat-advance-intimation-17-apr-2025.pdf",
-      "link_type": "exam_city"
-    },
-    {
       "label": "For Correction / Edit FOrm",
       "url": "https://jipmat2025.ntaonline.in/site/login",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Correction Notice",
-      "url": "https://doc.sarkariresults.org.in/NTA_JIPMAT_Correction_2025.pdf",
       "link_type": "other"
     },
     {
@@ -122,10 +107,6 @@
       "url": "https://jipmat2025.ntaonline.in/answer-key-challenge/login-answer"
     },
     {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/public-notice-jipmat-2025-provisional-answer-key-challenge.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://jipmat2025.ntaonline.in/admitcard/index"
     },
@@ -134,16 +115,8 @@
       "url": "https://jipmat2025.ntaonline.in/cityintimation/index"
     },
     {
-      "label": "Download Exam City Notice",
-      "url": "https://doc.sarkariresults.org.in/jipmat-advance-intimation-17-apr-2025.pdf"
-    },
-    {
       "label": "For Correction / Edit FOrm",
       "url": "https://jipmat2025.ntaonline.in/site/login"
-    },
-    {
-      "label": "Download Correction Notice",
-      "url": "https://doc.sarkariresults.org.in/NTA_JIPMAT_Correction_2025.pdf"
     },
     {
       "label": "Download Date Extension Notice",
@@ -163,18 +136,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/public-notice-jipmat-2025-provisional-answer-key-challenge.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/jipmat-advance-intimation-17-apr-2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/NTA_JIPMAT_Correction_2025.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://nta.ac.in/Download/Notice/Notice_20250311111711.pdf"

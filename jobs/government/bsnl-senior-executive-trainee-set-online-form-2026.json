@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:50:37.104818",
+  "scraped_at": "2026-04-04T11:16:14.610278",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/bsnl-sr-exe-trainee-set-feb26/",
   "page_type": "job",
@@ -58,11 +58,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BSNL_SET%20Notification%202026_SarkariResult_Com.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "PDF Tools and Image Background Removal",
       "url": "https://sarkariresultportal.com/",
       "link_type": "other"
@@ -93,10 +88,6 @@
       "url": "https://externalexam.bsnl.co.in/Extension.pdf"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BSNL_SET%20Notification%202026_SarkariResult_Com.pdf"
-    },
-    {
       "label": "PDF Tools and Image Background Removal",
       "url": "https://sarkariresultportal.com/"
     },
@@ -109,10 +100,6 @@
     {
       "label": "Click Here",
       "url": "https://externalexam.bsnl.co.in/Extension.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BSNL_SET%20Notification%202026_SarkariResult_Com.pdf"
     }
   ]
 }

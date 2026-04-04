@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:21.152379",
+  "scraped_at": "2026-04-04T11:30:31.025026",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/nvs-class-6th-admissions/",
   "page_type": "result",
@@ -54,11 +54,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/JNV_Class6th_Admissions_Final_Prospectus_2026.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Sarkari Result WhatsApp Channel",
       "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
       "link_type": "result"
@@ -89,10 +84,6 @@
       "url": "https://cbseitms.rcil.gov.in/nvs"
     },
     {
-      "label": "Download Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/JNV_Class6th_Admissions_Final_Prospectus_2026.pdf"
-    },
-    {
       "label": "Sarkari Result WhatsApp Channel",
       "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18"
     },
@@ -101,10 +92,5 @@
       "url": "https://navodaya.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/JNV_Class6th_Admissions_Final_Prospectus_2026.pdf"
-    }
-  ]
+  "download_links": []
 }

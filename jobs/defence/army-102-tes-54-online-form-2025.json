@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:57:05.512595",
+  "scraped_at": "2026-04-04T11:24:28.730499",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/army-tes-54-may2025/",
   "page_type": "job",
@@ -49,16 +49,6 @@
       "label": "Apply Online",
       "url": "https://joinindianarmy.nic.in/Authentication.aspx",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/NOTIFICATION_OF_TES-54_COURSE.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Short Notice",
-      "url": "https://doc.sarkariresults.org.in/army_tes_54_SarkariResult.pdf",
-      "link_type": "other"
     }
   ],
   "apply_url": "https://joinindianarmy.nic.in/Authentication.aspx",
@@ -71,24 +61,7 @@
     {
       "label": "Apply Online",
       "url": "https://joinindianarmy.nic.in/Authentication.aspx"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/NOTIFICATION_OF_TES-54_COURSE.pdf"
-    },
-    {
-      "label": "Download Short Notice",
-      "url": "https://doc.sarkariresults.org.in/army_tes_54_SarkariResult.pdf"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/NOTIFICATION_OF_TES-54_COURSE.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/army_tes_54_SarkariResult.pdf"
-    }
-  ]
+  "download_links": []
 }

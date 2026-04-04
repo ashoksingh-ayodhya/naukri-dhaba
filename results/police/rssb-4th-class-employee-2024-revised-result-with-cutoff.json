@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:08.287423",
+  "scraped_at": "2026-04-04T11:34:42.503121",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rssb-fourth-class-advt-19-2024/",
   "page_type": "result",
@@ -86,26 +86,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Revised Syllabus",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Revised-Syllabus%20(1).pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Forth_Class_Employee_Vacancy_Notification_2025.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Vacancy Increase Notice",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Forth_Class_Employee_Vacancy_Increase_Notice.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Group_D_Syllabus_2025%20(1).pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://rssb.rajasthan.gov.in/",
       "link_type": "official_website"
@@ -151,22 +131,6 @@
       "url": "https://sso.rajasthan.gov.in/signin"
     },
     {
-      "label": "Download Revised Syllabus",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Revised-Syllabus%20(1).pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Forth_Class_Employee_Vacancy_Notification_2025.pdf"
-    },
-    {
-      "label": "Download Vacancy Increase Notice",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Forth_Class_Employee_Vacancy_Increase_Notice.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Group_D_Syllabus_2025%20(1).pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://rssb.rajasthan.gov.in/"
     }
@@ -195,22 +159,6 @@
     {
       "label": "Click Here",
       "url": "https://rssb.rajasthan.gov.in/storage/news_item/1770269658.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Revised-Syllabus%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Forth_Class_Employee_Vacancy_Notification_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Forth_Class_Employee_Vacancy_Increase_Notice.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RSSB_Group_D_Syllabus_2025%20(1).pdf"
     }
   ]
 }

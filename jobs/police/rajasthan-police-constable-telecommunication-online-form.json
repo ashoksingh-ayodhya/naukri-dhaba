@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:47.935634",
+  "scraped_at": "2026-04-04T11:24:07.728290",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rajasthan-constable-tele-may25/",
   "page_type": "job",
@@ -46,26 +46,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Correction Notice",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Police_Constable_Correction_Notice_2025.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Constable_Date_Extended_Notice_May.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Detailed Notification",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_POlice_Constable_Telecommunication_Notification_2025.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Police_Constable_Syllabus%20(1).pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.police.rajasthan.gov.in",
       "link_type": "official_website"
@@ -83,42 +63,9 @@
       "url": "https://sso.rajasthan.gov.in/signin?ru=RECRUITMENT2"
     },
     {
-      "label": "Download Correction Notice",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Police_Constable_Correction_Notice_2025.pdf"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Constable_Date_Extended_Notice_May.pdf"
-    },
-    {
-      "label": "Download Detailed Notification",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_POlice_Constable_Telecommunication_Notification_2025.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Police_Constable_Syllabus%20(1).pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.police.rajasthan.gov.in"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Police_Constable_Correction_Notice_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Constable_Date_Extended_Notice_May.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_POlice_Constable_Telecommunication_Notification_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Rajasthan_Police_Constable_Syllabus%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

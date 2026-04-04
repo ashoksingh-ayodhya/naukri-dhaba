@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:59.179505",
+  "scraped_at": "2026-04-04T11:39:21.462194",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/bihar-board-bseb-12th-result/",
   "page_type": "result",
@@ -39,11 +39,6 @@
       "link_type": "answer_key"
     },
     {
-      "label": "Download Notice(Scrutiny Form)",
-      "url": "https://doc.sarkariresults.org.in/BSEB_scrutiny_2025_vigyapati.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Class 12th Inter Result",
       "url": "https://interbiharboard.com/",
       "link_type": "result"
@@ -57,11 +52,6 @@
       "label": "How to Check Result (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=0T58WhqIsd4",
       "link_type": "guide"
-    },
-    {
-      "label": "Download Class 12th Inter Result Notice",
-      "url": "https://doc.sarkariresults.org.in/BSEB_12th_Result_2025_Notice.pdf",
-      "link_type": "result"
     },
     {
       "label": "Official Website",
@@ -85,10 +75,6 @@
       "url": "http://objection.biharboardonline.com/"
     },
     {
-      "label": "Download Notice(Scrutiny Form)",
-      "url": "https://doc.sarkariresults.org.in/BSEB_scrutiny_2025_vigyapati.pdf"
-    },
-    {
       "label": "Download Class 12th Inter Result",
       "url": "https://interbiharboard.com/"
     },
@@ -101,22 +87,9 @@
       "url": "https://www.youtube.com/watch?v=0T58WhqIsd4"
     },
     {
-      "label": "Download Class 12th Inter Result Notice",
-      "url": "https://doc.sarkariresults.org.in/BSEB_12th_Result_2025_Notice.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "http://biharboardonline.bihar.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BSEB_scrutiny_2025_vigyapati.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BSEB_12th_Result_2025_Notice.pdf"
-    }
-  ]
+  "download_links": []
 }

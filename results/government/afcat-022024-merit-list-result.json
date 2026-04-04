@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:11.706067",
+  "scraped_at": "2026-04-04T11:38:06.055185",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/afcat-02-2024/",
   "page_type": "result",
@@ -46,11 +46,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Merit List",
-      "url": "https://doc.sarkariresults.org.in/AFCAT_02_2024_ORDER_OF_MERIT_JUL_25.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Result",
       "url": "https://afcat.cdac.in/afcatreg/candidate/login",
       "link_type": "result"
@@ -84,10 +79,6 @@
   "official_website_url": "https://afcat.cdac.in/AFCAT/",
   "extra_links": [
     {
-      "label": "Download Merit List",
-      "url": "https://doc.sarkariresults.org.in/AFCAT_02_2024_ORDER_OF_MERIT_JUL_25.pdf"
-    },
-    {
       "label": "Download Result",
       "url": "https://afcat.cdac.in/afcatreg/candidate/login"
     },
@@ -109,10 +100,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/AFCAT_02_2024_ORDER_OF_MERIT_JUL_25.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://afcat.cdac.in/AFCAT/assets/images/news/AFCAT_02_2024/Advertisement_AFCAT_02-2024.pdf"

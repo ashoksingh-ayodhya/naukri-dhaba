@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:50:58.166529",
+  "scraped_at": "2026-04-04T11:16:46.448579",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/jharkhand/jpsc-pre-01-2026/",
   "page_type": "job",
   "title": "Jharkhand JPSC Pre Online Form 2026",
-  "post_name": "Jharkhand JPSC Civil Services Recruitment Advt No 01/2026 Apply Online for 103 Post",
+  "post_name": "Jharkhand JPSC Civil Services Recruitment Advt No 01/2026 Exam Notice for 103 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Jharkhand Public Service Commission (JPSC)",
@@ -16,7 +16,10 @@
     "Application Begin": "31/01/2026",
     "Last Date for Apply Online": "09/03/2026 Upto 05 PM",
     "Pay Exam Fee Last Date": "10/03/2026",
-    "Exam Date": "12/04/2026"
+    "Exam Date (Old Date)": "12/04/2026",
+    "Exam Date (New Exam Date)": "19/04/2026",
+    "Admit Card Available": "08/04/2026",
+    "Download Admit Card": "Link Will be Activate on 08/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "100/-",
@@ -43,9 +46,14 @@
   ],
   "important_links": [
     {
-      "label": "Apply Online (OTR)",
+      "label": "Download Admit Card",
       "url": "https://jpscotr.com/",
-      "link_type": "apply"
+      "link_type": "admit"
+    },
+    {
+      "label": "Download Exam Notice",
+      "url": "https://www.jpsc.gov.in/data/Press_Release_and_Instructions_01_26_dated_28_03_2026.pdf",
+      "link_type": "other"
     },
     {
       "label": "How to Fill Form (Video Hindi)",
@@ -68,26 +76,25 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/JPSC_Pre_01_2026_Syllabus_SarkariResult_Com.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.jpsc.gov.in/",
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://jpscotr.com/",
+  "apply_url": "https://www.youtube.com/watch?v=67t2Bxqn1IM",
   "notification_url": "https://doc.sarkariresults.org.in/JPSC_Pre_01_2026_Syllabus_SarkariResult_Com.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://jpscotr.com/",
   "official_website_url": "https://www.jpsc.gov.in/",
   "extra_links": [
     {
-      "label": "Apply Online (OTR)",
+      "label": "Download Admit Card",
       "url": "https://jpscotr.com/"
+    },
+    {
+      "label": "Download Exam Notice",
+      "url": "https://www.jpsc.gov.in/data/Press_Release_and_Instructions_01_26_dated_28_03_2026.pdf"
     },
     {
       "label": "How to Fill Form (Video Hindi)",
@@ -106,10 +113,6 @@
       "url": "https://jpsc.gov.in/data/Press_Release_01_26_dated_14_02_2026.pdf"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/JPSC_Pre_01_2026_Syllabus_SarkariResult_Com.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.jpsc.gov.in/"
     }
@@ -117,15 +120,15 @@
   "download_links": [
     {
       "label": "Click Here",
+      "url": "https://www.jpsc.gov.in/data/Press_Release_and_Instructions_01_26_dated_28_03_2026.pdf"
+    },
+    {
+      "label": "Click Here",
       "url": "https://jpsc.gov.in/data/Press_Release_01_26_dated_26_02_2026.pdf"
     },
     {
       "label": "Click Here",
       "url": "https://jpsc.gov.in/data/Press_Release_01_26_dated_14_02_2026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/JPSC_Pre_01_2026_Syllabus_SarkariResult_Com.pdf"
     }
   ]
 }

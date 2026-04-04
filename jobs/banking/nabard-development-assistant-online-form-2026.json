@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:05.913268",
+  "scraped_at": "2026-04-04T11:21:20.342331",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/nabard-da-jan26/",
   "page_type": "job",
   "title": "Nabard Development Assistant Online Form 2026",
-  "post_name": "NABARD Development Assistant Recruitment 2026 Download Pre Admit Card for 162 Post",
+  "post_name": "NABARD Development Assistant Recruitment 2026 Mains Admit Card for 162 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -19,6 +19,7 @@
     "Reprint Application From": "18/02/2026",
     "Group B Phase 1 (Pre) Exam Date": "21/02/2026",
     "Admit Card Available": "14/02/2026",
+    "Result Available": "30/03/2026",
     "Group B Phase 2 (Mains) Exam Date": "12/04/2026"
   },
   "fees": {
@@ -47,6 +48,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Mains Admit Card",
+      "url": "https://ibpsreg.ibps.in/nabhindec25/clome_mar26/login.php?appid=11eb8957c0d3a4aeac689c0f4226f77c",
+      "link_type": "admit"
+    },
+    {
       "label": "Download Pre Admit Card",
       "url": "https://ibpsreg.ibps.in/nabhindec25/opecla_jan26/login.php?appid=ffd30d487fa000fe92d9f0707d10fb9c",
       "link_type": "admit"
@@ -74,11 +80,15 @@
   ],
   "apply_url": "https://ibpsreg.ibps.in/nabhindec25/",
   "notification_url": "https://www.nabard.org/auth/writereaddata/CareerNotices/1701263549Final%20Advertisement%20DA,DA(H)%20-%202026.pdf?csrt=8217334715899131570",
-  "result_url": "https://sarkariresultportal.com/",
+  "result_url": "https://doc.sarkariresults.org.in/1161355003Development%20Assistant.pdf",
   "scorecard_url": "",
-  "admit_url": "https://ibpsreg.ibps.in/nabhindec25/opecla_jan26/login.php?appid=ffd30d487fa000fe92d9f0707d10fb9c",
+  "admit_url": "https://ibpsreg.ibps.in/nabhindec25/clome_mar26/login.php?appid=11eb8957c0d3a4aeac689c0f4226f77c",
   "official_website_url": "https://www.nabard.org/careers-notices1.aspx?cid=693&id=26",
   "extra_links": [
+    {
+      "label": "Download Mains Admit Card",
+      "url": "https://ibpsreg.ibps.in/nabhindec25/clome_mar26/login.php?appid=11eb8957c0d3a4aeac689c0f4226f77c"
+    },
     {
       "label": "Download Pre Admit Card",
       "url": "https://ibpsreg.ibps.in/nabhindec25/opecla_jan26/login.php?appid=ffd30d487fa000fe92d9f0707d10fb9c"
@@ -101,6 +111,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Development Assistant Hindi",
+      "url": "/upload/SarkariResult.Com_671322617Development%20Assistant%20-%20Hindi.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://www.nabard.org/auth/writereaddata/CareerNotices/1701263549Final%20Advertisement%20DA,DA(H)%20-%202026.pdf?csrt=8217334715899131570"

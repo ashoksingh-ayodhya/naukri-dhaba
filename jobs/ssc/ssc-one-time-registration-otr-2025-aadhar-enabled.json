@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:54.643970",
+  "scraped_at": "2026-04-04T11:24:15.827961",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-one-time-registration-otr/",
   "page_type": "job",
@@ -74,11 +74,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download OTR Notification",
-      "url": "https://doc.sarkariresults.org.in/SSC_Notice_14052025_1.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://ssc.gov.in/",
       "link_type": "official_website"
@@ -104,18 +99,9 @@
       "url": "https://www.youtube.com/watch?v=WRhTrWKJ6As"
     },
     {
-      "label": "Download OTR Notification",
-      "url": "https://doc.sarkariresults.org.in/SSC_Notice_14052025_1.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://ssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SSC_Notice_14052025_1.pdf"
-    }
-  ]
+  "download_links": []
 }

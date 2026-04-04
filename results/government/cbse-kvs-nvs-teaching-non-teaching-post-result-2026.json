@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:03:20.088935",
+  "scraped_at": "2026-04-04T11:31:52.561689",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/cbse-kvs-nvs-2025/",
   "page_type": "result",
@@ -78,11 +78,6 @@
       "link_type": "answer_key"
     },
     {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/CBSEKVSNVS%20AnswerKey%20Notice.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://examinationservices.nic.in/AdmitCardService/Home/AdmitcardList?AppFormId=102982511",
       "link_type": "admit"
@@ -155,10 +150,6 @@
       "url": "https://cbseit.in/cbse/2026/kvjnvkey/"
     },
     {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/CBSEKVSNVS%20AnswerKey%20Notice.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://examinationservices.nic.in/AdmitCardService/Home/AdmitcardList?AppFormId=102982511"
     },
@@ -203,10 +194,6 @@
     {
       "label": "Click Here",
       "url": "https://cdnbbsr.s3waas.gov.in/s32d2ca7eedf739ef4c3800713ec482e1a/uploads/2026/02/2026022866.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/CBSEKVSNVS%20AnswerKey%20Notice.pdf"
     },
     {
       "label": "Click Here",

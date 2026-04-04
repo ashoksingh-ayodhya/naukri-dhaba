@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:37.319450",
+  "scraped_at": "2026-04-04T11:30:50.730924",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/uppsc-computer-assistant-25/",
   "page_type": "result",
@@ -107,10 +107,5 @@
       "url": "https://uppsc.up.nic.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_COmputer_Assistant_Typing_test.pdf"
-    }
-  ]
+  "download_links": []
 }

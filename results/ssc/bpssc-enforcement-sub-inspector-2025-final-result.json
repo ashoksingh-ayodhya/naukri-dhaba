@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:59.878567",
+  "scraped_at": "2026-04-04T11:31:27.684778",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpssc-enforcement-si-03-2025/",
   "page_type": "result",
@@ -77,11 +77,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSSSC_Advt.%20No.-%2003-2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpssc.bihar.gov.in/",
       "link_type": "official_website"
@@ -119,10 +114,6 @@
       "url": "https://apply-bpssc.com/v3esi/applicationIndex"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSSSC_Advt.%20No.-%2003-2025.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpssc.bihar.gov.in/"
     }
@@ -139,10 +130,6 @@
     {
       "label": "Click Here",
       "url": "https://bpssc.bihar.gov.in/Notices/Notice%20E-Admit%20Card%20on%20website%201.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSSSC_Advt.%20No.-%2003-2025.pdf"
     }
   ]
 }

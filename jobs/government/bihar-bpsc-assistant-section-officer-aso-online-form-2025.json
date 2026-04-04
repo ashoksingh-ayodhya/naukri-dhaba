@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:38.194830",
+  "scraped_at": "2026-04-04T11:23:53.326619",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpsc-aso-37-2025/",
   "page_type": "job",
@@ -56,11 +56,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_Assistant%20Section%20Officer_Advt_37_2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Download Recruitment Notice",
       "url": "https://www.bpsc.bih.nic.in/Notices/NB-2024-06-13-04.pdf",
       "link_type": "other"
@@ -87,10 +82,6 @@
       "url": "https://bpsc.bihar.gov.in/wp-content/uploads/BPSC_content/Notices/Important-Notice-372025-BPSC-ASO-Main-Admit-Card_BPSC-20260216-swg3xf.pdf"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_Assistant%20Section%20Officer_Advt_37_2025.pdf"
-    },
-    {
       "label": "Download Recruitment Notice",
       "url": "https://www.bpsc.bih.nic.in/Notices/NB-2024-06-13-04.pdf"
     },
@@ -103,10 +94,6 @@
     {
       "label": "Click Here",
       "url": "https://bpsc.bihar.gov.in/wp-content/uploads/BPSC_content/Notices/Important-Notice-372025-BPSC-ASO-Main-Admit-Card_BPSC-20260216-swg3xf.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSC_Assistant%20Section%20Officer_Advt_37_2025.pdf"
     },
     {
       "label": "Click Here",

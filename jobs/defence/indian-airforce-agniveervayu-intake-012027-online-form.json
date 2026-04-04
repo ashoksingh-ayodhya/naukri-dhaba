@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:53:02.433218",
+  "scraped_at": "2026-04-04T11:19:01.791365",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/airforce-agniveer-01-2027/",
   "page_type": "job",
   "title": "Indian Airforce Agniveervayu Intake 01/2027 Online Form",
-  "post_name": "Join Indian Air Force Agniveer Vayu Intake 01/2027 Batch Download Exam City / Admit Card",
+  "post_name": "Join Indian Air Force Agniveer Vayu Intake 01/2027 Batch Download Answer Key and Objection",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -15,7 +15,8 @@
   "dates": {
     "Application Begin": "12/01/2026",
     "Last Date for Apply Online": "08/02/2026",
-    "Exam City Available": "24/03/2026"
+    "Exam City Available": "24/03/2026",
+    "Answer Key Available": "03/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "550/-",
@@ -44,9 +45,9 @@
   ],
   "important_links": [
     {
-      "label": "Check Advanced Exam City / Date",
+      "label": "Download Answer Key",
       "url": "https://cdn.digialm.com/EForms/configuredHtml/1258/97277/login.html",
-      "link_type": "exam_city"
+      "link_type": "answer_key"
     },
     {
       "label": "How to Check Exam City / Admit Card (Video Hindi)",
@@ -82,7 +83,7 @@
   "official_website_url": "https://iafrecruitment.edcil.co.in/agniveervayu/",
   "extra_links": [
     {
-      "label": "Check Advanced Exam City / Date",
+      "label": "Download Answer Key",
       "url": "https://cdn.digialm.com/EForms/configuredHtml/1258/97277/login.html"
     },
     {

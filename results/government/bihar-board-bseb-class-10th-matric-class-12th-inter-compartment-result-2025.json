@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:05.001406",
+  "scraped_at": "2026-04-04T11:37:55.519159",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/bihar-board-online/",
   "page_type": "result",
@@ -53,21 +53,6 @@
       "link_type": "answer_key"
     },
     {
-      "label": "Download BSEB 10th Answer Key Notice 2025",
-      "url": "https://doc.sarkariresults.org.in/BSEB-10th-2025-AnswerKey-Notice.pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download BSEB 12th Answer Key Notice 2025",
-      "url": "https://doc.sarkariresults.org.in/Bihar_Inter_AnswerKey_2025.pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download BSEB 10th & 12th Time Table 2025",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult_COMbihar_board_exam_datesheet_2024.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Model Question Paper",
       "url": "https://biharboardonline.com/modelpapermatric.html",
       "link_type": "other"
@@ -107,18 +92,6 @@
       "url": "http://objection.biharboardonline.com/"
     },
     {
-      "label": "Download BSEB 10th Answer Key Notice 2025",
-      "url": "https://doc.sarkariresults.org.in/BSEB-10th-2025-AnswerKey-Notice.pdf"
-    },
-    {
-      "label": "Download BSEB 12th Answer Key Notice 2025",
-      "url": "https://doc.sarkariresults.org.in/Bihar_Inter_AnswerKey_2025.pdf"
-    },
-    {
-      "label": "Download BSEB 10th & 12th Time Table 2025",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult_COMbihar_board_exam_datesheet_2024.pdf"
-    },
-    {
       "label": "Download Model Question Paper",
       "url": "https://biharboardonline.com/modelpapermatric.html"
     },
@@ -131,18 +104,5 @@
       "url": "https://biharboardonline.com/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BSEB-10th-2025-AnswerKey-Notice.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Bihar_Inter_AnswerKey_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult_COMbihar_board_exam_datesheet_2024.pdf"
-    }
-  ]
+  "download_links": []
 }

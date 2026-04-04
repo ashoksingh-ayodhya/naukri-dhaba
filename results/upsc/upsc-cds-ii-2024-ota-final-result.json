@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:49.116562",
+  "scraped_at": "2026-04-04T11:39:09.137380",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-cds-ii-2024/",
   "page_type": "result",
@@ -58,21 +58,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Marks (Marks of Recommended Candidates)",
-      "url": "https://doc.sarkariresults.org.in/MarksRecmndCndt-CDSE-II-2024-Engl-050625.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download OTA Final Result",
-      "url": "https://doc.sarkariresults.org.in/FR-CDSE-II-2024-OTA-Engl-230525.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Final Result",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CDS_II_2024_Final_Result.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Result",
       "url": "https://upsc.gov.in/WR-CDSE-II-2024-Roll-Hindi-200924.pdf",
       "link_type": "result"
@@ -121,18 +106,6 @@
   "official_website_url": "https://upsc.gov.in",
   "extra_links": [
     {
-      "label": "Download Marks (Marks of Recommended Candidates)",
-      "url": "https://doc.sarkariresults.org.in/MarksRecmndCndt-CDSE-II-2024-Engl-050625.pdf"
-    },
-    {
-      "label": "Download OTA Final Result",
-      "url": "https://doc.sarkariresults.org.in/FR-CDSE-II-2024-OTA-Engl-230525.pdf"
-    },
-    {
-      "label": "Download Final Result",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CDS_II_2024_Final_Result.pdf"
-    },
-    {
       "label": "Download Result",
       "url": "https://upsc.gov.in/WR-CDSE-II-2024-Roll-Hindi-200924.pdf"
     },
@@ -166,18 +139,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/MarksRecmndCndt-CDSE-II-2024-Engl-050625.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/FR-CDSE-II-2024-OTA-Engl-230525.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CDS_II_2024_Final_Result.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://upsc.gov.in/WR-CDSE-II-2024-Roll-Hindi-200924.pdf"

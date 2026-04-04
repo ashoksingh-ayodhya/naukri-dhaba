@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:04.911978",
+  "scraped_at": "2026-04-04T11:34:36.020372",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rssb-nhm-01-2025/",
   "page_type": "result",
@@ -76,21 +76,6 @@
       "link_type": "admit"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Exam_City_AdmitCard.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Details_Notification_2025.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Date Change Notice",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Date_Change_notice.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://rssb.rajasthan.gov.in/",
       "link_type": "official_website"
@@ -128,18 +113,6 @@
       "url": "https://sso.rajasthan.gov.in/signin"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Exam_City_AdmitCard.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Details_Notification_2025.pdf"
-    },
-    {
-      "label": "Download Date Change Notice",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Date_Change_notice.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://rssb.rajasthan.gov.in/"
     }
@@ -160,18 +133,6 @@
     {
       "label": "List 4",
       "url": "https://rssb.rajasthan.gov.in/storage/result_item/1770433883.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Exam_City_AdmitCard.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Details_Notification_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RSSB_NHM_Date_Change_notice.pdf"
     }
   ]
 }

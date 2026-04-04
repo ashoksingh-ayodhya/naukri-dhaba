@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:49.691948",
+  "scraped_at": "2026-04-04T11:31:09.765992",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/bob-office-assistant-peon-may25/",
   "page_type": "result",
@@ -57,11 +57,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/BOB_list-of-candidates-11-33%20(1).pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://ibpsonline.ibps.in/bobapr25/opecla_feb26/login.php?appid=5801100cbb3da9bfd57d947475d1149d",
       "link_type": "admit"
@@ -72,24 +67,9 @@
       "link_type": "admit"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/Notification-dated-05-02-2026-05-06%20(1).pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ibpsonline.ibps.in/bobapr25/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BOB_PEON_Exam_Notification_English.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BOB_Peon_Exam_Notification_Hindi.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -113,10 +93,6 @@
       "url": "https://bankofbaroda.bank.in/-/media/Project/BOB/CountryWebsites/India/Career/2026/26-03/Notification-of-Links-to-dowload-Call-letter-12-20.pdf"
     },
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/BOB_list-of-candidates-11-33%20(1).pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://ibpsonline.ibps.in/bobapr25/opecla_feb26/login.php?appid=5801100cbb3da9bfd57d947475d1149d"
     },
@@ -125,20 +101,8 @@
       "url": "https://www.youtube.com/watch?v=tZEsUqX47KM"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/Notification-dated-05-02-2026-05-06%20(1).pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ibpsonline.ibps.in/bobapr25/"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BOB_PEON_Exam_Notification_English.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BOB_Peon_Exam_Notification_Hindi.pdf"
     },
     {
       "label": "Official Website",
@@ -149,22 +113,6 @@
     {
       "label": "Click Here",
       "url": "https://bankofbaroda.bank.in/-/media/Project/BOB/CountryWebsites/India/Career/2026/26-03/Notification-of-Links-to-dowload-Call-letter-12-20.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BOB_list-of-candidates-11-33%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Notification-dated-05-02-2026-05-06%20(1).pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/BOB_PEON_Exam_Notification_English.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/BOB_Peon_Exam_Notification_Hindi.pdf"
     }
   ]
 }

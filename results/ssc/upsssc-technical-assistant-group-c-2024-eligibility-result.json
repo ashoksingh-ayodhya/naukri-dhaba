@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:20.275342",
+  "scraped_at": "2026-04-04T11:39:52.025713",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-technical-asst-07-2024/",
   "page_type": "result",
@@ -67,23 +67,8 @@
       "link_type": "other"
     },
     {
-      "label": "Download Mains Exam Fee Payment Notice",
-      "url": "https://doc.sarkariresults.org.in/07_Exam_2023_Mains_Exam_fee_Notice.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Check Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx",
-      "link_type": "eligibility"
-    },
-    {
-      "label": "Download Mains Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_07_Exam_2024_Exam_date%20(1).pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_07_Exam_2024_Eligibility_Result.pdf",
       "link_type": "eligibility"
     },
     {
@@ -100,11 +85,6 @@
       "label": "For T PET Notice / Candidate List",
       "url": "https://upsssc.gov.in/ViewPdf.aspx?b7YnyOHEJbXJogeoJi6A4euuVqhbHVSkXQTb5kmPauE=",
       "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/03/sarkariresult.com-upsssc-technical-asst-notification-2024.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -128,20 +108,8 @@
       "url": "https://upsssc.gov.in/Interface/Authentication.aspx?NO/WElvPxNJJ/MszfbTUoiya6+j+60nloRK/wJ+Hma/peo+LypGARxykN88mZ0GWnpIBcPHGPx6XKnMmy76dwCXeE3KYnOjOH3riGr1fN9P9B2Efupj9zX0CKJSMG6ToGn9MH0ABA3Sd9Ni7A20mRA=="
     },
     {
-      "label": "Download Mains Exam Fee Payment Notice",
-      "url": "https://doc.sarkariresults.org.in/07_Exam_2023_Mains_Exam_fee_Notice.pdf"
-    },
-    {
       "label": "Check Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx"
-    },
-    {
-      "label": "Download Mains Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_07_Exam_2024_Exam_date%20(1).pdf"
-    },
-    {
-      "label": "Download Eligibility Result Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_07_Exam_2024_Eligibility_Result.pdf"
     },
     {
       "label": "Apply Online",
@@ -156,30 +124,9 @@
       "url": "https://upsssc.gov.in/ViewPdf.aspx?b7YnyOHEJbXJogeoJi6A4euuVqhbHVSkXQTb5kmPauE="
     },
     {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/03/sarkariresult.com-upsssc-technical-asst-notification-2024.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "http://upsssc.gov.in/Default.aspx"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/07_Exam_2023_Mains_Exam_fee_Notice.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_07_Exam_2024_Exam_date%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_07_Exam_2024_Eligibility_Result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/03/sarkariresult.com-upsssc-technical-asst-notification-2024.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:50:55.196129",
+  "scraped_at": "2026-04-04T11:16:41.752945",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-pharmacist-01-2026/",
   "page_type": "job",
   "title": "UPSSSC Pharmacist Online Form 2026",
-  "post_name": "UPSSSC Pharmacist Recruitment 2026 Apply Online for 560 Post",
+  "post_name": "UPSSSC Pharmacist Recruitment 2026 Download Exam Date for 560 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Uttar Pradesh Subordinate Service Selection Commission (UPSSSC)",
@@ -17,7 +17,7 @@
     "Last Date for Registration": "29/03/2026",
     "Fee Payment Last Date": "29/03/2026",
     "Correction Last Date": "05/04/2026",
-    "Exam Date": "As per Schedule"
+    "Exam Date": "21/06/2026"
   },
   "fees": {
     "General / OBC / EWS": "25/-",
@@ -59,11 +59,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Pharmacist_01_Exam_16_2026.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://upsssc.gov.in/",
       "link_type": "official_website"
@@ -85,18 +80,9 @@
       "url": "https://tinyurl.com/mrx98w5d"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Pharmacist_01_Exam_16_2026.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://upsssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Pharmacist_01_Exam_16_2026.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:24.065669",
+  "scraped_at": "2026-04-04T11:36:41.390328",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/railway/rrb-ntpc-undergraduate-06-2024/",
   "page_type": "result",
@@ -68,26 +68,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RRB_10plus2_NTPCFinal_Notification_CEN_06_2024_SarkariResult_COm.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Post with RRB Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRBNTPCPostWiseDetails.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download RRB Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRB_NTPC_UG_Level_ZoneWise_Vacancy_SarkariResult.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/RRB_NTPC_UnderGradudate_Level_Syllabus_CEN062024.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Remove Background, RRB Photo Resizer, Marriage Bio Data Maker and More Tools",
       "url": "https://sarkariresult.tools/",
       "link_type": "other"
@@ -122,22 +102,6 @@
       "url": "https://rrbahmedabad.gov.in/wp-content/uploads/2024/09/Corrigendum-2-for-CEN-06-2024.pdf"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RRB_10plus2_NTPCFinal_Notification_CEN_06_2024_SarkariResult_COm.pdf"
-    },
-    {
-      "label": "Download Post with RRB Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRBNTPCPostWiseDetails.pdf"
-    },
-    {
-      "label": "Download RRB Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRB_NTPC_UG_Level_ZoneWise_Vacancy_SarkariResult.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/RRB_NTPC_UnderGradudate_Level_Syllabus_CEN062024.pdf"
-    },
-    {
       "label": "Remove Background, RRB Photo Resizer, Marriage Bio Data Maker and More Tools",
       "url": "https://sarkariresult.tools/"
     },
@@ -148,32 +112,12 @@
   ],
   "download_links": [
     {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/CBTST%20Notice%20for%20CEN%2006-2024-NTPC%20UG%20(1).pdf"
-    },
-    {
       "label": "RRB Chennai",
       "url": "https://rrbahmedabad.gov.in/wp-content/uploads/2026/01/Result-of-2nd-Stage-Computer-Based-Test-2-and-shortlisting-of-candidates-for-CBTST.pdf"
     },
     {
       "label": "Click Here",
       "url": "https://rrbahmedabad.gov.in/wp-content/uploads/2024/09/Corrigendum-2-for-CEN-06-2024.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RRB_10plus2_NTPCFinal_Notification_CEN_06_2024_SarkariResult_COm.pdf"
-    },
-    {
-      "label": "RRC NTPC UG Zone and Post Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRBNTPCPostWiseDetails.pdf"
-    },
-    {
-      "label": "RRC NTPC UG Zone and Post Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRB_NTPC_UG_Level_ZoneWise_Vacancy_SarkariResult.pdf"
-    },
-    {
-      "label": "RRC NTPC Under Graduate Level Syllabus PDF",
-      "url": "https://doc.sarkariresults.org.in/RRB_NTPC_UnderGradudate_Level_Syllabus_CEN062024.pdf"
     }
   ]
 }

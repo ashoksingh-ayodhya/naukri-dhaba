@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:50:44.670538",
+  "scraped_at": "2026-04-04T11:16:23.633730",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/railway/rrb-group-d-cen-09-2025/",
   "page_type": "job",
@@ -93,16 +93,6 @@
       "link_type": "notification"
     },
     {
-      "label": "Download Zone Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRB%20CEN%20092025%20Zone%20Wise%20Vacancy%20SarkariResult_Com.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Full Notification",
-      "url": "https://doc.sarkariresults.org.in/RRB%20CEN%20092025%20SarkariResult_Com.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "PDF Tools and Remove Background",
       "url": "https://sarkariresultportal.com/",
       "link_type": "other"
@@ -161,14 +151,6 @@
       "url": "https://www.rrbchennai.gov.in/downloads/Final-Detailed-CEN-09-2025-Level-1-updated-on-30-01-2026.pdf"
     },
     {
-      "label": "Download Zone Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/RRB%20CEN%20092025%20Zone%20Wise%20Vacancy%20SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Download Full Notification",
-      "url": "https://doc.sarkariresults.org.in/RRB%20CEN%20092025%20SarkariResult_Com.pdf"
-    },
-    {
       "label": "PDF Tools and Remove Background",
       "url": "https://sarkariresultportal.com/"
     },
@@ -197,14 +179,6 @@
     {
       "label": "Click Here",
       "url": "https://www.rrbchennai.gov.in/downloads/Final-Detailed-CEN-09-2025-Level-1-updated-on-30-01-2026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RRB%20CEN%20092025%20Zone%20Wise%20Vacancy%20SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RRB%20CEN%20092025%20SarkariResult_Com.pdf"
     }
   ]
 }

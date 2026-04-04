@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:01:26.824944",
+  "scraped_at": "2026-04-04T11:29:20.101286",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/pnb-apprentice-feb26/",
   "page_type": "result",
@@ -59,11 +59,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/PNB_Apprentice_25%20(1).pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://pnb.bank.in/recruitments.aspx",
       "link_type": "official_website"
@@ -89,18 +84,9 @@
       "url": "https://beep.bfsissc.com/candidate_login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/PNB_Apprentice_25%20(1).pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://pnb.bank.in/recruitments.aspx"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/PNB_Apprentice_25%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

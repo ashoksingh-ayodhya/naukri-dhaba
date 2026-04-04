@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:57:01.744022",
+  "scraped_at": "2026-04-04T11:24:24.122782",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/csir-iitr-jr-stenographer-may25/",
   "page_type": "job",
@@ -41,11 +41,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/CSIR_IITR_Stenographer_Notification_2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://iitr.res.in/",
       "link_type": "official_website"
@@ -63,18 +58,9 @@
       "url": "https://csiriitrprograms.in/jst/index.html"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/CSIR_IITR_Stenographer_Notification_2025.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://iitr.res.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/CSIR_IITR_Stenographer_Notification_2025.pdf"
-    }
-  ]
+  "download_links": []
 }

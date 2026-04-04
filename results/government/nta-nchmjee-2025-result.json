@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:26.805749",
+  "scraped_at": "2026-04-04T11:40:00.713542",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/nta-nchmjee-2025/",
   "page_type": "result",
@@ -46,11 +46,6 @@
       "link_type": "result"
     },
     {
-      "label": "Download Result Notice",
-      "url": "https://doc.sarkariresults.org.in/public-noticedeclaration-of-resultnchm-2025.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://nchm2025.ntaonline.in/admit-card/index",
       "link_type": "admit"
@@ -61,19 +56,9 @@
       "link_type": "exam_city"
     },
     {
-      "label": "Download Exam City Notice",
-      "url": "https://doc.sarkariresults.org.in/Notice_20250419143554.pdf",
-      "link_type": "exam_city"
-    },
-    {
       "label": "Apply Online",
       "url": "https://nchm2025.ntaonline.in/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/Notice_20250228173419.pdf",
-      "link_type": "other"
     },
     {
       "label": "Download Notification",
@@ -98,10 +83,6 @@
       "url": "https://nchm2025.ntaonline.in/scorecard/index"
     },
     {
-      "label": "Download Result Notice",
-      "url": "https://doc.sarkariresults.org.in/public-noticedeclaration-of-resultnchm-2025.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://nchm2025.ntaonline.in/admit-card/index"
     },
@@ -110,16 +91,8 @@
       "url": "https://nchm2025.ntaonline.in/cityintimation/index"
     },
     {
-      "label": "Download Exam City Notice",
-      "url": "https://doc.sarkariresults.org.in/Notice_20250419143554.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://nchm2025.ntaonline.in/"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/Notice_20250228173419.pdf"
     },
     {
       "label": "Download Notification",
@@ -131,18 +104,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/public-noticedeclaration-of-resultnchm-2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Notice_20250419143554.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Notice_20250228173419.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://exams.nta.ac.in/NCHM/images/ib-nchm-jee-2025.pdf"

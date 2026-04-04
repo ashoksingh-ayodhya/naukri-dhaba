@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:51:46.497215",
+  "scraped_at": "2026-04-04T11:17:39.834137",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/railway/rrc-wr-apprentices-feb26/",
   "page_type": "job",
@@ -64,11 +64,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RRC_WR_Apprentices_2026%20(1).pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.rrc-wr.com/",
       "link_type": "official_website"
@@ -98,18 +93,9 @@
       "url": "https://www.youtube.com/watch?v=HHnrA9iwQPs"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/RRC_WR_Apprentices_2026%20(1).pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.rrc-wr.com/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/RRC_WR_Apprentices_2026%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

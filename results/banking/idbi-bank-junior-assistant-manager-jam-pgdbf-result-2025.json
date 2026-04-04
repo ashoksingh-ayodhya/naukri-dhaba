@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:33.575845",
+  "scraped_at": "2026-04-04T11:40:15.558578",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/idbi-jam-pgdbf-mar25/",
   "page_type": "result",
@@ -58,11 +58,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/IDBI_Bank_Detailed-Advertisement-PGDBF-2025-26.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.idbibank.in/idbi-bank-careers-current-openings.aspx",
       "link_type": "official_website"
@@ -88,18 +83,9 @@
       "url": "https://ibpsonline.ibps.in/idbipgfeb25/"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/IDBI_Bank_Detailed-Advertisement-PGDBF-2025-26.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://www.idbibank.in/idbi-bank-careers-current-openings.aspx"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/IDBI_Bank_Detailed-Advertisement-PGDBF-2025-26.pdf"
-    }
-  ]
+  "download_links": []
 }

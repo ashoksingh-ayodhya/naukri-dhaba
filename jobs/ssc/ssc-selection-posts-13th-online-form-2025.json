@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:58.158562",
+  "scraped_at": "2026-04-04T11:22:45.491026",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-selection-post-13th-2025/",
   "page_type": "job",
@@ -112,19 +112,9 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Notice_of_RHQ_2025_phase_xiii.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Region / Post Wise Vacancy Details",
       "url": "https://ssc.gov.in/rhq-selection-post/rhq-post-details",
       "link_type": "other"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/05/ssc-selection-syllabus.pdf",
-      "link_type": "syllabus"
     },
     {
       "label": "Official Website",
@@ -192,16 +182,8 @@
       "url": "https://ssc.gov.in/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Notice_of_RHQ_2025_phase_xiii.pdf"
-    },
-    {
       "label": "Region / Post Wise Vacancy Details",
       "url": "https://ssc.gov.in/rhq-selection-post/rhq-post-details"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/05/ssc-selection-syllabus.pdf"
     },
     {
       "label": "Official Website",
@@ -248,14 +230,6 @@
     {
       "label": "Graduation",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/Results/ROLWH_GR_05022026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Notice_of_RHQ_2025_phase_xiii.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/05/ssc-selection-syllabus.pdf"
     }
   ]
 }

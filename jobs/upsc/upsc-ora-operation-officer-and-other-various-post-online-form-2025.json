@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:43.397257",
+  "scraped_at": "2026-04-04T11:22:16.414543",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-ora-06-2025/",
   "page_type": "job",
@@ -53,11 +53,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSC_ORA_062025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Join Our Telegram Page",
       "url": "https://t.me/sarkari",
       "link_type": "other"
@@ -80,10 +75,6 @@
       "url": "https://upsconline.gov.in/ora/VacancyNoticePub.php"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSC_ORA_062025.pdf"
-    },
-    {
       "label": "Join Our Telegram Page",
       "url": "https://t.me/sarkari"
     },
@@ -92,10 +83,5 @@
       "url": "https://upsc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "UPSC Advt No 06/2025",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSC_ORA_062025.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:02.925373",
+  "scraped_at": "2026-04-04T11:39:27.335042",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/sbi-po-dec24/",
   "page_type": "result",
@@ -56,11 +56,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Mains Result",
-      "url": "https://doc.sarkariresults.org.in/SBIPO2024-Main-WTRESULT-15%20columns.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Mains Admit Card",
       "url": "https://ibpsonline.ibps.in/sbiponov24/oeclb_apr25/login.php?appid=b4d9209386abe07c255bb9c1bf0a7451",
       "link_type": "admit"
@@ -86,19 +81,9 @@
       "link_type": "admit"
     },
     {
-      "label": "Download Exam Schedule",
-      "url": "https://doc.sarkariresults.org.in/sbi_po_Exam_Schedule_2025%20(1).pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ibpsonline.ibps.in/sbiponov24/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SBI_PO_Notification_2024for_600_Post_SarkariResult_Com.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Remove Background, Resume Maker, Resize Photo, JPEG to PDF Maker, Other Tools",
@@ -127,10 +112,6 @@
       "url": "https://ibpsonline.ibps.in/sbiponov24/ptcla_may25/login.php?appid=194870a40a97ec7688fdc8855f9e92ac"
     },
     {
-      "label": "Download Mains Result",
-      "url": "https://doc.sarkariresults.org.in/SBIPO2024-Main-WTRESULT-15%20columns.pdf"
-    },
-    {
       "label": "Download Mains Admit Card",
       "url": "https://ibpsonline.ibps.in/sbiponov24/oeclb_apr25/login.php?appid=b4d9209386abe07c255bb9c1bf0a7451"
     },
@@ -151,16 +132,8 @@
       "url": "https://www.youtube.com/watch?v=dka5xlfQExI"
     },
     {
-      "label": "Download Exam Schedule",
-      "url": "https://doc.sarkariresults.org.in/sbi_po_Exam_Schedule_2025%20(1).pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ibpsonline.ibps.in/sbiponov24/"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SBI_PO_Notification_2024for_600_Post_SarkariResult_Com.pdf"
     },
     {
       "label": "Remove Background, Resume Maker, Resize Photo, JPEG to PDF Maker, Other Tools",
@@ -171,18 +144,5 @@
       "url": "https://bank.sbi/web/careers"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SBIPO2024-Main-WTRESULT-15%20columns.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/sbi_po_Exam_Schedule_2025%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SBI_PO_Notification_2024for_600_Post_SarkariResult_Com.pdf"
-    }
-  ]
+  "download_links": []
 }

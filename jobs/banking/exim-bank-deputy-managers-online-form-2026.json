@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:54:04.602729",
+  "scraped_at": "2026-04-04T11:20:14.592339",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/exim-bank-dy-manager-jan26/",
   "page_type": "job",
@@ -48,11 +48,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Direct%20Recruitment%20Drive%20for%20Deputy%20Manager%202025-26%20(1).pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Sarkari Result PDF Tool Portal | Remove Background",
       "url": "https://sarkariresultportal.com/",
       "link_type": "result"
@@ -75,10 +70,6 @@
       "url": "https://ibpsreg.ibps.in/iebdmnov25/"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Direct%20Recruitment%20Drive%20for%20Deputy%20Manager%202025-26%20(1).pdf"
-    },
-    {
       "label": "Sarkari Result PDF Tool Portal | Remove Background",
       "url": "https://sarkariresultportal.com/"
     },
@@ -87,10 +78,5 @@
       "url": "https://www.eximbankindia.in/careers"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Direct%20Recruitment%20Drive%20for%20Deputy%20Manager%202025-26%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

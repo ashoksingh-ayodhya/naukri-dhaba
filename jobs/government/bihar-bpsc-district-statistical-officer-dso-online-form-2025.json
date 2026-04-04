@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:54.404559",
+  "scraped_at": "2026-04-04T11:22:40.474102",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpsc-dso-38-2025/",
   "page_type": "job",
@@ -50,11 +50,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_DSO_NB-2025-05-30-03.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpsc.bihar.gov.in/",
       "link_type": "official_website"
@@ -72,18 +67,9 @@
       "url": "https://bpsconline.bihar.gov.in/candidate/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_DSO_NB-2025-05-30-03.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpsc.bihar.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSC_DSO_NB-2025-05-30-03.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:49:27.813893",
+  "scraped_at": "2026-04-04T11:15:04.073740",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/hssc/hssc-steno-03-2026/",
   "page_type": "job",
@@ -53,16 +53,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Date Change & Vacancy Update Notice",
-      "url": "https://doc.sarkariresults.org.in/HSSC_Corrigendum_03_2026.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/HSSC_Advt_03_2026.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://hssc.gov.in/",
       "link_type": "official_website"
@@ -84,26 +74,9 @@
       "url": "https://hssc.gov.in/file/ac1f23cd-99c4-13a6-819c-f737d99a0068/advertisements"
     },
     {
-      "label": "Download Date Change & Vacancy Update Notice",
-      "url": "https://doc.sarkariresults.org.in/HSSC_Corrigendum_03_2026.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/HSSC_Advt_03_2026.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://hssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/HSSC_Corrigendum_03_2026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/HSSC_Advt_03_2026.pdf"
-    }
-  ]
+  "download_links": []
 }

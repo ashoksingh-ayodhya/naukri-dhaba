@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:36.667098",
+  "scraped_at": "2026-04-04T11:22:06.841752",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/awes-tgt-pgt-prt-june25/",
   "page_type": "job",
@@ -51,11 +51,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/sarkariresult.com_AWES_Army_School_TGT_PGT_PRT_OST%20GEN%20INSTRUCTION-2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Download Important Dates Notice",
       "url": "https://d1yuouvjj7yykz.cloudfront.net/pwbd/awes+improtant+dates+2025-05-21+17-35-16.png",
       "link_type": "other"
@@ -83,10 +78,6 @@
       "url": "https://awes25.register.smartexams.in/home"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/sarkariresult.com_AWES_Army_School_TGT_PGT_PRT_OST%20GEN%20INSTRUCTION-2025.pdf"
-    },
-    {
       "label": "Download Important Dates Notice",
       "url": "https://d1yuouvjj7yykz.cloudfront.net/pwbd/awes+improtant+dates+2025-05-21+17-35-16.png"
     },
@@ -99,10 +90,5 @@
       "url": "https://awesindia.com/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/sarkariresult.com_AWES_Army_School_TGT_PGT_PRT_OST%20GEN%20INSTRUCTION-2025.pdf"
-    }
-  ]
+  "download_links": []
 }

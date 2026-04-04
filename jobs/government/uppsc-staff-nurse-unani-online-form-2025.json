@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:47.666727",
+  "scraped_at": "2026-04-04T11:22:22.997058",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/uppsc-staff-nurse-unani-june25/",
   "page_type": "job",
@@ -57,11 +57,6 @@
       "link_type": "admit"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_March26.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx",
       "link_type": "apply"
@@ -70,16 +65,6 @@
       "label": "UPPSC OTR DashBoard",
       "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back",
       "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_Unani_English_June25.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_Unani_Hindi_june25.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -103,10 +88,6 @@
       "url": "https://uppsc.up.nic.in/CandidatePages/Advertismentwise_DownloadDocument.aspx?inptprmtr=ac"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_March26.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx"
     },
@@ -115,30 +96,9 @@
       "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_Unani_English_June25.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_Unani_Hindi_june25.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppsc.up.nic.in/CandidateHomePage.html"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_March26.pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_Unani_English_June25.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Staff_Nurse_Unani_Hindi_june25.pdf"
-    }
-  ]
+  "download_links": []
 }

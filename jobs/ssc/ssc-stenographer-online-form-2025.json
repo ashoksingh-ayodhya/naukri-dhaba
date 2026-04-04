@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:33.304751",
+  "scraped_at": "2026-04-04T11:22:02.382570",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-stenographer-2025/",
   "page_type": "job",
@@ -57,11 +57,6 @@
       "link_type": "exam_city"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_SSC_Notice_of_adv_steno_2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Download Syllabus",
       "url": "https://tinyurl.com/567jpskf",
       "link_type": "syllabus"
@@ -93,10 +88,6 @@
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Stenographer_Skill_Test_Notice_20012026.pdf"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_SSC_Notice_of_adv_steno_2025.pdf"
-    },
-    {
       "label": "Download Syllabus",
       "url": "https://tinyurl.com/567jpskf"
     },
@@ -113,10 +104,6 @@
     {
       "label": "Click Here",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Stenographer_Skill_Test_Notice_20012026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_SSC_Notice_of_adv_steno_2025.pdf"
     }
   ]
 }

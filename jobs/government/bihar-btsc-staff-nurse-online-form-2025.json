@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:26.520987",
+  "scraped_at": "2026-04-04T11:21:52.056718",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/btsc-staff-nurse-23-2025/",
   "page_type": "job",
@@ -47,18 +47,8 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BTSC_Staff_Nurse_Notification_2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Download Date Extended Notice",
       "url": "https://btsc.bihar.gov.in/sites/default/files/2025-06/1712website.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notice",
-      "url": "https://doc.sarkariresults.org.in/133899558734018981-1%20(1).pdf",
       "link_type": "other"
     },
     {
@@ -79,16 +69,8 @@
       "url": "https://cdn3.digialm.com/EForms/configuredHtml/1631/93756/Index.html"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BTSC_Staff_Nurse_Notification_2025.pdf"
-    },
-    {
       "label": "Download Date Extended Notice",
       "url": "https://btsc.bihar.gov.in/sites/default/files/2025-06/1712website.pdf"
-    },
-    {
-      "label": "Download Notice",
-      "url": "https://doc.sarkariresults.org.in/133899558734018981-1%20(1).pdf"
     },
     {
       "label": "Official Website",
@@ -98,15 +80,7 @@
   "download_links": [
     {
       "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BTSC_Staff_Nurse_Notification_2025.pdf"
-    },
-    {
-      "label": "Click Here",
       "url": "https://btsc.bihar.gov.in/sites/default/files/2025-06/1712website.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/133899558734018981-1%20(1).pdf"
     }
   ]
 }

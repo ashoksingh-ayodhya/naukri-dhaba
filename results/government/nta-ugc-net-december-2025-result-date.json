@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:52.276973",
+  "scraped_at": "2026-04-04T11:35:52.903232",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/ugc-net-december-2025/",
   "page_type": "result",
@@ -66,11 +66,6 @@
       "link_type": "answer_key"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/NTA_UGC_NET_Information_Brochure_June_2025.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Remove Photo Background, PDF Merge, PDF Split, PDF Compress, Resume",
       "url": "https://sarkariresultportal.com/",
       "link_type": "other"
@@ -100,10 +95,6 @@
       "url": "https://ugcnet.nta.nic.in/"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/NTA_UGC_NET_Information_Brochure_June_2025.pdf"
-    },
-    {
       "label": "Remove Photo Background, PDF Merge, PDF Split, PDF Compress, Resume",
       "url": "https://sarkariresultportal.com/"
     }
@@ -112,10 +103,6 @@
     {
       "label": "Click Here",
       "url": "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/02/202602041908030461.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/NTA_UGC_NET_Information_Brochure_June_2025.pdf"
     }
   ]
 }

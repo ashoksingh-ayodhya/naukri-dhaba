@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:09.260180",
+  "scraped_at": "2026-04-04T11:21:25.197921",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-lekhpal-02-exam-2025/",
   "page_type": "job",
@@ -55,11 +55,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Lekhpal_Exam_Date_SR%20(1).pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/Online_App/Results.aspx?ID=89&Result_Type=P&Exam_Code=3&Advt_Code=304&Dept_Code=556&Post_Code=1&OnlyIntview=No",
       "link_type": "eligibility"
@@ -78,11 +73,6 @@
       "label": "How to Check Result (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=thMY0b8ehcw",
       "link_type": "guide"
-    },
-    {
-      "label": "Download Cutoff Notice",
-      "url": "https://doc.sarkariresults.org.in/Download_UP_Lekhpal_SarkariREsult_Com_Cutoff_2026%20(1).pdf",
-      "link_type": "result"
     },
     {
       "label": "For Correction / Edit Form",
@@ -123,10 +113,6 @@
   "official_website_url": "https://upsssc.gov.in/",
   "extra_links": [
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Lekhpal_Exam_Date_SR%20(1).pdf"
-    },
-    {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/Online_App/Results.aspx?ID=89&Result_Type=P&Exam_Code=3&Advt_Code=304&Dept_Code=556&Post_Code=1&OnlyIntview=No"
     },
@@ -141,10 +127,6 @@
     {
       "label": "How to Check Result (Video Hindi)",
       "url": "https://www.youtube.com/watch?v=thMY0b8ehcw"
-    },
-    {
-      "label": "Download Cutoff Notice",
-      "url": "https://doc.sarkariresults.org.in/Download_UP_Lekhpal_SarkariREsult_Com_Cutoff_2026%20(1).pdf"
     },
     {
       "label": "For Correction / Edit Form",
@@ -171,14 +153,5 @@
       "url": "https://upsssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_Lekhpal_Exam_Date_SR%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Download_UP_Lekhpal_SarkariREsult_Com_Cutoff_2026%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

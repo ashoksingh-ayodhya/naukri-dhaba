@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:21.029658",
+  "scraped_at": "2026-04-04T11:38:19.881925",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/up-cnet-2025/",
   "page_type": "result",
@@ -74,29 +74,9 @@
       "link_type": "other"
     },
     {
-      "label": "Download Counseling Schedule and Notice",
-      "url": "https://doc.sarkariresults.org.in/UP_CNET_Online_Counseling_2025.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://abvmucet25.co.in/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download B.SC Nursing Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_BSc_Nursing_4Year_2025.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Post B.SC Nursing Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_2025_BSC_Nursing_2_Year%20(1).pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download M.SC Nursing / NPCC Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_2025_MSC_Nursing_.pdf",
-      "link_type": "other"
     },
     {
       "label": "Official Website",
@@ -128,46 +108,13 @@
       "url": "https://abvmucet25.co.in/seat-matrix?form=1&round=1"
     },
     {
-      "label": "Download Counseling Schedule and Notice",
-      "url": "https://doc.sarkariresults.org.in/UP_CNET_Online_Counseling_2025.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://abvmucet25.co.in/"
-    },
-    {
-      "label": "Download B.SC Nursing Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_BSc_Nursing_4Year_2025.pdf"
-    },
-    {
-      "label": "Download Post B.SC Nursing Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_2025_BSC_Nursing_2_Year%20(1).pdf"
-    },
-    {
-      "label": "Download M.SC Nursing / NPCC Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_2025_MSC_Nursing_.pdf"
     },
     {
       "label": "Official Website",
       "url": "http://www.abvmuup.edu.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UP_CNET_Online_Counseling_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_BSc_Nursing_4Year_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_2025_BSC_Nursing_2_Year%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPCNET_2025_MSC_Nursing_.pdf"
-    }
-  ]
+  "download_links": []
 }

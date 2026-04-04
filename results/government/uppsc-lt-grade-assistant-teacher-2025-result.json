@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:11.821598",
+  "scraped_at": "2026-04-04T11:30:22.860956",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/uppsc-lt-grade-teacher-2025/",
   "page_type": "result",
   "title": "UPPSC LT Grade Assistant Teacher 2025 Result",
-  "post_name": "UPPSC Assistant Grade LT Grade Teacher Recruitment 2025 Download Admit Card",
+  "post_name": "UPPSC Assistant Grade LT Grade Teacher Recruitment 2025 Result, Download Admit Card",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Uttar Pradesh Public Service Commission (UPPSC)",
@@ -23,7 +23,8 @@
     "Urdu, Music, Arts, Agri / Horti Result Available": "12/03/2026",
     "Physical Education Result Available": "19/03/2026",
     "Computer Subject Exam Date": "05/04/2026",
-    "Admit Card Available": "26/03/2026"
+    "Admit Card Available": "26/03/2026",
+    "Social Science Result Avaialble": "01/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "125/-",
@@ -58,6 +59,11 @@
   ],
   "important_links": [
     {
+      "label": "Apply Online (Mains Form)",
+      "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back",
+      "link_type": "apply"
+    },
+    {
       "label": "Download Admit Card",
       "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwTFMai3JQ+K3Bs0O6859Z9AS8bETbXQJjhNiKVH/IJoMSChX5fc6nRwZEYvGPZM/Ea1Yc5hVcTDZjyzLb54Rq2kqdU+1V1eRmoSs9n/VpovVyKHOVKSXbKVdXUc7gag5usvluv/8deN2Q==",
       "link_type": "admit"
@@ -66,66 +72,6 @@
       "label": "How to Check Result (Video Hindi)",
       "url": "https://youtu.be/JKpQ8xxpdmw",
       "link_type": "guide"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Agri_Horti_Result_2026.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Music_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Arts_Result%20(1).pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPSSC_LT_Urdu_Result.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_SarkariResult_Com_LT_English.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Biology_SarkariResult_Com.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_SarkariResult_COM_Science.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Sanskrit_SarkariResult_Com.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Home_Science_SarkariResult_LT.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Commerce_LT_SarkariResult.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Math_Result_2026.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Hindi_Result_2026.pdf",
-      "link_type": "result"
     },
     {
       "label": "Download Answer Key",
@@ -148,23 +94,22 @@
       "link_type": "notification"
     },
     {
-      "label": "UPPSC DashBoard Login",
-      "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppsc.up.nic.in/",
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx",
+  "apply_url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back",
   "notification_url": "https://tinyurl.com/5c43hk7p",
-  "result_url": "/upload/UPPSC_LT_BPED_Result_2026.pdf",
+  "result_url": "https://doc.sarkariresults.org.in/UPPSC_LT_Grade_Social_SCience_Result.pdf",
   "scorecard_url": "",
   "admit_url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwTFMai3JQ+K3Bs0O6859Z9AS8bETbXQJjhNiKVH/IJoMSChX5fc6nRwZEYvGPZM/Ea1Yc5hVcTDZjyzLb54Rq2kqdU+1V1eRmoSs9n/VpovVyKHOVKSXbKVdXUc7gag5usvluv/8deN2Q==",
   "official_website_url": "https://uppsc.up.nic.in/",
   "extra_links": [
+    {
+      "label": "Apply Online (Mains Form)",
+      "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwTFMai3JQ+K3Bs0O6859Z9AS8bETbXQJjhNiKVH/IJoMSChX5fc6nRwZEYvGPZM/Ea1Yc5hVcTDZjyzLb54Rq2kqdU+1V1eRmoSs9n/VpovVyKHOVKSXbKVdXUc7gag5usvluv/8deN2Q=="
@@ -172,54 +117,6 @@
     {
       "label": "How to Check Result (Video Hindi)",
       "url": "https://youtu.be/JKpQ8xxpdmw"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Agri_Horti_Result_2026.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Music_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Arts_Result%20(1).pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPSSC_LT_Urdu_Result.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_SarkariResult_Com_LT_English.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Biology_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_SarkariResult_COM_Science.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Sanskrit_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Home_Science_SarkariResult_LT.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Commerce_LT_SarkariResult.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Math_Result_2026.pdf"
-    },
-    {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Hindi_Result_2026.pdf"
     },
     {
       "label": "Download Answer Key",
@@ -238,10 +135,6 @@
       "url": "https://tinyurl.com/5c43hk7p"
     },
     {
-      "label": "UPPSC DashBoard Login",
-      "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppsc.up.nic.in/"
     }
@@ -254,54 +147,6 @@
     {
       "label": "Physical Education",
       "url": "/upload/UPPSC_LT_BPED_Result_2026.pdf"
-    },
-    {
-      "label": "Horti / Agri",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Agri_Horti_Result_2026.pdf"
-    },
-    {
-      "label": "Music",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Music_Result.pdf"
-    },
-    {
-      "label": "Arts",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Arts_Result%20(1).pdf"
-    },
-    {
-      "label": "Urdu",
-      "url": "https://doc.sarkariresults.org.in/UPSSC_LT_Urdu_Result.pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_SarkariResult_Com_LT_English.pdf"
-    },
-    {
-      "label": "Biology",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Biology_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Science",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_SarkariResult_COM_Science.pdf"
-    },
-    {
-      "label": "Sanskrit",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Sanskrit_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Home Science",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Home_Science_SarkariResult_LT.pdf"
-    },
-    {
-      "label": "Commerce",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Commerce_LT_SarkariResult.pdf"
-    },
-    {
-      "label": "Maths",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Math_Result_2026.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_LT_Hindi_Result_2026.pdf"
     }
   ]
 }

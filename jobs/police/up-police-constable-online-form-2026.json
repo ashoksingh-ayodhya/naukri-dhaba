@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:02.547421",
+  "scraped_at": "2026-04-04T11:21:16.273116",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/up-police-constable-jan26/",
   "page_type": "job",
@@ -46,16 +46,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Sample OMR Sheet with Instruction",
-      "url": "https://doc.sarkariresults.org.in/UPP_Constable_Sample_OMR.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPP%20Exam%20Date.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "For Correction / Edit Form",
       "url": "https://www.upprpb.in/",
       "link_type": "other"
@@ -94,14 +84,6 @@
   "official_website_url": "https://uppbpb.gov.in/",
   "extra_links": [
     {
-      "label": "Download Sample OMR Sheet with Instruction",
-      "url": "https://doc.sarkariresults.org.in/UPP_Constable_Sample_OMR.pdf"
-    },
-    {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPP%20Exam%20Date.pdf"
-    },
-    {
       "label": "For Correction / Edit Form",
       "url": "https://www.upprpb.in/"
     },
@@ -127,14 +109,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPP_Constable_Sample_OMR.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPP%20Exam%20Date.pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://uppbpb.gov.in/FilesUploaded/Notice/Const-Correction-Appcb4d4df6-5f22-45b1-b891-484683914c68.pdf"

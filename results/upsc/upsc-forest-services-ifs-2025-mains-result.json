@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:04:01.211179",
+  "scraped_at": "2026-04-04T11:33:04.337979",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-ias-ifs-2025/",
   "page_type": "result",
@@ -74,16 +74,6 @@
       "link_type": "result"
     },
     {
-      "label": "Download Civil Services IAS Pre Result",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CSP-2025-WR-RollList-Engl-110625.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Forest Services IFS Pre Result",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFSP-2025-WR-NameList-Engl-110625.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Pre Admit Card",
       "url": "https://upsconline.gov.in/eadmitcard/admitcard_csp_2025/",
       "link_type": "admit"
@@ -147,14 +137,6 @@
       "url": "https://upsc.gov.in/sites/default/files/WR_IFoSME_2026_Roll_Name_Eng_24022026.pdf"
     },
     {
-      "label": "Download Civil Services IAS Pre Result",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CSP-2025-WR-RollList-Engl-110625.pdf"
-    },
-    {
-      "label": "Download Forest Services IFS Pre Result",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFSP-2025-WR-NameList-Engl-110625.pdf"
-    },
-    {
       "label": "Download Pre Admit Card",
       "url": "https://upsconline.gov.in/eadmitcard/admitcard_csp_2025/"
     },
@@ -203,14 +185,6 @@
     {
       "label": "Name Wise",
       "url": "https://upsc.gov.in/sites/default/files/WR_IFoSME_2026_Roll_Name_Eng_24022026.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CSP-2025-WR-RollList-Engl-110625.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFSP-2025-WR-NameList-Engl-110625.pdf"
     },
     {
       "label": "Click Here",

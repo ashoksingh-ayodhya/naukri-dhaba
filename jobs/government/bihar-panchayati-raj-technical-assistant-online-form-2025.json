@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:55:39.648984",
+  "scraped_at": "2026-04-04T11:22:11.437015",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bihar-zp-technical-assistant-june25/",
   "page_type": "job",
@@ -48,16 +48,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Bihar_Panchayati_Raj_TA_Bharti_2025%20(1).pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Affidavit Format (Shapath Patra)",
-      "url": "https://doc.sarkariresults.org.in/Bihar_Panchayati_Raj_Technical_Assistant_Shapath_patra_Format_Notary.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Official Website",
       "url": "https://zp.bihar.gov.in/",
       "link_type": "official_website"
@@ -75,26 +65,9 @@
       "url": "https://zp.bihar.gov.in/TA/Login.aspx"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Bihar_Panchayati_Raj_TA_Bharti_2025%20(1).pdf"
-    },
-    {
-      "label": "Download Affidavit Format (Shapath Patra)",
-      "url": "https://doc.sarkariresults.org.in/Bihar_Panchayati_Raj_Technical_Assistant_Shapath_patra_Format_Notary.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://zp.bihar.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Bihar_Panchayati_Raj_TA_Bharti_2025%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Bihar_Panchayati_Raj_Technical_Assistant_Shapath_patra_Format_Notary.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:44.098299",
+  "scraped_at": "2026-04-04T11:40:35.235486",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/clat-admissions/",
   "page_type": "result",
@@ -75,11 +75,6 @@
       "link_type": "scorecard"
     },
     {
-      "label": "Download Revised Result Notice",
-      "url": "https://doc.sarkariresults.org.in/CLAT-2025-Result-Notification-17.05.2025.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Result / Score Card",
       "url": "https://consortiumofnlus.ac.in/clat-2025/view-result.html",
       "link_type": "result"
@@ -112,10 +107,6 @@
       "url": "https://consortiumofnlus.ac.in/clat-2025/"
     },
     {
-      "label": "Download Revised Result Notice",
-      "url": "https://doc.sarkariresults.org.in/CLAT-2025-Result-Notification-17.05.2025.pdf"
-    },
-    {
       "label": "Download Result / Score Card",
       "url": "https://consortiumofnlus.ac.in/clat-2025/view-result.html"
     },
@@ -132,10 +123,5 @@
       "url": "https://consortiumofnlus.ac.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/CLAT-2025-Result-Notification-17.05.2025.pdf"
-    }
-  ]
+  "download_links": []
 }

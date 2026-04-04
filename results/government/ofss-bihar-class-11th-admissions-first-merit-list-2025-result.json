@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:58.289826",
+  "scraped_at": "2026-04-04T11:37:37.116222",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/ofss-bihar-admissions/",
   "page_type": "result",
@@ -54,29 +54,9 @@
       "link_type": "result"
     },
     {
-      "label": "Download First Merit List Notice",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Bihar_Merit_list_2025.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ofssbihar.net/Higher-Education/innerpage.aspx",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Last_Date.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/CP_2025-27a%20(1).pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Bihar_Notification_25-27.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Join Our Sarkari Result WhatsApp Channel",
@@ -105,24 +85,8 @@
       "url": "https://ofssbihar.net/SAMS/CollegeCutOffMarksCurr.aspx?id=1&yr=2025"
     },
     {
-      "label": "Download First Merit List Notice",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Bihar_Merit_list_2025.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://ofssbihar.net/Higher-Education/innerpage.aspx"
-    },
-    {
-      "label": "Download Date Extended Notice",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Last_Date.pdf"
-    },
-    {
-      "label": "Download Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/CP_2025-27a%20(1).pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Bihar_Notification_25-27.pdf"
     },
     {
       "label": "Join Our Sarkari Result WhatsApp Channel",
@@ -133,22 +97,5 @@
       "url": "https://ofssbihar.net/Higher-Education/index.aspx"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Bihar_Merit_list_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Last_Date.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/CP_2025-27a%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/OFSS_Bihar_Notification_25-27.pdf"
-    }
-  ]
+  "download_links": []
 }

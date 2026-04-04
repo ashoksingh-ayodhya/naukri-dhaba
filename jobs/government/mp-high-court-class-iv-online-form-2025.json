@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:57:08.883126",
+  "scraped_at": "2026-04-04T11:24:33.456894",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mphc-class-iv-may25/",
   "page_type": "job",
@@ -48,11 +48,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/MPHC_Advertisement%20Class-IV%20recruitment%20HC-2025-.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://mphc.gov.in/",
       "link_type": "official_website"
@@ -70,18 +65,9 @@
       "url": "https://exam.mphc.gov.in/"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/MPHC_Advertisement%20Class-IV%20recruitment%20HC-2025-.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://mphc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/MPHC_Advertisement%20Class-IV%20recruitment%20HC-2025-.pdf"
-    }
-  ]
+  "download_links": []
 }

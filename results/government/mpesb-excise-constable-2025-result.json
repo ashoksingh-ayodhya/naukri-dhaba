@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:15.006045",
+  "scraped_at": "2026-04-04T11:34:54.034826",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mpesb-excise-constable-feb25/",
   "page_type": "result",
@@ -52,11 +52,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/MPESB_Excise_Constable_SarkariResult_Com_Abkari_constable_2024_Rulebook.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Document Resizer, Resume Maker, Age Calculator and Other Tools",
       "url": "https://sarkariresult.tools/",
       "link_type": "other"
@@ -83,10 +78,6 @@
       "url": "https://esb.mponline.gov.in/Portal/Examinations/Vyapam/examsList.aspx"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/MPESB_Excise_Constable_SarkariResult_Com_Abkari_constable_2024_Rulebook.pdf"
-    },
-    {
       "label": "Document Resizer, Resume Maker, Age Calculator and Other Tools",
       "url": "https://sarkariresult.tools/"
     },
@@ -95,10 +86,5 @@
       "url": "https://esb.mp.gov.in/e_default.html"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/MPESB_Excise_Constable_SarkariResult_Com_Abkari_constable_2024_Rulebook.pdf"
-    }
-  ]
+  "download_links": []
 }

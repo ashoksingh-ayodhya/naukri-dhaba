@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:16.892576",
+  "scraped_at": "2026-04-04T11:39:46.253769",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/india-post-gds-jan25/",
   "page_type": "result",
@@ -68,16 +68,6 @@
       "label": "Pay Exam Fee, Status, Forget Application Number",
       "url": "https://indiapostgdsonline.gov.in/Fee_Check.aspx",
       "link_type": "other"
-    },
-    {
-      "label": "State Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/India_post_GDS_State_Wise_Vacancy_Jan2025.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/India_Post_GDS_Jan_2025_Model_Notification.pdf",
-      "link_type": "notification"
     }
   ],
   "apply_url": "https://indiapostgdsonline.gov.in/Reg_validation.aspx",
@@ -106,24 +96,7 @@
     {
       "label": "Pay Exam Fee, Status, Forget Application Number",
       "url": "https://indiapostgdsonline.gov.in/Fee_Check.aspx"
-    },
-    {
-      "label": "State Wise Vacancy Details",
-      "url": "https://doc.sarkariresults.org.in/India_post_GDS_State_Wise_Vacancy_Jan2025.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/India_Post_GDS_Jan_2025_Model_Notification.pdf"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/India_post_GDS_State_Wise_Vacancy_Jan2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/India_Post_GDS_Jan_2025_Model_Notification.pdf"
-    }
-  ]
+  "download_links": []
 }

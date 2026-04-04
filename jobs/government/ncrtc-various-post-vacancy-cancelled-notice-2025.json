@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:34.839115",
+  "scraped_at": "2026-04-04T11:23:47.368280",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/ncrtc-various-post-mar25/",
   "page_type": "job",
@@ -42,19 +42,9 @@
   ],
   "important_links": [
     {
-      "label": "Download Vacancy Cancelled Notice",
-      "url": "https://doc.sarkariresults.org.in/Cancellation_Notice_No132025L.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "For Refund Login",
       "url": "https://test.cbexams.com/EDPSU/NCRTC/Registration/Regstep.aspx",
       "link_type": "other"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/NCRTC_Various_Post_Notification%20(1).pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -70,30 +60,13 @@
   "official_website_url": "https://ncrtc.in/",
   "extra_links": [
     {
-      "label": "Download Vacancy Cancelled Notice",
-      "url": "https://doc.sarkariresults.org.in/Cancellation_Notice_No132025L.pdf"
-    },
-    {
       "label": "For Refund Login",
       "url": "https://test.cbexams.com/EDPSU/NCRTC/Registration/Regstep.aspx"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/NCRTC_Various_Post_Notification%20(1).pdf"
     },
     {
       "label": "Official Website",
       "url": "https://ncrtc.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Cancellation_Notice_No132025L.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/NCRTC_Various_Post_Notification%20(1).pdf"
-    }
-  ]
+  "download_links": []
 }

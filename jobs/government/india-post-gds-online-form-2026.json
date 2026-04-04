@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:53:09.158746",
+  "scraped_at": "2026-04-04T11:19:08.556008",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/india-post-gds-2026/",
   "page_type": "job",
@@ -63,11 +63,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/India_post_GDS_Notification_2026.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "GDS Official Website",
       "url": "https://indiapostgdsonline.gov.in/",
       "link_type": "official_website"
@@ -97,18 +92,9 @@
       "url": "https://youtu.be/Kvv9QMqFdCo"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/India_post_GDS_Notification_2026.pdf"
-    },
-    {
       "label": "GDS Official Website",
       "url": "https://indiapostgdsonline.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/India_post_GDS_Notification_2026.pdf"
-    }
-  ]
+  "download_links": []
 }

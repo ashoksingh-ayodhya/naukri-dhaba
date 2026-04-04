@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:52:13.021710",
+  "scraped_at": "2026-04-04T11:14:01.382256",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/army-agniveer-2026/",
   "page_type": "job",
@@ -14,8 +14,8 @@
   "dept": "ARMY",
   "dates": {
     "Application Begin": "13/02/2026",
-    "Last Date for Apply Online": "01/04/2026",
-    "Pay Exam Fee Last Date": "01/04/2026"
+    "Last Date for Apply Online": "10/04/2026",
+    "Pay Exam Fee Last Date": "10/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "250/-",

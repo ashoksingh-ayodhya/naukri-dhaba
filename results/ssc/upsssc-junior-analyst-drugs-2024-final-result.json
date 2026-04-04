@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:02:45.914418",
+  "scraped_at": "2026-04-04T11:31:01.464471",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-05-exam-2024/",
   "page_type": "result",
@@ -60,16 +60,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Final Result",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_05_Exam_2024_Final_Result%20(1).pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Revised Answer Key",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_05Exam2024_Final_AnswerKey%20(1).pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Answer Key",
       "url": "https://drive.google.com/file/d/1ZdGZ-7E4j1fAfyQ-hEhAuLLDL2b24zSy/view",
       "link_type": "answer_key"
@@ -110,19 +100,9 @@
       "link_type": "eligibility"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSSSC_05-Exam-2024_Syllabus.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Apply Online",
       "url": "https://upsssc.gov.in/AllNotifications.aspx",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/02/sarkariresult.com-junior-analyst-medicine-notification-pdf.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -137,14 +117,6 @@
   "admit_url": "https://upsssc.gov.in/Online_App/AdmitCard.aspx?ID=MAIN",
   "official_website_url": "https://upsssc.gov.in/",
   "extra_links": [
-    {
-      "label": "Download Final Result",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_05_Exam_2024_Final_Result%20(1).pdf"
-    },
-    {
-      "label": "Download Revised Answer Key",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_05Exam2024_Final_AnswerKey%20(1).pdf"
-    },
     {
       "label": "Download Answer Key",
       "url": "https://drive.google.com/file/d/1ZdGZ-7E4j1fAfyQ-hEhAuLLDL2b24zSy/view"
@@ -178,38 +150,13 @@
       "url": "https://upsssc.gov.in/ViewPdf.aspx?IMVi3syZoGnmx8JT0jx9RbXNCY8P40BgnO/QSgD13xM="
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSSSC_05-Exam-2024_Syllabus.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://upsssc.gov.in/AllNotifications.aspx"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/02/sarkariresult.com-junior-analyst-medicine-notification-pdf.pdf"
     },
     {
       "label": "Official Website",
       "url": "https://upsssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_05_Exam_2024_Final_Result%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_05Exam2024_Final_AnswerKey%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/SarkariResult.Com_UPSSSC_05-Exam-2024_Syllabus.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2024/02/sarkariresult.com-junior-analyst-medicine-notification-pdf.pdf"
-    }
-  ]
+  "download_links": []
 }

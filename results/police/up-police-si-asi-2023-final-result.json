@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:01:30.583962",
+  "scraped_at": "2026-04-04T11:29:24.112681",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2024/up-police-si-asi-jan24/",
   "page_type": "result",
@@ -55,11 +55,6 @@
       "link_type": "result"
     },
     {
-      "label": "Download Candidate List for Stenographer Test",
-      "url": "https://doc.sarkariresults.org.in/UPP_SI_ASI_Resultfor_Steno_Test_2026.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Admit Card (Steno)",
       "url": "https://www.asimexams.com/lipikstenographyadmitcard/index.aspx",
       "link_type": "admit"
@@ -90,11 +85,6 @@
       "link_type": "notification"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/uppolice_si_asi_exam_2024_syllabus_sarkariresult_Com.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppbpb.gov.in",
       "link_type": "official_website"
@@ -114,10 +104,6 @@
     {
       "label": "Download Final Result Notice / Cutoff",
       "url": "https://www.asimexams.com/lipikresults/homepage.aspx"
-    },
-    {
-      "label": "Download Candidate List for Stenographer Test",
-      "url": "https://doc.sarkariresults.org.in/UPP_SI_ASI_Resultfor_Steno_Test_2026.pdf"
     },
     {
       "label": "Download Admit Card (Steno)",
@@ -144,10 +130,6 @@
       "url": "https://uppbpb.gov.in/FilesUploaded/Notice/vig1_28.12.2023ca61b9b8-bb72-49a3-899d-491f0fdc6ac5e000248c-f3b2-40c8-bc3a-162704281b86.pdf"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/uppolice_si_asi_exam_2024_syllabus_sarkariresult_Com.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppbpb.gov.in"
     }
@@ -156,10 +138,6 @@
     {
       "label": "Click Here",
       "url": "https://uppbpb.gov.in/FilesUploaded/Notice/MINISTERIAL-RESULT9e535df7-aadd-4ba3-a998-6be6832a5721.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPP_SI_ASI_Resultfor_Steno_Test_2026.pdf"
     },
     {
       "label": "Click Here",
@@ -179,19 +157,11 @@
     },
     {
       "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPP_Typing_test_Process.pdf"
-    },
-    {
-      "label": "Click Here",
       "url": "https://uppbpb.gov.in/FilesUploaded/Notice/20240128172832615_000113385733-67ae-455e-9227-8229591df93e.pdf"
     },
     {
       "label": "Click Here",
       "url": "https://uppbpb.gov.in/FilesUploaded/Notice/vig1_28.12.2023ca61b9b8-bb72-49a3-899d-491f0fdc6ac5e000248c-f3b2-40c8-bc3a-162704281b86.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/uppolice_si_asi_exam_2024_syllabus_sarkariresult_Com.pdf"
     }
   ]
 }

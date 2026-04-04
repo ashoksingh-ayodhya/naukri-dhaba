@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:07.563490",
+  "scraped_at": "2026-04-04T11:36:23.658169",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/delhi/dsssb-latest-result/",
   "page_type": "result",
@@ -69,16 +69,6 @@
     {
       "label": "DSSSB Technician OT/CSSD Post Code 48/23 Result",
       "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/995.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "DSSSB Nursing Officer Advt No 04/2024 Result",
-      "url": "https://doc.sarkariresults.org.in/Delhi_DSSSB_Nursing_officer_Result_2025.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "DSSSB Assistant Engineer Civil Post Code 802/22 Result",
-      "url": "https://doc.sarkariresults.org.in/DSSSB_AE_Civil_Post_803_22_Result.pdf",
       "link_type": "result"
     },
     {
@@ -292,21 +282,6 @@
       "link_type": "result"
     },
     {
-      "label": "DSSSB TGT Social Science Female 40/21 Result",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/RN0045.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "DSSSB TGT Hindi Male 34/21 Result",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-220015-scaled.jpg",
-      "link_type": "result"
-    },
-    {
-      "label": "DSSSB TGT Hindi Male 34/21 Result",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-2200151-scaled.jpg",
-      "link_type": "result"
-    },
-    {
       "label": "How to Check Result / Marks",
       "url": "https://www.youtube.com/watch?v=M_m2v_gU5LE",
       "link_type": "guide"
@@ -369,14 +344,6 @@
     {
       "label": "DSSSB Technician OT/CSSD Post Code 48/23 Result",
       "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/995.pdf"
-    },
-    {
-      "label": "DSSSB Nursing Officer Advt No 04/2024 Result",
-      "url": "https://doc.sarkariresults.org.in/Delhi_DSSSB_Nursing_officer_Result_2025.pdf"
-    },
-    {
-      "label": "DSSSB Assistant Engineer Civil Post Code 802/22 Result",
-      "url": "https://doc.sarkariresults.org.in/DSSSB_AE_Civil_Post_803_22_Result.pdf"
     },
     {
       "label": "DSSSB SUB STATION ATTENDANT (GRADE II) Post Code 76/23 Result",
@@ -547,18 +514,6 @@
       "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/17-5_0003.pdf"
     },
     {
-      "label": "DSSSB TGT Social Science Female 40/21 Result",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/RN0045.pdf"
-    },
-    {
-      "label": "DSSSB TGT Hindi Male 34/21 Result",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-220015-scaled.jpg"
-    },
-    {
-      "label": "DSSSB TGT Hindi Male 34/21 Result",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/Adv_05-2200151-scaled.jpg"
-    },
-    {
       "label": "How to Check Result / Marks",
       "url": "https://www.youtube.com/watch?v=M_m2v_gU5LE"
     },
@@ -607,14 +562,6 @@
     {
       "label": "Result",
       "url": "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/universal-tab/995.pdf"
-    },
-    {
-      "label": "Result",
-      "url": "https://doc.sarkariresults.org.in/Delhi_DSSSB_Nursing_officer_Result_2025.pdf"
-    },
-    {
-      "label": "Result Notice",
-      "url": "https://doc.sarkariresults.org.in/DSSSB_AE_Civil_Post_803_22_Result.pdf"
     },
     {
       "label": "Result Notice",
@@ -779,10 +726,6 @@
     {
       "label": "Result",
       "url": "https://dsssb.delhi.gov.in/sites/default/files/All-PDF/17-5_0003.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2022/02/RN0045.pdf"
     }
   ]
 }

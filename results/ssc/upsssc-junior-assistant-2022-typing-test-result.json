@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:03:50.732819",
+  "scraped_at": "2026-04-04T11:32:35.378293",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-junior-asst-09-2022/",
   "page_type": "result",
@@ -77,11 +77,6 @@
       "link_type": "exam_city"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/09-Exam-2022_Exam_Notice.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "http://upsssc.gov.in/Default.aspx",
       "link_type": "apply"
@@ -125,10 +120,6 @@
       "url": "https://upsssc.gov.in/ViewPdf.aspx?9NQQnX4kWD+pr84XJksyrIIwOV6VEtK2kUVX2W6L3pY="
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/09-Exam-2022_Exam_Notice.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "http://upsssc.gov.in/Default.aspx"
     },
@@ -142,14 +133,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_09_Exam_2022_Result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/09-Exam-2022_Exam_Notice.pdf"
-    },
     {
       "label": "Click Here",
       "url": "http://164.100.181.233/document/Files/UP005/UploadNotices/2210221434556998_C.pdf"

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:04:32.374987",
+  "scraped_at": "2026-04-04T11:33:50.986356",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpssc-si-prohibition-01-2025/",
   "page_type": "result",
@@ -57,11 +57,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/BPSSC_Prelims_Result_01_25_Sd.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://apply-bpssc.com/bpssc_1_25_weadmitcards/applicationIndex",
       "link_type": "admit"
@@ -72,19 +67,9 @@
       "link_type": "other"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/Notice%20E-Admit%20Card%20on%20website%20pdf.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://apply-bpssc.com/Bpssc_si_01_25_v1/applicationIndex",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSSSC_SI_Prohibition_Advt.%20No%2001-2025%20(1).pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -108,10 +93,6 @@
       "url": "https://bpssc.bihar.gov.in/Notices/PER/Notice%20for%20Upload%20Marks.pdf"
     },
     {
-      "label": "Download Result",
-      "url": "https://doc.sarkariresults.org.in/BPSSC_Prelims_Result_01_25_Sd.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://apply-bpssc.com/bpssc_1_25_weadmitcards/applicationIndex"
     },
@@ -120,16 +101,8 @@
       "url": "https://bpssc.bihar.gov.in/Notices/PER/Centre_list.pdf"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/Notice%20E-Admit%20Card%20on%20website%20pdf.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://apply-bpssc.com/Bpssc_si_01_25_v1/applicationIndex"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSSSC_SI_Prohibition_Advt.%20No%2001-2025%20(1).pdf"
     },
     {
       "label": "Official Website",
@@ -143,19 +116,7 @@
     },
     {
       "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSSC_Prelims_Result_01_25_Sd.pdf"
-    },
-    {
-      "label": "Click Here",
       "url": "https://bpssc.bihar.gov.in/Notices/PER/Centre_list.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Notice%20E-Admit%20Card%20on%20website%20pdf.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSSSC_SI_Prohibition_Advt.%20No%2001-2025%20(1).pdf"
     }
   ]
 }

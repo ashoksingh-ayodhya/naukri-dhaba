@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:05.786796",
+  "scraped_at": "2026-04-04T11:22:57.449270",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpsc-71th-exam-2025/",
   "page_type": "job",
@@ -50,16 +50,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_71th_Detailed_Notification.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Syllabus (Pre / Mains)",
-      "url": "https://doc.sarkariresults.org.in/BPSC_70th_SarkariResult_Com_Syllabus-CC-Exam-Updated.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Signature Resizer, PDF Compress, Age Calculator and More Tools",
       "url": "https://sarkariresult.tools/",
       "link_type": "other"
@@ -82,14 +72,6 @@
       "url": "https://bpsconline.bihar.gov.in/candidate/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_71th_Detailed_Notification.pdf"
-    },
-    {
-      "label": "Download Syllabus (Pre / Mains)",
-      "url": "https://doc.sarkariresults.org.in/BPSC_70th_SarkariResult_Com_Syllabus-CC-Exam-Updated.pdf"
-    },
-    {
       "label": "Signature Resizer, PDF Compress, Age Calculator and More Tools",
       "url": "https://sarkariresult.tools/"
     },
@@ -98,14 +80,5 @@
       "url": "https://bpsc.bihar.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSC_71th_Detailed_Notification.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSC_70th_SarkariResult_Com_Syllabus-CC-Exam-Updated.pdf"
-    }
-  ]
+  "download_links": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:13.524960",
+  "scraped_at": "2026-04-04T11:39:42.159287",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/coast-guard-navik-02-2025/",
   "page_type": "result",
@@ -50,11 +50,6 @@
       "link_type": "result"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Coast_Guard_CGEPT_02_2025_Detailed_Notification_SarkariResult_Com.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "http://www.joinindiancoastguard.gov.in/",
       "link_type": "official_website"
@@ -72,18 +67,9 @@
       "url": "https://cgept.cdac.in/icgreg/candidate/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Coast_Guard_CGEPT_02_2025_Detailed_Notification_SarkariResult_Com.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "http://www.joinindiancoastguard.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Coast_Guard_CGEPT_02_2025_Detailed_Notification_SarkariResult_Com.pdf"
-    }
-  ]
+  "download_links": []
 }

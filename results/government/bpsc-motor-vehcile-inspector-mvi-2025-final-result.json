@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:01.586438",
+  "scraped_at": "2026-04-04T11:36:16.987290",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpsc-mvi-41-2025/",
   "page_type": "result",
@@ -55,11 +55,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_MVI_NB-2025-06-09-06.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpscpat.bihar.gov.in/",
       "link_type": "official_website"
@@ -81,10 +76,6 @@
       "url": "https://bpsconline.bihar.gov.in/candidate/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/BPSC_MVI_NB-2025-06-09-06.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://bpscpat.bihar.gov.in/"
     }
@@ -93,10 +84,6 @@
     {
       "label": "Click Here",
       "url": "https://bpsc.bihar.gov.in/wp-content/uploads/BPSC_content/Notices/Final-Results-412025-MVI_BPSC-20260128-9jqix8.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BPSC_MVI_NB-2025-06-09-06.pdf"
     }
   ]
 }

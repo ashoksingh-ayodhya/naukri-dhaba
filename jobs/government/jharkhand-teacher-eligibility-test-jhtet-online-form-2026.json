@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:48:41.156805",
+  "scraped_at": "2026-04-04T11:14:10.739381",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/jac-jhtet-2026/",
   "page_type": "job",
@@ -50,16 +50,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/Sarkari_Result_2026_JHTET_SYLLABUS.pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Sarkari_Result_2026_JHTET_NOTIFICATION.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "https://jacexamportal.in/",
       "link_type": "official_website"
@@ -77,27 +67,11 @@
       "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/Sarkari_Result_2026_JHTET_SYLLABUS.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/Sarkari_Result_2026_JHTET_NOTIFICATION.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://jacexamportal.in/"
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Sarkari_Result_2026_JHTET_SYLLABUS.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/Sarkari_Result_2026_JHTET_NOTIFICATION.pdf"
-    },
     {
       "label": "Click Here",
       "url": "/upload/Sarkari_Result_2026_JHTET_PRESS_ADV.pdf"

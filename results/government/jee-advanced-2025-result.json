@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:01.638672",
+  "scraped_at": "2026-04-04T11:37:43.772383",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/iit-jee-advanced/",
   "page_type": "result",
@@ -74,16 +74,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_p1_solutions.pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_p2_solutions.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Candidate Responses",
       "url": "https://cportal25.jeeadv.ac.in/",
       "link_type": "other"
@@ -99,39 +89,9 @@
       "link_type": "other"
     },
     {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p1_english.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p1_hindi.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p2_english.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p2_hindi.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://jeeadv.nic.in/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/JEE_Advanced_Information_Brochure.pdf",
-      "link_type": "other"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/jee-advanced-2025-syllabus%20(1).pdf",
-      "link_type": "syllabus"
     },
     {
       "label": "Join Telegram Page",
@@ -168,14 +128,6 @@
       "url": "https://cportal.jeeadv.ac.in/"
     },
     {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_p1_solutions.pdf"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_p2_solutions.pdf"
-    },
-    {
       "label": "Download Candidate Responses",
       "url": "https://cportal25.jeeadv.ac.in/"
     },
@@ -188,32 +140,8 @@
       "url": "https://cportal5.jeeadv.ac.in/"
     },
     {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p1_english.pdf"
-    },
-    {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p1_hindi.pdf"
-    },
-    {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p2_english.pdf"
-    },
-    {
-      "label": "Download Question Paper",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p2_hindi.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://jeeadv.nic.in/"
-    },
-    {
-      "label": "Download Information Brochure",
-      "url": "https://doc.sarkariresults.org.in/JEE_Advanced_Information_Brochure.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/jee-advanced-2025-syllabus%20(1).pdf"
     },
     {
       "label": "Join Telegram Page",
@@ -228,38 +156,6 @@
     {
       "label": "Click Here",
       "url": "https://jeeadv.ac.in/documents/cutoffs_2025.pdf"
-    },
-    {
-      "label": "Paper I",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_p1_solutions.pdf"
-    },
-    {
-      "label": "Paper II",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_p2_solutions.pdf"
-    },
-    {
-      "label": "Paper I English",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p1_english.pdf"
-    },
-    {
-      "label": "Paper I Hindi",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p1_hindi.pdf"
-    },
-    {
-      "label": "Paper II English",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p2_english.pdf"
-    },
-    {
-      "label": "Paper II Hindi",
-      "url": "https://doc.sarkariresults.org.in/JEE_ADV_2025_Q_p2_hindi.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/JEE_Advanced_Information_Brochure.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/jee-advanced-2025-syllabus%20(1).pdf"
     }
   ]
 }

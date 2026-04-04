@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:51:56.603128",
+  "scraped_at": "2026-04-04T11:17:51.813627",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/rbi-assistant-feb26/",
   "page_type": "job",
   "title": "RBI Assistant Online Form 2026",
-  "post_name": "Reserve Bank of India RBI Assistant Recruitment 2026 Apply Correction Edit Form for 650 Post",
+  "post_name": "Reserve Bank of India RBI Assistant Recruitment 2026 Download Pre Admit Card for 650 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -38,6 +38,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/rbiafeb26/oecla_mar26/login.php?appid=36146250b92d190649ccc9a0c3d9c2d6",
+      "link_type": "admit"
+    },
     {
       "label": "For Correction / Edit Form",
       "url": "https://opportunities.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4934",
@@ -78,9 +83,13 @@
   "notification_url": "https://opportunities.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4912",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://ibpsreg.ibps.in/rbiafeb26/oecla_mar26/login.php?appid=36146250b92d190649ccc9a0c3d9c2d6",
   "official_website_url": "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/rbiafeb26/oecla_mar26/login.php?appid=36146250b92d190649ccc9a0c3d9c2d6"
+    },
     {
       "label": "For Correction / Edit Form",
       "url": "https://opportunities.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4934"

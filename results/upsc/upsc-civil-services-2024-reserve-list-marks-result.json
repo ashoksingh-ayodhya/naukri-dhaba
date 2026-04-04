@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:29.020771",
+  "scraped_at": "2026-04-04T11:35:13.627505",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-ias-ifs-2024/",
   "page_type": "result",
@@ -66,19 +66,9 @@
       "link_type": "other"
     },
     {
-      "label": "Download Civil Servies Final Marks (RECOMMENDED CANDIDATES)",
-      "url": "https://doc.sarkariresults.org.in/MksRcdCndt-CSM-2024-Engl-250425.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Download Civil Servies Final Result",
       "url": "https://upsconline.gov.in/FR-CSM-2024-Engl-220425.pdf",
       "link_type": "result"
-    },
-    {
-      "label": "Download Forest Servies IFS Interview Schedule",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFS_Interview_Scheduled_2024.pdf",
-      "link_type": "other"
     },
     {
       "label": "Download Forest Servies IFS Mains Result",
@@ -187,16 +177,8 @@
       "url": "https://upsc.gov.in/sites/default/files/CSM_2024_MksRecoCandiReserveList_Eng_05022026.pdf"
     },
     {
-      "label": "Download Civil Servies Final Marks (RECOMMENDED CANDIDATES)",
-      "url": "https://doc.sarkariresults.org.in/MksRcdCndt-CSM-2024-Engl-250425.pdf"
-    },
-    {
       "label": "Download Civil Servies Final Result",
       "url": "https://upsconline.gov.in/FR-CSM-2024-Engl-220425.pdf"
-    },
-    {
-      "label": "Download Forest Servies IFS Interview Schedule",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFS_Interview_Scheduled_2024.pdf"
     },
     {
       "label": "Download Forest Servies IFS Mains Result",
@@ -282,15 +264,7 @@
     },
     {
       "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/MksRcdCndt-CSM-2024-Engl-250425.pdf"
-    },
-    {
-      "label": "Click Here",
       "url": "https://upsconline.gov.in/FR-CSM-2024-Engl-220425.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSC_IFS_Interview_Scheduled_2024.pdf"
     },
     {
       "label": "Roll Wise",

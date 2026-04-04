@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:20.039657",
+  "scraped_at": "2026-04-04T11:23:22.711617",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-nda-ii-2025/",
   "page_type": "job",
@@ -60,11 +60,6 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_NDA_II_2025_55_Notification.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Official Website",
       "url": "http://upsc.gov.in/",
       "link_type": "official_website"
@@ -86,18 +81,9 @@
       "url": "https://upsconline.nic.in/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_NDA_II_2025_55_Notification.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "http://upsc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSC_NDA_II_2025_55_Notification.pdf"
-    }
-  ]
+  "download_links": []
 }

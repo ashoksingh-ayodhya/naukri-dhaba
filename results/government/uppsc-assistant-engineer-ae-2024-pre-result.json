@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:31.902200",
+  "scraped_at": "2026-04-04T11:38:34.494647",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2024/uppsc-asst-engineer-dec24/",
   "page_type": "result",
@@ -48,21 +48,6 @@
   ],
   "important_links": [
     {
-      "label": "Download Pre Result Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Pre_Exam_Result_2025.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Question Paper with Answer Key Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Combined_AE_AnswerKey_QuestionPaper.pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Answer Key Notice Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_OBjection_Format.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Admit Card Click Here",
       "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwQCfKmtfuFJuGsuggpeuDIC+b0Zf6/nqUP4ACOCSd9hmmO+u3AndXf+WMhK7P+EurFz/yhHyXWQF2MbVIVtA1Dz09uyQI9B0zSb0Rm32tcUQn3+ZubznO/nZc4Lh6h6kSEf7ezY7Qqnvg==",
       "link_type": "admit"
@@ -71,21 +56,6 @@
       "label": "Apply Online",
       "url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notification_English_SarkariResult_Com.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notification_Hindi_SarkariResult.pdf",
-      "link_type": "notification"
-    },
-    {
-      "label": "Download Short Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notice_2024.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -101,18 +71,6 @@
   "official_website_url": "https://uppsc.up.nic.in/",
   "extra_links": [
     {
-      "label": "Download Pre Result Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Pre_Exam_Result_2025.pdf"
-    },
-    {
-      "label": "Download Question Paper with Answer Key Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Combined_AE_AnswerKey_QuestionPaper.pdf"
-    },
-    {
-      "label": "Download Answer Key Notice Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_OBjection_Format.pdf"
-    },
-    {
       "label": "Download Admit Card Click Here",
       "url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwQCfKmtfuFJuGsuggpeuDIC+b0Zf6/nqUP4ACOCSd9hmmO+u3AndXf+WMhK7P+EurFz/yhHyXWQF2MbVIVtA1Dz09uyQI9B0zSb0Rm32tcUQn3+ZubznO/nZc4Lh6h6kSEf7ezY7Qqnvg=="
     },
@@ -121,46 +79,9 @@
       "url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notification_English_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notification_Hindi_SarkariResult.pdf"
-    },
-    {
-      "label": "Download Short Notification",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notice_2024.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppsc.up.nic.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Pre_Exam_Result_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_Combined_AE_AnswerKey_QuestionPaper.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_OBjection_Format.pdf"
-    },
-    {
-      "label": "English",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notification_English_SarkariResult_Com.pdf"
-    },
-    {
-      "label": "Hindi",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notification_Hindi_SarkariResult.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPPSC_AE_Notice_2024.pdf"
-    }
-  ]
+  "download_links": []
 }

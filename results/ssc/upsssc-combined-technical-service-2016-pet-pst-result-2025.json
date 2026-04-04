@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:08:29.789363",
+  "scraped_at": "2026-04-04T11:40:07.717744",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/23exam2016/",
   "page_type": "result",
@@ -48,29 +48,9 @@
   "how_to_apply": [],
   "important_links": [
     {
-      "label": "Download PET/PST Result (Dt 19 May 2025)",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_PST_Result_19May25.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download PET/PST Result",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_PST_Result.pdf",
-      "link_type": "result"
-    },
-    {
       "label": "Download PET/PST Admit Card",
       "url": "https://upsssc.gov.in/Online_App/AdmitCard.aspx?ID=INTRIM",
       "link_type": "admit"
-    },
-    {
-      "label": "Download PET/PST Admit Card Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSC_23_Exam_PETPSTExamNotice_18Mar25.pdf",
-      "link_type": "admit"
-    },
-    {
-      "label": "Download PET/PST Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_Exam_Date_SarkariResult_Com.pdf",
-      "link_type": "other"
     },
     {
       "label": "Download DV Letter",
@@ -181,24 +161,8 @@
   "official_website_url": "http://upsssc.gov.in/Default.aspx",
   "extra_links": [
     {
-      "label": "Download PET/PST Result (Dt 19 May 2025)",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_PST_Result_19May25.pdf"
-    },
-    {
-      "label": "Download PET/PST Result",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_PST_Result.pdf"
-    },
-    {
       "label": "Download PET/PST Admit Card",
       "url": "https://upsssc.gov.in/Online_App/AdmitCard.aspx?ID=INTRIM"
-    },
-    {
-      "label": "Download PET/PST Admit Card Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSC_23_Exam_PETPSTExamNotice_18Mar25.pdf"
-    },
-    {
-      "label": "Download PET/PST Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_Exam_Date_SarkariResult_Com.pdf"
     },
     {
       "label": "Download DV Letter",
@@ -282,22 +246,6 @@
     }
   ],
   "download_links": [
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_PST_Result_19May25.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_PST_Result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSC_23_Exam_PETPSTExamNotice_18Mar25.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSSSC_23_Exam_2016_PET_Exam_Date_SarkariResult_Com.pdf"
-    },
     {
       "label": "Click Here",
       "url": "http://164.100.181.233/document/Files/UP005/UploadNotices/2307011615367848_C.pdf"

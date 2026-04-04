@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:07:46.153782",
+  "scraped_at": "2026-04-04T11:39:01.176837",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/jee-main-april-25/",
   "page_type": "result",
@@ -50,11 +50,6 @@
     },
     {
       "label": "Download Paper II Answer Key",
-      "url": "https://doc.sarkariresults.org.in/nta_jeemain_pAPER_ii_aNSWERkEY.pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Paper II Answer Key",
       "url": "https://examinationservices.nic.in/jeemain2025/root/CandidateLogin.aspx?enc=Ei4cajBkK1gZSfgr53ImFVj34FesvYg1WX45sPjGXBqTRkzOFoiGPd1JFIpDHbov",
       "link_type": "answer_key"
     },
@@ -69,21 +64,6 @@
       "link_type": "result"
     },
     {
-      "label": "Download Result Notice",
-      "url": "https://doc.sarkariresults.org.in/NTA_JEEMAIN_Result_Session_II_Result_2025.pdf",
-      "link_type": "result"
-    },
-    {
-      "label": "Download Final Answer Key",
-      "url": "https://doc.sarkariresults.org.in/NTA%20JEEMAIN%20Session%202%20Answer%20Key%202025%20(1).pdf",
-      "link_type": "answer_key"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/JEEMAI_AnswerKey_Apr2025.pdf",
-      "link_type": "answer_key"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://examinationservices.nic.in/jeemain2025/DownloadAdmitCard/LoginPWD.aspx?enc=WPJ5WSCVWOMNiXoyyomJgDUffqDdG1LTsAPBKFcEC9U6Jt9ZgEhPK34DpEEvDDR2",
       "link_type": "admit"
@@ -92,11 +72,6 @@
       "label": "Check Exam City Details",
       "url": "https://cnr.nic.in/emsadmitcard/downloadadmitcard/frmAuthforCity.aspx?enc=Ei4cajBkK1gZSfgr53ImFVj34FesvYg1WX45sPjGXBqTRkzOFoiGPd1JFIpDHbov",
       "link_type": "exam_city"
-    },
-    {
-      "label": "Download Exam Schedule",
-      "url": "https://doc.sarkariresults.org.in/JEEMAIN_Schedule_PhaseII_2025%20(1).pdf",
-      "link_type": "other"
     },
     {
       "label": "For Correction / Edit Form",
@@ -119,11 +94,6 @@
       "link_type": "other"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/NTA_JEEMAIN_New_Syllabus_2025.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://jeemain.nta.nic.in/",
       "link_type": "official_website"
@@ -142,10 +112,6 @@
     },
     {
       "label": "Download Paper II Answer Key",
-      "url": "https://doc.sarkariresults.org.in/nta_jeemain_pAPER_ii_aNSWERkEY.pdf"
-    },
-    {
-      "label": "Download Paper II Answer Key",
       "url": "https://examinationservices.nic.in/jeemain2025/root/CandidateLogin.aspx?enc=Ei4cajBkK1gZSfgr53ImFVj34FesvYg1WX45sPjGXBqTRkzOFoiGPd1JFIpDHbov"
     },
     {
@@ -157,28 +123,12 @@
       "url": "https://examinationservices.nic.in/resultservices/JEEMAIN2025S2P1/Login"
     },
     {
-      "label": "Download Result Notice",
-      "url": "https://doc.sarkariresults.org.in/NTA_JEEMAIN_Result_Session_II_Result_2025.pdf"
-    },
-    {
-      "label": "Download Final Answer Key",
-      "url": "https://doc.sarkariresults.org.in/NTA%20JEEMAIN%20Session%202%20Answer%20Key%202025%20(1).pdf"
-    },
-    {
-      "label": "Download Answer Key Notice",
-      "url": "https://doc.sarkariresults.org.in/JEEMAI_AnswerKey_Apr2025.pdf"
-    },
-    {
       "label": "Download Admit Card",
       "url": "https://examinationservices.nic.in/jeemain2025/DownloadAdmitCard/LoginPWD.aspx?enc=WPJ5WSCVWOMNiXoyyomJgDUffqDdG1LTsAPBKFcEC9U6Jt9ZgEhPK34DpEEvDDR2"
     },
     {
       "label": "Check Exam City Details",
       "url": "https://cnr.nic.in/emsadmitcard/downloadadmitcard/frmAuthforCity.aspx?enc=Ei4cajBkK1gZSfgr53ImFVj34FesvYg1WX45sPjGXBqTRkzOFoiGPd1JFIpDHbov"
-    },
-    {
-      "label": "Download Exam Schedule",
-      "url": "https://doc.sarkariresults.org.in/JEEMAIN_Schedule_PhaseII_2025%20(1).pdf"
     },
     {
       "label": "For Correction / Edit Form",
@@ -197,35 +147,11 @@
       "url": "https://cdnbbsr.s3waas.gov.in/s3f8e59f4b2fe7c5705bf878bbd494ccdf/uploads/2024/10/2024102824.pdf"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://doc.sarkariresults.org.in/NTA_JEEMAIN_New_Syllabus_2025.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://jeemain.nta.nic.in/"
     }
   ],
   "download_links": [
-    {
-      "label": "Notice",
-      "url": "https://doc.sarkariresults.org.in/nta_jeemain_pAPER_ii_aNSWERkEY.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/NTA_JEEMAIN_Result_Session_II_Result_2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/NTA%20JEEMAIN%20Session%202%20Answer%20Key%202025%20(1).pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/JEEMAI_AnswerKey_Apr2025.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/JEEMAIN_Schedule_PhaseII_2025%20(1).pdf"
-    },
     {
       "label": "Click Here",
       "url": "https://cdnbbsr.s3waas.gov.in/s3f8e59f4b2fe7c5705bf878bbd494ccdf/uploads/2025/02/2025022442.pdf"
@@ -237,10 +163,6 @@
     {
       "label": "Click Here",
       "url": "https://cdnbbsr.s3waas.gov.in/s3f8e59f4b2fe7c5705bf878bbd494ccdf/uploads/2024/10/2024102824.pdf"
-    },
-    {
-      "label": "JEEMAIN Syllabus 2025",
-      "url": "https://doc.sarkariresults.org.in/NTA_JEEMAIN_New_Syllabus_2025.pdf"
     }
   ]
 }

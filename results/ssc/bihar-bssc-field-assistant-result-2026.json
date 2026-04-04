@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:06:27.846323",
+  "scraped_at": "2026-04-04T11:36:49.459465",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bssc-field-assistant-03-2025/",
   "page_type": "result",
@@ -49,19 +49,9 @@
       "link_type": "result"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/BSSC_Field_Assistant_0325_exam_notice.pdf",
-      "link_type": "other"
-    },
-    {
       "label": "Apply Online",
       "url": "https://www.onlinebssc.com/agribsc25/",
       "link_type": "apply"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/bssc_field_Assistant_2025_SarkariResult_Com.pdf",
-      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -81,16 +71,8 @@
       "url": "https://bssc.bihar.gov.in/Advertisement/03_25_pt_result.pdf"
     },
     {
-      "label": "Download Exam Notice",
-      "url": "https://doc.sarkariresults.org.in/BSSC_Field_Assistant_0325_exam_notice.pdf"
-    },
-    {
       "label": "Apply Online",
       "url": "https://www.onlinebssc.com/agribsc25/"
-    },
-    {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/bssc_field_Assistant_2025_SarkariResult_Com.pdf"
     },
     {
       "label": "Official Website",
@@ -101,14 +83,6 @@
     {
       "label": "Click Here",
       "url": "https://bssc.bihar.gov.in/Advertisement/03_25_pt_result.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/BSSC_Field_Assistant_0325_exam_notice.pdf"
-    },
-    {
-      "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/bssc_field_Assistant_2025_SarkariResult_Com.pdf"
     }
   ]
 }

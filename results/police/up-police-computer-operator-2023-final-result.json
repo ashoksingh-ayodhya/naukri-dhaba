@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T12:05:01.544118",
+  "scraped_at": "2026-04-04T11:34:29.953303",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2024/up-police-computer-programmer/",
   "page_type": "result",
@@ -95,16 +95,6 @@
       "link_type": "notification"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/UPP-Computer-Operator-Syllabus-2024_watermark.pdf",
-      "link_type": "syllabus"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/UPP-Programmer-Syllabus-2024_watermark.pdf",
-      "link_type": "syllabus"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppbpb.gov.in",
       "link_type": "official_website"
@@ -158,14 +148,6 @@
       "url": "https://uppbpb.gov.in/FilesUploaded/Notice/scan20231229_185105840cd678bb-aadb-4f54-91e7-5fd37a893e55.pdf"
     },
     {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/UPP-Computer-Operator-Syllabus-2024_watermark.pdf"
-    },
-    {
-      "label": "Download Syllabus",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/UPP-Programmer-Syllabus-2024_watermark.pdf"
-    },
-    {
       "label": "Official Website",
       "url": "https://uppbpb.gov.in"
     }
@@ -194,14 +176,6 @@
     {
       "label": "Programmer",
       "url": "https://uppbpb.gov.in/FilesUploaded/Notice/scan20231229_185105840cd678bb-aadb-4f54-91e7-5fd37a893e55.pdf"
-    },
-    {
-      "label": "Computer Operator",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/UPP-Computer-Operator-Syllabus-2024_watermark.pdf"
-    },
-    {
-      "label": "Programmer",
-      "url": "https://www.sarkariresults.org.in/wp-content/uploads/2023/12/UPP-Programmer-Syllabus-2024_watermark.pdf"
     }
   ]
 }

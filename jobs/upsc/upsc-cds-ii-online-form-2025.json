@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-03-30T11:56:16.677904",
+  "scraped_at": "2026-04-04T11:23:17.832530",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-cds-ii-2025/",
   "page_type": "job",
   "title": "UPSC CDS II Online Form 2025",
-  "post_name": "UPSC Combined Defence Services CDS II Examination 2025 Apply Online Form",
+  "post_name": "UPSC Combined Defence Services CDS II Examination 2025 Download Final Result 2026",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Union Public Service Commission (UPSC)",
@@ -18,6 +18,7 @@
     "Pay Exam Fee Last Date": "17/06/2025",
     "Correction Date": "As per Schedule",
     "Exam Date": "14/09/2025",
+    "Final Result Available": "30/03/2026",
     "UPSC CDS II Eligibility 2025 For IMA & OTA : Bachelor Degree in Any Stream. For Naval Academy : Bachelor Degree in Engineering . For Airforce : Bachelor Degree in Any Stream with Physics & Math in 10+2 Level": "CDS 2 Age Limit as on 01/07/2026 Minimum Age : 20 Years Maximum Age : 24 Years for Post Wise Details Read Notification. Age Relaxation Extra as per Rules"
   },
   "fees": {
@@ -50,6 +51,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Final Result",
+      "url": "https://upsc.gov.in/sites/default/files/FR-CDSE-II-2025-Engl-300326.pdf",
+      "link_type": "result"
+    },
+    {
       "label": "Apply Online",
       "url": "https://upsconline.nic.in/instruction",
       "link_type": "apply"
@@ -60,18 +66,13 @@
       "link_type": "apply"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CDS_II_202542_Notification.pdf",
-      "link_type": "notification"
-    },
-    {
       "label": "Download Syllabus",
       "url": "https://drive.google.com/file/d/1kQVzGHSy0zC42fPBI-lTHDi6tC653CUf/view?usp=sharing",
       "link_type": "syllabus"
     },
     {
       "label": "Join Our Telegram Page",
-      "url": "https://t.me/sarkari",
+      "url": "https://t.me/SarkariResult2012",
       "link_type": "other"
     },
     {
@@ -82,11 +83,15 @@
   ],
   "apply_url": "https://upsconline.nic.in/instruction",
   "notification_url": "https://doc.sarkariresults.org.in/UPSC_CDS_II_202542_Notification.pdf",
-  "result_url": "",
+  "result_url": "https://upsc.gov.in/sites/default/files/FR-CDSE-II-2025-Engl-300326.pdf",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "https://upsc.gov.in",
   "extra_links": [
+    {
+      "label": "Download Final Result",
+      "url": "https://upsc.gov.in/sites/default/files/FR-CDSE-II-2025-Engl-300326.pdf"
+    },
     {
       "label": "Apply Online",
       "url": "https://upsconline.nic.in/instruction"
@@ -96,16 +101,12 @@
       "url": "https://upsconline.nic.in/login"
     },
     {
-      "label": "Download Notification",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CDS_II_202542_Notification.pdf"
-    },
-    {
       "label": "Download Syllabus",
       "url": "https://drive.google.com/file/d/1kQVzGHSy0zC42fPBI-lTHDi6tC653CUf/view?usp=sharing"
     },
     {
       "label": "Join Our Telegram Page",
-      "url": "https://t.me/sarkari"
+      "url": "https://t.me/SarkariResult2012"
     },
     {
       "label": "Official Website",
@@ -115,7 +116,7 @@
   "download_links": [
     {
       "label": "Click Here",
-      "url": "https://doc.sarkariresults.org.in/UPSC_CDS_II_202542_Notification.pdf"
+      "url": "https://upsc.gov.in/sites/default/files/FR-CDSE-II-2025-Engl-300326.pdf"
     }
   ]
 }
