@@ -1582,6 +1582,9 @@ def update_page(filepath, dry_run=False):
     # Step 1b: Wrap any remaining direct source host links through redirect proxy
     content = wrap_source_links(content)
 
+    # Step 1c: Remove any go.html redirect links that target source hosts (created by step 1b)
+    content = fix_source_redirect_targets(content)
+
     # Step 2: Fix broken buttons
     content = fix_broken_buttons(content)
 

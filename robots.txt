@@ -59,6 +59,8 @@ Allow: /sitemap.xml
 # Block staging and internal paths
 Disallow: /staging/
 Disallow: /node_modules/
+Disallow: /backup-main/
+Disallow: /demo/
 
 # Sitemap location
 Sitemap: https://naukridhaba.in/sitemap.xml
