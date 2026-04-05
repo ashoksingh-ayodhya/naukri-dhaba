@@ -3189,9 +3189,9 @@ def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
                     ed_match = re.search(r'<th[^>]*>Exam Date</th>\s*<td[^>]*>([^<]+)</td>', html, re.I)
                 if ed_match:
                     d['exam_date'] = clean(ed_match.group(1))
-                # Extract URLs
-                d['result_url'] = _extract_url('Check Result') or '#'
-                d['scorecard_url'] = _extract_url('Download Scorecard') or '#'
+                # Extract URLs — sanitize through to_public_url to remove source host links
+                d['result_url'] = to_public_url(_extract_url('Check Result') or '') or '#'
+                d['scorecard_url'] = to_public_url(_extract_url('Download Scorecard') or '') or '#'
 
                 try:
                     _rel, new_html = build_result_page(d)
@@ -3213,8 +3213,8 @@ def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
                     d['admit_release'] = clean(ar_match.group(1))
                 else:
                     d['admit_release'] = 'Check Notification'
-                # Extract URLs
-                d['admit_url'] = _extract_url('Download Admit Card') or '#'
+                # Extract URLs — sanitize through to_public_url to remove source host links
+                d['admit_url'] = to_public_url(_extract_url('Download Admit Card') or '') or '#'
 
                 try:
                     _rel, new_html = build_admit_page(d)
@@ -3254,9 +3254,9 @@ def regenerate_detail_pages(kinds: list[str] | None = None) -> int:
                     d['age_min'] = age_min_m.group(1)
                 if age_max_m:
                     d['age_max'] = age_max_m.group(1)
-                # Extract URLs
-                d['apply_url'] = _extract_url('Apply Online') or '#'
-                d['notification_url'] = _extract_url('Download Notification') or '#'
+                # Extract URLs — sanitize through to_public_url to remove source host links
+                d['apply_url'] = to_public_url(_extract_url('Apply Online') or '') or '#'
+                d['notification_url'] = to_public_url(_extract_url('Download Notification') or '') or '#'
 
                 try:
                     _rel, new_html = build_job_page(d)
