@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-04T11:16:19.603673",
+  "scraped_at": "2026-04-05T07:44:02.383397",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/idbi-jam-am-march26/",
   "page_type": "job",
   "title": "IDBI Bank JAM, Assistant Manager Online Form 2026",
-  "post_name": "IDBI Bank Junior Assistant Manager JAM Grade O and Assistant Manager Recruitment 2026 Apply Online for 1300 Post",
+  "post_name": "IDBI Bank Junior Assistant Manager JAM Grade O and Assistant Manager Recruitment 2026 Download Admit Card for 1300 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -16,7 +16,8 @@
     "Application Begin": "08/03/2026",
     "Last Date for Apply Online": "19/03/2026",
     "Fee Payment Last Date": "19/03/2026",
-    "Exam Date": "12/04/2026"
+    "Exam Date": "12/04/2026",
+    "Admit Card Available": "04/04/2026"
   },
   "fees": {
     "General / OBC/ EWS": "1050/-",
@@ -41,6 +42,16 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/idbijamfeb26/oecla_mar26/login.php?appid=058c25121f8efe096e132463ea86ac4c",
+      "link_type": "admit"
+    },
+    {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/idbiamnov25/oecla_mar26/login.php?appid=24186b793fda73b61360be43665a54c5",
+      "link_type": "admit"
+    },
     {
       "label": "Apply Online (JAM Grade O)",
       "url": "https://ibpsreg.ibps.in/idbijamfeb26/",
@@ -76,9 +87,17 @@
   "notification_url": "https://www.idbi.bank.in/pdf/careers/Advertisement-Grade-A-2-year-exp-March072026.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://ibpsreg.ibps.in/idbijamfeb26/oecla_mar26/login.php?appid=058c25121f8efe096e132463ea86ac4c",
   "official_website_url": "https://www.idbibank.in/idbi-bank-careers-current-openings.aspx",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/idbijamfeb26/oecla_mar26/login.php?appid=058c25121f8efe096e132463ea86ac4c"
+    },
+    {
+      "label": "Download Admit Card",
+      "url": "https://ibpsreg.ibps.in/idbiamnov25/oecla_mar26/login.php?appid=24186b793fda73b61360be43665a54c5"
+    },
     {
       "label": "Apply Online (JAM Grade O)",
       "url": "https://ibpsreg.ibps.in/idbijamfeb26/"

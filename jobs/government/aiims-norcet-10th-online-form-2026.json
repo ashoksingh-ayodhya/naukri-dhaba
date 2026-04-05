@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-04T11:18:05.072803",
+  "scraped_at": "2026-04-05T07:45:41.777491",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/aiims-norcet-10th/",
   "page_type": "job",
   "title": "AIIMS NORCET 10th Online Form 2026",
-  "post_name": "AIIMS Nursing Officer Recruitment 2026 Phase 10th Exam Apply Online for 2551 Post",
+  "post_name": "AIIMS Nursing Officer Recruitment 2026 Phase 10th Exam Check Exam City / Admit Card for 2551 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -46,6 +46,11 @@
   ],
   "important_links": [
     {
+      "label": "Check Exam City / Admit Card",
+      "url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b",
+      "link_type": "admit"
+    },
+    {
       "label": "Apply Online",
       "url": "https://aiimsexams.ac.in/otr",
       "link_type": "apply"
@@ -65,9 +70,13 @@
   "notification_url": "https://doc.sarkariresults.org.in/AIIMS_NORCET_10_Notification.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b",
   "official_website_url": "https://www.aiimsexams.ac.in/",
   "extra_links": [
+    {
+      "label": "Check Exam City / Admit Card",
+      "url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b"
+    },
     {
       "label": "Apply Online",
       "url": "https://aiimsexams.ac.in/otr"
