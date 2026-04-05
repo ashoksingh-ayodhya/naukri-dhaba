@@ -1223,6 +1223,17 @@ def build_breadcrumb_json_ld(items):
     </script>'''
 
 
+def _strip_link_attrs(attrs: str) -> str:
+    """Remove href, target, and rel attributes from an anchor attribute string."""
+    attrs = re.sub(r'\s*href="[^"]*"', '', attrs, flags=re.IGNORECASE)
+    attrs = re.sub(r"\s*href='[^']*'", '', attrs, flags=re.IGNORECASE)
+    attrs = re.sub(r'\s*target="[^"]*"', '', attrs, flags=re.IGNORECASE)
+    attrs = re.sub(r"\s*target='[^']*'", '', attrs, flags=re.IGNORECASE)
+    attrs = re.sub(r'\s*rel="[^"]*"', '', attrs, flags=re.IGNORECASE)
+    attrs = re.sub(r"\s*rel='[^']*'", '', attrs, flags=re.IGNORECASE)
+    return attrs.strip()
+
+
 def fix_broken_buttons(content):
     """Fix result/admit card buttons that show alert()."""
     # Remove alert handlers from buttons.
@@ -1236,6 +1247,27 @@ def fix_broken_buttons(content):
         r'\s*onclick="alert\([^)]*\)"',
         '',
         content
+    )
+    # V2 template: convert disabled cta-btn anchors (href="#") to spans.
+    # These appear when a notification/apply URL was a source-host link and was
+    # replaced with '#'. Opening a blank tab to '#' is a broken UX.
+    def _cta_span(m):
+        attrs = _strip_link_attrs(m.group(1))
+        label = m.group(2)
+        span_attrs = (attrs + ' aria-disabled="true"').strip()
+        return f'<span {span_attrs}>{label}</span>'
+
+    content = re.sub(
+        r'<a\s[^>]*href="#"[^>]*class="(cta-btn[^"]*)"[^>]*>(.*?)</a>',
+        lambda m: f'<span class="{m.group(1)}" aria-disabled="true">{m.group(2)}</span>',
+        content,
+        flags=re.IGNORECASE | re.DOTALL
+    )
+    content = re.sub(
+        r'<a\s[^>]*class="(cta-btn[^"]*)"[^>]*href="#"[^>]*>(.*?)</a>',
+        lambda m: f'<span class="{m.group(1)}" aria-disabled="true">{m.group(2)}</span>',
+        content,
+        flags=re.IGNORECASE | re.DOTALL
     )
     # Replace dead primary action anchors with spans so no page ships with href="#".
     content = re.sub(
