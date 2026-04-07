@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-06T11:51:09.288065",
+  "scraped_at": "2026-04-07T11:41:50.904109",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/navy-ssr-mr-inet-2026/",
   "page_type": "job",
@@ -47,11 +47,6 @@
       "link_type": "apply"
     },
     {
-      "label": "How to Fill Form (Video Hindi)",
-      "url": "https://www.youtube.com/watch?v=GIPM2V6pFKs",
-      "link_type": "other"
-    },
-    {
       "label": "Download Notification",
       "url": "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_SSR_01_27_and_02_27_English.pdf",
       "link_type": "notification"
@@ -72,10 +67,6 @@
     {
       "label": "Apply Online",
       "url": "https://agniveer.navydmpr.in/sailorscycle5/login"
-    },
-    {
-      "label": "How to Fill Form (Video Hindi)",
-      "url": "https://www.youtube.com/watch?v=GIPM2V6pFKs"
     },
     {
       "label": "Download Notification",

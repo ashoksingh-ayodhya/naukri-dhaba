@@ -1,8 +1,16 @@
 {
-  "updated": "2026-04-06T06:46:39Z",
+  "updated": "2026-04-07T06:36:41Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
+    {
+      "title": "UPSSSC Excise Constable Online Form 2026",
+      "dept": "SSC",
+      "type": "job",
+      "category": "ssc",
+      "date": "24/06/2026",
+      "url": "https://naukridhaba.in/jobs/ssc/upsssc-excise-constable-online-form-2026.html"
+    },
     {
       "title": "UPSSSC Lower PCS Graduate Level Online Form 2026",
       "dept": "SSC",
@@ -154,14 +162,6 @@
       "category": "government",
       "date": "30/04/2026",
       "url": "https://naukridhaba.in/jobs/government/rpsc-ras-pre-2026-online-form.html"
-    },
-    {
-      "title": "IERT Admissions 2026 Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/iert-admissions-2026-online-form-2026.html"
     }
   ],
   "results": [
@@ -464,28 +464,28 @@
       "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-paper-ii-exam-date-2026.html"
     },
     {
-      "title": "SSC MTS, Havaldar 2025 Admit Card",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
-    },
-    {
-      "title": "SSC CHSL 2025 Tier II Exam Date",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-chsl-2025-tier-ii-exam-date.html"
-    },
-    {
       "title": "SSC Delhi Police Head Constable AWO / TPO 2022 DME Exam Schedule",
       "dept": "SSC",
       "type": "admit",
       "category": "ssc",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/ssc/ssc-delhi-police-head-constable-awo-tpo-2022-dme-exam-schedule.html"
+    },
+    {
+      "title": "SSC Junior Engineer JE 2025 Paper II Exam City Details",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-2025-paper-ii-exam-city-details.html"
+    },
+    {
+      "title": "SSC MTS, Havaldar 2025 Admit Card",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
     }
   ]
 }
