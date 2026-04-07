@@ -2470,15 +2470,15 @@ def build_job_page(d: dict) -> tuple[str, str]:
             "sameAs": _org_url,
             "logo": f"{SITE_URL}/img/og-default.png"
         },
-        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "India", "addressRegion": "India", "addressCountry": "IN"}},
+        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "streetAddress": "Government of India", "addressLocality": "New Delhi", "addressRegion": "Delhi", "postalCode": "110001", "addressCountry": "IN"}},
         "applicantLocationRequirements": {"@type": "Country", "name": "India"},
         "url": canon,
         "directApply": bool(d.get('apply_url'))
     }
-    if _valid_through and _valid_through >= date.today().isoformat():
+    if _valid_through:
         ld_job_dict["validThrough"] = _valid_through
     if d.get('salary') and d['salary'] != 'Check Notification':
-        ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary']}}
+        ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary'], "unitText": "MONTH"}}
     if d.get('vacancy') and d['vacancy'] != 'Check Notification':
         ld_job_dict["totalJobOpenings"] = d['vacancy']
     if d.get('qualification') and d['qualification'] != 'Check Notification':

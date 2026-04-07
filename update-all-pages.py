@@ -1106,13 +1106,34 @@ def build_meta_block(data, page_type, filepath, canonical_url):
 
 
 def build_job_json_ld(title, dept, last_date, canonical_url):
-    """Build JobPosting JSON-LD."""
+    """Build JobPosting JSON-LD with all Google-required fields."""
     iso_last_date = to_iso_date(last_date) or TODAY
     safe_title = normalize_title_text(title)
+    slug = slugify_title(safe_title)
     desc = f"{safe_title}: {dept} recruitment notification. Last date: {last_date}. Apply at {SITE_NAME}."
-    return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"JobPosting","title":"{safe_title}","description":"{desc}","datePosted":"{TODAY}","validThrough":"{iso_last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
-    </script>'''
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "JobPosting",
+        "title": safe_title,
+        "description": desc,
+        "identifier": {"@type": "PropertyValue", "name": dept, "value": slug},
+        "datePosted": TODAY,
+        "validThrough": iso_last_date,
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {"@type": "Organization", "name": dept, "logo": f"{SITE_URL}/img/og-default.png"},
+        "jobLocation": {"@type": "Place", "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Government of India",
+            "addressLocality": "New Delhi",
+            "addressRegion": "Delhi",
+            "postalCode": "110001",
+            "addressCountry": "IN"
+        }},
+        "applicantLocationRequirements": {"@type": "Country", "name": "India"},
+        "url": canonical_url
+    }
+    import json as _json
+    return f'    <script type="application/ld+json">\n    {_json.dumps(schema, ensure_ascii=False)}\n    </script>'
 
 
 def build_result_json_ld(title, dept, canonical_url):

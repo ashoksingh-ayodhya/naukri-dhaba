@@ -190,12 +190,23 @@ def validate_html(path: Path) -> list[str]:
                 errors.append(f"{rel}: JobPosting missing identifier field (required for Google Jobs)")
             if '"applicantLocationRequirements"' not in content:
                 errors.append(f"{rel}: JobPosting missing applicantLocationRequirements (required for Google Jobs)")
+            # Validate address fields — "India" is not a valid locality or region
+            if '"addressLocality": "India"' in content or "'addressLocality': 'India'" in content:
+                errors.append(f"{rel}: JobPosting has invalid addressLocality 'India' (must be a city)")
+            if '"addressRegion": "India"' in content or "'addressRegion': 'India'" in content:
+                errors.append(f"{rel}: JobPosting has invalid addressRegion 'India' (must be a state/region)")
 
     if '/jobs/' in rel and not is_dir_index and '"BreadcrumbList"' not in content:
         errors.append(f"{rel}: job page missing BreadcrumbList JSON-LD")
 
     if '/jobs/' in rel and not is_dir_index and '"FAQPage"' not in content:
         errors.append(f"{rel}: job page missing FAQPage JSON-LD")
+
+    if '/results/' in rel and not is_dir_index and '"FAQPage"' not in content:
+        errors.append(f"{rel}: result page missing FAQPage JSON-LD")
+
+    if '/admit-cards/' in rel and not is_dir_index and '"FAQPage"' not in content:
+        errors.append(f"{rel}: admit-card page missing FAQPage JSON-LD")
 
     # Homepage must have Organization + WebSite schemas
     if rel == "index.html":
