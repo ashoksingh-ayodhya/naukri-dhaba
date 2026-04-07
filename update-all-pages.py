@@ -1105,6 +1105,40 @@ def build_meta_block(data, page_type, filepath, canonical_url):
     <meta name="geo.placename" content="{location}">'''
 
 
+def _job_location_for(title):
+    """Return (streetAddress, city, state, postalCode) based on job title keywords."""
+    STATE_LOCS = {
+        'BIHAR': ('Patna', 'Bihar', '800001'),
+        'RAJASTHAN': ('Jaipur', 'Rajasthan', '302001'),
+        'UTTAR PRADESH': ('Lucknow', 'Uttar Pradesh', '226001'),
+        ' UP ': ('Lucknow', 'Uttar Pradesh', '226001'),
+        'MADHYA PRADESH': ('Bhopal', 'Madhya Pradesh', '462001'),
+        'MPESB': ('Bhopal', 'Madhya Pradesh', '462001'),
+        'MPPSC': ('Bhopal', 'Madhya Pradesh', '462001'),
+        'HARYANA': ('Chandigarh', 'Haryana', '160001'),
+        'JHARKHAND': ('Ranchi', 'Jharkhand', '834001'),
+        'PUNJAB': ('Chandigarh', 'Punjab', '160001'),
+        'UTTARAKHAND': ('Dehradun', 'Uttarakhand', '248001'),
+        'GUJARAT': ('Gandhinagar', 'Gujarat', '382010'),
+        'MAHARASHTRA': ('Mumbai', 'Maharashtra', '400001'),
+        'KARNATAKA': ('Bengaluru', 'Karnataka', '560001'),
+        'KERALA': ('Thiruvananthapuram', 'Kerala', '695001'),
+        'TAMIL NADU': ('Chennai', 'Tamil Nadu', '600001'),
+        'ANDHRA': ('Amaravati', 'Andhra Pradesh', '522020'),
+        'TELANGANA': ('Hyderabad', 'Telangana', '500001'),
+        'ODISHA': ('Bhubaneswar', 'Odisha', '751001'),
+        'WEST BENGAL': ('Kolkata', 'West Bengal', '700001'),
+        'ASSAM': ('Guwahati', 'Assam', '781001'),
+        'DELHI': ('New Delhi', 'Delhi', '110001'),
+        'DSSSB': ('New Delhi', 'Delhi', '110001'),
+    }
+    tu = title.upper()
+    for kw, (city, state, pin) in STATE_LOCS.items():
+        if kw in tu:
+            return (f'{state} Government', city, state, pin)
+    return ('Government of India', 'New Delhi', 'Delhi', '110001')
+
+
 def build_job_json_ld(title, dept, last_date, canonical_url):
     """Build JobPosting JSON-LD with all required fields for Google Search Console."""
     import datetime as _dt
@@ -1112,6 +1146,7 @@ def build_job_json_ld(title, dept, last_date, canonical_url):
     safe_title = normalize_title_text(title)
     desc = f"{safe_title}: {dept} recruitment notification. Last date: {last_date}. Apply at {SITE_NAME}."
     slug = canonical_url.rstrip('/').split('/')[-1].replace('.html', '')
+    _street, _city, _region, _pin = _job_location_for(title)
     ld = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
@@ -1131,10 +1166,10 @@ def build_job_json_ld(title, dept, last_date, canonical_url):
             "@type": "Place",
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "Government of India",
-                "addressLocality": "New Delhi",
-                "addressRegion": "Delhi",
-                "postalCode": "110001",
+                "streetAddress": _street,
+                "addressLocality": _city,
+                "addressRegion": _region,
+                "postalCode": _pin,
                 "addressCountry": "IN"
             }
         },

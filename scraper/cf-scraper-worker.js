@@ -339,6 +339,42 @@ function buildPage(item, pageType, cfg) {
   return { path: filePath, html: pageHtml };
 }
 
+// ── State-based job location resolver ───────────────────────────────────────
+function jobLocationFor(title) {
+  const STATE_LOCS = [
+    ['BIHAR', 'Patna', 'Bihar', '800001'],
+    ['RAJASTHAN', 'Jaipur', 'Rajasthan', '302001'],
+    ['UTTAR PRADESH', 'Lucknow', 'Uttar Pradesh', '226001'],
+    [' UP ', 'Lucknow', 'Uttar Pradesh', '226001'],
+    ['MADHYA PRADESH', 'Bhopal', 'Madhya Pradesh', '462001'],
+    ['MPESB', 'Bhopal', 'Madhya Pradesh', '462001'],
+    ['MPPSC', 'Bhopal', 'Madhya Pradesh', '462001'],
+    ['HARYANA', 'Chandigarh', 'Haryana', '160001'],
+    ['JHARKHAND', 'Ranchi', 'Jharkhand', '834001'],
+    ['PUNJAB', 'Chandigarh', 'Punjab', '160001'],
+    ['UTTARAKHAND', 'Dehradun', 'Uttarakhand', '248001'],
+    ['GUJARAT', 'Gandhinagar', 'Gujarat', '382010'],
+    ['MAHARASHTRA', 'Mumbai', 'Maharashtra', '400001'],
+    ['KARNATAKA', 'Bengaluru', 'Karnataka', '560001'],
+    ['KERALA', 'Thiruvananthapuram', 'Kerala', '695001'],
+    ['TAMIL NADU', 'Chennai', 'Tamil Nadu', '600001'],
+    ['ANDHRA', 'Amaravati', 'Andhra Pradesh', '522020'],
+    ['TELANGANA', 'Hyderabad', 'Telangana', '500001'],
+    ['ODISHA', 'Bhubaneswar', 'Odisha', '751001'],
+    ['WEST BENGAL', 'Kolkata', 'West Bengal', '700001'],
+    ['ASSAM', 'Guwahati', 'Assam', '781001'],
+    ['DELHI', 'New Delhi', 'Delhi', '110001'],
+    ['DSSSB', 'New Delhi', 'Delhi', '110001'],
+  ];
+  const tu = title.toUpperCase();
+  for (const [kw, city, state, pin] of STATE_LOCS) {
+    if (tu.includes(kw)) {
+      return { street: `${state} Government`, city, state, pin };
+    }
+  }
+  return { street: 'Government of India', city: 'New Delhi', state: 'Delhi', pin: '110001' };
+}
+
 // ── Job page ────────────────────────────────────────────────────────────────
 
 function buildJobHtml(item, title, dept, cat, slug, canon, cfg) {
@@ -348,6 +384,7 @@ function buildJobHtml(item, title, dept, cat, slug, canon, cfg) {
   const applyUrl = item.applyUrl || googleSearchUrl(title, 'apply online official site');
   const notifUrl = item.notificationUrl || googleSearchUrl(title, 'notification PDF official');
 
+  const loc = jobLocationFor(title);
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
@@ -367,10 +404,10 @@ function buildJobHtml(item, title, dept, cat, slug, canon, cfg) {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Government of India',
-        addressLocality: 'New Delhi',
-        addressRegion: 'Delhi',
-        postalCode: '110001',
+        streetAddress: loc.street,
+        addressLocality: loc.city,
+        addressRegion: loc.state,
+        postalCode: loc.pin,
         addressCountry: 'IN',
       },
     },

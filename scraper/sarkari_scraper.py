@@ -292,6 +292,52 @@ def official_portal_for(title: str, cat: str) -> str:
     return OFFICIAL_PORTALS.get(cat, '')
 
 
+# ── State-level location lookup for JobPosting schema ─────
+_STATE_LOCATIONS = {
+    'BIHAR': ('Patna', 'Bihar', '800001'),
+    'RAJASTHAN': ('Jaipur', 'Rajasthan', '302001'),
+    'UTTAR PRADESH': ('Lucknow', 'Uttar Pradesh', '226001'),
+    ' UP ': ('Lucknow', 'Uttar Pradesh', '226001'),
+    'MADHYA PRADESH': ('Bhopal', 'Madhya Pradesh', '462001'),
+    ' MP ': ('Bhopal', 'Madhya Pradesh', '462001'),
+    'MPESB': ('Bhopal', 'Madhya Pradesh', '462001'),
+    'MPPSC': ('Bhopal', 'Madhya Pradesh', '462001'),
+    'MPBSE': ('Bhopal', 'Madhya Pradesh', '462001'),
+    'HARYANA': ('Chandigarh', 'Haryana', '160001'),
+    'JHARKHAND': ('Ranchi', 'Jharkhand', '834001'),
+    'JPSC': ('Ranchi', 'Jharkhand', '834001'),
+    'PUNJAB': ('Chandigarh', 'Punjab', '160001'),
+    'HIMACHAL': ('Shimla', 'Himachal Pradesh', '171001'),
+    'UTTARAKHAND': ('Dehradun', 'Uttarakhand', '248001'),
+    'GUJARAT': ('Gandhinagar', 'Gujarat', '382010'),
+    'MAHARASHTRA': ('Mumbai', 'Maharashtra', '400001'),
+    'KARNATAKA': ('Bengaluru', 'Karnataka', '560001'),
+    'KERALA': ('Thiruvananthapuram', 'Kerala', '695001'),
+    'TAMIL NADU': ('Chennai', 'Tamil Nadu', '600001'),
+    'ANDHRA': ('Amaravati', 'Andhra Pradesh', '522020'),
+    'TELANGANA': ('Hyderabad', 'Telangana', '500001'),
+    'ODISHA': ('Bhubaneswar', 'Odisha', '751001'),
+    'WEST BENGAL': ('Kolkata', 'West Bengal', '700001'),
+    'ASSAM': ('Guwahati', 'Assam', '781001'),
+    'DELHI': ('New Delhi', 'Delhi', '110001'),
+    'DSSSB': ('New Delhi', 'Delhi', '110001'),
+}
+
+
+def job_location_for(title: str) -> tuple:
+    """Return (streetAddress, city, state, postalCode) for a job title.
+
+    Tries to match state keywords in the title so that state-level jobs
+    get accurate location data instead of a generic New Delhi default.
+    """
+    tu = title.upper()
+    for keyword, (city, state, pin) in _STATE_LOCATIONS.items():
+        if keyword in tu:
+            return (f'{state} Government', city, state, pin)
+    # Central government / all-India default
+    return ('Government of India', 'New Delhi', 'Delhi', '110001')
+
+
 # ══════════════════════════════════════════════════════════
 # UTILITY HELPERS
 # ══════════════════════════════════════════════════════════
@@ -2452,6 +2498,7 @@ def build_job_page(d: dict) -> tuple[str, str]:
     _valid_through = to_iso_date(d['last_date'])
     _org_name = cat.title() + ' Recruitment' if cat != 'government' else dept or 'Government of India'
     _org_url = official_portal_for(title, cat) or SITE_URL
+    _street, _city, _region, _pin = job_location_for(title)
     ld_job_dict = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
@@ -2474,10 +2521,10 @@ def build_job_page(d: dict) -> tuple[str, str]:
             "@type": "Place",
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "Government of India",
-                "addressLocality": "New Delhi",
-                "addressRegion": "Delhi",
-                "postalCode": "110001",
+                "streetAddress": _street,
+                "addressLocality": _city,
+                "addressRegion": _region,
+                "postalCode": _pin,
                 "addressCountry": "IN"
             }
         },
