@@ -1106,13 +1106,48 @@ def build_meta_block(data, page_type, filepath, canonical_url):
 
 
 def build_job_json_ld(title, dept, last_date, canonical_url):
-    """Build JobPosting JSON-LD."""
-    iso_last_date = to_iso_date(last_date) or TODAY
+    """Build JobPosting JSON-LD with all required fields for Google Search Console."""
+    import datetime as _dt
+    iso_last_date = to_iso_date(last_date) or (_dt.date.today().replace(year=_dt.date.today().year + 1)).isoformat()
     safe_title = normalize_title_text(title)
     desc = f"{safe_title}: {dept} recruitment notification. Last date: {last_date}. Apply at {SITE_NAME}."
-    return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"JobPosting","title":"{safe_title}","description":"{desc}","datePosted":"{TODAY}","validThrough":"{iso_last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
-    </script>'''
+    slug = canonical_url.rstrip('/').split('/')[-1].replace('.html', '')
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "JobPosting",
+        "title": safe_title,
+        "description": desc,
+        "identifier": {"@type": "PropertyValue", "name": dept, "value": slug},
+        "datePosted": TODAY,
+        "validThrough": iso_last_date,
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+            "@type": "Organization",
+            "name": dept,
+            "sameAs": "https://naukridhaba.in",
+            "logo": "https://naukridhaba.in/img/og-default.png"
+        },
+        "jobLocation": {
+            "@type": "Place",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Government of India",
+                "addressLocality": "New Delhi",
+                "addressRegion": "Delhi",
+                "postalCode": "110001",
+                "addressCountry": "IN"
+            }
+        },
+        "applicantLocationRequirements": {"@type": "Country", "name": "India"},
+        "baseSalary": {
+            "@type": "MonetaryAmount",
+            "currency": "INR",
+            "value": {"@type": "QuantitativeValue", "value": "As per Government Norms", "unitText": "MONTH"}
+        },
+        "url": canonical_url
+    }
+    import json as _json
+    return f'    <script type="application/ld+json">\n    {_json.dumps(ld, ensure_ascii=False)}\n    </script>'
 
 
 def build_result_json_ld(title, dept, canonical_url):

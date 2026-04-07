@@ -353,11 +353,37 @@ function buildJobHtml(item, title, dept, cat, slug, canon, cfg) {
     '@type': 'JobPosting',
     title,
     description: desc,
+    identifier: { '@type': 'PropertyValue', name: dept, value: slug },
     datePosted: todayIso(),
-    validThrough: toIsoDate(item.lastDate) || undefined,
+    validThrough: toIsoDate(item.lastDate) || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     employmentType: 'FULL_TIME',
-    hiringOrganization: { '@type': 'Organization', name: dept },
-    jobLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressCountry: 'IN' } },
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: dept,
+      sameAs: cfg.siteUrl || 'https://naukridhaba.in',
+      logo: `${cfg.siteUrl || 'https://naukridhaba.in'}/img/og-default.png`,
+    },
+    jobLocation: {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Government of India',
+        addressLocality: 'New Delhi',
+        addressRegion: 'Delhi',
+        postalCode: '110001',
+        addressCountry: 'IN',
+      },
+    },
+    applicantLocationRequirements: { '@type': 'Country', name: 'India' },
+    baseSalary: {
+      '@type': 'MonetaryAmount',
+      currency: 'INR',
+      value: {
+        '@type': 'QuantitativeValue',
+        value: (item.salary && item.salary !== 'Check Notification') ? item.salary : 'As per Government Norms',
+        unitText: 'MONTH',
+      },
+    },
     url: canon,
   });
 

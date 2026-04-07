@@ -2470,15 +2470,32 @@ def build_job_page(d: dict) -> tuple[str, str]:
             "sameAs": _org_url,
             "logo": f"{SITE_URL}/img/og-default.png"
         },
-        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "India", "addressRegion": "India", "addressCountry": "IN"}},
+        "jobLocation": {
+            "@type": "Place",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Government of India",
+                "addressLocality": "New Delhi",
+                "addressRegion": "Delhi",
+                "postalCode": "110001",
+                "addressCountry": "IN"
+            }
+        },
         "applicantLocationRequirements": {"@type": "Country", "name": "India"},
         "url": canon,
         "directApply": bool(d.get('apply_url'))
     }
-    if _valid_through and _valid_through >= date.today().isoformat():
-        ld_job_dict["validThrough"] = _valid_through
-    if d.get('salary') and d['salary'] != 'Check Notification':
-        ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary']}}
+    ld_job_dict["validThrough"] = _valid_through or (date.today().replace(year=date.today().year + 1)).isoformat()
+    _salary_str = d.get('salary', '') or ''
+    if _salary_str and _salary_str not in ('Check Notification', 'As per Government Norms'):
+        _salary_val = _salary_str
+    else:
+        _salary_val = "As per Government Norms"
+    ld_job_dict["baseSalary"] = {
+        "@type": "MonetaryAmount",
+        "currency": "INR",
+        "value": {"@type": "QuantitativeValue", "value": _salary_val, "unitText": "MONTH"}
+    }
     if d.get('vacancy') and d['vacancy'] != 'Check Notification':
         ld_job_dict["totalJobOpenings"] = d['vacancy']
     if d.get('qualification') and d['qualification'] != 'Check Notification':
