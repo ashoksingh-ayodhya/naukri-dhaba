@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-08T11:50:47.772108",
+  "scraped_at": "2026-04-09T11:50:16.113213",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-nda-ii-2025/",
   "page_type": "job",
   "title": "UPSC NDA II Online Form 2025",
-  "post_name": "UPSC National Defence Academy and Naval Academy NDA II Examination 2025 Apply Online Form",
+  "post_name": "UPSC National Defence Academy and Naval Academy NDA II Examination 2025 Download Final Result",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Union Public Service Commission (UPSC)",
@@ -18,6 +18,7 @@
     "Fee Payment Last Date": "17/06/2025",
     "Correction Form": "As per Schedule",
     "Exam Held on": "14/09/2025",
+    "Final Result Available": "08/04/2026",
     "UPSC NDS II Eligibility 2025 Army Wing : Passed /Appearing 10+2 Exam in Any Recognized Board in India. For Airforce & Naval Wing : Passed /Appearing 10+2 Exam with Physics & Math Subjects": "UPSC NDA II Age Limit 2025 Candidate Not be Born Before : 02/01/2007 Candidates Not be Born After : 01/01/2010 Age Relaxation Extra as per NDA II Exam Notification 2025 Recruitment Rules."
   },
   "fees": {
@@ -50,6 +51,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Final Result",
+      "url": "https://upsc.gov.in/sites/default/files/FR-NDA-NA-II-2025-Engl-08042026.pdf",
+      "link_type": "result"
+    },
+    {
       "label": "Apply Online",
       "url": "https://upsconline.nic.in/instruction",
       "link_type": "apply"
@@ -67,11 +73,15 @@
   ],
   "apply_url": "https://upsconline.nic.in/instruction",
   "notification_url": "https://doc.sarkariresults.org.in/UPSC_NDA_II_2025_55_Notification.pdf",
-  "result_url": "",
+  "result_url": "https://upsc.gov.in/sites/default/files/FR-NDA-NA-II-2025-Engl-08042026.pdf",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "http://upsc.gov.in/",
   "extra_links": [
+    {
+      "label": "Download Final Result",
+      "url": "https://upsc.gov.in/sites/default/files/FR-NDA-NA-II-2025-Engl-08042026.pdf"
+    },
     {
       "label": "Apply Online",
       "url": "https://upsconline.nic.in/instruction"
@@ -85,5 +95,10 @@
       "url": "http://upsc.gov.in/"
     }
   ],
-  "download_links": []
+  "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://upsc.gov.in/sites/default/files/FR-NDA-NA-II-2025-Engl-08042026.pdf"
+    }
+  ]
 }
