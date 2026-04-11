@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-07T11:54:02.319290",
+  "scraped_at": "2026-04-11T11:32:17.177020",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-je-08-exam-2024/",
   "page_type": "result",
   "title": "UPSSSC Junior Engineer JE 2024 Eligibility Result",
-  "post_name": "UPSSSC Junior Engineer JE Civil Recruitment 2024 Exam Eligibility Result 2026 for 4612 Post",
+  "post_name": "UPSSSC Junior Engineer JE Civil Recruitment 2024 Exam Eligibility Result, Mains Exam Fee Payment 2026 for 4612 Post",
   "post_date": "Click Here",
   "update_date": "",
   "organization_full_name": "Uttar Pradesh Subordinate Service Selection Commission (UPSSSC)",
@@ -18,6 +18,7 @@
     "Fee Payment Last Date": "13/07/2024",
     "Correction Last Date": "20/07/2024",
     "Eligibility Result Available": "01/04/2026",
+    "Mains Exam Fee Payment": "07/04/2026",
     "Exam Date": "03/05/2026"
   },
   "fees": {
@@ -54,6 +55,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Pay Mains Exam Fee",
+      "url": "https://upsssc.gov.in/Interface/Authentication.aspx?NO/WElvPxNJJ/MszfbTUoiya6+j+60nloRK/wJ+Hma/peo+LypGARxykN88mZ0GWnpIBcPHGPx6XKnMmy76dwCXeE3KYnOjOH3riGr1fN9P9B2Efupj9zX0CKJSMG6ToGn9MH0ABA3Sd9Ni7A20mRA==",
+      "link_type": "other"
+    },
     {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx",
@@ -97,6 +103,10 @@
   "admit_url": "",
   "official_website_url": "http://upsssc.gov.in/Default.aspx",
   "extra_links": [
+    {
+      "label": "Pay Mains Exam Fee",
+      "url": "https://upsssc.gov.in/Interface/Authentication.aspx?NO/WElvPxNJJ/MszfbTUoiya6+j+60nloRK/wJ+Hma/peo+LypGARxykN88mZ0GWnpIBcPHGPx6XKnMmy76dwCXeE3KYnOjOH3riGr1fN9P9B2Efupj9zX0CKJSMG6ToGn9MH0ABA3Sd9Ni7A20mRA=="
+    },
     {
       "label": "Download Eligibility Result",
       "url": "https://upsssc.gov.in/ResultsDire.aspx"

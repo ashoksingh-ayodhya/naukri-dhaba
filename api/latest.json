@@ -1,8 +1,16 @@
 {
-  "updated": "2026-04-07T06:36:41Z",
+  "updated": "2026-04-11T06:15:08Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
+    {
+      "title": "UPSSSC UP Vidhan Bhawan Guard / Fireman Online Form 2026",
+      "dept": "SSC",
+      "type": "job",
+      "category": "ssc",
+      "date": "29/06/2026",
+      "url": "https://naukridhaba.in/jobs/ssc/upsssc-up-vidhan-bhawan-guard-fireman-online-form-2026.html"
+    },
     {
       "title": "UPSSSC Excise Constable Online Form 2026",
       "dept": "SSC",
@@ -60,6 +68,14 @@
       "url": "https://naukridhaba.in/jobs/banking/ibps-clerk-2026-online-form.html"
     },
     {
+      "title": "CRPF Constable Tradesman Online Form 2026",
+      "dept": "POLICE",
+      "type": "job",
+      "category": "police",
+      "date": "19/05/2026",
+      "url": "https://naukridhaba.in/jobs/police/crpf-constable-tradesman-online-form-2026.html"
+    },
+    {
       "title": "Bihar BPSC TRE Teacher 2026 Online Form",
       "dept": "Government",
       "type": "job",
@@ -74,6 +90,14 @@
       "category": "banking",
       "date": "15/05/2026",
       "url": "https://naukridhaba.in/jobs/banking/ibps-po-2026-online-form.html"
+    },
+    {
+      "title": "SECL Grade C Various Post Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "14/05/2026",
+      "url": "https://naukridhaba.in/jobs/government/secl-grade-c-various-post-online-form-2026.html"
     },
     {
       "title": "UPSSSC Assistant Statistical Officer ASO Online Form 2026",
@@ -100,6 +124,14 @@
       "url": "https://naukridhaba.in/jobs/government/uppsc-pcs-pre-2026-online-form.html"
     },
     {
+      "title": "BTSC Laboratory Assistant Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "06/05/2026",
+      "url": "https://naukridhaba.in/jobs/government/btsc-laboratory-assistant-online-form-2026.html"
+    },
+    {
       "title": "UPSSSC Assistant Boring Technician Online Form 2026",
       "dept": "SSC",
       "type": "job",
@@ -108,44 +140,12 @@
       "url": "https://naukridhaba.in/jobs/ssc/upsssc-assistant-boring-technician-online-form-2026.html"
     },
     {
-      "title": "MPESB Van Rakshak, Jail Prahari Online Form 2026",
+      "title": "NCL HEMM Operator, Staff Nurse, Overseer Civil Online Form 2026",
       "dept": "Government",
       "type": "job",
       "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/mpesb-van-rakshak-jail-prahari-online-form-2026.html"
-    },
-    {
-      "title": "Patna High Court Technical Assistant Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/patna-high-court-technical-assistant-online-form-2026.html"
-    },
-    {
-      "title": "Indian Navy Agniveer SSR MR 2026 Online Form",
-      "dept": "NAVY",
-      "type": "job",
-      "category": "defence",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/defence/indian-navy-agniveer-ssr-mr-2026-online-form.html"
-    },
-    {
-      "title": "JEECUP 2026 Apply Online",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/jeecup-2026-apply-online.html"
-    },
-    {
-      "title": "BPSC 33 Civil Judge PCS J Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/bpsc-33-civil-judge-pcs-j-online-form-2026.html"
+      "date": "01/05/2026",
+      "url": "https://naukridhaba.in/jobs/government/ncl-hemm-operator-staff-nurse-overseer-civil-online-form-2026.html"
     },
     {
       "title": "NTA UGC NET June 2026 Online Form",
@@ -156,15 +156,39 @@
       "url": "https://naukridhaba.in/jobs/government/nta-ugc-net-june-2026-online-form.html"
     },
     {
-      "title": "RPSC RAS Pre 2026 Online Form",
+      "title": "JEECUP 2026 Apply Online",
       "dept": "Government",
       "type": "job",
       "category": "government",
       "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/rpsc-ras-pre-2026-online-form.html"
+      "url": "https://naukridhaba.in/jobs/government/jeecup-2026-apply-online.html"
     }
   ],
   "results": [
+    {
+      "title": "MPESB MP Police Constable 2025 Final Result",
+      "dept": "POLICE",
+      "type": "result",
+      "category": "police",
+      "date": "09/04/2026",
+      "url": "https://naukridhaba.in/results/police/mpesb-mp-police-constable-2025-final-result.html"
+    },
+    {
+      "title": "MPESB MP Police Constable Result 2026",
+      "dept": "POLICE",
+      "type": "result",
+      "category": "police",
+      "date": "09/04/2026",
+      "url": "https://naukridhaba.in/results/police/mpesb-mp-police-constable-result-2026.html"
+    },
+    {
+      "title": "UPSC NDA II 2025 Final Result",
+      "dept": "UPSC",
+      "type": "result",
+      "category": "upsc",
+      "date": "08/04/2026",
+      "url": "https://naukridhaba.in/results/upsc/upsc-nda-ii-2025-final-result.html"
+    },
     {
       "title": "UPPSC RO / ARO 2023 Final Result",
       "dept": "PPSC",
@@ -198,14 +222,6 @@
       "url": "https://naukridhaba.in/results/banking/nabard-development-assistant-pre-result-2026.html"
     },
     {
-      "title": "UP Police SI / ASI 2023 Result / Candidate List for Stenographer Test",
-      "dept": "POLICE",
-      "type": "result",
-      "category": "police",
-      "date": "26/03/2026",
-      "url": "https://naukridhaba.in/results/police/up-police-si-asi-2023-result-candidate-list-for-stenographer-test.html"
-    },
-    {
       "title": "UP Police SI / ASI 2023 Final Result",
       "dept": "POLICE",
       "type": "result",
@@ -214,12 +230,12 @@
       "url": "https://naukridhaba.in/results/police/up-police-si-asi-2023-final-result.html"
     },
     {
-      "title": "UPPSC Computer Assistant 2025 Result",
-      "dept": "PPSC",
+      "title": "UP Police SI / ASI 2023 Result / Candidate List for Stenographer Test",
+      "dept": "POLICE",
       "type": "result",
-      "category": "government",
-      "date": "13/03/2026",
-      "url": "https://naukridhaba.in/results/government/uppsc-computer-assistant-2025-result.html"
+      "category": "police",
+      "date": "26/03/2026",
+      "url": "https://naukridhaba.in/results/police/up-police-si-asi-2023-result-candidate-list-for-stenographer-test.html"
     },
     {
       "title": "Jharkhand High Court Assistant / Clerk 2024 Result",
@@ -228,6 +244,14 @@
       "category": "government",
       "date": "13/03/2026",
       "url": "https://naukridhaba.in/results/government/jharkhand-high-court-assistant-clerk-2024-result.html"
+    },
+    {
+      "title": "UPPSC Computer Assistant 2025 Result",
+      "dept": "PPSC",
+      "type": "result",
+      "category": "government",
+      "date": "13/03/2026",
+      "url": "https://naukridhaba.in/results/government/uppsc-computer-assistant-2025-result.html"
     },
     {
       "title": "Patna High Court Mazdoor 2025 Score Card",
@@ -246,6 +270,14 @@
       "url": "https://naukridhaba.in/results/government/patna-high-court-mazdoor-2025-final-result.html"
     },
     {
+      "title": "Bank of Baroda Office Assistant Peon Result 2026",
+      "dept": "BANKING",
+      "type": "result",
+      "category": "banking",
+      "date": "11/03/2026",
+      "url": "https://naukridhaba.in/results/banking/bank-of-baroda-office-assistant-peon-result-2026.html"
+    },
+    {
       "title": "Indian Airforce AFCAT 01/2026 Result",
       "dept": "DEFENCE",
       "type": "result",
@@ -262,20 +294,20 @@
       "url": "https://naukridhaba.in/results/ssc/upsssc-junior-analyst-drugs-2024-final-result.html"
     },
     {
-      "title": "Bank of Baroda Office Assistant Peon Result 2026",
-      "dept": "BANKING",
-      "type": "result",
-      "category": "banking",
-      "date": "11/03/2026",
-      "url": "https://naukridhaba.in/results/banking/bank-of-baroda-office-assistant-peon-result-2026.html"
-    },
-    {
       "title": "BPSSC Enforcement Sub Inspector 2025 Final Result",
       "dept": "SSC",
       "type": "result",
       "category": "ssc",
       "date": "10/03/2026",
       "url": "https://naukridhaba.in/results/ssc/bpssc-enforcement-sub-inspector-2025-final-result.html"
+    },
+    {
+      "title": "UPSC Civil Services IAS / IFS Pre Result 2025",
+      "dept": "UPSC",
+      "type": "result",
+      "category": "upsc",
+      "date": "06/03/2026",
+      "url": "https://naukridhaba.in/results/upsc/upsc-civil-services-ias-ifs-pre-result-2025.html"
     },
     {
       "title": "UPSC Civil Services IAS 2025 Final Result",
@@ -292,38 +324,6 @@
       "category": "upsc",
       "date": "06/03/2026",
       "url": "https://naukridhaba.in/results/upsc/upsc-forest-services-ifs-2025-mains-result.html"
-    },
-    {
-      "title": "UPSC Civil Services IAS / IFS Pre Result 2025",
-      "dept": "UPSC",
-      "type": "result",
-      "category": "upsc",
-      "date": "06/03/2026",
-      "url": "https://naukridhaba.in/results/upsc/upsc-civil-services-ias-ifs-pre-result-2025.html"
-    },
-    {
-      "title": "CBSE Group A, B, C Various Post Result 2026",
-      "dept": "CBSE",
-      "type": "result",
-      "category": "government",
-      "date": "02/03/2026",
-      "url": "https://naukridhaba.in/results/government/cbse-group-a-b-c-various-post-result-2026.html"
-    },
-    {
-      "title": "MPESB MP Primary Teacher PSTST Result 2026",
-      "dept": "Government",
-      "type": "result",
-      "category": "government",
-      "date": "27/02/2026",
-      "url": "https://naukridhaba.in/results/government/mpesb-mp-primary-teacher-pstst-result-2026.html"
-    },
-    {
-      "title": "RPSC Assistant Statistical Officer ASO 2024 Result",
-      "dept": "Government",
-      "type": "result",
-      "category": "government",
-      "date": "24/02/2026",
-      "url": "https://naukridhaba.in/results/government/rpsc-assistant-statistical-officer-aso-2024-result.html"
     }
   ],
   "admits": [
@@ -384,38 +384,6 @@
       "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-enforcement-constable-2023-pet-admit-card.html"
     },
     {
-      "title": "UPSC Engineering Services Pre 2025 Admit Card",
-      "dept": "UPSC",
-      "type": "admit",
-      "category": "upsc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2025-admit-card.html"
-    },
-    {
-      "title": "UPSC Engineering Services Pre 2026 Admit Card",
-      "dept": "UPSC",
-      "type": "admit",
-      "category": "upsc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2026-admit-card.html"
-    },
-    {
-      "title": "UPSC IAS / IFS Pre Admit Card 2025",
-      "dept": "UPSC",
-      "type": "admit",
-      "category": "upsc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-ias-ifs-pre-admit-card-2025.html"
-    },
-    {
-      "title": "UPSC Combined Geo Scientist Pre Admit Card 2026",
-      "dept": "UPSC",
-      "type": "admit",
-      "category": "upsc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-combined-geo-scientist-pre-admit-card-2026.html"
-    },
-    {
       "title": "UPSC NDA I 2025 Admit Card",
       "dept": "UPSC",
       "type": "admit",
@@ -424,12 +392,12 @@
       "url": "https://naukridhaba.in/admit-cards/upsc/upsc-nda-i-2025-admit-card.html"
     },
     {
-      "title": "UPSC Geo Scientist 2025 Admit Card",
+      "title": "UPSC Engineering Services Pre 2025 Admit Card",
       "dept": "UPSC",
       "type": "admit",
       "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-geo-scientist-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2025-admit-card.html"
     },
     {
       "title": "UPSC IES / ISS Admit Card 2025",
@@ -440,6 +408,38 @@
       "url": "https://naukridhaba.in/admit-cards/upsc/upsc-ies-iss-admit-card-2025.html"
     },
     {
+      "title": "UPSC IAS / IFS Pre Admit Card 2025",
+      "dept": "UPSC",
+      "type": "admit",
+      "category": "upsc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-ias-ifs-pre-admit-card-2025.html"
+    },
+    {
+      "title": "UPSC Engineering Services Pre 2026 Admit Card",
+      "dept": "UPSC",
+      "type": "admit",
+      "category": "upsc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2026-admit-card.html"
+    },
+    {
+      "title": "UPSC Combined Geo Scientist Pre Admit Card 2026",
+      "dept": "UPSC",
+      "type": "admit",
+      "category": "upsc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-combined-geo-scientist-pre-admit-card-2026.html"
+    },
+    {
+      "title": "UPSC Geo Scientist 2025 Admit Card",
+      "dept": "UPSC",
+      "type": "admit",
+      "category": "upsc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-geo-scientist-2025-admit-card.html"
+    },
+    {
       "title": "UPSC CDS I 2025 Admit Card",
       "dept": "UPSC",
       "type": "admit",
@@ -448,12 +448,28 @@
       "url": "https://naukridhaba.in/admit-cards/upsc/upsc-cds-i-2025-admit-card.html"
     },
     {
-      "title": "UPSSSC Junior Engineer JE Civil 2024 Exam Date",
+      "title": "ISRO VSSC Various Post Admit Card 2026",
       "dept": "SSC",
       "type": "admit",
       "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-junior-engineer-je-civil-2024-exam-date.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/isro-vssc-various-post-admit-card-2026.html"
+    },
+    {
+      "title": "Bihar Police BPSSC Sub Inspector SI Prohibition Admit Card 2025",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/bihar-police-bpssc-sub-inspector-si-prohibition-admit-card-2025.html"
+    },
+    {
+      "title": "SSC MTS, Havaldar 2025 Admit Card",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
     },
     {
       "title": "SSC Junior Engineer JE Paper II Exam Date 2026",
@@ -464,28 +480,12 @@
       "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-paper-ii-exam-date-2026.html"
     },
     {
-      "title": "SSC Delhi Police Head Constable AWO / TPO 2022 DME Exam Schedule",
+      "title": "DFCCIL MTS PET Exam Admit Card 2026",
       "dept": "SSC",
       "type": "admit",
       "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-delhi-police-head-constable-awo-tpo-2022-dme-exam-schedule.html"
-    },
-    {
-      "title": "SSC Junior Engineer JE 2025 Paper II Exam City Details",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-2025-paper-ii-exam-city-details.html"
-    },
-    {
-      "title": "SSC MTS, Havaldar 2025 Admit Card",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/dfccil-mts-pet-exam-admit-card-2026.html"
     }
   ]
 }

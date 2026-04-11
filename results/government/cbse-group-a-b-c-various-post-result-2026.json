@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-07T11:57:07.195775",
+  "scraped_at": "2026-04-11T11:35:22.335305",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/cbse-group-abc-2025/",
   "page_type": "result",
   "title": "CBSE Group A, B, C Various Post Result 2026",
-  "post_name": "CBSE Group A, B & C Various Post Recruitment 2025 Download Result, Tier II Exam Date",
+  "post_name": "CBSE Group A, B & C Various Post Recruitment 2025 Download Result, Tier II Exam City / Admit Card",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Central Board of Secondary Education (CBSE)",
@@ -49,6 +49,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Tier II Exam City",
+      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/frmAuthforCityPhaseII.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E",
+      "link_type": "exam_city"
+    },
+    {
       "label": "Download Tier II Exam Date",
       "url": "https://www.cbse.gov.in/cbsenew/documents/Public_Notice_DRQ2026_Tier_2_07032026.pdf",
       "link_type": "other"
@@ -77,11 +82,6 @@
       "label": "Download Admit Card",
       "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/LoginDOB.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E",
       "link_type": "admit"
-    },
-    {
-      "label": "Check Exam City",
-      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/frmAuthforCityPhaseII.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E",
-      "link_type": "exam_city"
     },
     {
       "label": "Exam Notice",
@@ -117,6 +117,10 @@
   "official_website_url": "https://www.cbse.gov.in/cbsenew/cbse.html",
   "extra_links": [
     {
+      "label": "Download Tier II Exam City",
+      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/frmAuthforCityPhaseII.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E"
+    },
+    {
       "label": "Download Tier II Exam Date",
       "url": "https://www.cbse.gov.in/cbsenew/documents/Public_Notice_DRQ2026_Tier_2_07032026.pdf"
     },
@@ -139,10 +143,6 @@
     {
       "label": "Download Admit Card",
       "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/LoginDOB.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E"
-    },
-    {
-      "label": "Check Exam City",
-      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/frmAuthforCityPhaseII.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E"
     },
     {
       "label": "Exam Notice",

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-07T11:55:43.073173",
+  "scraped_at": "2026-04-11T11:33:57.585905",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-chsl-2025/",
   "page_type": "result",
   "title": "SSC 10+2 CHSL 2025 Tier I Marks / Score Card",
-  "post_name": "SSC 10+2 Combined Higher Secondary Level Exam CHSL Recruitment 2025 Tier I Marks Result, Tier II Exam City Details",
+  "post_name": "SSC 10+2 Combined Higher Secondary Level Exam CHSL Recruitment 2025 Tier I Marks Result, Tier II Exam City Details, Skill Typing Test Date",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Staff Selection Commission",
@@ -21,7 +21,8 @@
     "Tier-1 Result Declared": "27/02/2026",
     "Tier-1 Marks Available": "19/03/2026",
     "Exam Date Tier II": "10/04/2026",
-    "Tier II Exam City Available": "01/04/2026"
+    "Tier II Exam City Available": "01/04/2026",
+    "Typing Skill Test / Date": "22/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "100/-",
@@ -48,6 +49,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Re Schedule Exam Notice",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Important%20Notice-Re-schedule%20of%20Examination_10042026.pdf",
+      "link_type": "other"
+    },
     {
       "label": "Check Tier II Exam City",
       "url": "https://ssc.gov.in/login",
@@ -117,6 +123,10 @@
   "official_website_url": "https://ssc.gov.in/",
   "extra_links": [
     {
+      "label": "Download Re Schedule Exam Notice",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Important%20Notice-Re-schedule%20of%20Examination_10042026.pdf"
+    },
+    {
       "label": "Check Tier II Exam City",
       "url": "https://ssc.gov.in/login"
     },
@@ -166,6 +176,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Important%20Notice-Re-schedule%20of%20Examination_10042026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/notice_23032026.pdf"

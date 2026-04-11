@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-07T11:42:26.897104",
+  "scraped_at": "2026-04-11T11:21:09.312523",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/jharkhand/jpsc-pre-01-2026/",
   "page_type": "job",
   "title": "Jharkhand JPSC Pre Online Form 2026",
-  "post_name": "Jharkhand JPSC Civil Services Recruitment Advt No 01/2026 Exam Notice for 103 Post",
+  "post_name": "Jharkhand JPSC Civil Services Recruitment Advt No 01/2026 Exam City Details for 103 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Jharkhand Public Service Commission (JPSC)",
@@ -18,8 +18,8 @@
     "Pay Exam Fee Last Date": "10/03/2026",
     "Exam Date (Old Date)": "12/04/2026",
     "Exam Date (New Exam Date)": "19/04/2026",
-    "Admit Card Available": "08/04/2026",
-    "Download Admit Card": "Link Will be Activate on 08/04/2026"
+    "Exam City Available": "08/04/2026",
+    "Admit Card Available": "14/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "100/-",
@@ -46,9 +46,14 @@
   ],
   "important_links": [
     {
-      "label": "Download Admit Card",
+      "label": "Check Exam City / Download Admit Card",
       "url": "https://jpscotr.com/",
       "link_type": "admit"
+    },
+    {
+      "label": "Download Exam City Notice",
+      "url": "https://jpsc.gov.in/data/Notice_01_2026_dtd_07_04_2026.pdf",
+      "link_type": "exam_city"
     },
     {
       "label": "Download Exam Notice",
@@ -89,8 +94,12 @@
   "official_website_url": "https://www.jpsc.gov.in/",
   "extra_links": [
     {
-      "label": "Download Admit Card",
+      "label": "Check Exam City / Download Admit Card",
       "url": "https://jpscotr.com/"
+    },
+    {
+      "label": "Download Exam City Notice",
+      "url": "https://jpsc.gov.in/data/Notice_01_2026_dtd_07_04_2026.pdf"
     },
     {
       "label": "Download Exam Notice",
@@ -118,6 +127,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://jpsc.gov.in/data/Notice_01_2026_dtd_07_04_2026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://www.jpsc.gov.in/data/Press_Release_and_Instructions_01_26_dated_28_03_2026.pdf"

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-07T11:43:47.235875",
+  "scraped_at": "2026-04-11T11:22:21.787067",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/aiims-norcet-10th/",
   "page_type": "job",
@@ -46,7 +46,7 @@
   ],
   "important_links": [
     {
-      "label": "Check Exam City / Admit Card",
+      "label": "Download Admit Card",
       "url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b",
       "link_type": "admit"
     },
@@ -74,7 +74,7 @@
   "official_website_url": "https://www.aiimsexams.ac.in/",
   "extra_links": [
     {
-      "label": "Check Exam City / Admit Card",
+      "label": "Download Admit Card",
       "url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b"
     },
     {
