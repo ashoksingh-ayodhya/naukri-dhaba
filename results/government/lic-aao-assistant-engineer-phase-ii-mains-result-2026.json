@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-09T12:00:03.720308",
+  "scraped_at": "2026-04-11T11:36:28.948257",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/lic-aao-ae-2025/",
   "page_type": "result",
   "title": "LIC AAO / Assistant Engineer Phase II Mains Result 2026",
-  "post_name": "LIC AAO / AE Recruitment 2025 Download AAO / Assistant Engineer Mains Exam Result 2026",
+  "post_name": "LIC AAO / AE Recruitment 2025 Download AAO / Assistant Engineer Final Result 2026",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Life Insurance Corporation of India (LIC)",
@@ -21,7 +21,8 @@
     "Pre Result Declared": "29/10/2025",
     "Mains Phase II Exam Date": "08/11/2025",
     "Mains Result Declared": "04/02/2026",
-    "AAO / AE Mains Result Declared": "25/02/2026"
+    "AAO / AE Mains Result Declared": "25/02/2026",
+    "AAO / AE Final Result Declared": "10/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "700/-",
@@ -49,7 +50,7 @@
   ],
   "important_links": [
     {
-      "label": "Download Mains Result",
+      "label": "Download Final Result",
       "url": "https://licindia.in/recruitment-of-aao-generalists/-specialists/-assistant-engineers-2025",
       "link_type": "result"
     },
@@ -102,7 +103,7 @@
   "official_website_url": "https://licindia.in/recruitment-of-aao-generalists/-specialists/-assistant-engineers-2025",
   "extra_links": [
     {
-      "label": "Download Mains Result",
+      "label": "Download Final Result",
       "url": "https://licindia.in/recruitment-of-aao-generalists/-specialists/-assistant-engineers-2025"
     },
     {

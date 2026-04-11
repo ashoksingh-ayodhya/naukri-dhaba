@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-09T11:44:43.397411",
+  "scraped_at": "2026-04-11T11:22:04.489066",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/hssc/hpsc-pgt-23-2026/",
   "page_type": "job",
   "title": "HPSC PGT Computer Science Online Form 2026",
-  "post_name": "Haryana HPSC PGT Teacher Computer Science Recruitment 2026 Apply Online for 1672 Post",
+  "post_name": "Haryana HPSC PGT Teacher Computer Science Recruitment 2026 Download Admit Card for 1672 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Haryana Public Service Commission (HPSC)",
@@ -16,7 +16,7 @@
     "Application Begin": "16/02/2026",
     "Last Date for Apply Online": "09/03/2026 Upto 05 PM",
     "Pay Exam Fee Last Date": "09/03/2026",
-    "Exam Date": "As per Schedule"
+    "Exam Date": "10/05/2026"
   },
   "fees": {
     "Male General": "1000/-",
@@ -44,6 +44,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Vacancy Details Notice",
+      "url": "https://hpsc.gov.in/Portals/0/Ann_Bif_Post_PGT_CS_09_04_2026.pdf",
+      "link_type": "other"
+    },
     {
       "label": "Apply Online",
       "url": "https://regn.hpsc.gov.in/pgt26cs/",
@@ -73,6 +78,10 @@
   "official_website_url": "https://hpsc.gov.in/",
   "extra_links": [
     {
+      "label": "Download Vacancy Details Notice",
+      "url": "https://hpsc.gov.in/Portals/0/Ann_Bif_Post_PGT_CS_09_04_2026.pdf"
+    },
+    {
       "label": "Apply Online",
       "url": "https://regn.hpsc.gov.in/pgt26cs/"
     },
@@ -90,6 +99,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://hpsc.gov.in/Portals/0/Ann_Bif_Post_PGT_CS_09_04_2026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://regn.hpsc.gov.in/pgt26cs/Advt_23_2026_PGT_CS.pdf"

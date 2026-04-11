@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-09T12:03:42.501812",
+  "scraped_at": "2026-04-11T11:40:01.783026",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mpesb-constable-2025/",
   "page_type": "result",
   "title": "MPESB MP Police Constable Result 2026",
-  "post_name": "MPESB MP Police Constable Recruitment 2025 Download Physical Proficiency Test PET Admit Card 2026",
+  "post_name": "MPESB MP Police Constable Recruitment 2025 Download Final Result 2026",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Madhya Pradesh Employee Selection Board (MPESB)",
@@ -18,7 +18,8 @@
     "Last Date Pay Exam Fee": "06/10/2025",
     "Exam Date": "30/10/2025",
     "Admit Card Available": "26/10/2025",
-    "PET Admit Card Available": "13/02/2026"
+    "PET Admit Card Available": "13/02/2026",
+    "Final Result Available": "09/04/2026"
   },
   "fees": {
     "General / Other State": "760/-",
@@ -45,6 +46,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Final Result",
+      "url": "https://esb.mp.gov.in/results/RESULT_25/PCRT_RES25/FINAL_RESULT/default_Results.htm",
+      "link_type": "result"
+    },
     {
       "label": "Download PET Admit Card",
       "url": "https://esb.mp.gov.in/tacs/tac_2025/PCRT_TAC25/PCRT_2025_PPT/default_Results.htm",
@@ -83,11 +89,15 @@
   ],
   "apply_url": "",
   "notification_url": "https://esb.mp.gov.in/Rulebooks/RB_2025/PCRT_2025_Rulebook.pdf",
-  "result_url": "https://esb.mp.gov.in/results/RESULT_25/PCRT_RES25/default_Results.htm",
+  "result_url": "https://esb.mp.gov.in/results/RESULT_25/PCRT_RES25/FINAL_RESULT/default_Results.htm",
   "scorecard_url": "",
   "admit_url": "https://esb.mp.gov.in/tacs/tac_2025/PCRT_TAC25/PCRT_2025_PPT/default_Results.htm",
   "official_website_url": "https://esb.mp.gov.in/e_default.html",
   "extra_links": [
+    {
+      "label": "Download Final Result",
+      "url": "https://esb.mp.gov.in/results/RESULT_25/PCRT_RES25/FINAL_RESULT/default_Results.htm"
+    },
     {
       "label": "Download PET Admit Card",
       "url": "https://esb.mp.gov.in/tacs/tac_2025/PCRT_TAC25/PCRT_2025_PPT/default_Results.htm"
