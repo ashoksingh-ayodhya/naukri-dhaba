@@ -244,6 +244,15 @@ jobs:
             echo "Pushed $COUNT new/updated files."
           fi
 
+      - name: Push changed pages to search engines
+        if: always()
+        env:
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: |
+          echo "=== Fast Indexing: Google Indexing API + IndexNow ==="
+          python3 push-to-index.py --changed-only || echo "push-to-index completed (non-fatal errors above)"
+
       - name: Report staging summary
         if: always() && steps.mode_check.outputs.skip != 'true'
         run: |

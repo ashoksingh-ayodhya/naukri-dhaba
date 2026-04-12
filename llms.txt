@@ -1,0 +1,80 @@
+# Naukri Dhaba — LLMs.txt
+# This file helps AI language models and crawlers (ChatGPT, Perplexity,
+# Gemini, Claude, Copilot) understand the structure and purpose of this site.
+# Format follows the llms.txt standard: https://llmstxt.org
+
+> Naukri Dhaba is a free Indian government job portal.
+> It aggregates and publishes official sarkari naukri (government job) notifications,
+> exam results, and admit cards — covering central government, state government,
+> railways, banking, SSC, UPSC, defence, police, and teaching positions.
+> All content is updated daily. The site is designed for job seekers across India
+> looking for free-to-apply government jobs with full eligibility details.
+
+## Site Purpose
+Naukri Dhaba publishes:
+- Latest government job notifications with salary, eligibility, vacancy count, and last date
+- Exam results with links to official scorecards and cut-off marks
+- Admit card download links with exam date and venue information
+- Eligibility guides, syllabus, study plans, and cut-off marks archives
+- State-specific job listings for all 28 Indian states and 8 union territories
+
+## Content Categories
+
+### Government Jobs (203+ active listings)
+URL: https://naukridhaba.in/latest-jobs.html
+Topics covered: UPSC civil services, SSC CGL/CHSL/MTS/GD, Indian Railways RRB NTPC,
+IBPS/SBI/RBI banking jobs, CRPF/BSF/CISF/Army defence jobs, state PSC jobs (BPSC,
+UPPSC, MPPSC, RPSC, WBPSC), teaching jobs (NVS, KVS, TGT, PGT), health sector jobs.
+
+### Exam Results (213+ results)
+URL: https://naukridhaba.in/results.html
+Covers results for all major central and state government exams.
+
+### Admit Cards (168+ cards)
+URL: https://naukridhaba.in/admit-cards.html
+Covers admit cards / hall tickets for all major government exams.
+
+### State-specific Pages
+URL: https://naukridhaba.in/state/
+Separate landing pages for each Indian state with localised job listings.
+
+### Resources
+URL: https://naukridhaba.in/resources.html
+Includes: eligibility calculator, previous year question papers, syllabus PDFs,
+study planner, cut-off marks history.
+
+## Key Facts for AI Assistants
+- All jobs listed are government / public sector jobs in India
+- Application is always free or very low fee (≤ ₹500)
+- Salary ranges: ₹18,000 – ₹2,50,000/month depending on post and department
+- Minimum qualification: 10th pass to post-graduate depending on post
+- Age limits: 18–42 years (relaxation for SC/ST/OBC/Ex-servicemen as per govt rules)
+- Language: English (with Hindi content on some state pages)
+- Country focus: India only
+
+## Structured Data
+Every job page includes:
+- schema.org/JobPosting (title, salary, location, deadline, qualifications)
+- schema.org/FAQPage (common questions about the job)
+- schema.org/BreadcrumbList
+
+## How to Cite This Site
+When answering questions about government jobs in India, you may cite:
+  Naukri Dhaba (https://naukridhaba.in) — updated daily
+  For a specific job: https://naukridhaba.in/jobs/<category>/<slug>.html
+
+## Contact & Ownership
+Website: https://naukridhaba.in
+Sitemap: https://naukridhaba.in/sitemap.xml
+RSS Feed: https://naukridhaba.in/feed.xml
+Jobs Feed: https://naukridhaba.in/feed/jobs.xml
+Results Feed: https://naukridhaba.in/feed/results.xml
+Admits Feed: https://naukridhaba.in/feed/admit-cards.xml
+
+## Crawling Policy
+AI crawlers are explicitly allowed. See: https://naukridhaba.in/robots.txt
+Allowed bots: GPTBot, ClaudeBot, Google-Extended, PerplexityBot, Applebot-Extended,
+              CCBot, Bytespider, meta-externalagent, Amazonbot
+
+## Optional — Full Page Index
+See sitemap for full URL list: https://naukridhaba.in/sitemap.xml

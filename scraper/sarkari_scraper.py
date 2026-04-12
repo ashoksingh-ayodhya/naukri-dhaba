@@ -293,6 +293,214 @@ def official_portal_for(title: str, cat: str) -> str:
 
 
 # ══════════════════════════════════════════════════════════
+# SALARY ESTIMATOR
+# ══════════════════════════════════════════════════════════
+# Keyword-to-salary range map (Indian rupees per month, ballpark).
+# Used when the scraped page does not have an explicit salary figure.
+_SALARY_RULES: list[tuple[list[str], str]] = [
+    # Bank / Finance (highest-paying govt sector)
+    (['ibps', 'sbi ', 'sbi-', ' rbi ', 'rbi-', 'nabard', 'sidbi', 'exim bank',
+      'bank of ', 'indian bank', 'union bank', 'canara bank', 'pnb ', 'bob ',
+      'idbi', 'central bank', 'bank po', 'bank clerk', 'rrb po', 'rrb clerk',
+      'bank apprentice', 'nab ard', 'iob ', 'ucb '], '₹35,000 – ₹85,000 per month'),
+    # UPSC / Civil Services
+    (['upsc', 'ias ', 'ips ', 'ifs ', 'civil services', 'combined defence',
+      'cds ', 'nda ', 'capf '], '₹56,100 – ₹2,50,000 per month'),
+    # SSC Central Govt
+    (['ssc cgl', 'ssc chsl', 'ssc mts', 'ssc gd', 'ssc je', 'ssc cpo',
+      'multi tasking', 'combined graduate', 'combined higher'], '₹18,000 – ₹1,51,100 per month'),
+    # Railways
+    (['railway', 'rrb ntpc', 'rrb group', 'rrb alp', 'rrb je', 'ntpc ',
+      'group d', 'loco pilot', 'apprentice railway'], '₹19,900 – ₹63,200 per month'),
+    # Teaching / Education
+    (['teacher', 'lecturer', 'professor', 'tgt ', 'pgt ', 'headmaster',
+      'principal', 'nvs ', 'kvs ', 'eklavya', 'emrs ', 'navodaya',
+      'deled', 'b.ed', 'kendriya vidyalaya'], '₹29,200 – ₹1,12,400 per month'),
+    # Defence / Army / Para-military
+    (['army', 'navy', 'air force', 'airforce', 'agniveer', 'crpf', 'cisf',
+      'bsf ', 'itbp', 'ssb ', 'assam rifles', 'drdo', 'hal ', 'dpsu',
+      'sainik', 'coast guard'], '₹21,700 – ₹69,100 per month'),
+    # Police / Constable
+    (['police', 'constable', 'sub inspector', 'si ', 'inspector', 'daroga',
+      'delhi police', 'up police', 'bihar police', 'rajasthan police'], '₹21,700 – ₹81,100 per month'),
+    # Health / Medical
+    (['nurse', 'anm ', 'gnm ', 'staff nurse', 'pharmacist', 'lab technician',
+      'health worker', 'asha ', 'accredited', 'aiims', 'esic', 'cghs',
+      'medical officer', 'doctor', 'mbbs', 'dentist'], '₹29,200 – ₹1,23,100 per month'),
+    # Engineering / Technical PSUs
+    (['engineer', 'junior engineer', 'je ', 'technical assistant',
+      'technician', 'iocl', 'ongc', 'coal india', 'ncl ', 'bhel', 'bpcl',
+      'hpcl', 'ntpc limited', 'sail ', 'gail', 'aai ', 'hal-'], '₹35,000 – ₹1,60,000 per month'),
+    # State PSC (general)
+    (['bpsc', 'uppsc', 'mppsc', 'rpsc', 'jpsc', 'ppsc', 'hssc', 'hpsc',
+      'jssc', 'upsssc', 'mpesb', 'mpsc', 'tnpsc', 'kpsc', 'opsc',
+      'psc ', 'state psc', 'state service'], '₹29,200 – ₹92,300 per month'),
+    # Anganwadi / Social Welfare
+    (['anganwadi', 'asha worker', 'helper', 'sahayika',
+      'mukhyamantri', 'rozgar'], '₹10,000 – ₹25,000 per month'),
+]
+
+_SALARY_DEFAULT = '₹18,000 – ₹45,000 per month'
+
+
+def estimate_salary(title: str, dept: str = '') -> str:
+    """Return a ballpark salary string for a government job based on keywords.
+
+    Checks title + dept against :data:`_SALARY_RULES` in priority order and
+    returns the first matching range.  Falls back to ``_SALARY_DEFAULT`` when
+    nothing matches.
+
+    The returned string is suitable for display (e.g. in a stat-card) and for
+    the ``baseSalary`` JSON-LD field (stripped of the ₹ / "per month" label
+    before embedding in schema).
+    """
+    combined = f'{title} {dept}'.lower()
+    for keywords, salary_range in _SALARY_RULES:
+        if any(kw in combined for kw in keywords):
+            return salary_range
+    return _SALARY_DEFAULT
+
+
+# ══════════════════════════════════════════════════════════
+# STATE LOCATION RESOLVER
+# ══════════════════════════════════════════════════════════
+# Maps keyword patterns (lowercase, found in title+dept) to
+# (city, state, pincode, street_name) tuples.
+# Keys are checked in order; first match wins.
+_STATE_LOCATIONS: list[tuple[list[str], tuple[str, str, str, str]]] = [
+    # Delhi / Central Govt
+    (['upsc', 'ssc ', 'ssc-', 'ias ', 'ips ', 'india post', 'central govt',
+      'central government', 'drdo', 'dsssb', 'aiims delhi', 'cbi ', 'ied '],
+     ('New Delhi', 'Delhi', '110001', 'Government of India')),
+    # Uttar Pradesh
+    (['uppsc', 'upsssc', 'up police', 'up board', 'up deled', 'up lekhpal',
+      'up tet', 'up pgt', 'up tgt', 'lucknow', 'allahabad', 'prayagraj',
+      'uttar pradesh', ' up ', 'up-', 'swd up'],
+     ('Lucknow', 'Uttar Pradesh', '226001', 'Uttar Pradesh Government')),
+    # Bihar
+    (['bpsc', 'bssc', 'btsc', 'bihar board', 'bihar deled', 'bihar iticat',
+      'ofss bihar', 'bihar police', 'patna', 'bihar '],
+     ('Patna', 'Bihar', '800001', 'Bihar Government')),
+    # Rajasthan
+    (['rpsc', 'rsmssb', 'rssb', 'rajasthan police', 'rajasthan tet',
+      'rajasthan ptet', 'rajasthan ', 'jaipur'],
+     ('Jaipur', 'Rajasthan', '302001', 'Rajasthan Government')),
+    # Madhya Pradesh
+    (['mppsc', 'mpesb', 'mptet', 'mp police', 'mp board', 'mpbse',
+      'madhya pradesh', ' mp ', 'bhopal'],
+     ('Bhopal', 'Madhya Pradesh', '462001', 'Madhya Pradesh Government')),
+    # Maharashtra
+    (['mpsc', 'maharashtra police', 'maharashtra board', 'msbshse',
+      'maharashtra ', 'mumbai', 'pune', 'nagpur'],
+     ('Mumbai', 'Maharashtra', '400001', 'Maharashtra Government')),
+    # Jharkhand
+    (['jpsc', 'jssc', 'jharkhand police', 'jharkhand board', 'jac board',
+      'jharkhand ', 'ranchi'],
+     ('Ranchi', 'Jharkhand', '834001', 'Jharkhand Government')),
+    # Haryana
+    (['hssc', 'hpsc', 'haryana police', 'haryana board', 'hbse',
+      'haryana ', 'chandigarh'],
+     ('Chandigarh', 'Haryana', '160001', 'Haryana Government')),
+    # Punjab
+    (['ppsc', 'psssb', 'punjab police', 'punjab board', 'pseb',
+      'punjab ', 'amritsar'],
+     ('Chandigarh', 'Punjab', '160001', 'Punjab Government')),
+    # Gujarat
+    (['gpsc', 'gsssb', 'gujarat police', 'gujarat board', 'gseb',
+      'gujarat ', 'ahmedabad', 'gandhinagar'],
+     ('Gandhinagar', 'Gujarat', '382010', 'Gujarat Government')),
+    # Odisha
+    (['opsc', 'ossc', 'odisha police', 'odisha board', 'chse odisha',
+      'odisha ', 'bhubaneswar'],
+     ('Bhubaneswar', 'Odisha', '751001', 'Odisha Government')),
+    # West Bengal
+    (['wbpsc', 'wbcs', 'wbsedcl', 'west bengal police', 'wb board',
+      'wbbse', 'wbchse', 'west bengal ', 'kolkata'],
+     ('Kolkata', 'West Bengal', '700001', 'West Bengal Government')),
+    # Chhattisgarh
+    (['cgpsc', 'cgvyapam', 'chhattisgarh police', 'chhattisgarh board',
+      'cgbse', 'chhattisgarh ', 'raipur'],
+     ('Raipur', 'Chhattisgarh', '492001', 'Chhattisgarh Government')),
+    # Karnataka
+    (['kpsc', 'karnataka police', 'karnataka board', 'kseeb',
+      'karnataka ', 'bengaluru', 'bangalore'],
+     ('Bengaluru', 'Karnataka', '560001', 'Karnataka Government')),
+    # Tamil Nadu
+    (['tnpsc', 'tamil nadu police', 'tnusrb', 'tamil nadu board',
+      'tnbse', 'tamil nadu ', 'chennai'],
+     ('Chennai', 'Tamil Nadu', '600001', 'Tamil Nadu Government')),
+    # Andhra Pradesh
+    (['appsc', 'andhra police', 'ap board', 'bseap',
+      'andhra pradesh ', 'amaravati', 'vijayawada'],
+     ('Amaravati', 'Andhra Pradesh', '522020', 'Andhra Pradesh Government')),
+    # Telangana
+    (['tspsc', 'telangana police', 'telangana board', 'bsets',
+      'telangana ', 'hyderabad'],
+     ('Hyderabad', 'Telangana', '500004', 'Telangana Government')),
+    # Kerala
+    (['kpsc kerala', 'kerala psc', 'kerala police', 'kerala board', 'dhse',
+      'kerala ', 'thiruvananthapuram', 'trivandrum'],
+     ('Thiruvananthapuram', 'Kerala', '695001', 'Kerala Government')),
+    # Himachal Pradesh
+    (['hpsc', 'hpsssb', 'himachal police', 'hp board', 'hpbose',
+      'himachal pradesh ', 'shimla'],
+     ('Shimla', 'Himachal Pradesh', '171001', 'Himachal Pradesh Government')),
+    # Uttarakhand
+    (['ukpsc', 'uttarakhand police', 'uk board', 'ubse',
+      'uttarakhand ', 'dehradun'],
+     ('Dehradun', 'Uttarakhand', '248001', 'Uttarakhand Government')),
+    # Assam
+    (['apsc', 'slprb', 'assam police', 'assam board', 'assam ',
+      'guwahati'],
+     ('Guwahati', 'Assam', '781001', 'Assam Government')),
+    # Jammu & Kashmir
+    (['jkpsc', 'jkssb', 'j&k police', 'jk board', 'jkbose',
+      'jammu ', 'kashmir ', 'srinagar'],
+     ('Srinagar', 'Jammu and Kashmir', '190001', 'J&K Government')),
+    # Railways (zonal HQs vary; use New Delhi for national-level)
+    (['rrb', 'rrb ntpc', 'rrb group', 'rrb alp', 'rrb je', 'railway',
+      'indian railways', 'ntpc railway', 'rail coach'],
+     ('New Delhi', 'Delhi', '110001', 'Ministry of Railways')),
+    # Defence / Army (national)
+    (['army', 'navy', 'air force', 'airforce', 'agniveer', 'nda exam',
+      'cds exam', 'drdo', 'hal ', 'dpsu', 'coast guard'],
+     ('New Delhi', 'Delhi', '110001', 'Ministry of Defence')),
+    # Banking (national)
+    (['ibps', 'sbi ', 'rbi ', 'nabard', 'sidbi', 'exim bank',
+      'bank of india', 'union bank', 'canara bank', 'pnb ', 'bob '],
+     ('Mumbai', 'Maharashtra', '400051', 'Reserve Bank of India')),
+]
+
+
+def job_location_for(title: str, dept: str = '') -> dict:
+    """Return a schema.org PostalAddress dict for the given job's likely location.
+
+    Matches keywords in title+dept against :data:`_STATE_LOCATIONS` (priority
+    order) and falls back to New Delhi for unmatched central-govt jobs.
+    """
+    combined = f'{title} {dept}'.lower()
+    for keywords, (city, state, pincode, street) in _STATE_LOCATIONS:
+        if any(kw in combined for kw in keywords):
+            return {
+                '@type': 'PostalAddress',
+                'streetAddress': street,
+                'addressLocality': city,
+                'addressRegion': state,
+                'postalCode': pincode,
+                'addressCountry': 'IN',
+            }
+    # Default: central government, New Delhi
+    return {
+        '@type': 'PostalAddress',
+        'streetAddress': 'Government of India',
+        'addressLocality': 'New Delhi',
+        'addressRegion': 'Delhi',
+        'postalCode': '110001',
+        'addressCountry': 'IN',
+    }
+
+
+# ══════════════════════════════════════════════════════════
 # UTILITY HELPERS
 # ══════════════════════════════════════════════════════════
 
@@ -2470,15 +2678,20 @@ def build_job_page(d: dict) -> tuple[str, str]:
             "sameAs": _org_url,
             "logo": f"{SITE_URL}/img/og-default.png"
         },
-        "jobLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "streetAddress": "Government of India", "addressLocality": "New Delhi", "addressRegion": "Delhi", "postalCode": "110001", "addressCountry": "IN"}},
+        "jobLocation": {"@type": "Place", "address": job_location_for(title, dept)},
         "applicantLocationRequirements": {"@type": "Country", "name": "India"},
         "url": canon,
         "directApply": bool(d.get('apply_url'))
     }
     if _valid_through:
         ld_job_dict["validThrough"] = _valid_through
-    if d.get('salary') and d['salary'] != 'Check Notification':
-        ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": d['salary'], "unitText": "MONTH"}}
+    # Use explicit salary from scrape, falling back to keyword-based estimate
+    _salary = d.get('salary', '')
+    if not _salary or _salary in ('Check Notification', 'As per Government Norms', 'nan', ''):
+        _salary = estimate_salary(title, dept)
+        d['salary'] = _salary
+    if _salary:
+        ld_job_dict["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": {"@type": "QuantitativeValue", "value": _salary, "unitText": "MONTH"}}
     if d.get('vacancy') and d['vacancy'] != 'Check Notification':
         ld_job_dict["totalJobOpenings"] = d['vacancy']
     if d.get('qualification') and d['qualification'] != 'Check Notification':

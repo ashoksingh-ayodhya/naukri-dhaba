@@ -1136,7 +1136,7 @@ def build_job_json_ld(title, dept, last_date, canonical_url):
     return f'    <script type="application/ld+json">\n    {_json.dumps(schema, ensure_ascii=False)}\n    </script>'
 
 
-def sanitize_job_posting_schema(ld_script_tag: str, canonical_url: str, dept: str) -> str:
+def sanitize_job_posting_schema(ld_script_tag: str, canonical_url: str, dept: str, title: str = '') -> str:
     """Fix known invalid fields in an existing JobPosting JSON-LD script tag.
 
     Called every time update-all-pages.py processes an existing job page so that
@@ -1144,23 +1144,36 @@ def sanitize_job_posting_schema(ld_script_tag: str, canonical_url: str, dept: st
     edits) are automatically corrected on the next pipeline run.  Idempotent.
 
     Fixes applied:
-    - jobLocation.address: replaces invalid ``addressLocality/addressRegion: "India"``
-      and fills any missing streetAddress / postalCode with the New Delhi default.
+    - jobLocation.address: uses job_location_for(title, dept) to resolve the
+      correct state capital instead of always defaulting to New Delhi.
     - identifier: added when absent.
     - applicantLocationRequirements: added when absent.
+    - baseSalary: set to estimate_salary(title, dept) when absent or generic.
     - baseSalary.value.unitText: set to ``"MONTH"`` when absent.
     - validThrough: preserved; not removed (already guaranteed by build_job_page).
+    - dateModified: updated to today's date for freshness signals.
     """
     import json as _json
+    import sys as _sys
+    import os as _os
 
-    VALID_ADDRESS = {
-        "@type": "PostalAddress",
-        "streetAddress": "Government of India",
-        "addressLocality": "New Delhi",
-        "addressRegion": "Delhi",
-        "postalCode": "110001",
-        "addressCountry": "IN",
-    }
+    # Import helpers from sarkari_scraper if available
+    _scraper_dir = _os.path.join(_os.path.dirname(__file__), 'scraper')
+    if _scraper_dir not in _sys.path:
+        _sys.path.insert(0, _scraper_dir)
+    try:
+        from sarkari_scraper import job_location_for as _job_location_for, estimate_salary as _estimate_salary
+    except ImportError:
+        def _job_location_for(t, d=''):
+            return {"@type": "PostalAddress", "streetAddress": "Government of India",
+                    "addressLocality": "New Delhi", "addressRegion": "Delhi",
+                    "postalCode": "110001", "addressCountry": "IN"}
+        def _estimate_salary(t, d=''):
+            return '₹18,000 – ₹45,000 per month'
+
+    _GENERIC_SALARIES = frozenset({
+        'As per Government Norms', 'Check Notification', 'nan', '', None,
+    })
 
     def _fix_block(tag):
         m = re.match(
@@ -1178,18 +1191,28 @@ def sanitize_job_posting_schema(ld_script_tag: str, canonical_url: str, dept: st
 
         changed = False
 
-        # Fix jobLocation address
+        # Fix jobLocation address using state-aware resolver
         jl = d.get("jobLocation", {})
         if isinstance(jl, list):
             jl = jl[0] if jl else {}
         addr = jl.get("address", {}) if isinstance(jl, dict) else {}
+        # Re-resolve when invalid OR when currently the generic "New Delhi/Government of India" fallback
+        # (i.e. we never actually resolved this job's real state location before).
+        _generic_street = addr.get("streetAddress", "").lower()
+        _is_generic_default = (
+            addr.get("addressLocality") == "New Delhi"
+            and _generic_street in ("government of india", "ministry of railways",
+                                    "ministry of defence", "")
+        )
         if (
             addr.get("addressLocality") in ("India", "", None)
             or addr.get("addressRegion") in ("India", "", None)
             or not addr.get("streetAddress")
             or not addr.get("postalCode")
+            or _is_generic_default
         ):
-            d["jobLocation"] = {"@type": "Place", "address": VALID_ADDRESS.copy()}
+            resolved_addr = _job_location_for(title or d.get('title', ''), dept)
+            d["jobLocation"] = {"@type": "Place", "address": resolved_addr}
             changed = True
 
         # Ensure identifier
@@ -1203,13 +1226,30 @@ def sanitize_job_posting_schema(ld_script_tag: str, canonical_url: str, dept: st
             d["applicantLocationRequirements"] = {"@type": "Country", "name": "India"}
             changed = True
 
-        # Ensure baseSalary has unitText
+        # Fill missing / generic baseSalary with keyword-based estimate
         sal = d.get("baseSalary")
-        if isinstance(sal, dict):
-            qv = sal.get("value", {})
+        if not sal:
+            estimated = _estimate_salary(title or d.get('title', ''), dept)
+            d["baseSalary"] = {
+                "@type": "MonetaryAmount",
+                "currency": "INR",
+                "value": {"@type": "QuantitativeValue", "value": estimated, "unitText": "MONTH"}
+            }
+            changed = True
+        else:
+            qv = sal.get("value", {}) if isinstance(sal, dict) else {}
+            existing_val = qv.get("value", '') if isinstance(qv, dict) else ''
+            if existing_val in _GENERIC_SALARIES:
+                estimated = _estimate_salary(title or d.get('title', ''), dept)
+                d["baseSalary"]["value"]["value"] = estimated
+                changed = True
             if isinstance(qv, dict) and not qv.get("unitText"):
                 d["baseSalary"]["value"]["unitText"] = "MONTH"
                 changed = True
+
+        # Add / refresh dateModified
+        d["dateModified"] = date.today().isoformat()
+        changed = True
 
         if not changed:
             return tag
@@ -1614,7 +1654,7 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
             # (old scraper, CF Worker, manual edits) are fixed automatically.
             if page_type == 'job':
                 existing_ld = [
-                    sanitize_job_posting_schema(tag, canonical_url, dept)
+                    sanitize_job_posting_schema(tag, canonical_url, dept, title)
                     for tag in existing_ld
                 ]
             json_ld_blocks = '\n'.join(existing_ld)
