@@ -1106,13 +1106,162 @@ def build_meta_block(data, page_type, filepath, canonical_url):
 
 
 def build_job_json_ld(title, dept, last_date, canonical_url):
-    """Build JobPosting JSON-LD."""
+    """Build JobPosting JSON-LD with all Google-required fields."""
     iso_last_date = to_iso_date(last_date) or TODAY
     safe_title = normalize_title_text(title)
+    slug = slugify_title(safe_title)
     desc = f"{safe_title}: {dept} recruitment notification. Last date: {last_date}. Apply at {SITE_NAME}."
-    return f'''    <script type="application/ld+json">
-    {{"@context":"https://schema.org","@type":"JobPosting","title":"{safe_title}","description":"{desc}","datePosted":"{TODAY}","validThrough":"{iso_last_date}","employmentType":"FULL_TIME","hiringOrganization":{{"@type":"Organization","name":"{dept}"}},"jobLocation":{{"@type":"Place","address":{{"@type":"PostalAddress","addressCountry":"IN"}}}},"url":"{canonical_url}"}}
-    </script>'''
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "JobPosting",
+        "title": safe_title,
+        "description": desc,
+        "identifier": {"@type": "PropertyValue", "name": dept, "value": slug},
+        "datePosted": TODAY,
+        "validThrough": iso_last_date,
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {"@type": "Organization", "name": dept, "logo": f"{SITE_URL}/img/og-default.png"},
+        "jobLocation": {"@type": "Place", "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Government of India",
+            "addressLocality": "New Delhi",
+            "addressRegion": "Delhi",
+            "postalCode": "110001",
+            "addressCountry": "IN"
+        }},
+        "applicantLocationRequirements": {"@type": "Country", "name": "India"},
+        "url": canonical_url
+    }
+    import json as _json
+    return f'    <script type="application/ld+json">\n    {_json.dumps(schema, ensure_ascii=False)}\n    </script>'
+
+
+def sanitize_job_posting_schema(ld_script_tag: str, canonical_url: str, dept: str, title: str = '') -> str:
+    """Fix known invalid fields in an existing JobPosting JSON-LD script tag.
+
+    Called every time update-all-pages.py processes an existing job page so that
+    schema issues introduced by any code path (Python scraper, CF Worker, manual
+    edits) are automatically corrected on the next pipeline run.  Idempotent.
+
+    Fixes applied:
+    - jobLocation.address: uses job_location_for(title, dept) to resolve the
+      correct state capital instead of always defaulting to New Delhi.
+    - identifier: added when absent.
+    - applicantLocationRequirements: added when absent.
+    - baseSalary: set to estimate_salary(title, dept) when absent or generic.
+    - baseSalary.value.unitText: set to ``"MONTH"`` when absent.
+    - validThrough: preserved; not removed (already guaranteed by build_job_page).
+    - dateModified: updated to today's date for freshness signals.
+    """
+    import json as _json
+    import sys as _sys
+    import os as _os
+
+    # Import helpers from sarkari_scraper if available
+    _scraper_dir = _os.path.join(_os.path.dirname(__file__), 'scraper')
+    if _scraper_dir not in _sys.path:
+        _sys.path.insert(0, _scraper_dir)
+    try:
+        from sarkari_scraper import job_location_for as _job_location_for, estimate_salary as _estimate_salary
+    except ImportError:
+        def _job_location_for(t, d=''):
+            return {"@type": "PostalAddress", "streetAddress": "Government of India",
+                    "addressLocality": "New Delhi", "addressRegion": "Delhi",
+                    "postalCode": "110001", "addressCountry": "IN"}
+        def _estimate_salary(t, d=''):
+            return '₹18,000 – ₹45,000 per month'
+
+    _GENERIC_SALARIES = frozenset({
+        'As per Government Norms', 'Check Notification', 'nan', '', None,
+    })
+
+    def _fix_block(tag):
+        m = re.match(
+            r'(<script type="application/ld\+json">)(.*?)(</script>)',
+            tag, re.DOTALL
+        )
+        if not m:
+            return tag
+        try:
+            d = _json.loads(m.group(2))
+        except _json.JSONDecodeError:
+            return tag
+        if d.get("@type") != "JobPosting":
+            return tag
+
+        changed = False
+
+        # Fix jobLocation address using state-aware resolver
+        jl = d.get("jobLocation", {})
+        if isinstance(jl, list):
+            jl = jl[0] if jl else {}
+        addr = jl.get("address", {}) if isinstance(jl, dict) else {}
+        # Re-resolve when invalid OR when currently the generic "New Delhi/Government of India" fallback
+        # (i.e. we never actually resolved this job's real state location before).
+        _generic_street = addr.get("streetAddress", "").lower()
+        _is_generic_default = (
+            addr.get("addressLocality") == "New Delhi"
+            and _generic_street in ("government of india", "ministry of railways",
+                                    "ministry of defence", "")
+        )
+        if (
+            addr.get("addressLocality") in ("India", "", None)
+            or addr.get("addressRegion") in ("India", "", None)
+            or not addr.get("streetAddress")
+            or not addr.get("postalCode")
+            or _is_generic_default
+        ):
+            resolved_addr = _job_location_for(title or d.get('title', ''), dept)
+            d["jobLocation"] = {"@type": "Place", "address": resolved_addr}
+            changed = True
+
+        # Ensure identifier
+        if not d.get("identifier"):
+            slug = canonical_url.rstrip("/").split("/")[-1].replace(".html", "")
+            d["identifier"] = {"@type": "PropertyValue", "name": dept, "value": slug}
+            changed = True
+
+        # Ensure applicantLocationRequirements
+        if not d.get("applicantLocationRequirements"):
+            d["applicantLocationRequirements"] = {"@type": "Country", "name": "India"}
+            changed = True
+
+        # Fill missing / generic baseSalary with keyword-based estimate
+        sal = d.get("baseSalary")
+        if not sal:
+            estimated = _estimate_salary(title or d.get('title', ''), dept)
+            d["baseSalary"] = {
+                "@type": "MonetaryAmount",
+                "currency": "INR",
+                "value": {"@type": "QuantitativeValue", "value": estimated, "unitText": "MONTH"}
+            }
+            changed = True
+        else:
+            qv = sal.get("value", {}) if isinstance(sal, dict) else {}
+            existing_val = qv.get("value", '') if isinstance(qv, dict) else ''
+            if existing_val in _GENERIC_SALARIES:
+                estimated = _estimate_salary(title or d.get('title', ''), dept)
+                d["baseSalary"]["value"]["value"] = estimated
+                changed = True
+            if isinstance(qv, dict) and not qv.get("unitText"):
+                d["baseSalary"]["value"]["unitText"] = "MONTH"
+                changed = True
+
+        # Add / refresh dateModified
+        d["dateModified"] = date.today().isoformat()
+        changed = True
+
+        if not changed:
+            return tag
+        return f'{m.group(1)}{_json.dumps(d, ensure_ascii=False)}{m.group(3)}'
+
+    # Apply fix to every ld+json block in the tag (handles multiple schemas)
+    return re.sub(
+        r'<script type="application/ld\+json">.*?</script>',
+        lambda m: _fix_block(m.group(0)),
+        ld_script_tag,
+        flags=re.DOTALL,
+    )
 
 
 def build_result_json_ld(title, dept, canonical_url):
@@ -1501,6 +1650,13 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
             existing_head, re.DOTALL
         )
         if existing_ld:
+            # Sanitize existing blocks so bad schemas from any code path
+            # (old scraper, CF Worker, manual edits) are fixed automatically.
+            if page_type == 'job':
+                existing_ld = [
+                    sanitize_job_posting_schema(tag, canonical_url, dept, title)
+                    for tag in existing_ld
+                ]
             json_ld_blocks = '\n'.join(existing_ld)
         else:
             # Fallback: generate minimal blocks for pages that have none yet.
