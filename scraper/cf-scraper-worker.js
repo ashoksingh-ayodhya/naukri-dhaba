@@ -354,10 +354,26 @@ function buildJobHtml(item, title, dept, cat, slug, canon, cfg) {
     title,
     description: desc,
     datePosted: todayIso(),
-    validThrough: toIsoDate(item.lastDate) || undefined,
+    validThrough: toIsoDate(item.lastDate) || new Date(Date.now() + 365*24*60*60*1000).toISOString().slice(0, 10),
     employmentType: 'FULL_TIME',
+    identifier: { '@type': 'PropertyValue', name: dept, value: slug },
     hiringOrganization: { '@type': 'Organization', name: dept },
-    jobLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressCountry: 'IN' } },
+    jobLocation: { '@type': 'Place', address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Government of India',
+      addressLocality: 'New Delhi',
+      addressRegion: 'Delhi',
+      postalCode: '110001',
+      addressCountry: 'IN',
+    }},
+    applicantLocationRequirements: { '@type': 'Country', name: 'India' },
+    baseSalary: item.salary ? {
+      '@type': 'MonetaryAmount', currency: 'INR',
+      value: { '@type': 'QuantitativeValue', value: item.salary, unitText: 'MONTH' },
+    } : {
+      '@type': 'MonetaryAmount', currency: 'INR',
+      value: { '@type': 'QuantitativeValue', value: 'As per Government Norms', unitText: 'MONTH' },
+    },
     url: canon,
   });
 

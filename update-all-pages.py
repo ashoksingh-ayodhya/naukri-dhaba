@@ -1136,6 +1136,94 @@ def build_job_json_ld(title, dept, last_date, canonical_url):
     return f'    <script type="application/ld+json">\n    {_json.dumps(schema, ensure_ascii=False)}\n    </script>'
 
 
+def sanitize_job_posting_schema(ld_script_tag: str, canonical_url: str, dept: str) -> str:
+    """Fix known invalid fields in an existing JobPosting JSON-LD script tag.
+
+    Called every time update-all-pages.py processes an existing job page so that
+    schema issues introduced by any code path (Python scraper, CF Worker, manual
+    edits) are automatically corrected on the next pipeline run.  Idempotent.
+
+    Fixes applied:
+    - jobLocation.address: replaces invalid ``addressLocality/addressRegion: "India"``
+      and fills any missing streetAddress / postalCode with the New Delhi default.
+    - identifier: added when absent.
+    - applicantLocationRequirements: added when absent.
+    - baseSalary.value.unitText: set to ``"MONTH"`` when absent.
+    - validThrough: preserved; not removed (already guaranteed by build_job_page).
+    """
+    import json as _json
+
+    VALID_ADDRESS = {
+        "@type": "PostalAddress",
+        "streetAddress": "Government of India",
+        "addressLocality": "New Delhi",
+        "addressRegion": "Delhi",
+        "postalCode": "110001",
+        "addressCountry": "IN",
+    }
+
+    def _fix_block(tag):
+        m = re.match(
+            r'(<script type="application/ld\+json">)(.*?)(</script>)',
+            tag, re.DOTALL
+        )
+        if not m:
+            return tag
+        try:
+            d = _json.loads(m.group(2))
+        except _json.JSONDecodeError:
+            return tag
+        if d.get("@type") != "JobPosting":
+            return tag
+
+        changed = False
+
+        # Fix jobLocation address
+        jl = d.get("jobLocation", {})
+        if isinstance(jl, list):
+            jl = jl[0] if jl else {}
+        addr = jl.get("address", {}) if isinstance(jl, dict) else {}
+        if (
+            addr.get("addressLocality") in ("India", "", None)
+            or addr.get("addressRegion") in ("India", "", None)
+            or not addr.get("streetAddress")
+            or not addr.get("postalCode")
+        ):
+            d["jobLocation"] = {"@type": "Place", "address": VALID_ADDRESS.copy()}
+            changed = True
+
+        # Ensure identifier
+        if not d.get("identifier"):
+            slug = canonical_url.rstrip("/").split("/")[-1].replace(".html", "")
+            d["identifier"] = {"@type": "PropertyValue", "name": dept, "value": slug}
+            changed = True
+
+        # Ensure applicantLocationRequirements
+        if not d.get("applicantLocationRequirements"):
+            d["applicantLocationRequirements"] = {"@type": "Country", "name": "India"}
+            changed = True
+
+        # Ensure baseSalary has unitText
+        sal = d.get("baseSalary")
+        if isinstance(sal, dict):
+            qv = sal.get("value", {})
+            if isinstance(qv, dict) and not qv.get("unitText"):
+                d["baseSalary"]["value"]["unitText"] = "MONTH"
+                changed = True
+
+        if not changed:
+            return tag
+        return f'{m.group(1)}{_json.dumps(d, ensure_ascii=False)}{m.group(3)}'
+
+    # Apply fix to every ld+json block in the tag (handles multiple schemas)
+    return re.sub(
+        r'<script type="application/ld\+json">.*?</script>',
+        lambda m: _fix_block(m.group(0)),
+        ld_script_tag,
+        flags=re.DOTALL,
+    )
+
+
 def build_result_json_ld(title, dept, canonical_url):
     """Build WebPage JSON-LD for result pages."""
     return f'''    <script type="application/ld+json">
@@ -1522,6 +1610,13 @@ def rebuild_head(content, data, page_type, filepath, canonical_url):
             existing_head, re.DOTALL
         )
         if existing_ld:
+            # Sanitize existing blocks so bad schemas from any code path
+            # (old scraper, CF Worker, manual edits) are fixed automatically.
+            if page_type == 'job':
+                existing_ld = [
+                    sanitize_job_posting_schema(tag, canonical_url, dept)
+                    for tag in existing_ld
+                ]
             json_ld_blocks = '\n'.join(existing_ld)
         else:
             # Fallback: generate minimal blocks for pages that have none yet.

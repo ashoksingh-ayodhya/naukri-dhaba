@@ -164,6 +164,66 @@ jobs:
               print('\nAll listing pages are in sync with detail pages.')
           "
 
+      - name: Validate JobPosting schemas in all job pages
+        if: always()
+        run: |
+          python3 - << 'PYEOF'
+          import json, re, sys
+          from pathlib import Path
+
+          REQUIRED_ADDR_FIELDS = {'streetAddress', 'addressLocality', 'addressRegion', 'postalCode'}
+          INVALID_LOCALITY = {'India', '', None}
+
+          errors = []
+          for path in sorted(Path('jobs').rglob('*.html')):
+              if path.name == 'index.html':
+                  continue
+              content = path.read_text(encoding='utf-8', errors='replace')
+              schemas = re.findall(r'<script type="application/ld\+json">(.*?)</script>', content, re.DOTALL)
+              has_job = has_faq = False
+              for s in schemas:
+                  try:
+                      d = json.loads(s)
+                  except json.JSONDecodeError:
+                      errors.append(f'{path}: invalid JSON-LD')
+                      continue
+                  if d.get('@type') == 'FAQPage':
+                      has_faq = True
+                  if d.get('@type') != 'JobPosting':
+                      continue
+                  has_job = True
+                  addr = (d.get('jobLocation') or {}).get('address', {})
+                  if addr.get('addressLocality') in INVALID_LOCALITY:
+                      errors.append(f'{path}: invalid addressLocality: {addr.get("addressLocality")!r}')
+                  if addr.get('addressRegion') in INVALID_LOCALITY:
+                      errors.append(f'{path}: invalid addressRegion: {addr.get("addressRegion")!r}')
+                  missing_addr = REQUIRED_ADDR_FIELDS - set(addr.keys())
+                  if missing_addr:
+                      errors.append(f'{path}: missing address fields: {missing_addr}')
+                  if not d.get('identifier'):
+                      errors.append(f'{path}: missing identifier')
+                  if not d.get('applicantLocationRequirements'):
+                      errors.append(f'{path}: missing applicantLocationRequirements')
+                  sal = d.get('baseSalary')
+                  if sal and not (sal.get('value') or {}).get('unitText'):
+                      errors.append(f'{path}: baseSalary.value missing unitText')
+              if not has_job:
+                  errors.append(f'{path}: no JobPosting schema')
+              if not has_faq:
+                  errors.append(f'{path}: no FAQPage schema')
+
+          total = sum(1 for p in Path('jobs').rglob('*.html') if p.name != 'index.html')
+          if errors:
+              print(f'SCHEMA VALIDATION FAILED: {len(errors)} issues across {total} job pages:')
+              for e in errors[:30]:
+                  print(f'  {e}')
+              if len(errors) > 30:
+                  print(f'  ... and {len(errors)-30} more')
+              sys.exit(1)
+          else:
+              print(f'Schema validation passed: {total} job pages OK')
+          PYEOF
+
       - name: Commit new pages (primary sources only)
         if: always()
         run: |
