@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-11T11:24:45.657513",
+  "scraped_at": "2026-04-13T12:13:41.205213",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rssb-agriculture-03-2026/",
   "page_type": "job",
   "title": "RSSB Agriculture Supervisor Online Form 2026",
-  "post_name": "Rajasthan Staff Selection Board RSSB Agriculture Supervisor Recruitment 2026 Apply Online for 1100 Post",
+  "post_name": "Rajasthan Staff Selection Board RSSB Agriculture Supervisor Recruitment 2026 Download Admit Card for 1100 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Rajasthan Staff Selection Board (RSSB)",
@@ -16,7 +16,9 @@
     "Application Begin": "13/01/2026",
     "Last Date for Apply Online": "11/02/2026",
     "Last Date Pay Exam Fee": "11/02/2026",
-    "Exam Date": "As Per Schedule"
+    "Exam Date": "18/04/2026",
+    "Admit Card Available": "13/04/2026",
+    "Download Admit Card": "Link Will be Activate on 13/04/2026"
   },
   "fees": {
     "General / OBC": "600/-",
@@ -45,9 +47,9 @@
   ],
   "important_links": [
     {
-      "label": "Apply Online",
+      "label": "Download Admit Card",
       "url": "https://sso.rajasthan.gov.in/",
-      "link_type": "apply"
+      "link_type": "admit"
     },
     {
       "label": "Download Notification",
@@ -65,15 +67,15 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://sso.rajasthan.gov.in/",
+  "apply_url": "",
   "notification_url": "https://rssb.rajasthan.gov.in/storage/advertisement_item/1767702152.pdf",
   "result_url": "https://sarkariresultportal.com/",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://sso.rajasthan.gov.in/",
   "official_website_url": "https://rssb.rajasthan.gov.in/",
   "extra_links": [
     {
-      "label": "Apply Online",
+      "label": "Download Admit Card",
       "url": "https://sso.rajasthan.gov.in/"
     },
     {

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-11T11:17:26.685542",
+  "scraped_at": "2026-04-13T12:05:31.627904",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-pet-all-form-2026/",
   "page_type": "job",
@@ -83,10 +83,5 @@
       "url": "https://upsssc.gov.in/"
     }
   ],
-  "download_links": [
-    {
-      "label": "Click Here",
-      "url": "/upload/sarkariresult.com_UPSSSC_09Exam_2026_Notification.pdf"
-    }
-  ]
+  "download_links": []
 }
