@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-13T12:05:26.073783",
+  "scraped_at": "2026-04-14T11:50:06.007304",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/ncl-hemm-staff-overseer-apr26/",
   "page_type": "job",
@@ -48,6 +48,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/2nhbtn2m",
+      "link_type": "other"
+    },
+    {
       "label": "Join Our Telegram Channel",
       "url": "https://t.me/sarkari",
       "link_type": "other"
@@ -68,6 +73,10 @@
     {
       "label": "Apply Online",
       "url": "https://cdn.digialm.com/EForms/configuredHtml/1258/2000122/Index.html"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/2nhbtn2m"
     },
     {
       "label": "Join Our Telegram Channel",

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-13T12:13:41.205213",
+  "scraped_at": "2026-04-14T11:57:44.865003",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rssb-agriculture-03-2026/",
   "page_type": "job",
@@ -17,8 +17,7 @@
     "Last Date for Apply Online": "11/02/2026",
     "Last Date Pay Exam Fee": "11/02/2026",
     "Exam Date": "18/04/2026",
-    "Admit Card Available": "13/04/2026",
-    "Download Admit Card": "Link Will be Activate on 13/04/2026"
+    "Admit Card Available": "13/04/2026"
   },
   "fees": {
     "General / OBC": "600/-",
@@ -48,6 +47,11 @@
   "important_links": [
     {
       "label": "Download Admit Card",
+      "url": "https://recruitment.rajasthan.gov.in/rectlogingetadmitcard",
+      "link_type": "admit"
+    },
+    {
+      "label": "Download Admit Card",
       "url": "https://sso.rajasthan.gov.in/",
       "link_type": "admit"
     },
@@ -71,9 +75,13 @@
   "notification_url": "https://rssb.rajasthan.gov.in/storage/advertisement_item/1767702152.pdf",
   "result_url": "https://sarkariresultportal.com/",
   "scorecard_url": "",
-  "admit_url": "https://sso.rajasthan.gov.in/",
+  "admit_url": "https://recruitment.rajasthan.gov.in/rectlogingetadmitcard",
   "official_website_url": "https://rssb.rajasthan.gov.in/",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://recruitment.rajasthan.gov.in/rectlogingetadmitcard"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://sso.rajasthan.gov.in/"

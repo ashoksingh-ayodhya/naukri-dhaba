@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-13T07:02:23Z",
+  "updated": "2026-04-14T06:47:26Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -76,6 +76,14 @@
       "url": "https://naukridhaba.in/jobs/police/crpf-constable-tradesman-online-form-2026.html"
     },
     {
+      "title": "Bihar BTSC Instructor Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "15/05/2026",
+      "url": "https://naukridhaba.in/jobs/government/bihar-btsc-instructor-online-form-2026.html"
+    },
+    {
       "title": "Bihar BPSC TRE Teacher 2026 Online Form",
       "dept": "Government",
       "type": "job",
@@ -140,31 +148,31 @@
       "url": "https://naukridhaba.in/jobs/ssc/upsssc-assistant-boring-technician-online-form-2026.html"
     },
     {
+      "title": "SSC Selection Post 14th Online Form 2026",
+      "dept": "SSC",
+      "type": "job",
+      "category": "ssc",
+      "date": "04/05/2026",
+      "url": "https://naukridhaba.in/jobs/ssc/ssc-selection-post-14th-online-form-2026.html"
+    },
+    {
       "title": "NCL HEMM Operator, Staff Nurse, Overseer Civil Online Form 2026",
       "dept": "Government",
       "type": "job",
       "category": "government",
       "date": "01/05/2026",
       "url": "https://naukridhaba.in/jobs/government/ncl-hemm-operator-staff-nurse-overseer-civil-online-form-2026.html"
-    },
-    {
-      "title": "NTA UGC NET June 2026 Online Form",
-      "dept": "GOVERNMENT",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/nta-ugc-net-june-2026-online-form.html"
-    },
-    {
-      "title": "JEECUP 2026 Apply Online",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "30/04/2026",
-      "url": "https://naukridhaba.in/jobs/government/jeecup-2026-apply-online.html"
     }
   ],
   "results": [
+    {
+      "title": "MHA IB MTS 2025 Tier I Result",
+      "dept": "SSC",
+      "type": "result",
+      "category": "ssc",
+      "date": "13/04/2026",
+      "url": "https://naukridhaba.in/results/ssc/mha-ib-mts-2025-tier-i-result.html"
+    },
     {
       "title": "MPESB MP Police Constable 2025 Final Result",
       "dept": "POLICE",
@@ -316,14 +324,6 @@
       "category": "upsc",
       "date": "06/03/2026",
       "url": "https://naukridhaba.in/results/upsc/upsc-civil-services-ias-2025-final-result.html"
-    },
-    {
-      "title": "UPSC Forest Services IFS 2025 Mains Result",
-      "dept": "UPSC",
-      "type": "result",
-      "category": "upsc",
-      "date": "06/03/2026",
-      "url": "https://naukridhaba.in/results/upsc/upsc-forest-services-ifs-2025-mains-result.html"
     }
   ],
   "admits": [
@@ -448,6 +448,14 @@
       "url": "https://naukridhaba.in/admit-cards/upsc/upsc-cds-i-2025-admit-card.html"
     },
     {
+      "title": "UPSSSC Junior Engineer JE Civil 2024 Exam Date",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-junior-engineer-je-civil-2024-exam-date.html"
+    },
+    {
       "title": "ISRO VSSC Various Post Admit Card 2026",
       "dept": "SSC",
       "type": "admit",
@@ -478,14 +486,6 @@
       "category": "ssc",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-paper-ii-exam-date-2026.html"
-    },
-    {
-      "title": "DFCCIL MTS PET Exam Admit Card 2026",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/dfccil-mts-pet-exam-admit-card-2026.html"
     }
   ]
 }
