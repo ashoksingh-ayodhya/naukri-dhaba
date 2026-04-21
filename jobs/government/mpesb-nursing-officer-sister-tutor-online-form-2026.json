@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:50:57.818398",
+  "scraped_at": "2026-04-21T11:54:53.156169",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mpesb-nursing-officer-tutor-mar26/",
   "page_type": "job",
@@ -52,6 +52,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/3y3e9tmz",
+      "link_type": "other"
+    },
+    {
       "label": "Sarkari Result PDF Tool Portal | Remove Background",
       "url": "https://sarkariresultportal.com/",
       "link_type": "result"
@@ -72,6 +77,10 @@
     {
       "label": "Apply Online",
       "url": "https://esb.mponline.gov.in/Portal/Examinations/Vyapam/examsList.aspx"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/3y3e9tmz"
     },
     {
       "label": "Sarkari Result PDF Tool Portal | Remove Background",

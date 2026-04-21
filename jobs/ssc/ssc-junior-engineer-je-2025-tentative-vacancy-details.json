@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:53:50.904215",
+  "scraped_at": "2026-04-21T11:57:37.703194",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-junior-engineer-je-2025/",
   "page_type": "job",
@@ -49,9 +49,14 @@
   ],
   "important_links": [
     {
-      "label": "Download Paper II Exam City",
+      "label": "Download Paper II Answer Key",
       "url": "https://ssc.gov.in/login",
-      "link_type": "exam_city"
+      "link_type": "answer_key"
+    },
+    {
+      "label": "Download Paper II Answer Key Notice",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/tentative_answer_key_16042026.pdf",
+      "link_type": "answer_key"
     },
     {
       "label": "Download Paper I Marks & Final Answer Key Notice",
@@ -127,8 +132,12 @@
   "official_website_url": "https://ssc.gov.in/",
   "extra_links": [
     {
-      "label": "Download Paper II Exam City",
+      "label": "Download Paper II Answer Key",
       "url": "https://ssc.gov.in/login"
+    },
+    {
+      "label": "Download Paper II Answer Key Notice",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/tentative_answer_key_16042026.pdf"
     },
     {
       "label": "Download Paper I Marks & Final Answer Key Notice",
@@ -184,6 +193,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/tentative_answer_key_16042026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/writeup_23032026.pdf"

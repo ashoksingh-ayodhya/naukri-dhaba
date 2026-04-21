@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:55:34.515635",
+  "scraped_at": "2026-04-21T11:59:27.133273",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/hssc/hpsc-hcs-22-2026/",
   "page_type": "job",
   "title": "Haryana HPSC HCS Online Form 2026",
-  "post_name": "Haryana HPSC (Executive Branch) & Other Allied Services Recruitment 2026 Apply Online for 102 Post",
+  "post_name": "Haryana HPSC (Executive Branch) & Other Allied Services Recruitment 2026 Admit Card for 102 Post",
   "post_date": "",
   "update_date": "",
-  "organization_full_name": "Haryana Public Service Commission HPSC HCS Civil Services Pre Online Form 2026 :",
+  "organization_full_name": "Haryana Public Service Commission HPSC HCS Civil Services Pre Admit Card 2026 :",
   "advertisement_number": "22/2026",
   "short_description": "",
   "dept": "Government",
@@ -16,7 +16,8 @@
     "Application Begin": "06/02/2026",
     "Last Date for Apply Online": "26/02/2026 upto 05 PM",
     "Pay Exam Fee Last Date": "26/02/2026",
-    "Exam Date": "As per Schedule",
+    "Pre Exam Date": "26/04/2026",
+    "Admit Card Available": "20/04/2026",
     "Mains Exam Date": "As per Schedule"
   },
   "fees": {
@@ -46,6 +47,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Admit Card",
+      "url": "https://regn.hpsc.gov.in/hcs26/site/login",
+      "link_type": "admit"
+    },
+    {
       "label": "Apply Online",
       "url": "https://regn.hpsc.gov.in/hcs26/",
       "link_type": "apply"
@@ -70,9 +76,13 @@
   "notification_url": "https://regn.hpsc.gov.in/hcs26/Advt_22_2026_HCS_Ex_Br.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://regn.hpsc.gov.in/hcs26/site/login",
   "official_website_url": "https://hpsc.gov.in/",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://regn.hpsc.gov.in/hcs26/site/login"
+    },
     {
       "label": "Apply Online",
       "url": "https://regn.hpsc.gov.in/hcs26/"

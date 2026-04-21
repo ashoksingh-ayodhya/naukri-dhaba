@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T12:06:27.654770",
+  "scraped_at": "2026-04-21T12:10:58.728903",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/uppsc-lt-grade-teacher-2025/",
   "page_type": "result",
   "title": "UPPSC LT Grade Assistant Teacher 2025 Result",
-  "post_name": "UPPSC Assistant Grade LT Grade Teacher Recruitment 2025 Result, Download Answer Key",
+  "post_name": "UPPSC Assistant Grade LT Grade Teacher Recruitment 2025 Result, Download Sanskrit Mains Admit Card",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Uttar Pradesh Public Service Commission (UPPSC)",
@@ -23,9 +23,11 @@
     "Urdu, Music, Arts, Agri / Horti Result Available": "12/03/2026",
     "Physical Education Result Available": "19/03/2026",
     "Computer Subject Exam Date": "05/04/2026",
-    "Admit Card Available": "26/03/2026",
+    "Admit Card Available": "18/04/2026",
     "Social Science Result Avaialble": "01/04/2026",
-    "Computer Subject Answer Key": "07/04/2026"
+    "Computer Subject Answer Key": "07/04/2026",
+    "Commerce Exam Date Mains": "22/04/2026",
+    "Sanskrit Exam Date Mains": "23/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "125/-",
@@ -60,6 +62,16 @@
   ],
   "important_links": [
     {
+      "label": "Download Admit Card (Mains)",
+      "url": "https://uppsc.up.nic.in/CandidatePages/Advertismentwise_DownloadDocument.aspx?inptprmtr=ac",
+      "link_type": "admit"
+    },
+    {
+      "label": "Download Mains Exam Notice",
+      "url": "https://uppsc.up.nic.in/Open_PDF_DB.aspx?I4PnQ0tBagldpN1/ndg4XY5OshJA9Cv2",
+      "link_type": "other"
+    },
+    {
       "label": "Apply Online (Mains Form)",
       "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back",
       "link_type": "apply"
@@ -78,11 +90,6 @@
       "label": "Download Answer Key",
       "url": "https://uppsc.up.nic.in/CandidatePages/Status/ViewAnswerKey.aspx?ID=5",
       "link_type": "answer_key"
-    },
-    {
-      "label": "Download Admit Card",
-      "url": "https://uppsc.up.nic.in/CandidatePages/Advertismentwise_DownloadDocument.aspx?inptprmtr=ac",
-      "link_type": "admit"
     },
     {
       "label": "Apply Online",
@@ -104,9 +111,17 @@
   "notification_url": "https://tinyurl.com/5c43hk7p",
   "result_url": "https://doc.sarkariresults.org.in/UPPSC_LT_Grade_Social_SCience_Result.pdf",
   "scorecard_url": "",
-  "admit_url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwTFMai3JQ+K3Bs0O6859Z9AS8bETbXQJjhNiKVH/IJoMSChX5fc6nRwZEYvGPZM/Ea1Yc5hVcTDZjyzLb54Rq2kqdU+1V1eRmoSs9n/VpovVyKHOVKSXbKVdXUc7gag5usvluv/8deN2Q==",
+  "admit_url": "https://uppsc.up.nic.in/CandidatePages/Advertismentwise_DownloadDocument.aspx?inptprmtr=ac",
   "official_website_url": "https://uppsc.up.nic.in/",
   "extra_links": [
+    {
+      "label": "Download Admit Card (Mains)",
+      "url": "https://uppsc.up.nic.in/CandidatePages/Advertismentwise_DownloadDocument.aspx?inptprmtr=ac"
+    },
+    {
+      "label": "Download Mains Exam Notice",
+      "url": "https://uppsc.up.nic.in/Open_PDF_DB.aspx?I4PnQ0tBagldpN1/ndg4XY5OshJA9Cv2"
+    },
     {
       "label": "Apply Online (Mains Form)",
       "url": "https://uppsc.up.nic.in/CandidatePages/OTRAppForm/Applicant_OtrAuthentication.aspx?WEqGEem9m0+8Y4tNQqJiNYurmbKsjJR/fgSlThSTh6o=#no-back"
@@ -122,10 +137,6 @@
     {
       "label": "Download Answer Key",
       "url": "https://uppsc.up.nic.in/CandidatePages/Status/ViewAnswerKey.aspx?ID=5"
-    },
-    {
-      "label": "Download Admit Card",
-      "url": "https://uppsc.up.nic.in/CandidatePages/Advertismentwise_DownloadDocument.aspx?inptprmtr=ac"
     },
     {
       "label": "Apply Online",

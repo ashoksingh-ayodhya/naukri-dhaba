@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:53:09.373136",
+  "scraped_at": "2026-04-21T11:56:55.443935",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mpesb-vanrakshak-jail-prahari-feb26/",
   "page_type": "job",
@@ -17,7 +17,7 @@
     "Last Date for Apply Online": "30/04/2026",
     "Last Date Pay Exam Fee": "30/04/2026",
     "Correction Last Date": "30/04/2026",
-    "Exam Date Start": "As per Schedule",
+    "Exam Date": "25/05/2026",
     "Result Status": "Notified Soon"
   },
   "fees": {
@@ -66,6 +66,11 @@
       "link_type": "other"
     },
     {
+      "label": "Download Exam Notice",
+      "url": "https://esb.mp.gov.in/Rulebooks/RB_2026/JAIL_VAN_2026_RuleBook_Updated_PAGES_16042026.pdf",
+      "link_type": "other"
+    },
+    {
       "label": "Download Date Extended Notice",
       "url": "https://esb.mp.gov.in/Advertisement/ADV_2026/Van_Rakshak_2026_Date_change_Notice_13032026.pdf",
       "link_type": "other"
@@ -110,6 +115,10 @@
       "url": "https://tinyurl.com/dnuwhajc"
     },
     {
+      "label": "Download Exam Notice",
+      "url": "https://esb.mp.gov.in/Rulebooks/RB_2026/JAIL_VAN_2026_RuleBook_Updated_PAGES_16042026.pdf"
+    },
+    {
       "label": "Download Date Extended Notice",
       "url": "https://esb.mp.gov.in/Advertisement/ADV_2026/Van_Rakshak_2026_Date_change_Notice_13032026.pdf"
     },
@@ -127,6 +136,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://esb.mp.gov.in/Rulebooks/RB_2026/JAIL_VAN_2026_RuleBook_Updated_PAGES_16042026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://esb.mp.gov.in/Advertisement/ADV_2026/Van_Rakshak_2026_Date_change_Notice_13032026.pdf"

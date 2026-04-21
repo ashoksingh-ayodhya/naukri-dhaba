@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:55:15.902437",
+  "scraped_at": "2026-04-21T11:59:06.643070",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/jharkhand/jpsc-pre-01-2026/",
   "page_type": "job",
   "title": "Jharkhand JPSC Civil Services Pre Online Form 2026",
-  "post_name": "Jharkhand JPSC Civil Services Recruitment Advt No 01/2026 Exam City Details for 103 Post",
+  "post_name": "Jharkhand JPSC Civil Services Recruitment Advt No 01/2026 Download Answer Key for 103 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Jharkhand Public Service Commission (JPSC)",
@@ -19,7 +19,8 @@
     "Exam Date (Old Date)": "12/04/2026",
     "Exam Date (New Exam Date)": "19/04/2026",
     "Exam City Available": "08/04/2026",
-    "Admit Card Available": "14/04/2026"
+    "Admit Card Available": "14/04/2026",
+    "Answer Key Available": "20/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "100/-",
@@ -46,9 +47,9 @@
   ],
   "important_links": [
     {
-      "label": "Check Exam City / Download Admit Card",
+      "label": "For Objection",
       "url": "https://jpscotr.com/",
-      "link_type": "admit"
+      "link_type": "other"
     },
     {
       "label": "Download Exam City Notice",
@@ -90,11 +91,11 @@
   "notification_url": "https://doc.sarkariresults.org.in/JPSC_Pre_01_2026_Syllabus_SarkariResult_Com.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "https://jpscotr.com/",
+  "admit_url": "",
   "official_website_url": "https://www.jpsc.gov.in/",
   "extra_links": [
     {
-      "label": "Check Exam City / Download Admit Card",
+      "label": "For Objection",
       "url": "https://jpscotr.com/"
     },
     {

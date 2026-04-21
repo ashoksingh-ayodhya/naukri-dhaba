@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T12:07:43.631503",
+  "scraped_at": "2026-04-21T12:12:20.427333",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/cbse-group-abc-2025/",
   "page_type": "result",
@@ -49,6 +49,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Tier II Admit Card",
+      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/LoginDOB.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E",
+      "link_type": "admit"
+    },
+    {
       "label": "Download Tier II Exam City",
       "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/frmAuthforCityPhaseII.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E",
       "link_type": "exam_city"
@@ -77,11 +82,6 @@
       "label": "Download Answer Key Notice",
       "url": "https://www.cbse.gov.in/cbsenew/documents/PUBLIC_NOTICE_KEY_CHALLANGE_DRQ2026_11022026.pdf",
       "link_type": "answer_key"
-    },
-    {
-      "label": "Download Admit Card",
-      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/LoginDOB.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E",
-      "link_type": "admit"
     },
     {
       "label": "Exam Notice",
@@ -117,6 +117,10 @@
   "official_website_url": "https://www.cbse.gov.in/cbsenew/cbse.html",
   "extra_links": [
     {
+      "label": "Download Tier II Admit Card",
+      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/LoginDOB.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E"
+    },
+    {
       "label": "Download Tier II Exam City",
       "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/frmAuthforCityPhaseII.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E"
     },
@@ -139,10 +143,6 @@
     {
       "label": "Download Answer Key Notice",
       "url": "https://www.cbse.gov.in/cbsenew/documents/PUBLIC_NOTICE_KEY_CHALLANGE_DRQ2026_11022026.pdf"
-    },
-    {
-      "label": "Download Admit Card",
-      "url": "https://examinationservices.nic.in/recsys2025/downloadadmitcard/LoginDOB.aspx?enc=Ei4cajBkK1gZSfgr53ImFSuabJtfdyH7GsL2cij2dPKFqA5XsHH8yMmK+6SEPU/E"
     },
     {
       "label": "Exam Notice",

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:52:09.745983",
+  "scraped_at": "2026-04-21T11:56:09.728533",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/ssb-various-post-all-march/",
   "page_type": "job",
   "title": "SSB Constable, HC, ASI, SI Online Form 2026",
-  "post_name": "Sashastra Seema Bal SSB Constable HC ASI SI Recruitment 2026 Apply Online Form",
+  "post_name": "Sashastra Seema Bal SSB Constable HC ASI SI Recruitment 2026 Apply Online",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -13,6 +13,7 @@
   "short_description": "",
   "dept": "SSB",
   "dates": {
+    "Correction Date": "As per Schedule",
     "Exam Date": "As per Schedule"
   },
   "fees": {

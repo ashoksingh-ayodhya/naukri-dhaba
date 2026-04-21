@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:53:34.272674",
+  "scraped_at": "2026-04-21T11:57:20.656177",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/uppcb-aee-aso-mar26/",
   "page_type": "job",
   "title": "UP Pollution Control Board UPPCB AEE, ASO Online Form 2026",
-  "post_name": "UP Pollution Control Board UPPCB Assistant Environmental Engineer AEE & Assistant Scientific Officer ASO Apply Online for 40 Post",
+  "post_name": "UP Pollution Control Board UPPCB Assistant Environmental Engineer AEE & Assistant Scientific Officer ASO Download Admit Card for 40 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "How to Fill : UP Pollution Control Board Recruitment Online Form 2026",
@@ -16,7 +16,8 @@
     "Application Begin": "28/02/2026",
     "Last Date for Registration": "28/03/2026 Upto 06 PM",
     "Fee Payment Last Date": "28/03/2026",
-    "Exam Date": "As per Schedule"
+    "Exam Date": "27/04/2026",
+    "Admit Card Available": "15/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "2000/-",
@@ -44,6 +45,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Admit Card",
+      "url": "https://cdn.digialm.com//EForms/configuredHtml/33124/97760/login.html",
+      "link_type": "admit"
+    },
+    {
       "label": "Apply Online",
       "url": "https://cdn.digialm.com/EForms/configuredHtml/33124/97760/Registration.html",
       "link_type": "apply"
@@ -68,9 +74,13 @@
   "notification_url": "https://doc.sarkariresults.org.in/639079618439323932.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://cdn.digialm.com//EForms/configuredHtml/33124/97760/login.html",
   "official_website_url": "https://uppcb.up.gov.in/",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://cdn.digialm.com//EForms/configuredHtml/33124/97760/login.html"
+    },
     {
       "label": "Apply Online",
       "url": "https://cdn.digialm.com/EForms/configuredHtml/33124/97760/Registration.html"

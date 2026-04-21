@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:50:24.819207",
+  "scraped_at": "2026-04-21T11:53:28.594085",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/secl-grade-c-apr26/",
   "page_type": "job",
@@ -46,8 +46,13 @@
   "important_links": [
     {
       "label": "Apply Online",
-      "url": "https://secl-cil.in/jobs_secl",
+      "url": "https://cdn.digialm.com/EForms/configuredHtml/1258/97844/Index.html",
       "link_type": "apply"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/tvkambdf",
+      "link_type": "other"
     },
     {
       "label": "Download Notification",
@@ -65,7 +70,7 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://secl-cil.in/jobs_secl",
+  "apply_url": "https://cdn.digialm.com/EForms/configuredHtml/1258/97844/Index.html",
   "notification_url": "https://secl-cil.in/writereaddata/94ae09c362c0260b97a92ee253c0f8c66768e9f79c26b279fe9b40481539076a.pdf",
   "result_url": "https://sarkariresultportal.com/",
   "scorecard_url": "",
@@ -74,7 +79,11 @@
   "extra_links": [
     {
       "label": "Apply Online",
-      "url": "https://secl-cil.in/jobs_secl"
+      "url": "https://cdn.digialm.com/EForms/configuredHtml/1258/97844/Index.html"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/tvkambdf"
     },
     {
       "label": "Download Notification",

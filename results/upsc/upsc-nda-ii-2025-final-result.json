@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T12:03:57.576233",
+  "scraped_at": "2026-04-21T12:08:17.799131",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsc/upsc-nda-ii-2025/",
   "page_type": "result",
   "title": "UPSC NDA II 2025 Final Result",
-  "post_name": "UPSC National Defence Academy and Naval Academy NDA II Examination 2025 Download Final Result",
+  "post_name": "UPSC National Defence Academy and Naval Academy NDA II Examination 2025 Download Marks",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Union Public Service Commission (UPSC)",
@@ -51,6 +51,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Marks",
+      "url": "https://upsc.gov.in/sites/default/files/MrksRcmddCndt-NDA-NA-II-2025-Engl-160426.pdf",
+      "link_type": "other"
+    },
+    {
       "label": "Download Final Result",
       "url": "https://upsc.gov.in/sites/default/files/FR-NDA-NA-II-2025-Engl-08042026.pdf",
       "link_type": "result"
@@ -79,6 +84,10 @@
   "official_website_url": "http://upsc.gov.in/",
   "extra_links": [
     {
+      "label": "Download Marks",
+      "url": "https://upsc.gov.in/sites/default/files/MrksRcmddCndt-NDA-NA-II-2025-Engl-160426.pdf"
+    },
+    {
       "label": "Download Final Result",
       "url": "https://upsc.gov.in/sites/default/files/FR-NDA-NA-II-2025-Engl-08042026.pdf"
     },
@@ -96,6 +105,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://upsc.gov.in/sites/default/files/MrksRcmddCndt-NDA-NA-II-2025-Engl-160426.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://upsc.gov.in/sites/default/files/FR-NDA-NA-II-2025-Engl-08042026.pdf"

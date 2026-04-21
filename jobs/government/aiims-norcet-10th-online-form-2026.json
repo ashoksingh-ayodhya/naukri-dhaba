@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:55:19.017269",
+  "scraped_at": "2026-04-21T11:59:10.318527",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/aiims-norcet-10th/",
   "page_type": "job",
   "title": "AIIMS NORCET 10th Online Form 2026",
-  "post_name": "AIIMS Nursing Officer Recruitment 2026 Phase 10th Exam Check Exam City / Admit Card for 2551 Post",
+  "post_name": "AIIMS Nursing Officer Recruitment 2026 Phase 10th Result 2026 for 2551 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -46,6 +46,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Result",
+      "url": "https://rrpdocuments.aiimsexams.ac.in/1776342440863-355824347.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVRUVRLXWMSLVSAP7%2F20260416%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20260416T140022Z&X-Amz-Expires=18000&X-Amz-Signature=ffd50f2d40f0f32f06d4ad987678b5236d0e6f761f172eaf7dd2389cfa29d8d3&X-Amz-SignedHeaders=host&response-content-type=application%2Fpdf",
+      "link_type": "result"
+    },
+    {
       "label": "Download Admit Card",
       "url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b",
       "link_type": "admit"
@@ -68,11 +73,15 @@
   ],
   "apply_url": "https://aiimsexams.ac.in/otr",
   "notification_url": "https://doc.sarkariresults.org.in/AIIMS_NORCET_10_Notification.pdf",
-  "result_url": "",
+  "result_url": "https://rrpdocuments.aiimsexams.ac.in/1776342440863-355824347.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVRUVRLXWMSLVSAP7%2F20260416%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20260416T140022Z&X-Amz-Expires=18000&X-Amz-Signature=ffd50f2d40f0f32f06d4ad987678b5236d0e6f761f172eaf7dd2389cfa29d8d3&X-Amz-SignedHeaders=host&response-content-type=application%2Fpdf",
   "scorecard_url": "",
   "admit_url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b",
   "official_website_url": "https://www.aiimsexams.ac.in/",
   "extra_links": [
+    {
+      "label": "Download Result",
+      "url": "https://rrpdocuments.aiimsexams.ac.in/1776342440863-355824347.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVRUVRLXWMSLVSAP7%2F20260416%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20260416T140022Z&X-Amz-Expires=18000&X-Amz-Signature=ffd50f2d40f0f32f06d4ad987678b5236d0e6f761f172eaf7dd2389cfa29d8d3&X-Amz-SignedHeaders=host&response-content-type=application%2Fpdf"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://aiimsexams.ac.in/advertisement/699d90c3a5c5ab7d59ac721b"
@@ -90,5 +99,10 @@
       "url": "https://www.aiimsexams.ac.in/"
     }
   ],
-  "download_links": []
+  "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://rrpdocuments.aiimsexams.ac.in/1776342440863-355824347.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVRUVRLXWMSLVSAP7%2F20260416%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20260416T140022Z&X-Amz-Expires=18000&X-Amz-Signature=ffd50f2d40f0f32f06d4ad987678b5236d0e6f761f172eaf7dd2389cfa29d8d3&X-Amz-SignedHeaders=host&response-content-type=application%2Fpdf"
+    }
+  ]
 }

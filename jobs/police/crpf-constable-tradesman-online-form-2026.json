@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:50:31.050180",
+  "scraped_at": "2026-04-21T11:54:25.822819",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/crpf-constable-tradesman-apr26/",
   "page_type": "job",
@@ -27,7 +27,7 @@
   "fee_payment_method": "Pay the Examination Fee Through Debit Card, Credit Card, Net Banking or Pay Offline Through E Challan",
   "age_min": null,
   "age_max": null,
-  "age_reference_date": "01/01/2026",
+  "age_reference_date": "01/08/2026",
   "age_relaxation_notes": "Age Relaxation Extra as per CRPF Constable Technical & Tradesman Recruitment Rules 2026.",
   "total_posts": "9175",
   "vacancy_breakdown": [],
@@ -47,7 +47,12 @@
   "important_links": [
     {
       "label": "Apply Online",
-      "url": "https://rect.crpf.gov.in/",
+      "url": "https://recruitment.crpf.gov.in/register",
+      "link_type": "apply"
+    },
+    {
+      "label": "Apply Online",
+      "url": "https://recruitment.crpf.gov.in/login",
       "link_type": "apply"
     },
     {
@@ -59,9 +64,14 @@
       "label": "Download Notification",
       "url": "https://rect.crpf.gov.in/Upload/Recruitment/Recruitment%20Notice%20104042026%20(hindi)-210.pdf",
       "link_type": "notification"
+    },
+    {
+      "label": "CRPF Official Website",
+      "url": "https://rect.crpf.gov.in/",
+      "link_type": "official_website"
     }
   ],
-  "apply_url": "https://rect.crpf.gov.in/",
+  "apply_url": "https://recruitment.crpf.gov.in/register",
   "notification_url": "https://rect.crpf.gov.in/Upload/Recruitment/Recruitment%20Notice%20103042026-720.pdf",
   "result_url": "",
   "scorecard_url": "",
@@ -70,7 +80,11 @@
   "extra_links": [
     {
       "label": "Apply Online",
-      "url": "https://rect.crpf.gov.in/"
+      "url": "https://recruitment.crpf.gov.in/register"
+    },
+    {
+      "label": "Apply Online",
+      "url": "https://recruitment.crpf.gov.in/login"
     },
     {
       "label": "Download Notification",
@@ -79,6 +93,10 @@
     {
       "label": "Download Notification",
       "url": "https://rect.crpf.gov.in/Upload/Recruitment/Recruitment%20Notice%20104042026%20(hindi)-210.pdf"
+    },
+    {
+      "label": "CRPF Official Website",
+      "url": "https://rect.crpf.gov.in/"
     }
   ],
   "download_links": [

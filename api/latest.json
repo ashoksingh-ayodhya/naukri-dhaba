@@ -1,8 +1,16 @@
 {
-  "updated": "2026-04-20T06:41:30Z",
+  "updated": "2026-04-21T06:50:37Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
+    {
+      "title": "UPSSSC Havaldar Instructor Online Form 2026",
+      "dept": "SSC",
+      "type": "job",
+      "category": "ssc",
+      "date": "09/07/2026",
+      "url": "https://naukridhaba.in/jobs/ssc/upsssc-havaldar-instructor-online-form-2026.html"
+    },
     {
       "title": "UPSSSC UP Vidhan Bhawan Guard / Fireman Online Form 2026",
       "dept": "SSC",
@@ -60,6 +68,14 @@
       "url": "https://naukridhaba.in/jobs/police/delhi-police-head-constable-2026-online-form.html"
     },
     {
+      "title": "ITBP Assistant Commandant Engineer Online Form 2026",
+      "dept": "POLICE",
+      "type": "job",
+      "category": "police",
+      "date": "20/05/2026",
+      "url": "https://naukridhaba.in/jobs/police/itbp-assistant-commandant-engineer-online-form-2026.html"
+    },
+    {
       "title": "IBPS Clerk 2026 Online Form",
       "dept": "BANKING",
       "type": "job",
@@ -76,12 +92,28 @@
       "url": "https://naukridhaba.in/jobs/police/crpf-constable-tradesman-online-form-2026.html"
     },
     {
+      "title": "Patna High Court Computer Operator Cum Typist Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "16/05/2026",
+      "url": "https://naukridhaba.in/jobs/government/patna-high-court-computer-operator-cum-typist-online-form-2026.html"
+    },
+    {
       "title": "Bihar BTSC Instructor Online Form 2026",
       "dept": "Government",
       "type": "job",
       "category": "government",
       "date": "15/05/2026",
       "url": "https://naukridhaba.in/jobs/government/bihar-btsc-instructor-online-form-2026.html"
+    },
+    {
+      "title": "Patna High Court District Judge Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "15/05/2026",
+      "url": "https://naukridhaba.in/jobs/government/patna-high-court-district-judge-online-form-2026.html"
     },
     {
       "title": "Bihar BPSC TRE Teacher 2026 Online Form",
@@ -108,6 +140,14 @@
       "url": "https://naukridhaba.in/jobs/government/secl-grade-c-various-post-online-form-2026.html"
     },
     {
+      "title": "UPSSSC Assistant Statistical Officer Online Form 2026",
+      "dept": "SSC",
+      "type": "job",
+      "category": "ssc",
+      "date": "11/05/2026",
+      "url": "https://naukridhaba.in/jobs/ssc/upsssc-assistant-statistical-officer-online-form-2026.html"
+    },
+    {
       "title": "UPSSSC Assistant Statistical Officer ASO Online Form 2026",
       "dept": "SSC",
       "type": "job",
@@ -122,49 +162,17 @@
       "category": "government",
       "date": "10/05/2026",
       "url": "https://naukridhaba.in/jobs/government/mp-vyapam-group-2-sub-group-4-online-form-2026.html"
-    },
-    {
-      "title": "UPPSC PCS Pre 2026 Online Form",
-      "dept": "PPSC",
-      "type": "job",
-      "category": "government",
-      "date": "10/05/2026",
-      "url": "https://naukridhaba.in/jobs/government/uppsc-pcs-pre-2026-online-form.html"
-    },
-    {
-      "title": "BTSC Laboratory Assistant Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "06/05/2026",
-      "url": "https://naukridhaba.in/jobs/government/btsc-laboratory-assistant-online-form-2026.html"
-    },
-    {
-      "title": "UPSSSC Assistant Boring Technician Online Form 2026",
-      "dept": "SSC",
-      "type": "job",
-      "category": "ssc",
-      "date": "05/05/2026",
-      "url": "https://naukridhaba.in/jobs/ssc/upsssc-assistant-boring-technician-online-form-2026.html"
-    },
-    {
-      "title": "SSC Selection Post 14th Online Form 2026",
-      "dept": "SSC",
-      "type": "job",
-      "category": "ssc",
-      "date": "04/05/2026",
-      "url": "https://naukridhaba.in/jobs/ssc/ssc-selection-post-14th-online-form-2026.html"
-    },
-    {
-      "title": "NCL HEMM Operator, Staff Nurse, Overseer Civil Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "01/05/2026",
-      "url": "https://naukridhaba.in/jobs/government/ncl-hemm-operator-staff-nurse-overseer-civil-online-form-2026.html"
     }
   ],
   "results": [
+    {
+      "title": "RPSC RAS 2024 Final Result",
+      "dept": "Government",
+      "type": "result",
+      "category": "government",
+      "date": "18/04/2026",
+      "url": "https://naukridhaba.in/results/government/rpsc-ras-2024-final-result.html"
+    },
     {
       "title": "MHA IB MTS 2025 Tier I Result",
       "dept": "SSC",
@@ -196,6 +204,14 @@
       "category": "upsc",
       "date": "08/04/2026",
       "url": "https://naukridhaba.in/results/upsc/upsc-nda-ii-2025-final-result.html"
+    },
+    {
+      "title": "UPSC NDA II 2025 Marks",
+      "dept": "UPSC",
+      "type": "result",
+      "category": "upsc",
+      "date": "08/04/2026",
+      "url": "https://naukridhaba.in/results/upsc/upsc-nda-ii-2025-marks.html"
     },
     {
       "title": "UPPSC RO / ARO 2023 Final Result",
@@ -308,22 +324,6 @@
       "category": "ssc",
       "date": "10/03/2026",
       "url": "https://naukridhaba.in/results/ssc/bpssc-enforcement-sub-inspector-2025-final-result.html"
-    },
-    {
-      "title": "UPSC Civil Services IAS / IFS Pre Result 2025",
-      "dept": "UPSC",
-      "type": "result",
-      "category": "upsc",
-      "date": "06/03/2026",
-      "url": "https://naukridhaba.in/results/upsc/upsc-civil-services-ias-ifs-pre-result-2025.html"
-    },
-    {
-      "title": "UPSC Civil Services IAS 2025 Final Result",
-      "dept": "UPSC",
-      "type": "result",
-      "category": "upsc",
-      "date": "06/03/2026",
-      "url": "https://naukridhaba.in/results/upsc/upsc-civil-services-ias-2025-final-result.html"
     }
   ],
   "admits": [

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:52:40.433039",
+  "scraped_at": "2026-04-21T11:56:32.518386",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/hssc/hssc-constable-01-2026/",
   "page_type": "job",
   "title": "Haryana HSSC Constable Online Form 2026",
-  "post_name": "Haryana Police HSSC Constable GD Recruitment 2026 Apply Online Re Open for 5500 Post",
+  "post_name": "Haryana Police HSSC Constable GD Recruitment 2026 PMT List and Result for 5500 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Haryana Staff Selection Commission (HSSC)",
@@ -44,9 +44,19 @@
   ],
   "important_links": [
     {
-      "label": "Apply Online",
+      "label": "Download PMT Admit Card",
       "url": "https://adv012026.hryssc.com/",
-      "link_type": "apply"
+      "link_type": "admit"
+    },
+    {
+      "label": "Result List for Physical Measurement Test (PMT)",
+      "url": "https://hssc.gov.in/file/ac1f23cd-9d97-1006-819d-97f0b7070003/result",
+      "link_type": "result"
+    },
+    {
+      "label": "Physical Measurement Test (PMT) Notice",
+      "url": "https://hssc.gov.in/file/ac1f23cd-9cf7-1335-819d-5748ab090003/publicNotice",
+      "link_type": "other"
     },
     {
       "label": "Download Re Open Notice",
@@ -69,16 +79,24 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://adv012026.hryssc.com/",
+  "apply_url": "",
   "notification_url": "https://hssc.gov.in/file/ac1f23cd-99c4-13a6-819b-75db7d59001d/advertisements",
-  "result_url": "",
+  "result_url": "https://hssc.gov.in/file/ac1f23cd-9d97-1006-819d-97f0b7070003/result",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://adv012026.hryssc.com/",
   "official_website_url": "https://hssc.gov.in/",
   "extra_links": [
     {
-      "label": "Apply Online",
+      "label": "Download PMT Admit Card",
       "url": "https://adv012026.hryssc.com/"
+    },
+    {
+      "label": "Result List for Physical Measurement Test (PMT)",
+      "url": "https://hssc.gov.in/file/ac1f23cd-9d97-1006-819d-97f0b7070003/result"
+    },
+    {
+      "label": "Physical Measurement Test (PMT) Notice",
+      "url": "https://hssc.gov.in/file/ac1f23cd-9cf7-1335-819d-5748ab090003/publicNotice"
     },
     {
       "label": "Download Re Open Notice",

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T12:03:26.370130",
+  "scraped_at": "2026-04-21T12:07:45.468538",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/mpbse-mp-result-2026/",
   "page_type": "result",
@@ -14,9 +14,7 @@
   "dept": "Government",
   "dates": {
     "Class 10th HSC Result Available": "15/04/2026",
-    "Class 12th HSSC Result Available": "15/04/2026",
-    "Download Class 10th HSC Result": "Link Will be Activate on 15/04/2026 at 11 AM",
-    "Download Class 12th HSSC Result": "Link Will be Activate on 15/04/2026 at 11 AM"
+    "Class 12th HSSC Result Available": "15/04/2026"
   },
   "fees": {},
   "fee_payment_method": "",
@@ -33,29 +31,56 @@
   "important_links": [
     {
       "label": "Download Class 10th HSC Result",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
+      "url": "https://result.mponline.gov.in/",
       "link_type": "result"
     },
     {
-      "label": "Official Website",
+      "label": "Download Class 10th HSC Result",
+      "url": "https://mpbse.mponline.gov.in/MPBSE/MPBSE",
+      "link_type": "result"
+    },
+    {
+      "label": "Download Class 10th HSC Result",
       "url": "https://mpbse.nic.in/",
-      "link_type": "official_website"
+      "link_type": "result"
+    },
+    {
+      "label": "How to Check Result (Video Hindi)",
+      "url": "https://youtu.be/bX2DFZx0B1g",
+      "link_type": "guide"
+    },
+    {
+      "label": "How to Check Result (Video Hindi)",
+      "url": "https://tinyurl.com/4t3ff94e",
+      "link_type": "guide"
     }
   ],
   "apply_url": "",
   "notification_url": "",
-  "result_url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
+  "result_url": "https://result.mponline.gov.in/",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "https://mpbse.nic.in/",
   "extra_links": [
     {
       "label": "Download Class 10th HSC Result",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18"
+      "url": "https://result.mponline.gov.in/"
     },
     {
-      "label": "Official Website",
+      "label": "Download Class 10th HSC Result",
+      "url": "https://mpbse.mponline.gov.in/MPBSE/MPBSE"
+    },
+    {
+      "label": "Download Class 10th HSC Result",
       "url": "https://mpbse.nic.in/"
+    },
+    {
+      "label": "How to Check Result (Video Hindi)",
+      "url": "https://youtu.be/bX2DFZx0B1g"
+    },
+    {
+      "label": "How to Check Result (Video Hindi)",
+      "url": "https://tinyurl.com/4t3ff94e"
     }
   ],
   "download_links": []

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-14T11:55:48.999643",
+  "scraped_at": "2026-04-21T11:59:41.484923",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mppsc-pre-2026/",
   "page_type": "job",
   "title": "MPPSC Pre 2026 Online Form",
-  "post_name": "Madhya Pradesh State Service Exam SSE MPPSC Pre Recruitment 2026 Apply Online for 155 Post",
+  "post_name": "Madhya Pradesh State Service Exam SSE MPPSC Pre Recruitment 2026 Admit Card for 155 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Madhya Pradesh Public Service Commission (MPPSC)",
@@ -51,6 +51,11 @@
   ],
   "important_links": [
     {
+      "label": "Download Admit Card",
+      "url": "https://mppsc.mponline.gov.in/Portal/Examinations/MPPSC/2025/AdmitCard/SS26Login.aspx",
+      "link_type": "admit"
+    },
+    {
       "label": "Apply Online",
       "url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx",
       "link_type": "apply"
@@ -75,9 +80,13 @@
   "notification_url": "https://mppsc.mp.gov.in/uploads/advertisement/Advt_State_Service_Exam_2026_Dated_31_12_2025.pdf",
   "result_url": "https://sarkariresultportal.com/",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://mppsc.mponline.gov.in/Portal/Examinations/MPPSC/2025/AdmitCard/SS26Login.aspx",
   "official_website_url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx",
   "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://mppsc.mponline.gov.in/Portal/Examinations/MPPSC/2025/AdmitCard/SS26Login.aspx"
+    },
     {
       "label": "Apply Online",
       "url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx"
