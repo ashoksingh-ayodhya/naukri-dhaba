@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-21T11:53:25.042652",
+  "scraped_at": "2026-04-23T10:54:37.201369",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/patna-hc-dj-2026/",
   "page_type": "job",
@@ -50,6 +50,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/48nub4y6",
+      "link_type": "other"
+    },
+    {
       "label": "Download Notification",
       "url": "https://patnahighcourt.gov.in/Exam/BSJS2026/ADV_BSJS2026.pdf",
       "link_type": "notification"
@@ -80,6 +85,10 @@
     {
       "label": "Apply Online",
       "url": "https://patnahighcourt.gov.in/Exam/BSJS2026/DefaultBSJS2026.aspx"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/48nub4y6"
     },
     {
       "label": "Download Notification",

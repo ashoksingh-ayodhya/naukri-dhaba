@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-21T12:10:46.083380",
+  "scraped_at": "2026-04-23T11:12:06.813040",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/nta-nift-2026/",
   "page_type": "result",
   "title": "NTA NIFTEE 2026 Result",
-  "post_name": "NTA NIFTEE Admissions 2026 Download Result",
+  "post_name": "NTA NIFTEE Admissions 2026 Download Stage II Admit Card",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -20,7 +20,9 @@
     "NIFT Exam Date": "08/02/2026",
     "Exam City Available": "30/01/2026",
     "Answer Key Available": "17/02/2026",
-    "Result Declared": "20/03/2026"
+    "Result Declared": "20/03/2026",
+    "NIFT Stage II Exam Date": "26/04/2026",
+    "Stage II Admit Card Available": "22/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "2000/-",
@@ -47,6 +49,21 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Stage II Admit Card",
+      "url": "https://exams.nta.nic.in/admit-card-for-nift-ug-pg-stage-ii/",
+      "link_type": "admit"
+    },
+    {
+      "label": "Download Stage II Admit Card",
+      "url": "https://exams.nta.nic.in/admit-card-for-nift-nlea-ug-stage-ii/",
+      "link_type": "admit"
+    },
+    {
+      "label": "Download Stage II Admit Card",
+      "url": "https://exams.nta.nic.in/admit-card-for-nift-artisans-stage-ii/",
+      "link_type": "admit"
+    },
     {
       "label": "Download Result",
       "url": "https://cnr.nic.in/Results26/Score/Login?apprefno=101602611",
@@ -92,9 +109,21 @@
   "notification_url": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/12/202512081380584374.pdf",
   "result_url": "https://cnr.nic.in/Results26/Score/Login?apprefno=101602611",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://exams.nta.nic.in/admit-card-for-nift-ug-pg-stage-ii/",
   "official_website_url": "https://exams.nta.nic.in/niftee/",
   "extra_links": [
+    {
+      "label": "Download Stage II Admit Card",
+      "url": "https://exams.nta.nic.in/admit-card-for-nift-ug-pg-stage-ii/"
+    },
+    {
+      "label": "Download Stage II Admit Card",
+      "url": "https://exams.nta.nic.in/admit-card-for-nift-nlea-ug-stage-ii/"
+    },
+    {
+      "label": "Download Stage II Admit Card",
+      "url": "https://exams.nta.nic.in/admit-card-for-nift-artisans-stage-ii/"
+    },
     {
       "label": "Download Result",
       "url": "https://cnr.nic.in/Results26/Score/Login?apprefno=101602611"

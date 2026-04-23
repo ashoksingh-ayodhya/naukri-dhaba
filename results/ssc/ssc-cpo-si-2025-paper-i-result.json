@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-21T12:09:37.463065",
+  "scraped_at": "2026-04-23T11:10:59.861074",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-cpo-si-2025/",
   "page_type": "result",
   "title": "SSC CPO SI 2025 Paper I Result",
-  "post_name": "SSC Sub Inspector SI in Delhi Police, Central Armed Police Forces Recruitment 2025 Paper I Result for 3073 Post",
+  "post_name": "SSC Sub Inspector SI in Delhi Police, Central Armed Police Forces Recruitment 2025 Paper I Marks, Final Answer Key for 3073 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Staff Selection Commission (SSC)",
@@ -18,6 +18,7 @@
     "Fee Payment Last Date": "17/10/2025",
     "Answer Key Available": "24/12/2025",
     "Paper I Result Available": "30/03/2026",
+    "Paper I Marks Available": "21/04/2026",
     "Exam Date Paper II": "As per Schedule"
   },
   "fees": {
@@ -46,6 +47,16 @@
   ],
   "important_links": [
     {
+      "label": "Download Paper I Marks",
+      "url": "https://ssc.gov.in/login",
+      "link_type": "other"
+    },
+    {
+      "label": "Download Final Answer Key & Marks Notice",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/writeup_21042026.pdf",
+      "link_type": "answer_key"
+    },
+    {
       "label": "Download Result",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/Results/sicpo_25_LIST-1.pdf",
       "link_type": "result"
@@ -69,11 +80,6 @@
       "label": "Check Vacancy Details",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Tentative%20Vacancies-%20SI%20CPO,%202025.pdf",
       "link_type": "other"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://ssc.gov.in/login",
-      "link_type": "answer_key"
     },
     {
       "label": "Download Answer Key Notice",
@@ -114,6 +120,14 @@
   "official_website_url": "https://ssc.gov.in/",
   "extra_links": [
     {
+      "label": "Download Paper I Marks",
+      "url": "https://ssc.gov.in/login"
+    },
+    {
+      "label": "Download Final Answer Key & Marks Notice",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/writeup_21042026.pdf"
+    },
+    {
       "label": "Download Result",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/Results/sicpo_25_LIST-1.pdf"
     },
@@ -132,10 +146,6 @@
     {
       "label": "Check Vacancy Details",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Tentative%20Vacancies-%20SI%20CPO,%202025.pdf"
-    },
-    {
-      "label": "Download Answer Key",
-      "url": "https://ssc.gov.in/login"
     },
     {
       "label": "Download Answer Key Notice",
@@ -163,6 +173,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/writeup_21042026.pdf"
+    },
     {
       "label": "List 1",
       "url": "https://ssc.gov.in/api/attachment/uploads/masterData/Results/sicpo_25_LIST-1.pdf"

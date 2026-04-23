@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-21T12:16:32.915774",
+  "scraped_at": "2026-04-23T11:17:51.523287",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2025/ugc-net-december-2025/",
   "page_type": "result",
   "title": "NTA UGC NET December 2025 Result Date",
-  "post_name": "NTA UGC NET December 2025 Examination Result / Score Card with Final Answer Key",
+  "post_name": "NTA UGC NET December 2025 Examination E Certificate Download",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -19,7 +19,8 @@
     "UGC NET Exam Date": "31/12/2025 to 07/01/2026",
     "Answer Key Released": "14/01/2026",
     "Final Answer Key Released": "04/02/2026",
-    "Result Declared": "04/02/2026"
+    "Result Declared": "04/02/2026",
+    "E Certificate Download": "22/04/2026"
   },
   "fees": {
     "General": "1150/-",
@@ -45,6 +46,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download E Certificate",
+      "url": "https://examinationservices.nic.in/examsys2026/downloadadmitcard/AuthCandCertificate.aspx?enc=Ei4cajBkK1gZSfgr53ImFV/yIzhTZHBze3wooSg9Dji7i9exw5/qFfcE5k3n2fsV",
+      "link_type": "other"
+    },
     {
       "label": "Download Result",
       "url": "https://cnr.nic.in/Results26/Score/Login?apprefno=101052512",
@@ -78,6 +84,10 @@
   "admit_url": "",
   "official_website_url": "https://ugcnet.nta.nic.in/",
   "extra_links": [
+    {
+      "label": "Download E Certificate",
+      "url": "https://examinationservices.nic.in/examsys2026/downloadadmitcard/AuthCandCertificate.aspx?enc=Ei4cajBkK1gZSfgr53ImFV/yIzhTZHBze3wooSg9Dji7i9exw5/qFfcE5k3n2fsV"
+    },
     {
       "label": "Download Result",
       "url": "https://cnr.nic.in/Results26/Score/Login?apprefno=101052512"

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-21T11:55:49.192022",
+  "scraped_at": "2026-04-23T10:57:08.287951",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/jac-jhtet-2026/",
   "page_type": "job",
@@ -46,7 +46,7 @@
   "important_links": [
     {
       "label": "Apply Online",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
+      "url": "https://jactetonline.com/",
       "link_type": "apply"
     },
     {
@@ -55,7 +55,7 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
+  "apply_url": "https://jactetonline.com/",
   "notification_url": "https://doc.sarkariresults.org.in/Sarkari_Result_2026_JHTET_NOTIFICATION.pdf",
   "result_url": "",
   "scorecard_url": "",
@@ -64,7 +64,7 @@
   "extra_links": [
     {
       "label": "Apply Online",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18"
+      "url": "https://jactetonline.com/"
     },
     {
       "label": "Official Website",

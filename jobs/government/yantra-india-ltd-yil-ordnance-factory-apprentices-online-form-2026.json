@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-21T12:00:58.514670",
+  "scraped_at": "2026-04-23T11:02:34.914219",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/yil-apprentices-feb26/",
   "page_type": "job",
   "title": "Yantra India Ltd YIL Ordnance Factory Apprentices Online Form 2026",
-  "post_name": "Ordnance Factories Yantra India Limited YIL Apprentices 2026 Apply Online for 3979 Post",
+  "post_name": "Ordnance Factories Yantra India Limited YIL Apprentices 2026 Download Result for 3979 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -16,7 +16,7 @@
     "Application Begin": "01/02/2026",
     "Last Date for Apply Online": "03/03/2026",
     "Pay Exam Fee Last Date": "03/03/2026",
-    "Exam / Merit List": "As per Schedule"
+    "Selection List List": "22/04/2026"
   },
   "fees": {
     "General /OBC": "200/-",
@@ -43,6 +43,16 @@
   ],
   "important_links": [
     {
+      "label": "Download Result",
+      "url": "https://www.recruit-gov.com/Yantra2026/selection_list.php",
+      "link_type": "result"
+    },
+    {
+      "label": "Download Result",
+      "url": "https://www.recruit-gov.com/Yantra2026/rejected_list.php",
+      "link_type": "result"
+    },
+    {
       "label": "Apply Online",
       "url": "https://www.recruit-gov.com/Yantra2026/new_registration.php",
       "link_type": "apply"
@@ -65,11 +75,19 @@
   ],
   "apply_url": "https://www.recruit-gov.com/Yantra2026/new_registration.php",
   "notification_url": "https://doc.sarkariresults.org.in/Yantra_India_Ltd_Apprentices_Notification_2026.pdf",
-  "result_url": "",
+  "result_url": "https://www.recruit-gov.com/Yantra2026/selection_list.php",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "https://recruit-gov.com/",
   "extra_links": [
+    {
+      "label": "Download Result",
+      "url": "https://www.recruit-gov.com/Yantra2026/selection_list.php"
+    },
+    {
+      "label": "Download Result",
+      "url": "https://www.recruit-gov.com/Yantra2026/rejected_list.php"
+    },
     {
       "label": "Apply Online",
       "url": "https://www.recruit-gov.com/Yantra2026/new_registration.php"

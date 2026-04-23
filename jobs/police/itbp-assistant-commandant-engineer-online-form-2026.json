@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-21T11:52:58.726511",
+  "scraped_at": "2026-04-23T10:54:11.906449",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/itbp-ac-engineer-apr26/",
   "page_type": "job",
@@ -51,6 +51,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/4hmtjnrs",
+      "link_type": "other"
+    },
+    {
       "label": "Photo Background Removal, PDF Compressor & Other PDF Tools",
       "url": "https://tinyurl.com/yuh35kec",
       "link_type": "other"
@@ -71,6 +76,10 @@
     {
       "label": "Apply Online (OTR)",
       "url": "https://recruitment.itbpolice.nic.in/rect/index.php"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/4hmtjnrs"
     },
     {
       "label": "Photo Background Removal, PDF Compressor & Other PDF Tools",

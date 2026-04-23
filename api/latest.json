@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-22T05:40:53Z",
+  "updated": "2026-04-23T05:51:38Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -140,6 +140,14 @@
       "url": "https://naukridhaba.in/jobs/government/secl-grade-c-various-post-online-form-2026.html"
     },
     {
+      "title": "PGCIL Diploma Trainee Online Form 2026",
+      "dept": "Government",
+      "type": "job",
+      "category": "government",
+      "date": "11/05/2026",
+      "url": "https://naukridhaba.in/jobs/government/pgcil-diploma-trainee-online-form-2026.html"
+    },
+    {
       "title": "UPSSSC Assistant Statistical Officer Online Form 2026",
       "dept": "SSC",
       "type": "job",
@@ -154,14 +162,6 @@
       "category": "ssc",
       "date": "11/05/2026",
       "url": "https://naukridhaba.in/jobs/ssc/upsssc-assistant-statistical-officer-aso-online-form-2026.html"
-    },
-    {
-      "title": "MP Vyapam Group 2 Sub Group 4 Online Form 2026",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "10/05/2026",
-      "url": "https://naukridhaba.in/jobs/government/mp-vyapam-group-2-sub-group-4-online-form-2026.html"
     }
   ],
   "results": [
@@ -448,6 +448,22 @@
       "url": "https://naukridhaba.in/admit-cards/upsc/upsc-cds-i-2025-admit-card.html"
     },
     {
+      "title": "ISRO VSSC Various Post Admit Card 2026",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/isro-vssc-various-post-admit-card-2026.html"
+    },
+    {
+      "title": "Bihar Police BPSSC Sub Inspector SI Prohibition Admit Card 2025",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/bihar-police-bpssc-sub-inspector-si-prohibition-admit-card-2025.html"
+    },
+    {
       "title": "SSC MTS, Havaldar 2025 Admit Card",
       "dept": "SSC",
       "type": "admit",
@@ -464,28 +480,12 @@
       "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-paper-ii-exam-date-2026.html"
     },
     {
-      "title": "SSC Junior Engineer JE 2025 Paper II Exam City Details",
+      "title": "DFCCIL MTS PET Exam Admit Card 2026",
       "dept": "SSC",
       "type": "admit",
       "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-2025-paper-ii-exam-city-details.html"
-    },
-    {
-      "title": "SSC Delhi Police Head Constable AWO / TPO 2022 DME Exam Schedule",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-delhi-police-head-constable-awo-tpo-2022-dme-exam-schedule.html"
-    },
-    {
-      "title": "UPSSSC Junior Engineer JE Civil 2024 Exam Date",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-junior-engineer-je-civil-2024-exam-date.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/dfccil-mts-pet-exam-admit-card-2026.html"
     }
   ]
 }
