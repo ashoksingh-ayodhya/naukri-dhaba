@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-24T05:34:20Z",
+  "updated": "2026-04-25T05:27:42Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -448,22 +448,6 @@
       "url": "https://naukridhaba.in/admit-cards/upsc/upsc-cds-i-2025-admit-card.html"
     },
     {
-      "title": "SSC MTS, Havaldar 2025 Admit Card",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
-    },
-    {
-      "title": "SSC Junior Engineer JE Paper II Exam Date 2026",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-paper-ii-exam-date-2026.html"
-    },
-    {
       "title": "UPSSSC Junior Engineer JE Civil 2024 Exam Date",
       "dept": "SSC",
       "type": "admit",
@@ -486,6 +470,22 @@
       "category": "ssc",
       "date": "",
       "url": "https://naukridhaba.in/admit-cards/ssc/bihar-police-bpssc-sub-inspector-si-prohibition-admit-card-2025.html"
+    },
+    {
+      "title": "SSC MTS, Havaldar 2025 Admit Card",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
+    },
+    {
+      "title": "SSC Junior Engineer JE Paper II Exam Date 2026",
+      "dept": "SSC",
+      "type": "admit",
+      "category": "ssc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-junior-engineer-je-paper-ii-exam-date-2026.html"
     }
   ]
 }
