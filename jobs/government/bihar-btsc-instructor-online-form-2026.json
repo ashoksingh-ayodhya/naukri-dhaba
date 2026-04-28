@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T10:54:56.425026",
+  "scraped_at": "2026-04-28T11:14:58.566785",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/btsc-instructor-apr26/",
   "page_type": "job",
@@ -50,6 +50,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/ydyab89k",
+      "link_type": "other"
+    },
+    {
       "label": "Download Short Notice",
       "url": "https://btsc.bihar.gov.in/sites/default/files/circulars/1099.pdf",
       "link_type": "other"
@@ -75,6 +80,10 @@
     {
       "label": "Apply Online",
       "url": "https://btsc.pariksha.nic.in/Online_App/Notifications.aspx"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/ydyab89k"
     },
     {
       "label": "Download Short Notice",

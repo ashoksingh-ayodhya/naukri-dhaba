@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T10:57:08.287951",
+  "scraped_at": "2026-04-28T11:17:09.480858",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/jac-jhtet-2026/",
   "page_type": "job",
@@ -50,6 +50,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/3wtxwxwc",
+      "link_type": "other"
+    },
+    {
       "label": "Official Website",
       "url": "https://jacexamportal.in/",
       "link_type": "official_website"
@@ -65,6 +70,10 @@
     {
       "label": "Apply Online",
       "url": "https://jactetonline.com/"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/3wtxwxwc"
     },
     {
       "label": "Official Website",

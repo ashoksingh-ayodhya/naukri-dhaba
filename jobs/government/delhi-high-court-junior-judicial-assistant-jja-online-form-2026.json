@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T11:01:39.874337",
+  "scraped_at": "2026-04-28T11:21:25.655318",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/delhi/delhi-hc-jja-restorer-feb26/",
   "page_type": "job",
   "title": "Delhi High Court Junior Judicial Assistant JJA Online Form 2026",
-  "post_name": "Delhi High Court Junior Judicial Assistant JJA / Restorer Recruitment 2026 Answer Key for 152 Post",
+  "post_name": "Delhi High Court Junior Judicial Assistant JJA / Restorer Recruitment 2026 Result for 152 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -18,7 +18,8 @@
     "Pay Exam Fee Last Date": "23/02/2026",
     "Correction Last Date": "27/02/2026",
     "Exam Date": "22/03/2026",
-    "Answer Key Available": "24/03/2026"
+    "Answer Key Available": "24/03/2026",
+    "Result Available": "25/04/2026"
   },
   "fees": {
     "General/ OBC / EWS": "1500/-",
@@ -43,6 +44,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Result",
+      "url": "https://delhihighcourt.nic.in/files/2026-04/recuritment/result_of_stage-i_preliminary_examination_computer_based_test_of_junior_judicial_assistant_restorer_open_examination_2026_held_on_22.03.2026.pdf",
+      "link_type": "result"
+    },
     {
       "label": "Download Answer Key",
       "url": "https://cdn.digialm.com/EForms/configuredHtml/33131/97738/login.html",
@@ -81,11 +87,15 @@
   ],
   "apply_url": "https://cdn.digialm.com/EForms/configuredHtml/33131/97738/Index.html",
   "notification_url": "https://doc.sarkariresults.org.in/SarkariResult.Com_Delhi_High_Court_2026vacancy_notice_jja_0.pdf",
-  "result_url": "https://sarkariresultportal.com/",
+  "result_url": "https://delhihighcourt.nic.in/files/2026-04/recuritment/result_of_stage-i_preliminary_examination_computer_based_test_of_junior_judicial_assistant_restorer_open_examination_2026_held_on_22.03.2026.pdf",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "https://delhihighcourt.nic.in/",
   "extra_links": [
+    {
+      "label": "Download Result",
+      "url": "https://delhihighcourt.nic.in/files/2026-04/recuritment/result_of_stage-i_preliminary_examination_computer_based_test_of_junior_judicial_assistant_restorer_open_examination_2026_held_on_22.03.2026.pdf"
+    },
     {
       "label": "Download Answer Key",
       "url": "https://cdn.digialm.com/EForms/configuredHtml/33131/97738/login.html"
@@ -116,6 +126,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://delhihighcourt.nic.in/files/2026-04/recuritment/result_of_stage-i_preliminary_examination_computer_based_test_of_junior_judicial_assistant_restorer_open_examination_2026_held_on_22.03.2026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://delhihighcourt.nic.in/files/2026-03/recuritment/answer_key_for_jja_2026.pdf"

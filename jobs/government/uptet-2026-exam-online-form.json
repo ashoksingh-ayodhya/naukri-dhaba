@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T11:03:10.751717",
+  "scraped_at": "2026-04-28T11:22:57.896949",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/uptet-2026/",
   "page_type": "job",
@@ -14,9 +14,9 @@
   "dept": "Government",
   "dates": {
     "Application Begin": "27/03/2026",
-    "Last Date for Registration": "26/04/2026",
-    "Pay Exam Fee Last Date": "26/04/2026",
-    "Last Date Correction": "01/05/2026",
+    "Last Date for Registration": "03/05/2026",
+    "Pay Exam Fee Last Date": "03/05/2026",
+    "Last Date Correction": "08/05/2026",
     "Exam City Available": "22/06/2026",
     "Admit Card Available": "30/06/2026",
     "Answer Key Available": "As per Schedule",
@@ -45,7 +45,7 @@
   ],
   "salary": "",
   "how_to_apply": [
-    "Uttar Pradesh Education Service Selection Commission (UPESSC), Prayagraj Are Released Uttar Pradesh Teacher Eligibility Test UPTET Examination 2026. Candidate Can Apply Between 27/03/2026 to 26/04/2026.",
+    "Uttar Pradesh Education Service Selection Commission (UPESSC), Prayagraj Are Released Uttar Pradesh Teacher Eligibility Test UPTET Examination 2026. Candidate Can Apply Between 27/03/2026 to 03/05/2026.",
     "Candidate Read the Notification Before Apply the Recruitment Application Form in UPTET Primary and Junior Level 2026.",
     "Kindly Check and Collect the All Document - Eligibility, ID Proof, Address Details, Basic Details.",
     "Kindly Ready Scan Document Related to Recruitment Form - Photo, Sign, ID Proof, Etc.",
@@ -63,6 +63,11 @@
     {
       "label": "How to UPTET OTR & Fill Form (Video Hindi)",
       "url": "https://youtu.be/lYGEMnjN7Eo",
+      "link_type": "other"
+    },
+    {
+      "label": "Download UPTET 2026 Date Extended Notice",
+      "url": "https://upessc.up.gov.in/Notice/4489-6f23-4bc7-11da-0c47.pdf",
       "link_type": "other"
     },
     {
@@ -97,6 +102,10 @@
       "url": "https://youtu.be/lYGEMnjN7Eo"
     },
     {
+      "label": "Download UPTET 2026 Date Extended Notice",
+      "url": "https://upessc.up.gov.in/Notice/4489-6f23-4bc7-11da-0c47.pdf"
+    },
+    {
       "label": "Download UPTET 2026 Corrigendum Notice",
       "url": "https://upessc.up.gov.in/Notice/d3ef-c6b3-4754-5de6-7055.pdf"
     },
@@ -110,6 +119,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://upessc.up.gov.in/Notice/4489-6f23-4bc7-11da-0c47.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://upessc.up.gov.in/Notice/d3ef-c6b3-4754-5de6-7055.pdf"

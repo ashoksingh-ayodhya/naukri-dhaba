@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T10:58:25.763739",
+  "scraped_at": "2026-04-28T11:18:16.563962",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mpesb-group5-mar26/",
   "page_type": "job",
   "title": "MPESB Group 5 Various Post Online Form 2026",
-  "post_name": "MPESB MP Group 5 Staff Nurse , Paramedical and Other Post Combined Recruitment Test 2026 Download Admit Card for 291 Post",
+  "post_name": "MPESB MP Group 5 Staff Nurse , Paramedical and Other Post Combined Recruitment Test 2026 Download Answer Key for 291 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Madhya Pradesh Employee Selection Board (MPESB)",
@@ -19,6 +19,7 @@
     "Correction Last Date": "04/04/2026",
     "Exam Date Start": "15/04/2026",
     "Admit Card Available": "10/04/2026",
+    "Answer Key Available": "24/04/2026",
     "Result Status": "Notified Soon"
   },
   "fees": {
@@ -46,6 +47,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Answer Key",
+      "url": "https://group52026.cbtexam.in/Home/ListofExam.aspx",
+      "link_type": "answer_key"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://esb.mp.gov.in/tacs/tac_2026/Group5_StaffNurse_TAC26/default_tac.htm",
@@ -104,6 +110,10 @@
   "admit_url": "https://esb.mp.gov.in/tacs/tac_2026/Group5_StaffNurse_TAC26/default_tac.htm",
   "official_website_url": "https://esb.mp.gov.in/e_default.html",
   "extra_links": [
+    {
+      "label": "Download Answer Key",
+      "url": "https://group52026.cbtexam.in/Home/ListofExam.aspx"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://esb.mp.gov.in/tacs/tac_2026/Group5_StaffNurse_TAC26/default_tac.htm"

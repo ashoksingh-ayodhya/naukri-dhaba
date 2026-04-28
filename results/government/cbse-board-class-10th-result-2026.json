@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T11:08:56.955705",
+  "scraped_at": "2026-04-28T11:25:57.687681",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/cbse-result-2026/",
   "page_type": "result",
   "title": "CBSE Board Class 10th Result 2026",
-  "post_name": "CBSE Board Class 10th Results Declared Digilocker Account Activate 2026",
+  "post_name": "CBSE Board Class 10th Results Declared, Class Xth Second Board Exam Time Table 2026",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "CBSE Board Class Xth and Class XIIth Result 2026",
@@ -31,6 +31,11 @@
   "salary": "",
   "how_to_apply": [],
   "important_links": [
+    {
+      "label": "Download 10th Second Board Exam Time Table",
+      "url": "https://www.cbse.gov.in/cbsenew/documents/Date_Sheet_2nd_Board_Exam_X_2026_23042026.pdf",
+      "link_type": "other"
+    },
     {
       "label": "Download Class 10th Result",
       "url": "https://results.digilocker.gov.in/CBSE10th2026tenthXbzvbkajsgqw.html",
@@ -65,6 +70,10 @@
   "official_website_url": "https://www.cbse.gov.in/",
   "extra_links": [
     {
+      "label": "Download 10th Second Board Exam Time Table",
+      "url": "https://www.cbse.gov.in/cbsenew/documents/Date_Sheet_2nd_Board_Exam_X_2026_23042026.pdf"
+    },
+    {
       "label": "Download Class 10th Result",
       "url": "https://results.digilocker.gov.in/CBSE10th2026tenthXbzvbkajsgqw.html"
     },
@@ -85,5 +94,10 @@
       "url": "https://www.cbse.gov.in/"
     }
   ],
-  "download_links": []
+  "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://www.cbse.gov.in/cbsenew/documents/Date_Sheet_2nd_Board_Exam_X_2026_23042026.pdf"
+    }
+  ]
 }

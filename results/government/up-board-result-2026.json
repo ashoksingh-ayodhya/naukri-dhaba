@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T11:08:15.985964",
+  "scraped_at": "2026-04-28T11:25:18.241018",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/up-board-result-2026/",
   "page_type": "result",
@@ -14,9 +14,7 @@
   "dept": "UP BOARD",
   "dates": {
     "UPMSP Class 10th Exam Date 2026": "18/02/2026 to 12/03/2026",
-    "UPMSP Class 12th Exam Date 2026": "18/02/2026 to 12/03/2026",
-    "Download UP Class 10th Result 2026": "Link Will be Activate Today at 04 PM",
-    "Download UP Board Class 12th Result 2026": "Link Will be Activate Today at 04 PM"
+    "UPMSP Class 12th Exam Date 2026": "18/02/2026 to 12/03/2026"
   },
   "fees": {},
   "fee_payment_method": "",
@@ -33,7 +31,27 @@
   "important_links": [
     {
       "label": "Download UP Class 10th Result 2026",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
+      "url": "https://results.digilocker.gov.in/UPBoard2026Xtenthjkfassliwutwpw.html",
+      "link_type": "result"
+    },
+    {
+      "label": "Download UP Class 10th Result 2026",
+      "url": "https://upresults10.upmsp.edu.in/ResultSearchModel/HighSchool?startYear=2026&endYear=2026&resultType=reg",
+      "link_type": "result"
+    },
+    {
+      "label": "How to Check Result (Video Hindi)",
+      "url": "https://tinyurl.com/433bjvka",
+      "link_type": "guide"
+    },
+    {
+      "label": "Download UP Board Class 12th Result 2026",
+      "url": "https://results.digilocker.gov.in/UPBoard2026XIIresultsmznvnjsupaq.html",
+      "link_type": "result"
+    },
+    {
+      "label": "Download UP Board Class 12th Result 2026",
+      "url": "https://upresults12.upmsp.edu.in/ResultSearchModel/Intermediate?startYear=2026&endYear=2026&resultType=reg",
       "link_type": "result"
     },
     {
@@ -44,14 +62,30 @@
   ],
   "apply_url": "",
   "notification_url": "",
-  "result_url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
+  "result_url": "https://results.digilocker.gov.in/UPBoard2026Xtenthjkfassliwutwpw.html",
   "scorecard_url": "",
   "admit_url": "",
   "official_website_url": "https://upmsp.edu.in/",
   "extra_links": [
     {
       "label": "Download UP Class 10th Result 2026",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18"
+      "url": "https://results.digilocker.gov.in/UPBoard2026Xtenthjkfassliwutwpw.html"
+    },
+    {
+      "label": "Download UP Class 10th Result 2026",
+      "url": "https://upresults10.upmsp.edu.in/ResultSearchModel/HighSchool?startYear=2026&endYear=2026&resultType=reg"
+    },
+    {
+      "label": "How to Check Result (Video Hindi)",
+      "url": "https://tinyurl.com/433bjvka"
+    },
+    {
+      "label": "Download UP Board Class 12th Result 2026",
+      "url": "https://results.digilocker.gov.in/UPBoard2026XIIresultsmznvnjsupaq.html"
+    },
+    {
+      "label": "Download UP Board Class 12th Result 2026",
+      "url": "https://upresults12.upmsp.edu.in/ResultSearchModel/Intermediate?startYear=2026&endYear=2026&resultType=reg"
     },
     {
       "label": "Official Website",

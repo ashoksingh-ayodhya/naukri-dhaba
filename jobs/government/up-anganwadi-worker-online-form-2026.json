@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T11:00:29.192067",
+  "scraped_at": "2026-04-28T11:13:12.898270",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/up-anganwadi-worker/",
   "page_type": "job",
@@ -83,6 +83,18 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Prayagraj Anganwadi Worker 2026",
+      "url": "https://upanganwadibharti.in/workernew/uploadOrder/ordercopy_1776845136_86dfdccb.pdf"
+    },
+    {
+      "label": "Lucknow Anganwadi Worker 2026",
+      "url": "https://upanganwadibharti.in/workernew/uploadOrder/ordercopy_1777100050_b11d7136.pdf"
+    },
+    {
+      "label": "Mau Anganwadi Worker 2026",
+      "url": "https://upanganwadibharti.in/workernew/uploadOrder/ordercopy_1776331334_ce05f484.pdf"
+    },
     {
       "label": "Azamgarh Anganwadi Worker 2026",
       "url": "https://upanganwadibharti.in/workernew/uploadOrder/ordercopy_1773921196_50f81d57.pdf"

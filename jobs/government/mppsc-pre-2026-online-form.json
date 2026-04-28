@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T11:01:13.893888",
+  "scraped_at": "2026-04-28T11:21:00.027007",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/mp/mppsc-pre-2026/",
   "page_type": "job",
   "title": "MPPSC Pre 2026 Online Form",
-  "post_name": "Madhya Pradesh State Service Exam SSE MPPSC Pre Recruitment 2026 Admit Card for 155 Post",
+  "post_name": "Madhya Pradesh State Service Exam SSE MPPSC Pre Recruitment 2026 Answer Key for 155 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Madhya Pradesh Public Service Commission (MPPSC)",
@@ -20,7 +20,8 @@
     "With Late Fee Phase I Last Date": "16/02/2026",
     "With Late Fee Phase II Last Date": "01/04/2026",
     "Exam Date": "26/04/2026",
-    "Admit Card Available": "16/04/2026"
+    "Admit Card Available": "16/04/2026",
+    "Answer Key Available": "28/04/2026"
   },
   "fees": {
     "General / Other State": "540/-",
@@ -50,6 +51,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Answer Key",
+      "url": "https://mppsc.mp.gov.in/uploads/files/Provisional_Answer_Key_SSE_SFS_Exam_2026_Dated_27_04_2026.pdf",
+      "link_type": "answer_key"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://mppsc.mponline.gov.in/Portal/Examinations/MPPSC/2025/AdmitCard/SS26Login.aspx",
@@ -84,6 +90,10 @@
   "official_website_url": "https://www.mponline.gov.in/Portal/Examinations/MPPSC/Attestation/Home/Home.aspx",
   "extra_links": [
     {
+      "label": "Download Answer Key",
+      "url": "https://mppsc.mp.gov.in/uploads/files/Provisional_Answer_Key_SSE_SFS_Exam_2026_Dated_27_04_2026.pdf"
+    },
+    {
       "label": "Download Admit Card",
       "url": "https://mppsc.mponline.gov.in/Portal/Examinations/MPPSC/2025/AdmitCard/SS26Login.aspx"
     },
@@ -105,6 +115,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://mppsc.mp.gov.in/uploads/files/Provisional_Answer_Key_SSE_SFS_Exam_2026_Dated_27_04_2026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://mppsc.mp.gov.in/uploads/advertisement/Advt_State_Service_Exam_2026_Dated_31_12_2025.pdf"

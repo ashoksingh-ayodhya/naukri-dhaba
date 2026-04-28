@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "scraped_at": "2026-04-28T11:40:09.475052",
+  "source": "sarkariresult",
+  "source_detail_url": "https://www.sarkariresult.com/2026/nta-neet-ug-2026/",
+  "page_type": "admit",
+  "title": "NTA NEET UG 2026 Exam Admit Card",
+  "post_name": "NTA National Eligibility Cum Entrance Test NEET UG Admissions 2026 Download Admit Card | Syllabus Download",
+  "post_date": "",
+  "update_date": "",
+  "organization_full_name": "",
+  "advertisement_number": "",
+  "short_description": "",
+  "dept": "NTA",
+  "dates": {
+    "Application Begin": "08/02/2026",
+    "Last Date for Apply Online": "11/03/2026 upto 09 PM",
+    "Last Date Online Payment": "11/03/2026",
+    "NEET UG 2025 Exam Date": "03/05/2026 (Sunday)",
+    "Exam City Available": "13/04/2026",
+    "Admit Card Available": "26/04/2026"
+  },
+  "fees": {
+    "General": "1700/-",
+    "EWS / OBC": "1600/-",
+    "SC / ST / PH": "1000/-",
+    "Out Side India": "9500/-"
+  },
+  "fee_payment_method": "Pay the Examination Fee Through E Challan Offline Mode or Pay the Exam Fee Through Online Debit Card, Credit Card or Net Banking Fee Mode",
+  "age_min": null,
+  "age_max": null,
+  "age_reference_date": "",
+  "age_relaxation_notes": "Age Relaxation Extra as per Rules.",
+  "total_posts": "",
+  "vacancy_breakdown": [],
+  "qualification": "Minimum Age : 17 Years; Maximum Age : No Limit; born on or before 31.12.2009; Age Relaxation Extra as per Rules.",
+  "qualification_items": [
+    "Minimum Age : 17 Years",
+    "Maximum Age : No Limit",
+    "born on or before 31.12.2009",
+    "Age Relaxation Extra as per Rules."
+  ],
+  "salary": "",
+  "how_to_apply": [],
+  "important_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://examinationservices.nic.in/AdmitCardService/AdmitCardNeet/Login",
+      "link_type": "admit"
+    },
+    {
+      "label": "How to Download Admit Card (Video Hindi)",
+      "url": "https://tinyurl.com/547vjuyd",
+      "link_type": "admit"
+    },
+    {
+      "label": "Check Advanced Exam City Details",
+      "url": "https://examinationservices.nic.in/AdmitCard/AuthForCity/Login?enc=DJ8reokIYhe/x0Hlb6GKa5XSzGUPsZIi2LhCU/OXDNg=",
+      "link_type": "exam_city"
+    },
+    {
+      "label": "How to Check Exam City (Video Hindi)",
+      "url": "https://youtu.be/XoHIPLZaNDg",
+      "link_type": "exam_city"
+    },
+    {
+      "label": "For Correction / Edit Form",
+      "url": "https://examinationservices.nic.in/neetc2026/root/Home.aspx?enc=Ei4cajBkK1gZSfgr53ImFcFR+natXIEjJ1rCf6DMgOr0FO08ClwO9m4YYQvMGcVT",
+      "link_type": "other"
+    },
+    {
+      "label": "Download Correction Notice",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/03/20260311404208011.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/5ect9j2r",
+      "link_type": "other"
+    },
+    {
+      "label": "Download Date Extended Notice",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/03/20260308653856316.pdf",
+      "link_type": "other"
+    },
+    {
+      "label": "Download Syllabus",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/01/202601081066816297.pdf",
+      "link_type": "syllabus"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://neet.nta.nic.in/",
+      "link_type": "official_website"
+    }
+  ],
+  "apply_url": "",
+  "notification_url": "",
+  "result_url": "",
+  "scorecard_url": "",
+  "admit_url": "https://examinationservices.nic.in/AdmitCardService/AdmitCardNeet/Login",
+  "official_website_url": "https://neet.nta.nic.in/",
+  "extra_links": [
+    {
+      "label": "Download Admit Card",
+      "url": "https://examinationservices.nic.in/AdmitCardService/AdmitCardNeet/Login"
+    },
+    {
+      "label": "How to Download Admit Card (Video Hindi)",
+      "url": "https://tinyurl.com/547vjuyd"
+    },
+    {
+      "label": "Check Advanced Exam City Details",
+      "url": "https://examinationservices.nic.in/AdmitCard/AuthForCity/Login?enc=DJ8reokIYhe/x0Hlb6GKa5XSzGUPsZIi2LhCU/OXDNg="
+    },
+    {
+      "label": "How to Check Exam City (Video Hindi)",
+      "url": "https://youtu.be/XoHIPLZaNDg"
+    },
+    {
+      "label": "For Correction / Edit Form",
+      "url": "https://examinationservices.nic.in/neetc2026/root/Home.aspx?enc=Ei4cajBkK1gZSfgr53ImFcFR+natXIEjJ1rCf6DMgOr0FO08ClwO9m4YYQvMGcVT"
+    },
+    {
+      "label": "Download Correction Notice",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/03/20260311404208011.pdf"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/5ect9j2r"
+    },
+    {
+      "label": "Download Date Extended Notice",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/03/20260308653856316.pdf"
+    },
+    {
+      "label": "Download Syllabus",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/01/202601081066816297.pdf"
+    },
+    {
+      "label": "Official Website",
+      "url": "https://neet.nta.nic.in/"
+    }
+  ],
+  "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/03/20260311404208011.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/03/20260308653856316.pdf"
+    },
+    {
+      "label": "Click Here",
+      "url": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/01/202601081066816297.pdf"
+    }
+  ]
+}

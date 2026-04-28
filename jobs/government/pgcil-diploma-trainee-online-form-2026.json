@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-23T10:53:47.190037",
+  "scraped_at": "2026-04-28T11:14:01.663799",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/pgcil-diploma-trainee-apr26/",
   "page_type": "job",
@@ -48,6 +48,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/55288n5d",
+      "link_type": "other"
+    },
+    {
       "label": "Download Notification",
       "url": "https://www.powergrid.in/sites/default/files/job_opportunities_document/Detailed%20Advertisement%20-%20Non%20Executive%20Posts%202026.pdf",
       "link_type": "notification"
@@ -68,6 +73,10 @@
     {
       "label": "Apply Online",
       "url": "https://careers.powergrid.in/recruitment-nextgen/h/login.aspx"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/55288n5d"
     },
     {
       "label": "Download Notification",
