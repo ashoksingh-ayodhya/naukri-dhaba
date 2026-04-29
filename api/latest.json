@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-28T06:10:41Z",
+  "updated": "2026-04-29T05:46:52Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -400,20 +400,20 @@
       "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-enforcement-constable-2023-pet-admit-card.html"
     },
     {
-      "title": "NTA NCHM JEE Admit Card 2026",
-      "dept": "GOVERNMENT",
+      "title": "SSC GD Constable 2025 Admit Card",
+      "dept": "SSC",
       "type": "admit",
-      "category": "government",
+      "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/nta-nchm-jee-admit-card-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-gd-constable-2025-admit-card.html"
     },
     {
-      "title": "NTA NIFT Stage II Admit Card 2026",
-      "dept": "GOVERNMENT",
+      "title": "Railway RRB NTPC UG CEN 07/2025 Exam City Details",
+      "dept": "RAILWAY",
       "type": "admit",
-      "category": "government",
+      "category": "railway",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/nta-nift-stage-ii-admit-card-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/railway/railway-rrb-ntpc-ug-cen-072025-exam-city-details.html"
     },
     {
       "title": "NTA NTET 2026 Admit Card",
@@ -424,20 +424,12 @@
       "url": "https://naukridhaba.in/admit-cards/government/nta-ntet-2026-admit-card.html"
     },
     {
-      "title": "MPESB Subedar, Sub Inspector Second Phase Admit Card 2026",
-      "dept": "Government",
+      "title": "NTA NIFT Stage II Admit Card 2026",
+      "dept": "GOVERNMENT",
       "type": "admit",
       "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/mpesb-subedar-sub-inspector-second-phase-admit-card-2026.html"
-    },
-    {
-      "title": "SSC GD Constable 2025 Admit Card",
-      "dept": "SSC",
-      "type": "admit",
-      "category": "ssc",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-gd-constable-2025-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/government/nta-nift-stage-ii-admit-card-2026.html"
     },
     {
       "title": "NTA NEET UG 2026 Exam Admit Card",
@@ -448,12 +440,20 @@
       "url": "https://naukridhaba.in/admit-cards/government/nta-neet-ug-2026-exam-admit-card.html"
     },
     {
-      "title": "Railway RRB NTPC UG CEN 07/2025 Exam City Details",
-      "dept": "RAILWAY",
+      "title": "NTA NCHM JEE Admit Card 2026",
+      "dept": "GOVERNMENT",
       "type": "admit",
-      "category": "railway",
+      "category": "government",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/railway/railway-rrb-ntpc-ug-cen-072025-exam-city-details.html"
+      "url": "https://naukridhaba.in/admit-cards/government/nta-nchm-jee-admit-card-2026.html"
+    },
+    {
+      "title": "MPESB Subedar, Sub Inspector Second Phase Admit Card 2026",
+      "dept": "Government",
+      "type": "admit",
+      "category": "government",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/government/mpesb-subedar-sub-inspector-second-phase-admit-card-2026.html"
     },
     {
       "title": "UPSC NDA I 2025 Admit Card",
