@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-28T11:13:05.321320",
+  "scraped_at": "2026-04-30T11:13:27.073949",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/rbi-grade-b-apr26/",
   "page_type": "job",
@@ -46,8 +46,13 @@
   "important_links": [
     {
       "label": "Apply Online",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
+      "url": "https://ibpsreg.ibps.in/rbisbmar26/",
       "link_type": "apply"
+    },
+    {
+      "label": "Download Notification",
+      "url": "https://rbidocs.rbi.org.in/rdocs/Content/PDFs/DEPR29042026BE94DEA85E3C4753A82B191EB6A795ED.PDF",
+      "link_type": "notification"
     },
     {
       "label": "Official Website",
@@ -55,8 +60,8 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18",
-  "notification_url": "",
+  "apply_url": "https://ibpsreg.ibps.in/rbisbmar26/",
+  "notification_url": "https://rbidocs.rbi.org.in/rdocs/Content/PDFs/DEPR29042026BE94DEA85E3C4753A82B191EB6A795ED.PDF",
   "result_url": "",
   "scorecard_url": "",
   "admit_url": "",
@@ -64,12 +69,21 @@
   "extra_links": [
     {
       "label": "Apply Online",
-      "url": "https://whatsapp.com/channel/0029Va5IElwBlHpVBd6i5a18"
+      "url": "https://ibpsreg.ibps.in/rbisbmar26/"
+    },
+    {
+      "label": "Download Notification",
+      "url": "https://rbidocs.rbi.org.in/rdocs/Content/PDFs/DEPR29042026BE94DEA85E3C4753A82B191EB6A795ED.PDF"
     },
     {
       "label": "Official Website",
       "url": "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx"
     }
   ],
-  "download_links": []
+  "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://rbidocs.rbi.org.in/rdocs/Content/PDFs/DEPR29042026BE94DEA85E3C4753A82B191EB6A795ED.PDF"
+    }
+  ]
 }

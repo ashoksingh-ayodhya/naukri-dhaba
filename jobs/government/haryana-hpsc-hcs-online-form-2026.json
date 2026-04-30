@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-28T11:20:45.695141",
+  "scraped_at": "2026-04-30T11:25:12.461404",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/hssc/hpsc-hcs-22-2026/",
   "page_type": "job",
   "title": "Haryana HPSC HCS Online Form 2026",
-  "post_name": "Haryana HPSC (Executive Branch) & Other Allied Services Recruitment 2026 Admit Card for 102 Post",
+  "post_name": "Haryana HPSC (Executive Branch) & Other Allied Services Recruitment 2026 Answer Key for 102 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Haryana Public Service Commission HPSC HCS Civil Services Pre Admit Card 2026 :",
@@ -18,6 +18,7 @@
     "Pay Exam Fee Last Date": "26/02/2026",
     "Pre Exam Date": "26/04/2026",
     "Admit Card Available": "20/04/2026",
+    "Answer Key Available": "28/04/2026",
     "Mains Exam Date": "As per Schedule"
   },
   "fees": {
@@ -47,9 +48,14 @@
   ],
   "important_links": [
     {
-      "label": "Download Admit Card",
+      "label": "Download Answer Key",
       "url": "https://regn.hpsc.gov.in/hcs26/site/login",
-      "link_type": "admit"
+      "link_type": "answer_key"
+    },
+    {
+      "label": "Download Answer Key Notice",
+      "url": "https://hpsc.gov.in/Portals/0/Ann_Obj_HCS_2025_28_04_2026.pdf",
+      "link_type": "answer_key"
     },
     {
       "label": "Apply Online",
@@ -76,12 +82,16 @@
   "notification_url": "https://regn.hpsc.gov.in/hcs26/Advt_22_2026_HCS_Ex_Br.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "https://regn.hpsc.gov.in/hcs26/site/login",
+  "admit_url": "",
   "official_website_url": "https://hpsc.gov.in/",
   "extra_links": [
     {
-      "label": "Download Admit Card",
+      "label": "Download Answer Key",
       "url": "https://regn.hpsc.gov.in/hcs26/site/login"
+    },
+    {
+      "label": "Download Answer Key Notice",
+      "url": "https://hpsc.gov.in/Portals/0/Ann_Obj_HCS_2025_28_04_2026.pdf"
     },
     {
       "label": "Apply Online",
@@ -101,6 +111,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://hpsc.gov.in/Portals/0/Ann_Obj_HCS_2025_28_04_2026.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://regn.hpsc.gov.in/hcs26/Advt_22_2026_HCS_Ex_Br.pdf"

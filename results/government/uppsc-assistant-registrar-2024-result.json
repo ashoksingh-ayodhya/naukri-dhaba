@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-28T11:33:51.788118",
+  "scraped_at": "2026-04-30T11:40:21.237090",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2024/uppsc-asst-registrar-aug24/",
   "page_type": "result",
   "title": "UPPSC Assistant Registrar 2024 Result",
-  "post_name": "UPPSC Assistant Registrar Recruitment 2024 Download Interview Letter 2026 for 38 Post",
+  "post_name": "UPPSC Assistant Registrar Recruitment 2024 Download Final Result 2026 for 38 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "UP University Central Service Assistant Registrar Examination 2024",
@@ -19,7 +19,8 @@
     "Correction Last Date": "05/10/2024",
     "Admit Card Available": "17/04/2025",
     "Result Available": "05/02/2026",
-    "Interview Letter Available": "13/03/2026"
+    "Interview Letter Available": "13/03/2026",
+    "Final Result Available": "28/04/2026"
   },
   "fees": {
     "General / OBC / EWS": "225/-",
@@ -71,7 +72,7 @@
   ],
   "apply_url": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx",
   "notification_url": "https://doc.sarkariresults.org.in/SarkariResult.COm_UPPSC_Asst_Registrar_Notification_English_2024.pdf",
-  "result_url": "",
+  "result_url": "https://doc.sarkariresults.org.in/UPPSC_Asst_Registrar_Result_2026%20(1).pdf",
   "scorecard_url": "",
   "admit_url": "https://uppsc.up.nic.in/CandidatePages/AdmitCard/AdmitCard_New.aspx?/8bFzGHgwwQGcHdfp/pp8kTNZLS5jpOpurll/gZt9/XAMdWZzLZAJlUyJxKZdl7UYCGXipSD1rRuydF8PNZ4rpVsGAdwEhiI5ihJm58Bq6S2s5CqnbIMM6uTzGSaifB0Eb4WOVg4tyiAPpNZj2u11w==",
   "official_website_url": "https://uppsc.up.nic.in/",

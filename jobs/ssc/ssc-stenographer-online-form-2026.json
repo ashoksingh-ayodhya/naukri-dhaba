@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-28T11:13:26.454605",
+  "scraped_at": "2026-04-30T11:13:45.652550",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/ssc/ssc-stenographer-2026/",
   "page_type": "job",
@@ -53,6 +53,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/4z5rwefx",
+      "link_type": "other"
+    },
+    {
       "label": "Download Syllabus",
       "url": "https://tinyurl.com/567jpskf",
       "link_type": "syllabus"
@@ -78,6 +83,10 @@
     {
       "label": "Apply Online",
       "url": "https://ssc.gov.in/login"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/4z5rwefx"
     },
     {
       "label": "Download Syllabus",
