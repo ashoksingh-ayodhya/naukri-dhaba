@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-30T11:13:22.754559",
+  "scraped_at": "2026-05-02T10:58:05.566248",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/union-bank-apprentices-apr26/",
   "page_type": "job",
@@ -49,6 +49,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/mu5yccpc",
+      "link_type": "other"
+    },
+    {
       "label": "Official Website",
       "url": "https://www.unionbankofindia.bank.in/en/common/recruitment",
       "link_type": "official_website"
@@ -64,6 +69,10 @@
     {
       "label": "Apply Online",
       "url": "https://beep.bfsissc.com/candidate_register/mkt"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/mu5yccpc"
     },
     {
       "label": "Official Website",

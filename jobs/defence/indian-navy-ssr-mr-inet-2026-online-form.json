@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-30T11:23:04.376937",
+  "scraped_at": "2026-05-02T11:03:16.595189",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/navy-ssr-mr-inet-2026/",
   "page_type": "job",
   "title": "Indian Navy SSR / MR INET 2026 Online Form",
-  "post_name": "Join Indian Navy Agniveer SSR & MR 01/2027 & 02/2027 Batch INET 2026 Apply Online Form",
+  "post_name": "Join Indian Navy Agniveer SSR & MR 01/2027 & 02/2027 Batch INET 2026 Exam Date",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -42,9 +42,9 @@
   ],
   "important_links": [
     {
-      "label": "Apply Online",
+      "label": "Check Exam City / Admit Card",
       "url": "https://agniveer.navydmpr.in/sailorscycle5/login",
-      "link_type": "apply"
+      "link_type": "admit"
     },
     {
       "label": "Download Notification",
@@ -57,15 +57,15 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://agniveer.navydmpr.in/sailorscycle5/login",
+  "apply_url": "",
   "notification_url": "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_SSR_01_27_and_02_27_English.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://agniveer.navydmpr.in/sailorscycle5/login",
   "official_website_url": "https://www.joinindiannavy.gov.in/",
   "extra_links": [
     {
-      "label": "Apply Online",
+      "label": "Check Exam City / Admit Card",
       "url": "https://agniveer.navydmpr.in/sailorscycle5/login"
     },
     {

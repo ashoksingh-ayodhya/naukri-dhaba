@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-30T11:13:19.706304",
+  "scraped_at": "2026-05-02T10:58:02.095526",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpssc-havildar-05-2026/",
   "page_type": "job",
@@ -46,7 +46,7 @@
   "important_links": [
     {
       "label": "Apply Online",
-      "url": "https://play.google.com/store/apps/details?id=com.app.app14f269771c01",
+      "url": "https://apply-bpssc.com/bpssc_havr_clerk_5_26_v1/applicationIndex",
       "link_type": "apply"
     },
     {
@@ -60,7 +60,7 @@
       "link_type": "official_website"
     }
   ],
-  "apply_url": "https://play.google.com/store/apps/details?id=com.app.app14f269771c01",
+  "apply_url": "https://apply-bpssc.com/bpssc_havr_clerk_5_26_v1/applicationIndex",
   "notification_url": "https://bpssc.bihar.gov.in/Notices/Advt.%20no.-05-2026.pdf",
   "result_url": "",
   "scorecard_url": "",
@@ -69,7 +69,7 @@
   "extra_links": [
     {
       "label": "Apply Online",
-      "url": "https://play.google.com/store/apps/details?id=com.app.app14f269771c01"
+      "url": "https://apply-bpssc.com/bpssc_havr_clerk_5_26_v1/applicationIndex"
     },
     {
       "label": "Download Notification",

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-04-30T11:13:27.073949",
+  "scraped_at": "2026-05-02T10:58:09.057471",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bank/rbi-grade-b-apr26/",
   "page_type": "job",
@@ -50,6 +50,11 @@
       "link_type": "apply"
     },
     {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/ykjakvyu",
+      "link_type": "other"
+    },
+    {
       "label": "Download Notification",
       "url": "https://rbidocs.rbi.org.in/rdocs/Content/PDFs/DEPR29042026BE94DEA85E3C4753A82B191EB6A795ED.PDF",
       "link_type": "notification"
@@ -70,6 +75,10 @@
     {
       "label": "Apply Online",
       "url": "https://ibpsreg.ibps.in/rbisbmar26/"
+    },
+    {
+      "label": "How to Fill Form (Video Hindi)",
+      "url": "https://tinyurl.com/ykjakvyu"
     },
     {
       "label": "Download Notification",
