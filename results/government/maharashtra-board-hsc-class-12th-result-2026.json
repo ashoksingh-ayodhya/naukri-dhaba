@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scraped_at": "2026-05-02T11:10:44.466704",
+  "scraped_at": "2026-05-03T11:26:42.317743",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/maharashtra-board-result/",
   "page_type": "result",
@@ -14,8 +14,7 @@
   "dept": "Government",
   "dates": {
     "Class XIIth HSC Result Declared": "02/05/2026 at 12:00 PM",
-    "Class X SSC Result Declared": "Notified Soon",
-    "Download MSBSHSE HSC Result 2026": "Link Activate Will be Activate Soon"
+    "Class X SSC Result Declared": "Notified Soon"
   },
   "fees": {},
   "fee_payment_method": "",
@@ -36,6 +35,11 @@
       "link_type": "result"
     },
     {
+      "label": "Download MSBSHSE HSC Result (Server II)",
+      "url": "https://results.digilocker.gov.in/MH202612thhakweuwXII.html",
+      "link_type": "result"
+    },
+    {
       "label": "Official Website",
       "url": "https://mahresult.nic.in/",
       "link_type": "official_website"
@@ -51,6 +55,10 @@
     {
       "label": "Download MSBSHSE HSC Result 2026",
       "url": "https://hscresult.mahahsscboard.in/"
+    },
+    {
+      "label": "Download MSBSHSE HSC Result (Server II)",
+      "url": "https://results.digilocker.gov.in/MH202612thhakweuwXII.html"
     },
     {
       "label": "Official Website",

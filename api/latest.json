@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-02T05:55:53Z",
+  "updated": "2026-05-03T06:09:59Z",
   "source": "https://naukridhaba.in",
   "attribution": "Data from Naukri Dhaba (https://naukridhaba.in). Please link back when using.",
   "jobs": [
@@ -42,6 +42,14 @@
       "category": "ssc",
       "date": "11/06/2026",
       "url": "https://naukridhaba.in/jobs/ssc/upsssc-technical-assistant-group-c-online-form-2026.html"
+    },
+    {
+      "title": "RSSB Contractual Teaching Associate Online Form 2026",
+      "dept": "POLICE",
+      "type": "job",
+      "category": "police",
+      "date": "03/06/2026",
+      "url": "https://naukridhaba.in/jobs/police/rssb-contractual-teaching-associate-online-form-2026.html"
     },
     {
       "title": "BPSSC Havildar Instructor Online Form 2026",
@@ -154,14 +162,6 @@
       "category": "government",
       "date": "15/05/2026",
       "url": "https://naukridhaba.in/jobs/government/patna-high-court-district-judge-online-form-2026.html"
-    },
-    {
-      "title": "Bihar BPSC TRE Teacher 2026 Online Form",
-      "dept": "Government",
-      "type": "job",
-      "category": "government",
-      "date": "15/05/2026",
-      "url": "https://naukridhaba.in/jobs/government/bihar-bpsc-tre-teacher-2026-online-form.html"
     }
   ],
   "results": [
@@ -408,84 +408,84 @@
       "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-enforcement-constable-2023-pet-admit-card.html"
     },
     {
-      "title": "NTA NEET UG 2026 Exam Admit Card",
-      "dept": "GOVERNMENT",
+      "title": "UPSC NDA I 2025 Admit Card",
+      "dept": "UPSC",
       "type": "admit",
-      "category": "government",
+      "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/nta-neet-ug-2026-exam-admit-card.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-nda-i-2025-admit-card.html"
     },
     {
-      "title": "Railway RRB NTPC UG CEN 07/2025 Exam City Details",
-      "dept": "RAILWAY",
+      "title": "UPSC Engineering Services Pre 2025 Admit Card",
+      "dept": "UPSC",
       "type": "admit",
-      "category": "railway",
+      "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/railway/railway-rrb-ntpc-ug-cen-072025-exam-city-details.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2025-admit-card.html"
     },
     {
-      "title": "UP PGT 2022 Exam City Details",
-      "dept": "Government",
+      "title": "UPSC IES / ISS Admit Card 2025",
+      "dept": "UPSC",
       "type": "admit",
-      "category": "government",
+      "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/up-pgt-2022-exam-city-details.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-ies-iss-admit-card-2025.html"
     },
     {
-      "title": "NTA CUET UG 2026 Exam City Details",
-      "dept": "GOVERNMENT",
+      "title": "UPSC IAS / IFS Pre Admit Card 2025",
+      "dept": "UPSC",
       "type": "admit",
-      "category": "government",
+      "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/nta-cuet-ug-2026-exam-city-details.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-ias-ifs-pre-admit-card-2025.html"
     },
     {
-      "title": "Navy SSR / MR INET Exam Date 2026",
-      "dept": "DEFENCE",
+      "title": "UPSC Engineering Services Pre 2026 Admit Card",
+      "dept": "UPSC",
       "type": "admit",
-      "category": "government",
+      "category": "upsc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/navy-ssr-mr-inet-exam-date-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-engineering-services-pre-2026-admit-card.html"
     },
     {
-      "title": "BPSSC Sub Inspector 2025 Mains Exam Date",
+      "title": "UPSC Combined Geo Scientist Pre Admit Card 2026",
+      "dept": "UPSC",
+      "type": "admit",
+      "category": "upsc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-combined-geo-scientist-pre-admit-card-2026.html"
+    },
+    {
+      "title": "UPSC Geo Scientist 2025 Admit Card",
+      "dept": "UPSC",
+      "type": "admit",
+      "category": "upsc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-geo-scientist-2025-admit-card.html"
+    },
+    {
+      "title": "UPSC CDS I 2025 Admit Card",
+      "dept": "UPSC",
+      "type": "admit",
+      "category": "upsc",
+      "date": "",
+      "url": "https://naukridhaba.in/admit-cards/upsc/upsc-cds-i-2025-admit-card.html"
+    },
+    {
+      "title": "SSC MTS, Havaldar 2025 Admit Card",
       "dept": "SSC",
       "type": "admit",
       "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/bpssc-sub-inspector-2025-mains-exam-date.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/ssc-mts-havaldar-2025-admit-card.html"
     },
     {
-      "title": "BSSC Office Attendant 2022 Exam Date",
+      "title": "UPSSSC Junior Engineer JE Civil 2024 Exam Date",
       "dept": "SSC",
       "type": "admit",
       "category": "ssc",
       "date": "",
-      "url": "https://naukridhaba.in/admit-cards/ssc/bssc-office-attendant-2022-exam-date.html"
-    },
-    {
-      "title": "Navy SSR Medical Exam City Details 2026",
-      "dept": "DEFENCE",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/navy-ssr-medical-exam-city-details-2026.html"
-    },
-    {
-      "title": "MP PAT 2026 Admit Card",
-      "dept": "Government",
-      "type": "admit",
-      "category": "government",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/government/mp-pat-2026-admit-card.html"
-    },
-    {
-      "title": "RSSB Lab Assistant Exam City / Admit Card 2026",
-      "dept": "POLICE",
-      "type": "admit",
-      "category": "police",
-      "date": "",
-      "url": "https://naukridhaba.in/admit-cards/police/rssb-lab-assistant-exam-city-admit-card-2026.html"
+      "url": "https://naukridhaba.in/admit-cards/ssc/upsssc-junior-engineer-je-civil-2024-exam-date.html"
     }
   ]
 }
