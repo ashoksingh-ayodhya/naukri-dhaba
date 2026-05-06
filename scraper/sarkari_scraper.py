@@ -61,6 +61,7 @@ except ImportError:
     cloudscraper = None
 
 from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES, STAGING_DIR
+from mdx_generator import generate_mdx, is_within_date_range, MIN_POST_DATE
 
 # ══════════════════════════════════════════════════════════
 # PATHS & CONSTANTS
@@ -4068,55 +4069,64 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 log.info(f'  [skip] Title no longer matches kind={kind} after detail parse: {rich["title"][:60]}')
                 continue
 
-            try:
-                if kind == 'job':
-                    rel, html = build_job_page(rich)
-                elif kind == 'result':
-                    rel, html = build_result_page(rich)
-                else:
-                    rel, html = build_admit_page(rich)
+            # ── Date filter: skip posts before 2022 ───────────────
+            post_date = rich.get('post_date', '') or rich.get('date_str', '')
+            if not is_within_date_range(post_date):
+                log.info(f'  [skip] Post date {post_date!r} is before {MIN_POST_DATE} — skipping')
+                continue
 
-                # For secondary sources: skip if the page already exists from a primary source
-                if not is_primary and (SITE_ROOT / rel).exists():
-                    log.info(f'  [skip] Already exists from primary source: {rel}')
+            # ── Write MDX file ────────────────────────────────────
+            try:
+                if _detail_data_cache is not None:
+                    # Preferred path: use the DetailData object directly
+                    mdx_path = generate_mdx(_detail_data_cache)
+                else:
+                    # Fallback: build a minimal DetailData from the legacy dict
+                    from detail_parser.models import DetailData
+                    dd = DetailData(
+                        title=rich.get('title', ''),
+                        slug=rich.get('slug', ''),
+                        source=src_name,
+                        source_detail_url=item.get('detail_url', ''),
+                        page_type=kind if kind != 'admit' else 'admit',
+                        scraped_at=datetime.now().isoformat(),
+                        post_name=rich.get('post_name', rich.get('title', '')),
+                        short_description=rich.get('short_description', ''),
+                        post_date=rich.get('post_date', ''),
+                        update_date=rich.get('update_date', ''),
+                        dept=rich.get('dept', ''),
+                        organization_full_name=rich.get('organization_full_name', ''),
+                        advertisement_number=rich.get('advertisement_number', ''),
+                        dates=rich.get('dates', {}),
+                        fees=rich.get('fees', {}),
+                        fee_payment_method=rich.get('fee_payment_method', ''),
+                        age_min=int(rich['age_min']) if rich.get('age_min') else None,
+                        age_max=int(rich['age_max']) if rich.get('age_max') else None,
+                        age_reference_date=rich.get('age_reference_date', ''),
+                        total_posts=rich.get('total_posts', ''),
+                        vacancy_breakdown=rich.get('vacancy_breakdown', []),
+                        qualification=rich.get('qualification', ''),
+                        qualification_items=rich.get('qualification_items', []),
+                        salary=rich.get('salary', ''),
+                        how_to_apply=rich.get('how_to_apply', []),
+                        important_links=rich.get('important_links', []),
+                        apply_url=rich.get('apply_url', ''),
+                        notification_url=rich.get('notification_url', ''),
+                        result_url=rich.get('result_url', ''),
+                        admit_url=rich.get('admit_url', ''),
+                        official_website_url=rich.get('official_website_url', ''),
+                    )
+                    mdx_path = generate_mdx(dd)
+
+                if mdx_path is None:
+                    log.info(f'  [skip] MDX generator returned None for: {rich.get("slug")}')
                     continue
 
-                if is_primary:
-                    # Primary source → write directly to live site
-                    # Remove stale copies from other category folders
-                    parts = rel.split('/')  # e.g. 'jobs/police/slug.html'
-                    if len(parts) == 3:
-                        kind_dir, cat, fname = parts
-                        remove_cross_category_duplicates(kind_dir, cat, fname.removesuffix('.html'))
+                log.info(f'  Written (MDX): {mdx_path.relative_to(SITE_ROOT)}')
+                generated[kind].append(rich)
 
-                    out = SITE_ROOT / rel
-                    out.parent.mkdir(parents=True, exist_ok=True)
-                    out.write_text(html, encoding='utf-8')
-                    log.info(f'  Written (LIVE): {rel}')
-
-                    # Persist structured JSON alongside HTML
-                    if _detail_data_cache is not None:
-                        json_out = out.with_suffix('.json')
-                        json_out.write_text(_detail_data_cache.to_json(), encoding='utf-8')
-                        log.info(f'  Written (JSON): {rel.replace(".html", ".json")}')
-
-                    generated[kind].append(rich)
-                else:
-                    # Secondary source → write to staging/ for manual review
-                    out = staging_root / rel
-                    out.parent.mkdir(parents=True, exist_ok=True)
-                    out.write_text(html, encoding='utf-8')
-                    log.info(f'  Written (STAGING): {STAGING_DIR}/{rel}')
-                    staged[kind].append(rich)
-                    staging_manifest.append({
-                        'source': src_name,
-                        'kind': kind,
-                        'title': rich.get('title', ''),
-                        'dept': rich.get('dept', ''),
-                        'rel_path': rel,
-                        'detail_url': item.get('detail_url', ''),
-                        'scraped_at': datetime.now().isoformat(),
-                    })
+            except Exception as exc:
+                log.warning(f'  [mdx] Failed to write MDX for {rich.get("slug")}: {exc}')
 
             except Exception as exc:
                 log.error(f'  Page build failed: {exc}', exc_info=True)

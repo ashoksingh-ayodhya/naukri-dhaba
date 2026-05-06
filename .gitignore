@@ -1,11 +1,29 @@
+# Python
 __pycache__/
 scraper/__pycache__/
 scraper/logs/
+*.pyc
+
+# Node.js
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# TypeScript build info
+tsconfig.tsbuildinfo
+
+# Backup files
+*.bak
+
+# Staging/testing
+staging/
 output/playwright/
 .playwright-cli/
-# Staging directory — secondary source pages pending manual review
-staging/
-node_modules/
-package.json
-package-lock.json
 preview-screenshots/
+
+# Environment files
+.env
+.env.local
+.env.production

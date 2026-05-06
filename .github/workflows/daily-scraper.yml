@@ -1,271 +1,82 @@
-name: Daily Scraper - 10 AM IST
+name: Daily Scraper
 
 on:
-  # ── Auto: daily at 10:00 AM IST (4:30 AM UTC) ────────────
   schedule:
-    - cron: '30 4 * * *'
-
-  # ── Manual: tap "Run workflow" on GitHub from your phone ─
+    - cron: "30 4 * * *"   # 10 AM IST daily
+    - cron: "30 10 * * *"  # 4 PM IST daily
   workflow_dispatch:
     inputs:
-      reason:
-        description: "Why running manually?"
+      dry_run:
+        description: "Dry run — scrape but do not commit/push"
         required: false
-        default: "Manual trigger"
+        default: "false"
 
 concurrency:
-  group: daily-scraper
+  group: scraper
   cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
-  scrape-and-publish:
-    name: Scrape all sources → Generate HTML
+  scrape:
+    name: Scrape → MDX → Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       TZ: Asia/Kolkata
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      # ── Skip Python scraper when CF Worker is the primary ─
-      # Set repo secret CF_SCRAPER_MODE=cloudflare to skip this job
-      # (the Cloudflare Worker runs at the same cron and handles scraping).
-      - name: Check scraper mode
-        id: mode_check
-        run: |
-          MODE="${{ secrets.CF_SCRAPER_MODE }}"
-          if [ "$MODE" = "cloudflare" ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "CF_SCRAPER_MODE=cloudflare — Cloudflare Worker is the primary scraper."
-            echo "Skipping Python scraper. The CF Worker triggers post-scrape-update.yml directly."
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-            echo "CF_SCRAPER_MODE not set to 'cloudflare' — running Python scraper."
-          fi
+          fetch-depth: 1
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "pip"
-          cache-dependency-path: "scraper/requirements.txt"
+          cache: pip
+          cache-dependency-path: scraper/requirements.txt
 
-      - name: Install Python dependencies
+      - name: Install Python deps
         run: pip install -r scraper/requirements.txt
 
-      - name: Install Playwright for JS-rendered page fallback
-        if: steps.mode_check.outputs.skip != 'true'
-        run: |
-          pip install playwright
-          playwright install chromium --with-deps
-
-      # ── Pre-flight: check if source sites are reachable ──
-      - name: Check source accessibility
-        if: steps.mode_check.outputs.skip != 'true'
-        id: source_check
+      - name: Run scraper → writes MDX files to content/
+        working-directory: scraper
         env:
+          NAUKRI_DHABA_SITE_URL: https://naukridhaba.in
           CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
           CF_WORKER_SECRET: ${{ secrets.CF_WORKER_SECRET }}
+        run: python sarkari_scraper.py
+
+      - name: Count new/updated MDX files
+        id: changes
         run: |
-          echo "=== Source Accessibility Check ==="
-          if python3 scraper/check_sources.py; then
-            echo "sources_down=false" >> $GITHUB_OUTPUT
-          else
-            echo "sources_down=true" >> $GITHUB_OUTPUT
-          fi
+          git add content/
+          CHANGED=$(git diff --cached --name-only | grep "\.mdx$" | wc -l)
+          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+          echo "New/updated MDX files: $CHANGED"
 
-      # ── Normal scraper run ────────────────────────────────
-      - name: Run Naukri Dhaba scraper
-        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
-        env:
-          CF_WORKER_PROXY_URL: ${{ secrets.CF_WORKER_PROXY_URL }}
-          CF_WORKER_SECRET: ${{ secrets.CF_WORKER_SECRET }}
+      - name: Commit new MDX files
+        if: steps.changes.outputs.changed != '0' && github.event.inputs.dry_run != 'true'
         run: |
-          echo "=== Naukri Dhaba Scraper ==="
-          echo "Time (IST): $(date)"
-          python3 scraper/sarkari_scraper.py --refresh-existing
-          echo "=== Scraper done ==="
-
-      - name: Regenerate state pages
-        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
-        run: python3 generate-state-pages.py
-
-      - name: Normalize generated pages
-        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
-        run: python3 update-all-pages.py
-
-      - name: Rebuild sitemap
-        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
-        run: python3 generate-sitemap.py
-
-      - name: Validate generated output
-        if: steps.mode_check.outputs.skip != 'true' && steps.source_check.outputs.sources_down != 'true'
-        run: python3 validate-generated-site.py
-
-      # ── FORCE REBUILD: always sync listing pages with detail pages ──
-      # Runs even when sources are down or in cloudflare mode to ensure listing
-      # pages always reflect all detail pages in the repository.
-      - name: Force rebuild listing pages
-        if: always()
-        run: |
-          echo "=== Force Rebuild Listing Pages ==="
-          echo "Time (IST): $(date)"
-          python3 scraper/sarkari_scraper.py --rebuild-only
-          echo "=== Listing rebuild done ==="
-
-      # ── Validate listing pages match detail page directories ──
-      - name: Validate listing page counts
-        if: always()
-        run: |
-          echo "=== Listing Page Validation ==="
-          python3 -c "
-          import re, sys, pathlib
-
-          errors = []
-          checks = [
-              ('latest-jobs.html', 'jobs', 'job'),
-              ('results.html', 'results', 'result'),
-              ('admit-cards.html', 'admit-cards', 'admit'),
-          ]
-          for html_file, detail_dir, kind in checks:
-              p = pathlib.Path(html_file)
-              d = pathlib.Path(detail_dir)
-              if not p.exists() or not d.exists():
-                  print(f'SKIP: {html_file} or {detail_dir}/ missing')
-                  continue
-
-              # Count detail pages
-              detail_count = len(list(d.rglob('*.html')))
-
-              # Count tbody rows in listing page
-              content = p.read_text(encoding='utf-8')
-              tbody_match = re.search(r'<tbody>(.*?)</tbody>', content, re.DOTALL)
-              listing_count = len(re.findall(r'<tr>', tbody_match.group(1))) if tbody_match else 0
-
-              pct = abs(listing_count - detail_count) / max(detail_count, 1) * 100
-              status = 'OK' if pct <= 20 else 'MISMATCH'
-              print(f'{html_file}: {listing_count} rows vs {detail_count} detail pages ({pct:.0f}% diff) [{status}]')
-              if pct > 20:
-                  errors.append(f'{html_file}: {listing_count} rows vs {detail_count} pages ({pct:.0f}% diff)')
-
-          if errors:
-              print(f'\nFAILED: Listing page mismatch exceeds 20%:')
-              for e in errors:
-                  print(f'  - {e}')
-              sys.exit(1)
-          else:
-              print('\nAll listing pages are in sync with detail pages.')
-          "
-
-      - name: Validate JobPosting schemas in all job pages
-        if: always()
-        run: |
-          python3 - << 'PYEOF'
-          import json, re, sys
-          from pathlib import Path
-
-          REQUIRED_ADDR_FIELDS = {'streetAddress', 'addressLocality', 'addressRegion', 'postalCode'}
-          INVALID_LOCALITY = {'India', '', None}
-
-          errors = []
-          for path in sorted(Path('jobs').rglob('*.html')):
-              if path.name == 'index.html':
-                  continue
-              content = path.read_text(encoding='utf-8', errors='replace')
-              schemas = re.findall(r'<script type="application/ld\+json">(.*?)</script>', content, re.DOTALL)
-              has_job = has_faq = False
-              for s in schemas:
-                  try:
-                      d = json.loads(s)
-                  except json.JSONDecodeError:
-                      errors.append(f'{path}: invalid JSON-LD')
-                      continue
-                  if d.get('@type') == 'FAQPage':
-                      has_faq = True
-                  if d.get('@type') != 'JobPosting':
-                      continue
-                  has_job = True
-                  addr = (d.get('jobLocation') or {}).get('address', {})
-                  if addr.get('addressLocality') in INVALID_LOCALITY:
-                      errors.append(f'{path}: invalid addressLocality: {addr.get("addressLocality")!r}')
-                  if addr.get('addressRegion') in INVALID_LOCALITY:
-                      errors.append(f'{path}: invalid addressRegion: {addr.get("addressRegion")!r}')
-                  missing_addr = REQUIRED_ADDR_FIELDS - set(addr.keys())
-                  if missing_addr:
-                      errors.append(f'{path}: missing address fields: {missing_addr}')
-                  if not d.get('identifier'):
-                      errors.append(f'{path}: missing identifier')
-                  if not d.get('applicantLocationRequirements'):
-                      errors.append(f'{path}: missing applicantLocationRequirements')
-                  sal = d.get('baseSalary')
-                  if sal and not (sal.get('value') or {}).get('unitText'):
-                      errors.append(f'{path}: baseSalary.value missing unitText')
-              if not has_job:
-                  errors.append(f'{path}: no JobPosting schema')
-              if not has_faq:
-                  errors.append(f'{path}: no FAQPage schema')
-
-          total = sum(1 for p in Path('jobs').rglob('*.html') if p.name != 'index.html')
-          if errors:
-              print(f'SCHEMA VALIDATION FAILED: {len(errors)} issues across {total} job pages:')
-              for e in errors[:30]:
-                  print(f'  {e}')
-              if len(errors) > 30:
-                  print(f'  ... and {len(errors)-30} more')
-              sys.exit(1)
-          else:
-              print(f'Schema validation passed: {total} job pages OK')
-          PYEOF
-
-      - name: Commit new pages (primary sources only)
-        if: always()
-        run: |
-          git config user.name "Manual Job Post Bot"
+          git config user.name "Naukri Dhaba Bot"
           git config user.email "bot@naukridhaba.in"
-          # Only stage live site files — staging/ is gitignored
-          git add -A
-          if git diff --staged --quiet; then
-            echo "No new pages generated today."
-          else
-            COUNT=$(git diff --staged --name-only | wc -l)
-            git commit -m "Auto-scrape $(date +'%d %b %Y %I:%M %p IST') - $COUNT files"
-            # Fetch remote and merge, preferring our generated content on conflict.
-            # Using merge instead of rebase to avoid conflicts when two runs overlap.
-            git fetch origin main
-            git merge -X ours FETCH_HEAD --no-edit -m "Merge remote into auto-scrape $(date +'%d %b %Y %I:%M %p IST')" || true
-            git push origin HEAD:main
-            echo "Pushed $COUNT new/updated files."
-          fi
+          COUNT=$(git diff --cached --name-only | grep "\.mdx$" | wc -l)
+          git commit -m "chore: scrape $(date +'%d %b %Y') — $COUNT new posts [skip ci]"
+          git fetch origin ${{ github.ref_name }}
+          git merge -X ours FETCH_HEAD --no-edit || true
+          git push origin HEAD:${{ github.ref_name }}
+          echo "Pushed $COUNT MDX files."
 
-      - name: Push changed pages to search engines
+      - name: Trigger Next.js deploy
+        if: steps.changes.outputs.changed != '0' && github.event.inputs.dry_run != 'true'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: deploy
+
+      - name: Show scraper log
         if: always()
-        env:
-          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
-          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
-        run: |
-          echo "=== Fast Indexing: Google Indexing API + IndexNow ==="
-          python3 push-to-index.py --changed-only || echo "push-to-index completed (non-fatal errors above)"
-
-      - name: Report staging summary
-        if: always() && steps.mode_check.outputs.skip != 'true'
-        run: |
-          if [ -f staging/manifest.json ]; then
-            STAGED=$(python3 -c "import json; m=json.load(open('staging/manifest.json')); print(len(m))")
-            echo "Staging: $STAGED item(s) pending review from secondary sources."
-            echo "Run 'python3 promote-staging.py --list' to see them."
-          else
-            echo "No staged items from secondary sources."
-          fi
-
-      - name: Show scraper log (last 100 lines)
-        if: always()
-        run: |
-          echo "--- SCRAPER LOG ---"
-          tail -100 scraper/logs/scraper.log 2>/dev/null || echo "(no log file)"
+        run: tail -50 scraper/logs/scraper.log 2>/dev/null || echo "(no log)"

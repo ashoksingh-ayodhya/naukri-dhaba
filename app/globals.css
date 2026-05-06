@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-slate-50 text-slate-800 font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .badge-new {
+    @apply inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold bg-accent-500 text-white animate-pulse;
+  }
+  .badge-active {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700;
+  }
+  .badge-soon {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-100 text-orange-700;
+  }
+  .badge-closed {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-600;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary-900 text-white font-semibold text-sm hover:bg-primary-800 transition-colors;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-primary-900 text-primary-900 font-semibold text-sm hover:bg-primary-50 transition-colors;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden;
+  }
+  .section-title {
+    @apply text-xl font-heading font-bold text-slate-900 flex items-center gap-2;
+  }
+  .table-header {
+    @apply bg-primary-900 text-white text-sm font-semibold;
+  }
+  .table-row-even {
+    @apply bg-white;
+  }
+  .table-row-odd {
+    @apply bg-slate-50;
+  }
+}
+
+/* Ticker animation */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-inner {
+  animation: ticker 40s linear infinite;
+}
+.ticker-inner:hover {
+  animation-play-state: paused;
+}
