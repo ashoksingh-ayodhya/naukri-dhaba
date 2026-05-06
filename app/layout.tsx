@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+
+const GTM_ID = "GTM-5L4D9C9M";
+const GA4_ID = "G-E3C5CLPP6B";
+const GSC_CODE = ""; // paste your Search Console HTML tag meta content value here
 
 export const metadata: Metadata = {
   title: {
@@ -11,6 +16,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
+  verification: GSC_CODE ? { google: GSC_CODE } : undefined,
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -37,8 +43,35 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="alternate" type="application/rss+xml" title="Naukri Dhaba — Latest Jobs" href="/feed/jobs.xml" />
         <link rel="alternate" type="application/rss+xml" title="Naukri Dhaba — Results" href="/feed/results.xml" />
         <link rel="alternate" type="application/rss+xml" title="Naukri Dhaba — Admit Cards" href="/feed/admit-cards.xml" />
+
+        {/* Google Tag Manager — dataLayer init + GTM script */}
+        <Script id="gtm-init" strategy="beforeInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('consent','default',{
+            'ad_storage':'denied','analytics_storage':'denied',
+            'ad_user_data':'denied','ad_personalization':'denied',
+            'wait_for_update':500
+          });
+          gtag('js', new Date());
+          gtag('config', '${GA4_ID}');
+        `}</Script>
+        <Script
+          id="gtm-script"
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`}
+        />
       </head>
       <body>
+        {/* GTM noscript fallback */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0" width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
