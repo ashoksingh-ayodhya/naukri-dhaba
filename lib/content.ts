@@ -5,6 +5,37 @@ import type { PostFrontmatter, PostMeta, ListingPost, PageType } from "./types";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content");
 
+function parseDDMMYYYY(dateStr: string | undefined): Date | null {
+  if (!dateStr) return null;
+  const [dd, mm, yyyy] = dateStr.split("/");
+  if (!dd || !mm || !yyyy) return null;
+  const d = new Date(`${yyyy}-${mm}-${dd}`);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function sortByActiveFirst<T extends { lastDate?: string; updatedAt?: string; publishedAt?: string }>(items: T[]): T[] {
+  const now = new Date();
+  return items.sort((a, b) => {
+    const aDeadline = parseDDMMYYYY(a.lastDate);
+    const bDeadline = parseDDMMYYYY(b.lastDate);
+    const aActive = !aDeadline || aDeadline >= now;
+    const bActive = !bDeadline || bDeadline >= now;
+
+    // Active posts before expired
+    if (aActive !== bActive) return aActive ? -1 : 1;
+
+    // Among active: soonest deadline first
+    if (aActive && bActive && aDeadline && bDeadline) {
+      return aDeadline.getTime() - bDeadline.getTime();
+    }
+
+    // Among expired or no deadline: newest published first
+    const da = a.updatedAt || a.publishedAt || "";
+    const db = b.updatedAt || b.publishedAt || "";
+    return db.localeCompare(da);
+  });
+}
+
 function typeToDir(type: PageType): string {
   const map: Record<PageType, string> = {
     job: "jobs",
@@ -94,11 +125,7 @@ export function getAllPosts(type?: PageType, category?: string): ListingPost[] {
     }
   }
 
-  return posts.sort((a, b) => {
-    const da = a.updatedAt || a.publishedAt;
-    const db = b.updatedAt || b.publishedAt;
-    return db.localeCompare(da);
-  });
+  return sortByActiveFirst(posts);
 }
 
 export function getPost(
@@ -149,11 +176,7 @@ export function getAllPostMeta(type: PageType, category?: string): PostMeta[] {
     }
   }
 
-  return results.sort((a, b) => {
-    const da = a.updatedAt || a.publishedAt;
-    const db = b.updatedAt || b.publishedAt;
-    return db.localeCompare(da);
-  });
+  return sortByActiveFirst(results);
 }
 
 export function getLatestPosts(limit = 30): ListingPost[] {
