@@ -1,6 +1,8 @@
 name: Deploy Next.js Site
 
 on:
+  push:
+    branches: [main]
   repository_dispatch:
     types: [deploy]
   workflow_dispatch:
