@@ -38,12 +38,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const allPosts = getAllPosts();
-  const postRoutes: MetadataRoute.Sitemap = allPosts.map((post) => ({
-    url: `${base}${post.href}`,
-    lastModified: new Date(post.updatedAt || post.publishedAt),
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
+  const postRoutes: MetadataRoute.Sitemap = allPosts.map((post) => {
+    const d = new Date(post.updatedAt || post.publishedAt);
+    return {
+      url: `${base}${post.href}`,
+      lastModified: isNaN(d.getTime()) ? new Date() : d,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    };
+  });
 
   return [...staticRoutes, ...postRoutes];
 }

@@ -60,6 +60,12 @@ try:
 except ImportError:
     cloudscraper = None
 
+try:
+    from curl_cffi import requests as cffi_requests
+    _cffi_session = cffi_requests.Session(impersonate="chrome124")
+except ImportError:
+    _cffi_session = None
+
 from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES, STAGING_DIR
 from mdx_generator import generate_mdx, is_within_date_range, MIN_POST_DATE
 
@@ -1703,55 +1709,78 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
         return None
 
 
-def _fetch_with_playwright(url: str) -> BeautifulSoup | None:
-    """Fetch URL using headless Chromium for JavaScript-rendered pages.
+_STEALTH_JS = """
+// Mask webdriver flag
+Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+// Fake plugins list
+Object.defineProperty(navigator, 'plugins', {get: () => Array.from({length: 5}, (_, i) => i)});
+// Real language list
+Object.defineProperty(navigator, 'languages', {get: () => ['en-IN', 'en-US', 'en']});
+// Chrome runtime object
+if (!window.chrome) window.chrome = {runtime: {}, loadTimes: () => {}};
+// Permissions
+const _query = window.navigator.permissions.query;
+window.navigator.permissions.query = (p) =>
+    p.name === 'notifications' ? Promise.resolve({state: Notification.permission}) : _query(p);
+"""
 
-    Used as a last-resort fallback when the normal HTTP fetch returns HTML
-    with no parseable job listings (i.e., the page content is loaded via JS).
-    Requires 'playwright' package and 'playwright install chromium'.
-    """
+def _fetch_with_playwright(url: str) -> BeautifulSoup | None:
+    """Fetch URL using headless Chromium with stealth patches to bypass bot detection."""
     try:
         from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
     except ImportError:
-        log.debug('Playwright not installed — skipping JS-render fallback')
+        log.debug('Playwright not installed — skipping stealth fallback')
         return None
     try:
-        log.info(f'  [Playwright] Launching headless Chrome for {url}')
+        log.info(f'  [Playwright-stealth] Fetching {url}')
         with sync_playwright() as p:
             browser = p.chromium.launch(
+                headless=True,
                 args=[
                     '--no-sandbox',
                     '--disable-dev-shm-usage',
                     '--disable-blink-features=AutomationControlled',
-                ]
+                    '--disable-infobars',
+                    '--window-size=1366,768',
+                ],
             )
             context = browser.new_context(
-                user_agent=HEADERS['User-Agent'],
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                viewport={'width': 1366, 'height': 768},
+                locale='en-IN',
                 extra_http_headers={
-                    'Accept-Language': HEADERS.get('Accept-Language', 'en-IN,en;q=0.9'),
-                    'Accept':          HEADERS.get('Accept', 'text/html,application/xhtml+xml,*/*'),
-                    'Accept-Encoding': HEADERS.get('Accept-Encoding', 'gzip, deflate'),
+                    'Accept-Language': 'en-IN,en-US;q=0.9,en;q=0.8',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                    'sec-ch-ua': '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+                    'sec-ch-ua-mobile': '?0',
+                    'sec-ch-ua-platform': '"Windows"',
+                    'Sec-Fetch-Dest': 'document',
+                    'Sec-Fetch-Mode': 'navigate',
+                    'Sec-Fetch-Site': 'none',
+                    'Sec-Fetch-User': '?1',
+                    'Upgrade-Insecure-Requests': '1',
                 },
             )
+            # Inject stealth patches on every new page
+            context.add_init_script(_STEALTH_JS)
             page = context.new_page()
-            page.goto(url, wait_until='domcontentloaded', timeout=20_000)
-            # Give JS a moment to populate the listing
+            page.goto(url, wait_until='domcontentloaded', timeout=30_000)
             try:
                 page.wait_for_selector(
-                    'table tr td a, ul li a, .post-list a, #post-list a',
-                    timeout=8_000,
+                    'table tr td a, ul li a, .post-list a, #post-list a, .TableLi a',
+                    timeout=10_000,
                 )
             except PWTimeout:
                 log.debug('  [Playwright] Selector wait timed out — using what we have')
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
             html = page.content()
             browser.close()
         soup = BeautifulSoup(html, 'lxml')
         anchors = soup.find_all('a', href=True)
-        log.info(f'  [Playwright] Got {len(html)} bytes, {len(anchors)} anchors')
+        log.info(f'  [Playwright-stealth] Got {len(html)} bytes, {len(anchors)} anchors')
         return soup
     except Exception as exc:
-        log.warning(f'  [Playwright] fetch failed for {url}: {exc}')
+        log.warning(f'  [Playwright-stealth] fetch failed for {url}: {exc}')
         return None
 
 def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
@@ -1764,6 +1793,29 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
             return result
         log.warning(f'CF Worker failed for {url}, falling back to direct fetch')
 
+    # curl-cffi with Chrome TLS fingerprint — bypasses Cloudflare bot checks
+    if _cffi_session is not None:
+        for attempt in range(1, retries + 1):
+            try:
+                log.debug(f'GET {url} via curl-cffi (chrome124)')
+                r = _cffi_session.get(url, timeout=TIMEOUT)
+                if r.status_code == 200:
+                    time.sleep(DELAY)
+                    return BeautifulSoup(r.content, 'lxml')
+                log.warning(f'  curl-cffi attempt {attempt}: HTTP {r.status_code} for {url}')
+            except Exception as exc:
+                log.warning(f'  curl-cffi attempt {attempt} failed for {url}: {exc}')
+            if attempt < retries:
+                time.sleep(DELAY * attempt)
+        # If curl-cffi got non-200 on all retries, fall through to playwright
+        log.info(f'  curl-cffi exhausted — trying playwright stealth for {url}')
+        result = _fetch_with_playwright(url)
+        if result is not None:
+            return result
+        log.error(f'Giving up on {url}')
+        return None
+
+    # Fallback: cloudscraper / requests
     sessions = [_session]
     if _cf_session is not None:
         sessions.insert(0, _cf_session)

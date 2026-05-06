@@ -5,5 +5,7 @@ python-dateutil>=2.8.2
 schedule>=1.2.0
 fake-useragent>=1.4.0
 cloudscraper>=1.2.71
+curl-cffi>=0.7.0
+playwright>=1.44.0
 google-auth>=2.29.0
 google-auth-httplib2>=0.2.0
