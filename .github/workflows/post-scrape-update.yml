@@ -1,157 +1,59 @@
-name: Post-Scrape Update
-
-# Triggered by the Cloudflare Worker scraper (cf-scraper-worker.js) after it
-# pushes new job/result/admit-card pages to the repo.  Rebuilds listing pages,
-# state pages, and the sitemap so users see the freshly scraped content.
-#
-# Can also be run manually from the GitHub Actions UI.
+name: Deploy Next.js Site
 
 on:
+  repository_dispatch:
+    types: [deploy]
   workflow_dispatch:
-    inputs:
-      triggered_by:
-        description: "What triggered this run?"
-        required: false
-        default: "manual"
-      jobs_added:
-        description: "Number of new job pages added (informational)"
-        required: false
-        default: "0"
-      results_added:
-        description: "Number of new result pages added (informational)"
-        required: false
-        default: "0"
-      admits_added:
-        description: "Number of new admit-card pages added (informational)"
-        required: false
-        default: "0"
 
 concurrency:
-  group: post-scrape-update
-  cancel-in-progress: false
+  group: deploy
+  cancel-in-progress: true
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
-  update-listings:
-    name: Rebuild listing pages → sitemap
+  build-deploy:
+    name: Build → Export → Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       TZ: Asia/Kolkata
+      NEXT_PUBLIC_SITE_URL: https://naukridhaba.in
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
-      - name: Log trigger info
-        run: |
-          echo "Triggered by : ${{ github.event.inputs.triggered_by }}"
-          echo "Jobs added   : ${{ github.event.inputs.jobs_added }}"
-          echo "Results added: ${{ github.event.inputs.results_added }}"
-          echo "Admits added : ${{ github.event.inputs.admits_added }}"
-          echo "Runner time  : $(date)"
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.11"
-          cache: "pip"
-          cache-dependency-path: "scraper/requirements.txt"
+          node-version: "20"
+          cache: npm
 
-      - name: Install Python dependencies
-        run: pip install -r scraper/requirements.txt
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Regenerate detail pages with V2 template and enriched SEO
-        run: python3 scraper/sarkari_scraper.py --regenerate-details result admit job
+      - name: Build search index
+        run: npx ts-node -e "require('./lib/build-search-index').buildSearchIndex()" || true
 
-      - name: Rebuild listing pages from detail pages
-        run: python3 scraper/sarkari_scraper.py --rebuild-only
+      - name: Build Next.js (static export)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://naukridhaba.in
 
-      - name: Regenerate state pages
-        run: python3 generate-state-pages.py
+      - name: Add .nojekyll to output
+        run: touch out/.nojekyll
 
-      - name: Normalize all generated pages
-        run: python3 update-all-pages.py
-
-      # Re-sync listing pages after update-all-pages.py (which replaces <head> and may
-      # disturb the ItemList JSON-LD we inserted in the rebuild step above).
-      - name: Re-sync listing pages after normalization
-        run: python3 scraper/sarkari_scraper.py --rebuild-only
-
-      - name: Rebuild sitemap
-        run: python3 generate-sitemap.py
-
-      - name: Validate generated output
-        run: python3 validate-generated-site.py
-
-      - name: Validate JobPosting schemas in all job pages
-        run: |
-          python3 - << 'PYEOF'
-          import json, re, sys
-          from pathlib import Path
-
-          REQUIRED_ADDR_FIELDS = {'streetAddress', 'addressLocality', 'addressRegion', 'postalCode'}
-          INVALID_LOCALITY = {'India', '', None}
-
-          errors = []
-          for path in sorted(Path('jobs').rglob('*.html')):
-              if path.name == 'index.html':
-                  continue
-              content = path.read_text(encoding='utf-8', errors='replace')
-              schemas = re.findall(r'<script type="application/ld\+json">(.*?)</script>', content, re.DOTALL)
-              has_job = has_faq = False
-              for s in schemas:
-                  try:
-                      d = json.loads(s)
-                  except json.JSONDecodeError:
-                      errors.append(f'{path}: invalid JSON-LD')
-                      continue
-                  if d.get('@type') == 'FAQPage':
-                      has_faq = True
-                  if d.get('@type') != 'JobPosting':
-                      continue
-                  has_job = True
-                  addr = (d.get('jobLocation') or {}).get('address', {})
-                  if addr.get('addressLocality') in INVALID_LOCALITY:
-                      errors.append(f'{path}: invalid addressLocality: {addr.get("addressLocality")!r}')
-                  missing_addr = REQUIRED_ADDR_FIELDS - set(addr.keys())
-                  if missing_addr:
-                      errors.append(f'{path}: missing address fields: {missing_addr}')
-                  if not d.get('identifier'):
-                      errors.append(f'{path}: missing identifier')
-                  if not d.get('applicantLocationRequirements'):
-                      errors.append(f'{path}: missing applicantLocationRequirements')
-              if not has_job:
-                  errors.append(f'{path}: no JobPosting schema')
-              if not has_faq:
-                  errors.append(f'{path}: no FAQPage schema')
-
-          total = sum(1 for p in Path('jobs').rglob('*.html') if p.name != 'index.html')
-          if errors:
-              print(f'SCHEMA VALIDATION FAILED: {len(errors)} issues across {total} job pages:')
-              for e in errors[:30]:
-                  print(f'  {e}')
-              sys.exit(1)
-          else:
-              print(f'Schema validation passed: {total} job pages OK')
-          PYEOF
-
-      - name: Commit updated pages
-        run: |
-          git config user.name "Post-Scrape Bot"
-          git config user.email "bot@naukridhaba.in"
-          git add -A
-          if git diff --staged --quiet; then
-            echo "No listing/sitemap changes needed."
-          else
-            COUNT=$(git diff --staged --name-only | wc -l)
-            git commit -m "Post-scrape update $(date +'%d %b %Y %I:%M %p IST') - $COUNT files"
-            git fetch origin main
-            git merge -X ours FETCH_HEAD --no-edit -m "Merge remote into post-scrape $(date +'%d %b %Y %I:%M %p IST')" || true
-            git push origin HEAD:main
-            echo "Pushed $COUNT updated files."
-          fi
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: gh-pages
+          cname: naukridhaba.in
+          commit_message: "deploy: $(date +'%d %b %Y %H:%M IST')"

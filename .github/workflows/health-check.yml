@@ -3,7 +3,7 @@ name: Website Health Check
 on:
   # Run after scraper completes
   workflow_run:
-    workflows: ["Daily Scraper - 10 AM IST"]
+    workflows: ["Daily Scraper"]
     types: [completed]
 
   # Manual trigger
