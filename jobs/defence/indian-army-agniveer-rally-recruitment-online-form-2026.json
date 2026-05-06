@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-05-04T11:20:29.564248",
+  "scraped_at": "2026-05-06T11:16:45.772188",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/army-agniveer-2026/",
   "page_type": "job",
   "title": "Indian Army Agniveer Rally Recruitment Online Form 2026",
-  "post_name": "Indian Army Rally Recruitment Agniveer, ARO, ZRO, Agniveer Women, Sepoy Pharma, Soldier Technical 2027 Apply Online Form 2026",
+  "post_name": "Indian Army Rally Recruitment Agniveer, ARO, ZRO, Agniveer Women, Sepoy Pharma, Soldier Technical 2027 Download Admit Card Date 2026",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -15,7 +15,9 @@
   "dates": {
     "Application Begin": "13/02/2026",
     "Last Date for Apply Online": "10/04/2026",
-    "Pay Exam Fee Last Date": "10/04/2026"
+    "Pay Exam Fee Last Date": "10/04/2026",
+    "Admit Card Available": "15/05/2026",
+    "Download Admit Card": "Link Will be Activate on 15/05/2026"
   },
   "fees": {
     "General / OBC / EWS": "250/-",
@@ -35,9 +37,9 @@
   "how_to_apply": [],
   "important_links": [
     {
-      "label": "Apply Online",
+      "label": "Download Admit Card",
       "url": "https://joinindianarmy.nic.in/",
-      "link_type": "apply"
+      "link_type": "admit"
     },
     {
       "label": "Download Notification",
@@ -45,15 +47,15 @@
       "link_type": "notification"
     }
   ],
-  "apply_url": "https://joinindianarmy.nic.in/",
+  "apply_url": "",
   "notification_url": "https://joinindianarmy.nic.in/latest-rally-agniveer-or.htm",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://joinindianarmy.nic.in/",
   "official_website_url": "https://joinindianarmy.nic.in/",
   "extra_links": [
     {
-      "label": "Apply Online",
+      "label": "Download Admit Card",
       "url": "https://joinindianarmy.nic.in/"
     },
     {

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-05-04T11:21:57.360844",
+  "scraped_at": "2026-05-06T11:18:13.190523",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/force/navy-ssr-medical-inet-02-2027/",
   "page_type": "job",
   "title": "Indian Navy SSR Medical Online Form 2026",
-  "post_name": "Join Indian Navy Agniveer SSR Medical 02/2027 Batch INET 2026 Check Exam City / Admit Card",
+  "post_name": "Join Indian Navy Agniveer SSR Medical 02/2027 Batch INET 2026 Admit Card",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -15,7 +15,8 @@
   "dates": {
     "Application Begin": "14/03/2026",
     "Last Date for Apply Online": "06/04/2026 upto 05 PM",
-    "Complete Form Last Date": "06/04/2026"
+    "Complete Form Last Date": "06/04/2026",
+    "Admit Card Available": "05/05/2026"
   },
   "fees": {
     "General / OBC / EWS": "550/-",
@@ -44,9 +45,9 @@
   ],
   "important_links": [
     {
-      "label": "Check Exam City Details",
+      "label": "Download Admit Card",
       "url": "https://sailors.navydmpr.in/ssrmedcycle2/login",
-      "link_type": "exam_city"
+      "link_type": "admit"
     },
     {
       "label": "How to Fill Form (Video Hindi)",
@@ -68,11 +69,11 @@
   "notification_url": "https://www.joinindiannavy.gov.in/files/SSR_Med_02_27_English.pdf",
   "result_url": "",
   "scorecard_url": "",
-  "admit_url": "",
+  "admit_url": "https://sailors.navydmpr.in/ssrmedcycle2/login",
   "official_website_url": "https://www.joinindiannavy.gov.in/en",
   "extra_links": [
     {
-      "label": "Check Exam City Details",
+      "label": "Download Admit Card",
       "url": "https://sailors.navydmpr.in/ssrmedcycle2/login"
     },
     {

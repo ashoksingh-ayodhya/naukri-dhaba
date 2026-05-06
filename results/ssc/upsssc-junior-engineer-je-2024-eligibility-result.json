@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-05-04T11:33:51.333202",
+  "scraped_at": "2026-05-06T11:30:11.265654",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/upsssc/upsssc-je-08-exam-2024/",
   "page_type": "result",
   "title": "UPSSSC Junior Engineer JE 2024 Eligibility Result",
-  "post_name": "UPSSSC Junior Engineer JE Civil Recruitment 2024 Exam Eligibility Result, Mains Admit Card 2026 for 4612 Post",
+  "post_name": "UPSSSC Junior Engineer JE Civil Recruitment 2024 Exam Eligibility Result, Mains Answer Key 2026 for 4612 Post",
   "post_date": "Click Here",
   "update_date": "",
   "organization_full_name": "Uttar Pradesh Subordinate Service Selection Commission (UPSSSC)",
@@ -21,7 +21,8 @@
     "Mains Exam Fee Payment": "07/04/2026",
     "Exam Date": "03/05/2026",
     "Exam City Available": "24/04/2026",
-    "Admit Card Available": "29/04/2026"
+    "Admit Card Available": "29/04/2026",
+    "Answer Key Available": "04/05/2026"
   },
   "fees": {
     "General / OBC / EWS": "25/-",
@@ -57,6 +58,11 @@
     "Take A Print Out of Final Submitted Form."
   ],
   "important_links": [
+    {
+      "label": "Download Answer Key",
+      "url": "https://drive.google.com/file/d/1DNjZ_ZbBW7ipRgHX2EnFY_aggbvA947e/view",
+      "link_type": "answer_key"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://upsssc.gov.in/upssscadmitcard/admitCard.aspx?ID=MAIN",
@@ -115,6 +121,10 @@
   "admit_url": "https://upsssc.gov.in/upssscadmitcard/admitCard.aspx?ID=MAIN",
   "official_website_url": "http://upsssc.gov.in/Default.aspx",
   "extra_links": [
+    {
+      "label": "Download Answer Key",
+      "url": "https://drive.google.com/file/d/1DNjZ_ZbBW7ipRgHX2EnFY_aggbvA947e/view"
+    },
     {
       "label": "Download Admit Card",
       "url": "https://upsssc.gov.in/upssscadmitcard/admitCard.aspx?ID=MAIN"

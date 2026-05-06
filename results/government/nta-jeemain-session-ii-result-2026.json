@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-05-04T11:31:43.080438",
+  "scraped_at": "2026-05-06T11:28:08.497044",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/2026/nta-jeemain-session-2/",
   "page_type": "result",
   "title": "NTA JEEMAIN Session II Result 2026",
-  "post_name": "NTA JEEMAIN Session II Admissions April 2026 Download Result 2026",
+  "post_name": "NTA JEEMAIN Session II Admissions April 2026 Download Paper 2 Result 2026",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "",
@@ -19,7 +19,8 @@
     "Exam City Details Available": "22/03/2026",
     "Question Paper Available": "09/04/2026",
     "Answer Key Available": "11/04/2026",
-    "Result Declared": "20/04/2026"
+    "Result Declared": "20/04/2026",
+    "Paper II Result Declared": "05/05/2026"
   },
   "fees": {
     "General Male": "1000/-",
@@ -41,6 +42,16 @@
   "salary": "",
   "how_to_apply": [],
   "important_links": [
+    {
+      "label": "Download Paper II Result",
+      "url": "https://examinationservices.nic.in/ResultoService26/P2JM26S2/Login",
+      "link_type": "result"
+    },
+    {
+      "label": "Download Paper II Result",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3f8e59f4b2fe7c5705bf878bbd494ccdf/uploads/2026/05/20260505152853066.pdf",
+      "link_type": "result"
+    },
     {
       "label": "Download Result",
       "url": "https://cnr.nic.in/ResultDir/P1S2JM26/login",
@@ -154,11 +165,19 @@
   ],
   "apply_url": "https://examinationservices.nic.in/jeemainx2026/root/home.aspx?enc=WPJ5WSCVWOMNiXoyyomJgDUffqDdG1LTsAPBKFcEC9VCAbchJdrRG5w+4Ch32Wrm",
   "notification_url": "",
-  "result_url": "https://cnr.nic.in/ResultDir/P1S2JM26/login",
+  "result_url": "https://examinationservices.nic.in/ResultoService26/P2JM26S2/Login",
   "scorecard_url": "",
   "admit_url": "https://examinationservices.nic.in/AdmitCardService/AdmitCardJEE26S2/Login",
   "official_website_url": "https://jeemain.nta.nic.in/",
   "extra_links": [
+    {
+      "label": "Download Paper II Result",
+      "url": "https://examinationservices.nic.in/ResultoService26/P2JM26S2/Login"
+    },
+    {
+      "label": "Download Paper II Result",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3f8e59f4b2fe7c5705bf878bbd494ccdf/uploads/2026/05/20260505152853066.pdf"
+    },
     {
       "label": "Download Result",
       "url": "https://cnr.nic.in/ResultDir/P1S2JM26/login"
@@ -249,6 +268,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Notice",
+      "url": "https://cdnbbsr.s3waas.gov.in/s3f8e59f4b2fe7c5705bf878bbd494ccdf/uploads/2026/05/20260505152853066.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://nta.ac.in/Download/Notice/Notice_20260420194021.pdf"

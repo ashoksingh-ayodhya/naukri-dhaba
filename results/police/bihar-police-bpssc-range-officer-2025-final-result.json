@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-05-04T11:40:48.889154",
+  "scraped_at": "2026-05-06T11:36:58.333655",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/bihar/bpssc-range-forest-02-2025/",
   "page_type": "result",
   "title": "Bihar Police BPSSC Range Officer 2025 Final Result",
-  "post_name": "BPSSC Range Officer of Forest Recruitment 2024 Download Final Result for 24 Post",
+  "post_name": "BPSSC Range Officer of Forest Recruitment 2024 Download Final Marks / Score Card for 24 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Bihar Police Subordinate Services Commission (BPSSC)",
@@ -16,7 +16,8 @@
     "Application Begin": "01/05/2025",
     "Last Date for Apply Online": "01/06/2025",
     "Pay Exam Fee Last Date": "01/06/2025",
-    "Final Result Available": "03/02/2026"
+    "Final Result Available": "03/02/2026",
+    "Marksheet Available": "07/05/2026"
   },
   "fees": {
     "General / OBC/ EWS / Other State": "700/-",
@@ -44,6 +45,16 @@
   ],
   "important_links": [
     {
+      "label": "Download Marksheet / Score Card",
+      "url": "https://bpssc.bihar.gov.in/A-EFC.htm",
+      "link_type": "scorecard"
+    },
+    {
+      "label": "Download Marksheet Notice",
+      "url": "https://bpssc.bihar.gov.in/Notices/Notice%20For%20Marksheet.pdf",
+      "link_type": "scorecard"
+    },
+    {
       "label": "Download Final Result",
       "url": "https://bpssc.bihar.gov.in/Notices/result%20final%2002-25.pdf",
       "link_type": "result"
@@ -67,10 +78,18 @@
   "apply_url": "https://apply-bpssc.com/bpssc_ro_v2_2025/applicationIndex",
   "notification_url": "https://bpssc.bihar.gov.in/Notices/EFC/Advt.%20No.-02-2025.pdf",
   "result_url": "https://bpssc.bihar.gov.in/Notices/result%20final%2002-25.pdf",
-  "scorecard_url": "",
+  "scorecard_url": "https://bpssc.bihar.gov.in/A-EFC.htm",
   "admit_url": "",
   "official_website_url": "https://bpssc.bihar.gov.in/",
   "extra_links": [
+    {
+      "label": "Download Marksheet / Score Card",
+      "url": "https://bpssc.bihar.gov.in/A-EFC.htm"
+    },
+    {
+      "label": "Download Marksheet Notice",
+      "url": "https://bpssc.bihar.gov.in/Notices/Notice%20For%20Marksheet.pdf"
+    },
     {
       "label": "Download Final Result",
       "url": "https://bpssc.bihar.gov.in/Notices/result%20final%2002-25.pdf"
@@ -89,6 +108,10 @@
     }
   ],
   "download_links": [
+    {
+      "label": "Click Here",
+      "url": "https://bpssc.bihar.gov.in/Notices/Notice%20For%20Marksheet.pdf"
+    },
     {
       "label": "Click Here",
       "url": "https://bpssc.bihar.gov.in/Notices/result%20final%2002-25.pdf"

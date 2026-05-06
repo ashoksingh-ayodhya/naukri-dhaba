@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "scraped_at": "2026-05-04T11:26:15.304612",
+  "scraped_at": "2026-05-06T11:22:16.981378",
   "source": "sarkariresult",
   "source_detail_url": "https://www.sarkariresult.com/rpsc/rssb-lab-assistant-05-2026/",
   "page_type": "job",
   "title": "Rajasthan RSSB Lab Assistant Online Form 2026",
-  "post_name": "Rajasthan Staff Selection Board RSSB Lab Assistant Recruitment 2026 Exam City / Download Admit Card for 804 Post",
+  "post_name": "Rajasthan Staff Selection Board RSSB Lab Assistant Recruitment 2026 Download Admit Card for 804 Post",
   "post_date": "",
   "update_date": "",
   "organization_full_name": "Rajasthan Staff Selection Board (RSSB) | RSMSSB",
@@ -17,7 +17,8 @@
     "Last Date for Apply Online": "25/02/2026",
     "Complete Form Last Date": "25/02/2026",
     "Correction Date": "As per Schedule",
-    "Exam City Available": "01/05/2026"
+    "Exam City Available": "01/05/2026",
+    "Admit Card Available": "05/05/2026"
   },
   "fees": {
     "General / OBC": "600/-",
@@ -45,8 +46,13 @@
   ],
   "important_links": [
     {
-      "label": "Check Exam City / Admit Card",
+      "label": "Download Admit Card",
       "url": "https://sso.rajasthan.gov.in/signin",
+      "link_type": "admit"
+    },
+    {
+      "label": "Download Admit Card",
+      "url": "https://recruitment.rajasthan.gov.in/",
       "link_type": "admit"
     },
     {
@@ -68,8 +74,12 @@
   "official_website_url": "https://rssb.rajasthan.gov.in/",
   "extra_links": [
     {
-      "label": "Check Exam City / Admit Card",
+      "label": "Download Admit Card",
       "url": "https://sso.rajasthan.gov.in/signin"
+    },
+    {
+      "label": "Download Admit Card",
+      "url": "https://recruitment.rajasthan.gov.in/"
     },
     {
       "label": "Download Notification",
