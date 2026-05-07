@@ -20,14 +20,48 @@ const config: Config = {
           950: "#172554",
         },
         accent: {
-          400: "#fbbf24",
-          500: "#f59e0b",
-          600: "#d97706",
+          400: "#fb923c",
+          500: "#f97316",
+          600: "#ea580c",
+        },
+        // New vibrant palette for homepage
+        brand: {
+          purple: "#7c3aed",
+          "purple-light": "#a855f7",
+          orange: "#f97316",
+          "orange-light": "#fb923c",
+          cyan: "#06b6d4",
+          "cyan-light": "#22d3ee",
+          pink: "#ec4899",
+          hero: "#06060f",
         },
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-        heading: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["var(--font-heading)", "Space Grotesk", "Poppins", "ui-sans-serif", "sans-serif"],
+      },
+      backgroundImage: {
+        "hero-radial":
+          "radial-gradient(ellipse 90% 60% at 50% 50%, rgba(124,58,237,0.13) 0%, transparent 70%)",
+      },
+      animation: {
+        "gradient-shift": "gradient-shift 5s ease-in-out infinite",
+        "float-up": "float-up 3s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2.5s ease-in-out infinite",
+      },
+      keyframes: {
+        "gradient-shift": {
+          "0%, 100%": { "background-position": "0% 50%" },
+          "50%": { "background-position": "100% 50%" },
+        },
+        "float-up": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.6" },
+          "50%": { opacity: "1" },
+        },
       },
     },
   },

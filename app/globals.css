@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* Lenis handles smooth scrolling */
+    scroll-behavior: auto;
   }
   body {
     @apply bg-slate-50 text-slate-800 font-sans antialiased;
@@ -18,7 +17,7 @@
 
 @layer components {
   .badge-new {
-    @apply inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold bg-accent-500 text-white animate-pulse;
+    @apply inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold bg-accent-500 text-white;
   }
   .badge-active {
     @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700;
@@ -52,7 +51,66 @@
   }
 }
 
-/* Ticker animation */
+@layer utilities {
+  /* ── Scrollbar ── */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── Gradient headline text ── */
+  .gradient-text {
+    background: linear-gradient(120deg, #f97316 0%, #a855f7 55%, #22d3ee 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 5s ease-in-out infinite;
+  }
+
+  /* ── Glow effects ── */
+  .text-glow-amber {
+    filter: drop-shadow(0 0 16px rgba(251, 146, 60, 0.55));
+  }
+  .text-glow-purple {
+    filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.5));
+  }
+  .glow-amber {
+    box-shadow: 0 0 24px rgba(249, 115, 22, 0.35), 0 0 48px rgba(249, 115, 22, 0.15);
+  }
+
+  /* ── Glassmorphism ── */
+  .glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* ── Hero grid overlay ── */
+  .hero-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* ── Safe area for mobile bottom nav ── */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* ── Live ticker ── */
 @keyframes ticker {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
