@@ -3,6 +3,12 @@ name: Deploy Next.js Site
 on:
   push:
     branches: [main]
+    paths-ignore:
+      # Don't rebuild when only built HTML/JS was committed (deploy commits)
+      - "*.html"
+      - "*.txt"
+      - "_next/**"
+      - "index.html"
   repository_dispatch:
     types: [deploy]
   workflow_dispatch:
@@ -13,12 +19,10 @@ concurrency:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   build-deploy:
-    name: Build → Export → Deploy to GitHub Pages
+    name: Build → Export → Push to main
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -30,6 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -40,22 +45,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build search index
-        run: npx ts-node -e "require('./lib/build-search-index').buildSearchIndex()" || true
-
       - name: Build Next.js (static export)
         run: npm run build
         env:
           NEXT_PUBLIC_SITE_URL: https://naukridhaba.in
 
-      - name: Add .nojekyll to output
-        run: touch out/.nojekyll
+      - name: Sync latest main (scraper may have pushed MDX since checkout)
+        run: |
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit || true
 
-      - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          publish_branch: gh-pages
-          cname: naukridhaba.in
-          commit_message: "deploy: $(date +'%d %b %Y %H:%M IST')"
+      - name: Copy built output to repo root
+        run: |
+          # Copy everything from out/ to repo root (overwrites old HTML/JS)
+          cp -r out/. .
+
+      - name: Commit and push built files to main
+        run: |
+          git config user.name "Naukri Dhaba Bot"
+          git config user.email "bot@naukridhaba.in"
+          git add -A
+          # Only commit if something actually changed
+          git diff --staged --quiet && echo "Nothing to deploy." || \
+            git commit -m "deploy: $(date +'%d %b %Y %H:%M IST') [skip ci]"
+          git push origin HEAD:main
+
+      - name: Summary
+        run: echo "✅ Deployed to naukridhaba.in (main branch root)"
