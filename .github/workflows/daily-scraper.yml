@@ -43,6 +43,7 @@ jobs:
         run: pip install -r scraper/requirements.txt
 
       - name: Install Playwright Chromium
+        continue-on-error: true
         run: python -m playwright install chromium --with-deps
 
       - name: Run scraper → writes MDX files to content/
@@ -75,6 +76,7 @@ jobs:
 
       - name: Trigger Next.js deploy
         if: steps.changes.outputs.changed != '0' && github.event.inputs.dry_run != 'true'
+        continue-on-error: true
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
