@@ -4034,9 +4034,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
-        log.error('Fix: deploy the Cloudflare Worker proxy (scraper/cf-worker.js) and set')
-        log.error('     CF_WORKER_PROXY_URL secret in GitHub Actions.')
-        return 0  # exit 0 so GitHub Actions marks the step green; commit step skips (0 MDX files)
+        return 0  # exit 0 so GitHub Actions step stays green; commit step skips (0 MDX files)
 
     # Per-source summary table
     log.info('\n' + '─' * 60)
@@ -4074,8 +4072,8 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
             # ── New detail parser ──────────────────────────────
             try:
-                from scraper.detail_parser import parse_detail_page
-                from scraper.detail_parser.link_resolver import resolve_links
+                from detail_parser import parse_detail_page
+                from detail_parser.link_resolver import resolve_links
                 detail_data = parse_detail_page(detail_soup, item, source_name=src_name)
                 resolve_links(detail_data)
                 rich = detail_data.to_legacy_dict()
