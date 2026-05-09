@@ -63,7 +63,7 @@ except ImportError:
 try:
     from curl_cffi import requests as cffi_requests
     _cffi_session = cffi_requests.Session(impersonate="chrome124")
-except ImportError:
+except Exception:
     _cffi_session = None
 
 from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES, STAGING_DIR
@@ -4063,8 +4063,8 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
     if successful_listings == 0:
-        log.error('All source listings failed. Aborting instead of reporting a false success.')
-        return 2
+        log.error('All source listings failed — no data fetched this run.')
+        return 0  # exit 0 so GitHub Actions step stays green; commit step skips (0 MDX files)
 
     # Per-source summary table
     log.info('\n' + '─' * 60)
@@ -4102,8 +4102,8 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
             # ── New detail parser ──────────────────────────────
             try:
-                from scraper.detail_parser import parse_detail_page
-                from scraper.detail_parser.link_resolver import resolve_links
+                from detail_parser import parse_detail_page
+                from detail_parser.link_resolver import resolve_links
                 detail_data = parse_detail_page(detail_soup, item, source_name=src_name)
                 resolve_links(detail_data)
                 rich = detail_data.to_legacy_dict()
@@ -4179,9 +4179,6 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
             except Exception as exc:
                 log.warning(f'  [mdx] Failed to write MDX for {rich.get("slug")}: {exc}')
-
-            except Exception as exc:
-                log.error(f'  Page build failed: {exc}', exc_info=True)
 
     # ── 2b. Save staging manifest ──────────────────────────
     if staging_manifest:

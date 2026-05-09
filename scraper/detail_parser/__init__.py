@@ -5,11 +5,11 @@ Provides parse_detail_page() as a drop-in replacement for the old parse_detail()
 Dispatches to source-specific parsers and returns a DetailData object.
 """
 
-from scraper.detail_parser.models import DetailData
-from scraper.detail_parser.sarkariresult import SarkariResultParser
-from scraper.detail_parser.freejobalert import FreeJobAlertParser
-from scraper.detail_parser.rojgarresult import RojgarResultParser
-from scraper.detail_parser.sarkariexam import SarkariExamParser
+from .models import DetailData
+from .sarkariresult import SarkariResultParser
+from .freejobalert import FreeJobAlertParser
+from .rojgarresult import RojgarResultParser
+from .sarkariexam import SarkariExamParser
 
 from urllib.parse import urlparse
 
