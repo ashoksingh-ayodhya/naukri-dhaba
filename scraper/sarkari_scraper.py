@@ -60,6 +60,12 @@ try:
 except ImportError:
     cloudscraper = None
 
+try:
+    from curl_cffi import requests as cffi_requests
+    _cffi_session = cffi_requests.Session(impersonate="chrome124")
+except Exception:
+    _cffi_session = None
+
 from site_config import REDIRECT_PATH, SITE_NAME, SITE_URL, SOURCE_BASE_URL, SOURCE_HOSTS, SOURCES, STAGING_DIR
 from mdx_generator import generate_mdx, is_within_date_range, MIN_POST_DATE
 
@@ -1763,6 +1769,22 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
             time.sleep(DELAY)
             return result
         log.warning(f'CF Worker failed for {url}, falling back to direct fetch')
+
+    # curl_cffi impersonates a real Chrome TLS fingerprint — first choice for Cloudflare sites
+    if _cffi_session is not None:
+        for attempt in range(1, retries + 1):
+            try:
+                log.debug(f'GET {url} via curl-cffi (chrome124), attempt {attempt}/{retries}')
+                r = _cffi_session.get(url, timeout=TIMEOUT)
+                if r.status_code == 200:
+                    time.sleep(DELAY)
+                    return BeautifulSoup(r.content, 'lxml')
+                log.warning(f'Attempt {attempt}/{retries} via curl-cffi: HTTP {r.status_code} for {url}')
+            except Exception as exc:
+                log.warning(f'Attempt {attempt}/{retries} via curl-cffi failed for {url}: {exc}')
+            if attempt < retries:
+                time.sleep(DELAY * attempt)
+        log.warning(f'curl-cffi exhausted all retries for {url} — trying fallbacks')
 
     sessions = [_session]
     if _cf_session is not None:
