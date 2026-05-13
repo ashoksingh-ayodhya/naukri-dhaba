@@ -61,7 +61,7 @@ jobs:
       - name: Count new/updated MDX files
         id: changes
         run: |
-          git add content/
+          git add content/ scraper/seen_items.json
           CHANGED=$(git diff --cached --name-only | grep "\.mdx$" | wc -l)
           echo "changed=$CHANGED" >> $GITHUB_OUTPUT
           echo "New/updated MDX files: $CHANGED"
