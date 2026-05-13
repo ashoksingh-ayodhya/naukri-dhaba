@@ -1812,8 +1812,8 @@ def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
         result = _fetch_with_playwright(url)
         if result is not None:
             return result
-        log.error(f'Giving up on {url}')
-        return None
+        log.info(f'  playwright failed — falling through to cloudscraper/requests for {url}')
+        # fall through to cloudscraper/requests below
 
     # Fallback: cloudscraper / requests
     sessions = [_session]
