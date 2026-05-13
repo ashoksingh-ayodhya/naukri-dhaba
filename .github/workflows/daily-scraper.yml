@@ -86,6 +86,20 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           event-type: deploy
 
+      - name: Commit scraper log (always — for debugging)
+        if: always()
+        continue-on-error: true
+        run: |
+          git config user.name "Naukri Dhaba Bot" 2>/dev/null || true
+          git config user.email "bot@naukridhaba.in" 2>/dev/null || true
+          git add scraper/logs/scraper.log 2>/dev/null || true
+          if ! git diff --cached --quiet 2>/dev/null; then
+            git commit -m "debug: scraper log $(date +'%d %b %Y %H:%M IST') [skip ci]" || true
+            git fetch origin ${{ github.ref_name }} || true
+            git merge -X ours FETCH_HEAD --no-edit || true
+            git push origin HEAD:${{ github.ref_name }} || true
+          fi
+
       - name: Show scraper log
         if: always()
-        run: tail -50 scraper/logs/scraper.log 2>/dev/null || echo "(no log)"
+        run: tail -100 scraper/logs/scraper.log 2>/dev/null || echo "(no log)"
