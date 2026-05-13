@@ -1,6 +1,10 @@
 name: Daily Scraper
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'scraper/run-now'
   schedule:
     - cron: "30 4 * * *"   # 10 AM IST daily
     - cron: "30 10 * * *"  # 4 PM IST daily
