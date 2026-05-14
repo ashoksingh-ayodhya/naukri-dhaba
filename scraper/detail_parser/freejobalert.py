@@ -12,9 +12,9 @@ import logging
 
 from bs4 import BeautifulSoup, Tag
 
-from scraper.detail_parser.base_parser import BaseDetailParser
-from scraper.detail_parser.models import DetailData
-from scraper.detail_parser.utils import (
+from .base_parser import BaseDetailParser
+from .models import DetailData
+from .utils import (
     clean, classify_link, is_junk_row,
     looks_like_date_value, looks_like_fee_value,
     extract_age_reference_date,

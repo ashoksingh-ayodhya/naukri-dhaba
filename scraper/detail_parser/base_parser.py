@@ -8,15 +8,25 @@ Source-specific parsers override _extract_* methods.
 from __future__ import annotations
 
 import logging
+import re
 from abc import ABC, abstractmethod
 from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-from scraper.detail_parser.models import DetailData
-from scraper.detail_parser.utils import classify_link
+from .models import DetailData
+from .utils import classify_link
 
 log = logging.getLogger("NaukriDhaba")
+
+
+def _slugify(text: str) -> str:
+    """Convert a title to a URL-safe slug."""
+    text = text.lower().strip()
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[\s_]+', '-', text)
+    text = re.sub(r'-+', '-', text).strip('-')
+    return text[:120]
 
 
 class BaseDetailParser(ABC):
@@ -34,6 +44,9 @@ class BaseDetailParser(ABC):
             dept=item.get("dept", ""),
             scraped_at=datetime.now().isoformat(),
         )
+
+        if not data.slug and data.title:
+            data.slug = _slugify(data.title)
 
         if not soup:
             log.warning(f"  [parser] No soup for {data.title[:60]} — returning defaults")
