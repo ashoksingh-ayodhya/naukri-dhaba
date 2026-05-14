@@ -12,9 +12,9 @@ import logging
 
 from bs4 import BeautifulSoup
 
-from scraper.detail_parser.sarkariresult import SarkariResultParser
-from scraper.detail_parser.models import DetailData
-from scraper.detail_parser.utils import clean, is_junk_row
+from .sarkariresult import SarkariResultParser
+from .models import DetailData
+from .utils import clean, is_junk_row
 
 log = logging.getLogger("NaukriDhaba")
 
