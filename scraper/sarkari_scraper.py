@@ -1678,8 +1678,15 @@ else:
 
 def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     """Fetch a URL through the Cloudflare Worker proxy."""
+    import gzip
+    import zlib
+
     proxy_url = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
-    headers = {}
+    headers = {
+        # Force identity encoding so Cloudflare edge doesn't re-compress the
+        # already-decompressed response body the Worker returns.
+        'Accept-Encoding': 'identity',
+    }
     if _CF_WORKER_SECRET:
         headers['X-Proxy-Secret'] = _CF_WORKER_SECRET
     try:
@@ -1689,9 +1696,25 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
             return None
         r.raise_for_status()
         origin_status = r.headers.get('X-Origin-Status', '?')
-        size = len(r.content)
+        raw = r.content
+
+        # Defensive decompression: if Worker still returns compressed bytes, decompress here
+        if raw[:2] == b'\x1f\x8b':
+            try:
+                raw = gzip.decompress(raw)
+                log.info(f'CF Worker: gzip-decompressed response for {url}')
+            except Exception:
+                pass
+        elif raw[:2] in (b'\x78\x9c', b'\x78\x01', b'\x78\xda'):
+            try:
+                raw = zlib.decompress(raw)
+                log.info(f'CF Worker: zlib-decompressed response for {url}')
+            except Exception:
+                pass
+
+        size = len(raw)
         log.info(f'CF Worker OK for {url} (origin status: {origin_status}, size: {size} bytes)')
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(raw, 'lxml')
         # Sanity check: if the page has very few anchors it may be a bot-protection
         # page that slipped past the challenge marker check.
         anchors = soup.find_all('a', href=True)
