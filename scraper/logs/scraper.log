@@ -4069,3 +4069,234 @@ Rebuilding listing pages from detail pages...
 2026-05-15 11:22:53 [INFO]     sarkariexam          Jobs=0 Results=0 Admits=2   (https://www.sarkariexam.com)
 2026-05-15 11:22:53 [INFO] ============================================================
 
+2026-05-15 16:48:41 [INFO] CF Worker proxy configured: https://nd-proxy.awesomeashoksingh.worke...
+2026-05-15 16:48:41 [INFO] ============================================================
+2026-05-15 16:48:41 [INFO] NAUKRI DHABA SCRAPER  started 2026-05-15 16:48:41 IST
+2026-05-15 16:48:41 [INFO] Source: sarkariresult.com
+2026-05-15 16:48:41 [INFO] ============================================================
+2026-05-15 16:48:41 [INFO] 
+────────────────────────────────────────
+2026-05-15 16:48:41 [INFO] SOURCE: sarkariresult  (https://www.sarkariresult.com)
+2026-05-15 16:48:41 [INFO] ────────────────────────────────────────
+2026-05-15 16:48:41 [INFO] 
+Fetching JOB listing: https://www.sarkariresult.com/latestjob.php
+2026-05-15 16:48:41 [INFO] GET https://www.sarkariresult.com/latestjob.php via CF Worker
+2026-05-15 16:48:43 [INFO] CF Worker OK for https://www.sarkariresult.com/latestjob.php (origin status: 200, size: 647462 bytes)
+2026-05-15 16:48:46 [INFO]   Listing parser found 1 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:48:47 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:48:47 [INFO]   Anchor fallback found 150 raw rows
+2026-05-15 16:48:47 [INFO]   Raw items from sarkariresult: 150
+2026-05-15 16:48:47 [INFO]   Accepted new jobs from sarkariresult: 0
+2026-05-15 16:48:47 [INFO] 
+Fetching RESULT listing: https://www.sarkariresult.com/result.php
+2026-05-15 16:48:47 [INFO] GET https://www.sarkariresult.com/result.php via CF Worker
+2026-05-15 16:48:49 [INFO] CF Worker OK for https://www.sarkariresult.com/result.php (origin status: 200, size: 735134 bytes)
+2026-05-15 16:48:52 [INFO]   Listing parser found 1 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:48:52 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:48:52 [INFO]   Anchor fallback found 150 raw rows
+2026-05-15 16:48:52 [INFO]   Raw items from sarkariresult: 150
+2026-05-15 16:48:52 [INFO]   Accepted new results from sarkariresult: 1
+2026-05-15 16:48:52 [INFO] 
+Fetching ADMIT listing: https://www.sarkariresult.com/admitcard.php
+2026-05-15 16:48:52 [INFO] GET https://www.sarkariresult.com/admitcard.php via CF Worker
+2026-05-15 16:48:54 [INFO] CF Worker OK for https://www.sarkariresult.com/admitcard.php (origin status: 200, size: 779771 bytes)
+2026-05-15 16:48:57 [INFO]   Listing parser found 0 raw rows (skipped 1 non-matching titles)
+2026-05-15 16:48:57 [INFO]   Skipped titles sample: ['Sarkari Result']
+2026-05-15 16:48:58 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:48:58 [INFO]   Anchor fallback found 150 raw rows
+2026-05-15 16:48:58 [INFO]   Raw items from sarkariresult: 150
+2026-05-15 16:48:58 [INFO]   Accepted new admits from sarkariresult: 0
+2026-05-15 16:48:58 [INFO] 
+────────────────────────────────────────
+2026-05-15 16:48:58 [INFO] SOURCE: freejobalert  (https://www.freejobalert.com)
+2026-05-15 16:48:58 [INFO] ────────────────────────────────────────
+2026-05-15 16:48:58 [INFO] 
+Fetching JOB listing: https://www.freejobalert.com/government-jobs/
+2026-05-15 16:48:58 [INFO] GET https://www.freejobalert.com/government-jobs/ via CF Worker
+2026-05-15 16:48:58 [INFO] CF Worker OK for https://www.freejobalert.com/government-jobs/ (origin status: 200, size: 116379 bytes)
+2026-05-15 16:49:00 [INFO]   Listing parser found 3 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:00 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:00 [INFO]   Anchor fallback found 12 raw rows
+2026-05-15 16:49:00 [INFO]   Raw items from freejobalert: 12
+2026-05-15 16:49:00 [INFO]   Accepted new jobs from freejobalert: 0
+2026-05-15 16:49:00 [INFO] 
+Fetching RESULT listing: https://www.freejobalert.com/sarkariresult/
+2026-05-15 16:49:00 [INFO] GET https://www.freejobalert.com/sarkariresult/ via CF Worker
+2026-05-15 16:49:01 [INFO] CF Worker OK for https://www.freejobalert.com/sarkariresult/ (origin status: 200, size: 165037 bytes)
+2026-05-15 16:49:03 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:03 [INFO]   List/div fallback found 10 raw rows
+2026-05-15 16:49:03 [INFO]   Raw items from freejobalert: 10
+2026-05-15 16:49:03 [INFO]   Accepted new results from freejobalert: 5
+2026-05-15 16:49:03 [INFO] 
+Fetching ADMIT listing: https://www.freejobalert.com/admit-card/
+2026-05-15 16:49:03 [INFO] GET https://www.freejobalert.com/admit-card/ via CF Worker
+2026-05-15 16:49:03 [INFO] CF Worker OK for https://www.freejobalert.com/admit-card/ (origin status: 200, size: 984736 bytes)
+2026-05-15 16:49:07 [INFO]   Listing parser found 3 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:07 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:07 [INFO]   Anchor fallback found 25 raw rows
+2026-05-15 16:49:07 [INFO]   Raw items from freejobalert: 25
+2026-05-15 16:49:07 [INFO]   Accepted new admits from freejobalert: 2
+2026-05-15 16:49:07 [INFO] 
+────────────────────────────────────────
+2026-05-15 16:49:07 [INFO] SOURCE: rojgarresult  (https://www.rojgarresult.com)
+2026-05-15 16:49:07 [INFO] ────────────────────────────────────────
+2026-05-15 16:49:07 [INFO] 
+Fetching JOB listing: https://www.rojgarresult.com/recruitments/
+2026-05-15 16:49:07 [INFO] GET https://www.rojgarresult.com/recruitments/ via CF Worker
+2026-05-15 16:49:07 [INFO] CF Worker OK for https://www.rojgarresult.com/recruitments/ (origin status: 200, size: 230005 bytes)
+2026-05-15 16:49:10 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:10 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:10 [INFO]   Anchor fallback found 8 raw rows
+2026-05-15 16:49:10 [INFO]   Raw items from rojgarresult: 8
+2026-05-15 16:49:10 [INFO]   Accepted new jobs from rojgarresult: 0
+2026-05-15 16:49:10 [INFO] 
+Fetching RESULT listing: https://www.rojgarresult.com/latest-result/
+2026-05-15 16:49:10 [INFO] GET https://www.rojgarresult.com/latest-result/ via CF Worker
+2026-05-15 16:49:11 [INFO] CF Worker OK for https://www.rojgarresult.com/latest-result/ (origin status: 200, size: 167802 bytes)
+2026-05-15 16:49:14 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:14 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:14 [INFO]   Anchor fallback found 35 raw rows
+2026-05-15 16:49:14 [INFO]   Raw items from rojgarresult: 35
+2026-05-15 16:49:14 [INFO]   Accepted new results from rojgarresult: 1
+2026-05-15 16:49:14 [INFO] 
+Fetching ADMIT listing: https://www.rojgarresult.com/admit-card/
+2026-05-15 16:49:14 [INFO] GET https://www.rojgarresult.com/admit-card/ via CF Worker
+2026-05-15 16:49:14 [INFO] CF Worker OK for https://www.rojgarresult.com/admit-card/ (origin status: 200, size: 227707 bytes)
+2026-05-15 16:49:17 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:17 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:17 [INFO]   Anchor fallback found 5 raw rows
+2026-05-15 16:49:17 [INFO]   Raw items from rojgarresult: 5
+2026-05-15 16:49:17 [INFO]   Accepted new admits from rojgarresult: 0
+2026-05-15 16:49:17 [INFO] 
+────────────────────────────────────────
+2026-05-15 16:49:17 [INFO] SOURCE: sarkariexam  (https://www.sarkariexam.com)
+2026-05-15 16:49:17 [INFO] ────────────────────────────────────────
+2026-05-15 16:49:17 [INFO] 
+Fetching JOB listing: https://www.sarkariexam.com/category/jobs
+2026-05-15 16:49:17 [INFO] GET https://www.sarkariexam.com/category/jobs via CF Worker
+2026-05-15 16:49:19 [INFO] CF Worker OK for https://www.sarkariexam.com/category/jobs (origin status: 200, size: 178375 bytes)
+2026-05-15 16:49:22 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:22 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:22 [INFO]   Anchor fallback found 31 raw rows
+2026-05-15 16:49:22 [INFO]   Raw items from sarkariexam: 31
+2026-05-15 16:49:22 [INFO]   Accepted new jobs from sarkariexam: 0
+2026-05-15 16:49:22 [INFO] 
+Fetching RESULT listing: https://www.sarkariexam.com/exam-result
+2026-05-15 16:49:22 [INFO] GET https://www.sarkariexam.com/exam-result via CF Worker
+2026-05-15 16:49:23 [WARNING] CF Worker fetch failed for https://www.sarkariexam.com/exam-result: 404 Client Error: Not Found for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fwww.sarkariexam.com%2Fexam-result
+2026-05-15 16:49:23 [WARNING] CF Worker failed for https://www.sarkariexam.com/exam-result, falling back to direct fetch
+2026-05-15 16:49:23 [WARNING]   curl-cffi attempt 1: HTTP 403 for https://www.sarkariexam.com/exam-result
+2026-05-15 16:49:26 [WARNING]   curl-cffi attempt 2: HTTP 403 for https://www.sarkariexam.com/exam-result
+2026-05-15 16:49:31 [WARNING]   curl-cffi attempt 3: HTTP 403 for https://www.sarkariexam.com/exam-result
+2026-05-15 16:49:31 [INFO]   curl-cffi exhausted — trying playwright stealth for https://www.sarkariexam.com/exam-result
+2026-05-15 16:49:31 [INFO]   [Playwright-stealth] Fetching https://www.sarkariexam.com/exam-result
+2026-05-15 16:49:34 [INFO]   [Playwright-stealth] Got 481556 bytes, 21 anchors
+2026-05-15 16:49:34 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:34 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:34 [INFO]   Anchor fallback found 1 raw rows
+2026-05-15 16:49:34 [INFO]   Raw items from sarkariexam: 1
+2026-05-15 16:49:34 [INFO]   Accepted new results from sarkariexam: 0
+2026-05-15 16:49:34 [INFO] 
+Fetching ADMIT listing: https://www.sarkariexam.com/category/admit-card/
+2026-05-15 16:49:34 [INFO] GET https://www.sarkariexam.com/category/admit-card/ via CF Worker
+2026-05-15 16:49:35 [INFO] CF Worker OK for https://www.sarkariexam.com/category/admit-card/ (origin status: 200, size: 179972 bytes)
+2026-05-15 16:49:37 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-15 16:49:37 [INFO]   List/div fallback found 0 raw rows
+2026-05-15 16:49:37 [INFO]   Anchor fallback found 38 raw rows
+2026-05-15 16:49:37 [INFO]   Raw items from sarkariexam: 38
+2026-05-15 16:49:37 [INFO]   Accepted new admits from sarkariexam: 2
+2026-05-15 16:49:37 [INFO] 
+────────────────────────────────────────────────────────────
+2026-05-15 16:49:37 [INFO] SCRAPE SUMMARY — new posts per source:
+2026-05-15 16:49:37 [INFO]   Source                 Jobs   Results   Admits   Total
+2026-05-15 16:49:37 [INFO]   ──────────────────── ────── ───────── ──────── ───────
+2026-05-15 16:49:37 [INFO]   sarkariresult             0         1        0       1   (https://www.sarkariresult.com)
+2026-05-15 16:49:37 [INFO]   freejobalert              0         5        2       7   (https://www.freejobalert.com)
+2026-05-15 16:49:37 [INFO]   rojgarresult              0         1        0       1   (https://www.rojgarresult.com)
+2026-05-15 16:49:37 [INFO]   sarkariexam               0         0        2       2   (https://www.sarkariexam.com)
+2026-05-15 16:49:37 [INFO]   ──────────────────── ────── ───────── ──────── ───────
+2026-05-15 16:49:37 [INFO]   TOTAL                     0         7        4      11
+2026-05-15 16:49:37 [INFO] ────────────────────────────────────────────────────────────
+2026-05-15 16:49:37 [INFO] 
+[RESULT] CBSE Group A, B, C Tier II Exam Result 2026  (source: sarkariresult)
+2026-05-15 16:49:37 [INFO]   Detail URL: https://www.sarkariresult.com/2025/cbse-group-abc-2025/
+2026-05-15 16:49:37 [INFO] GET https://www.sarkariresult.com/2025/cbse-group-abc-2025/ via CF Worker
+2026-05-15 16:49:38 [INFO] CF Worker OK for https://www.sarkariresult.com/2025/cbse-group-abc-2025/ (origin status: 200, size: 32087 bytes)
+2026-05-15 16:49:41 [INFO] CF Worker proxy configured: https://nd-proxy.awesomeashoksingh.worke...
+2026-05-15 16:49:41 [INFO]   Written (MDX): content/results/government/cbse-group-a-b-c-tier-ii-exam-result-2026.mdx
+2026-05-15 16:49:41 [INFO] 
+[RESULT] • CBSE Group A, B, C Tier II Exam Result 2026  (source: freejobalert)
+2026-05-15 16:49:41 [INFO]   Detail URL: https://www.freejobalert.com/articles/cbse-group-a-b-and-c-tier-ii-exam-result-2026-3049323
+2026-05-15 16:49:41 [INFO] GET https://www.freejobalert.com/articles/cbse-group-a-b-and-c-tier-ii-exam-result-2026-3049323 via CF Worker
+2026-05-15 16:49:41 [INFO] CF Worker OK for https://www.freejobalert.com/articles/cbse-group-a-b-and-c-tier-ii-exam-result-2026-3049323 (origin status: 200, size: 151649 bytes)
+2026-05-15 16:49:44 [INFO]   Written (MDX): content/results/government/cbse-group-a-b-c-tier-ii-exam-result-2026.mdx
+2026-05-15 16:49:44 [INFO] 
+[RESULT] • CSIR NAL Technical Assistant Result 2026  (source: freejobalert)
+2026-05-15 16:49:44 [INFO]   Detail URL: https://www.freejobalert.com/articles/csir-nal-technical-assistant-result-2026-3049316
+2026-05-15 16:49:44 [INFO] GET https://www.freejobalert.com/articles/csir-nal-technical-assistant-result-2026-3049316 via CF Worker
+2026-05-15 16:49:44 [INFO] CF Worker OK for https://www.freejobalert.com/articles/csir-nal-technical-assistant-result-2026-3049316 (origin status: 200, size: 152578 bytes)
+2026-05-15 16:49:47 [INFO]   Written (MDX): content/results/government/csir-nal-technical-assistant-result-2026.mdx
+2026-05-15 16:49:47 [INFO] 
+[RESULT] • Pune City Police Prison Constable Marks 2026  (source: freejobalert)
+2026-05-15 16:49:47 [INFO]   Detail URL: https://www.freejobalert.com/articles/pune-city-police-prison-constable-marks-2026-3049311
+2026-05-15 16:49:47 [INFO] GET https://www.freejobalert.com/articles/pune-city-police-prison-constable-marks-2026-3049311 via CF Worker
+2026-05-15 16:49:47 [INFO] CF Worker OK for https://www.freejobalert.com/articles/pune-city-police-prison-constable-marks-2026-3049311 (origin status: 200, size: 151380 bytes)
+2026-05-15 16:49:49 [INFO]   Written (MDX): content/results/police/pune-city-police-prison-constable-marks-2026.mdx
+2026-05-15 16:49:49 [INFO] 
+[RESULT] • Mizoram PSC Jr Grade exam Final Result 2026  (source: freejobalert)
+2026-05-15 16:49:49 [INFO]   Detail URL: https://www.freejobalert.com/articles/mizoram-psc-jr-grade-exam-final-result-2026-3049310
+2026-05-15 16:49:49 [INFO] GET https://www.freejobalert.com/articles/mizoram-psc-jr-grade-exam-final-result-2026-3049310 via CF Worker
+2026-05-15 16:49:49 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mizoram-psc-jr-grade-exam-final-result-2026-3049310 (origin status: 200, size: 155762 bytes)
+2026-05-15 16:49:53 [INFO]   Written (MDX): content/results/government/mizoram-psc-jr-grade-exam-final-result-2026.mdx
+2026-05-15 16:49:53 [INFO] 
+[RESULT] • HMFW Guntur Staff Nurse Provisional Merit List 2026  (source: freejobalert)
+2026-05-15 16:49:53 [INFO]   Detail URL: https://www.freejobalert.com/articles/hmfw-guntur-staff-nurse-provisional-merit-list-2026-3049305
+2026-05-15 16:49:53 [INFO] GET https://www.freejobalert.com/articles/hmfw-guntur-staff-nurse-provisional-merit-list-2026-3049305 via CF Worker
+2026-05-15 16:49:53 [INFO] CF Worker OK for https://www.freejobalert.com/articles/hmfw-guntur-staff-nurse-provisional-merit-list-2026-3049305 (origin status: 200, size: 152282 bytes)
+2026-05-15 16:49:56 [INFO]   Written (MDX): content/results/government/hmfw-guntur-staff-nurse-provisional-merit-list-2026.mdx
+2026-05-15 16:49:56 [INFO] 
+[RESULT] CBSE Group A B C Tier II Result 2026 for 124 Post  (source: rojgarresult)
+2026-05-15 16:49:56 [INFO]   Detail URL: https://rojgarresult.com/cbse-group-abc-2025/
+2026-05-15 16:49:56 [INFO] GET https://rojgarresult.com/cbse-group-abc-2025/ via CF Worker
+2026-05-15 16:49:57 [INFO] CF Worker OK for https://rojgarresult.com/cbse-group-abc-2025/ (origin status: 200, size: 137245 bytes)
+2026-05-15 16:50:03 [INFO]   [skip] Title no longer matches kind=result after detail parse: 12th Class or equivalent qualification from a recognized Boa
+2026-05-15 16:50:03 [INFO] 
+[ADMIT] IDBI Assistant Manager Interview Call Letter 2026  (source: freejobalert)
+2026-05-15 16:50:03 [INFO]   Detail URL: https://www.freejobalert.com/articles/idbi-assistant-manager-interview-call-letter-2026-3049329
+2026-05-15 16:50:03 [INFO] GET https://www.freejobalert.com/articles/idbi-assistant-manager-interview-call-letter-2026-3049329 via CF Worker
+2026-05-15 16:50:03 [INFO] CF Worker OK for https://www.freejobalert.com/articles/idbi-assistant-manager-interview-call-letter-2026-3049329 (origin status: 200, size: 154677 bytes)
+2026-05-15 16:50:06 [INFO]   Written (MDX): content/admit-cards/government/idbi-assistant-manager-interview-call-letter-2026.mdx
+2026-05-15 16:50:06 [INFO] 
+[ADMIT] Indian Army Agniveer Admit Card 2026 - (Out)  (source: freejobalert)
+2026-05-15 16:50:06 [INFO]   Detail URL: https://www.freejobalert.com/articles/indian-army-agniveer-admit-card-2026-3048202
+2026-05-15 16:50:06 [INFO] GET https://www.freejobalert.com/articles/indian-army-agniveer-admit-card-2026-3048202 via CF Worker
+2026-05-15 16:50:06 [INFO] CF Worker OK for https://www.freejobalert.com/articles/indian-army-agniveer-admit-card-2026-3048202 (origin status: 200, size: 155477 bytes)
+2026-05-15 16:50:08 [INFO]   Written (MDX): content/admit-cards/defence/indian-army-agniveer-admit-card-2026-out.mdx
+2026-05-15 16:50:08 [INFO] 
+[ADMIT] DCECE Bihar Polytechnic Admit Card 2026  (source: sarkariexam)
+2026-05-15 16:50:08 [INFO]   Detail URL: https://www.sarkariexam.com/dcece-bihar-polytechnic-2026/
+2026-05-15 16:50:08 [INFO] GET https://www.sarkariexam.com/dcece-bihar-polytechnic-2026/ via CF Worker
+2026-05-15 16:50:10 [INFO] CF Worker OK for https://www.sarkariexam.com/dcece-bihar-polytechnic-2026/ (origin status: 200, size: 184111 bytes)
+2026-05-15 16:50:12 [INFO]   Written (MDX): content/admit-cards/government/dcece-bihar-polytechnic-admit-card-2026.mdx
+2026-05-15 16:50:12 [INFO] 
+[ADMIT] NTA NEET UG Re-Exam Date 2026  (source: sarkariexam)
+2026-05-15 16:50:12 [INFO]   Detail URL: https://www.sarkariexam.com/nta-neet-ug-2026/
+2026-05-15 16:50:12 [INFO] GET https://www.sarkariexam.com/nta-neet-ug-2026/ via CF Worker
+2026-05-15 16:50:13 [INFO] CF Worker OK for https://www.sarkariexam.com/nta-neet-ug-2026/ (origin status: 200, size: 185272 bytes)
+2026-05-15 16:50:16 [INFO]   Written (MDX): content/admit-cards/government/nta-neet-ug-re-exam-date-2026.mdx
+2026-05-15 16:50:16 [INFO] 
+Rebuilding listing pages from detail pages...
+2026-05-15 16:50:16 [INFO] RSS feeds generated: feed.xml + feed/jobs|results|admit-cards.xml
+2026-05-15 16:50:16 [INFO] API JSON generated: api/latest.json
+2026-05-15 16:50:16 [INFO] Telegram: TELEGRAM_BOT_TOKEN or TELEGRAM_CHANNEL_ID not set — skipping
+2026-05-15 16:50:16 [INFO] IndexNow: INDEXNOW_KEY not set or no new URLs — skipping
+2026-05-15 16:50:16 [INFO] 
+============================================================
+2026-05-15 16:50:16 [INFO] DONE in 95s  |  Pages generated: 10
+2026-05-15 16:50:16 [INFO]   Jobs=0, Results=6, AdmitCards=4
+2026-05-15 16:50:16 [INFO]   Pages generated per source:
+2026-05-15 16:50:16 [INFO]     sarkariresult        Jobs=0 Results=1 Admits=0   (https://www.sarkariresult.com)
+2026-05-15 16:50:16 [INFO]     freejobalert         Jobs=0 Results=5 Admits=2   (https://www.freejobalert.com)
+2026-05-15 16:50:16 [INFO]     sarkariexam          Jobs=0 Results=0 Admits=2   (https://www.sarkariexam.com)
+2026-05-15 16:50:16 [INFO] ============================================================
+
