@@ -1690,7 +1690,7 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     if _CF_WORKER_SECRET:
         headers['X-Proxy-Secret'] = _CF_WORKER_SECRET
     try:
-        r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT, proxies=_NO_PROXY)
+        r = _session.get(proxy_url, headers=headers, timeout=TIMEOUT, proxies=_NO_PROXY, verify=False)
         if r.status_code == 503 and r.headers.get('X-Challenge-Detected'):
             log.warning(f'CF Worker: Cloudflare challenge page detected for {url} — site is blocking scraper requests')
             return None
@@ -1756,8 +1756,17 @@ def _fetch_with_playwright(url: str) -> BeautifulSoup | None:
         return None
     try:
         log.info(f'  [Playwright-stealth] Fetching {url}')
+        # Use pre-installed Chromium if available
+        _chrome_exec = None
+        for _candidate in [
+            '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+            '/root/.cache/ms-playwright/chromium-1194/chrome-linux/chrome',
+        ]:
+            if os.path.isfile(_candidate):
+                _chrome_exec = _candidate
+                break
         with sync_playwright() as p:
-            browser = p.chromium.launch(
+            _launch_kwargs: dict = dict(
                 headless=True,
                 args=[
                     '--no-sandbox',
@@ -1767,6 +1776,9 @@ def _fetch_with_playwright(url: str) -> BeautifulSoup | None:
                     '--window-size=1366,768',
                 ],
             )
+            if _chrome_exec:
+                _launch_kwargs['executable_path'] = _chrome_exec
+            browser = p.chromium.launch(**_launch_kwargs)
             context = browser.new_context(
                 user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
                 viewport={'width': 1366, 'height': 768},
