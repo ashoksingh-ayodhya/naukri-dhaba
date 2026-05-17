@@ -1997,6 +1997,10 @@ def listing_text_matches(title: str, page_type: str) -> bool:
         return bool(re.search(r'result|merit|score\s*card|marks|cutoff|cut.off|selection list|final list|topper|rank', text))
     if page_type == 'admit':
         return bool(re.search(r'admit card|exam city|hall ticket|call letter|exam date|exam schedule|e.admit', text))
+    if page_type == 'answer-key':
+        return bool(re.search(r'answer key|answer sheet|official answer|provisional answer|final answer|ans key', text))
+    if page_type == 'syllabus':
+        return bool(re.search(r'syllabus|exam pattern|curriculum|paper pattern|course content', text))
     return False
 
 
@@ -2014,6 +2018,10 @@ def kind_matches_title(title: str, kind: str) -> bool:
         return listing_text_matches(text, 'result')
     if kind == 'admit':
         return listing_text_matches(text, 'admit')
+    if kind == 'answer-key':
+        return listing_text_matches(text, 'answer-key')
+    if kind == 'syllabus':
+        return listing_text_matches(text, 'syllabus')
     return True
 
 
@@ -4029,7 +4037,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         return 0
 
     # ── 1. Scrape listing pages from all sources ───────────
-    all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    all_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': [], 'answer-key': [], 'syllabus': []}
     successful_listings = 0
     # per-source counters: {src_name: {kind: count}}
     source_counts: dict[str, dict[str, int]] = {}
@@ -4037,7 +4045,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     for source in SOURCES:
         src_name = source['name']
         src_base = source['base']
-        source_counts[src_name] = {'job': 0, 'result': 0, 'admit': 0}
+        source_counts[src_name] = {'job': 0, 'result': 0, 'admit': 0, 'answer-key': 0, 'syllabus': 0}
         log.info(f'\n{"─"*40}')
         log.info(f'SOURCE: {src_name}  ({src_base})')
         log.info(f'{"─"*40}')
@@ -4092,20 +4100,20 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # Per-source summary table
     log.info('\n' + '─' * 60)
     log.info('SCRAPE SUMMARY — new posts per source:')
-    log.info(f'  {"Source":<20} {"Jobs":>6} {"Results":>9} {"Admits":>8} {"Total":>7}')
-    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*7}')
+    log.info(f'  {"Source":<20} {"Jobs":>6} {"Results":>9} {"Admits":>8} {"AnsKey":>8} {"Syllabi":>8} {"Total":>7}')
+    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*8} {"─"*8} {"─"*7}')
     for src_name, counts in source_counts.items():
         src_total = sum(counts.values())
         src_base = next(s['base'] for s in SOURCES if s['name'] == src_name)
-        log.info(f'  {src_name:<20} {counts["job"]:>6} {counts["result"]:>9} {counts["admit"]:>8} {src_total:>7}   ({src_base})')
-    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*7}')
+        log.info(f'  {src_name:<20} {counts["job"]:>6} {counts["result"]:>9} {counts["admit"]:>8} {counts["answer-key"]:>8} {counts["syllabus"]:>8} {src_total:>7}   ({src_base})')
+    log.info(f'  {"─"*20} {"─"*6} {"─"*9} {"─"*8} {"─"*8} {"─"*8} {"─"*7}')
     total_new = sum(len(v) for v in all_items.values())
-    log.info(f'  {"TOTAL":<20} {len(all_items["job"]):>6} {len(all_items["result"]):>9} {len(all_items["admit"]):>8} {total_new:>7}')
+    log.info(f'  {"TOTAL":<20} {len(all_items["job"]):>6} {len(all_items["result"]):>9} {len(all_items["admit"]):>8} {len(all_items["answer-key"]):>8} {len(all_items["syllabus"]):>8} {total_new:>7}')
     log.info('─' * 60)
 
     # ── 2. Scrape detail pages & generate HTML ─────────────
-    generated: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
-    staged: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': []}
+    generated: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': [], 'answer-key': [], 'syllabus': []}
+    staged: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': [], 'answer-key': [], 'syllabus': []}
     staging_root = SITE_ROOT / STAGING_DIR
     staging_manifest: list[dict] = []
 
@@ -4217,7 +4225,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         manifest_file.write_text(json.dumps(existing_manifest, indent=2, ensure_ascii=False), encoding='utf-8')
         log.info(f'\nStaging manifest updated: {len(staging_manifest)} new items ({manifest_file})')
         total_staged = sum(len(v) for v in staged.values())
-        log.info(f'  Staged: Jobs={len(staged["job"])}, Results={len(staged["result"])}, AdmitCards={len(staged["admit"])} (total={total_staged})')
+        log.info(f'  Staged: Jobs={len(staged["job"])}, Results={len(staged["result"])}, AdmitCards={len(staged["admit"])}, AnsKeys={len(staged["answer-key"])}, Syllabus={len(staged["syllabus"])} (total={total_staged})')
         log.info(f'  These items require manual review before going live.')
 
     # ── 3. Rebuild listing pages from canonical detail pages ───────────
