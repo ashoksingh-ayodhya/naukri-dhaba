@@ -283,7 +283,18 @@ def generate_mdx(detail: "DetailData") -> Path | None:
     if detail.source:
         frontmatter_lines.append(f'source: "{detail.source}"')
 
-    frontmatter_lines.append(f"publishedAt: {_yaml_str(detail.post_date or detail.scraped_at[:10])}")
+    # Sanitize publishedAt — must be YYYY-MM-DD; fall back to scrape date if not
+    _raw_date = detail.post_date or ""
+    import re as _re
+    _iso_match = _re.match(r"(\d{1,2})/(\d{1,2})/(\d{4})", _raw_date)
+    if _re.match(r"^\d{4}-\d{2}-\d{2}$", _raw_date):
+        _publish_date = _raw_date
+    elif _iso_match:
+        _d, _m, _y = _iso_match.group(1), _iso_match.group(2), _iso_match.group(3)
+        _publish_date = f"{_y}-{_m.zfill(2)}-{_d.zfill(2)}"
+    else:
+        _publish_date = detail.scraped_at[:10]
+    frontmatter_lines.append(f"publishedAt: {_yaml_str(_publish_date)}")
     if detail.update_date:
         frontmatter_lines.append(f"updatedAt: {_yaml_str(detail.update_date)}")
 

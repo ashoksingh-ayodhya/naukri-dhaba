@@ -44,35 +44,67 @@ export function buildMetadata({
   };
 }
 
+function toIsoDate(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  // Already YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+  // Extract DD/MM/YYYY from string — handles "13/02/2026 (Extended)", "13/02/2026 Extended", etc.
+  const m = raw.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m) return `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+  return undefined;
+}
+
+function buildDescription(fm: PostFrontmatter): string {
+  const parts: string[] = [];
+  const org = fm.organization || fm.dept;
+  if (org) parts.push(`${org} has released a recruitment notification.`);
+  if (fm.totalPosts) parts.push(`Total vacancies: ${fm.totalPosts} posts.`);
+  if (fm.qualification) parts.push(`Eligibility: ${fm.qualification}.`);
+  if (fm.applicationBegin && fm.lastDate)
+    parts.push(`Application window: ${fm.applicationBegin} to ${fm.lastDate}.`);
+  else if (fm.lastDate) parts.push(`Last date to apply: ${fm.lastDate}.`);
+  if (fm.salary) parts.push(`Pay scale: ${fm.salary}.`);
+  if (fm.howToApply && fm.howToApply.length > 0) parts.push(fm.howToApply[0]);
+  if (fm.shortDescription) parts.unshift(fm.shortDescription);
+  const desc = parts.join(" ").trim();
+  // Google requires at least a meaningful sentence
+  return desc.length > 50 ? desc : `${fm.title}. Government of India recruitment notification. Apply online at the official website.`;
+}
+
 export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
+  // hiringOrganization.name must never be empty — critical GSC error
+  const orgName = (fm.organization || fm.dept || "Government of India").trim() || "Government of India";
+
+  const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
+
   const ld: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
     title: fm.title,
-    description: fm.shortDescription || fm.title,
+    description: buildDescription(fm),
     hiringOrganization: {
       "@type": "Organization",
-      name: fm.organization,
-      sameAs: fm.officialWebsite || "",
+      name: orgName,
+      ...(fm.officialWebsite ? { sameAs: fm.officialWebsite } : {}),
     },
     jobLocation: {
       "@type": "Place",
       address: { "@type": "PostalAddress", addressCountry: "IN" },
     },
+    employmentType: "FULL_TIME",
     url,
-    datePosted: fm.publishedAt,
+    datePosted,
   };
 
   if (fm.lastDate) {
-    const [dd, mm, yyyy] = fm.lastDate.split("/");
-    if (dd && mm && yyyy) {
-      ld.validThrough = `${yyyy}-${mm}-${dd}T23:59:59`;
-    }
+    const iso = toIsoDate(fm.lastDate);
+    if (iso) ld.validThrough = `${iso}T23:59:59+05:30`;
   }
 
-  if (fm.totalPosts) {
-    ld.totalJobOpenings = parseInt(fm.totalPosts.replace(/[^0-9]/g, "")) || undefined;
-  }
+  const totalPosts = parseInt((fm.totalPosts || "").replace(/[^0-9]/g, ""));
+  if (totalPosts > 0) ld.totalJobOpenings = totalPosts;
+
+  if (fm.applyUrl && fm.applyUrl !== "#") ld.directApply = false;
 
   return ld;
 }
