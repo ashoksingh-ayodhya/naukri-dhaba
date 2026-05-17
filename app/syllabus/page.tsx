@@ -4,9 +4,11 @@ import { buildMetadata } from "@/lib/seo";
 import JobsTable from "@/components/listings/JobsTable";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
+const YEAR = new Date().getFullYear();
+
 export const metadata: Metadata = buildMetadata({
-  title: "Syllabus 2024 — Exam Pattern & Syllabus",
-  description: "Download latest syllabus and exam patterns for SSC, Railway, Banking, UPSC and all government competitive exams.",
+  title: `Syllabus ${YEAR} — Exam Pattern & Complete Syllabus`,
+  description: `Download ${YEAR} syllabus and exam patterns for SSC, Railway, Banking, UPSC, Police and all government competitive exams. Topic-wise complete syllabus with weightage.`,
   path: "/syllabus/",
 });
 
@@ -16,7 +18,7 @@ export default function SyllabusPage() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Syllabus" }]} />
       <div className="mt-4 mb-6">
-        <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Syllabus 2024</h1>
+        <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Syllabus {YEAR}</h1>
         <p className="text-slate-500 text-sm">{posts.length} syllabus documents available</p>
       </div>
       <JobsTable posts={posts} title="All Syllabus" showHeader={false} />

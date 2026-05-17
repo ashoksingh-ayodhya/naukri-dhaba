@@ -24,7 +24,7 @@ const inter = Inter({
 
 const GTM_ID = "GTM-5L4D9C9M";
 const GA4_ID = "G-E3C5CLPP6B";
-const GSC_CODE = ""; // paste your Search Console HTML tag meta content value here
+const GSC_CODE = ""; // paste Search Console HTML tag meta content value here
 
 export const metadata: Metadata = {
   title: {
@@ -34,6 +34,15 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   verification: GSC_CODE ? { google: GSC_CODE } : undefined,
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -41,25 +50,24 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
-    images: [{ url: siteConfig.ogImage, width: 1200, height: 630 }],
+    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: `${siteConfig.name} — Sarkari Naukri Portal` }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
+    images: [{ url: siteConfig.ogImage, alt: `${siteConfig.name} — Sarkari Naukri Portal` }],
   },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  other: { "theme-color": "#1e3a8a" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
+    <html lang="en-IN" className={`${spaceGrotesk.variable} ${inter.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="alternate" type="application/rss+xml" title="Naukri Dhaba — Latest Jobs" href="/feed/jobs.xml" />
-        <link rel="alternate" type="application/rss+xml" title="Naukri Dhaba — Results" href="/feed/results.xml" />
-        <link rel="alternate" type="application/rss+xml" title="Naukri Dhaba — Admit Cards" href="/feed/admit-cards.xml" />
 
         {/* Google Tag Manager — dataLayer init + GTM script */}
         <Script id="gtm-init" strategy="beforeInteractive">{`

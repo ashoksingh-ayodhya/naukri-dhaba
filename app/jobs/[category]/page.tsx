@@ -9,6 +9,8 @@ import JobsTable from "@/components/listings/JobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
+const YEAR = new Date().getFullYear();
+
 interface Props {
   params: Promise<{ category: string }>;
 }
@@ -22,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = CATEGORIES.find((c) => c.slug === category);
   if (!cat) return {};
   return buildMetadata({
-    title: `${cat.fullName} Jobs`,
-    description: `Latest ${cat.fullName} job notifications and recruitment. Apply online for ${cat.label} government jobs.`,
+    title: `${cat.fullName} Jobs ${YEAR} — Latest Recruitment Notifications`,
+    description: `Latest ${YEAR} ${cat.fullName} job notifications. Check vacancies, eligibility, last date and apply online for ${cat.label} government jobs.`,
     path: `/jobs/${cat.slug}/`,
   });
 }

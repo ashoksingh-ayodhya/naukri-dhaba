@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { getLatestByType, getLatestPosts } from "@/lib/content";
+import { buildWebSiteJsonLd, buildOrganizationJsonLd } from "@/lib/seo";
 import HeroSection from "@/components/home/HeroSection";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import LiveTicker from "@/components/home/LiveTicker";
@@ -10,10 +11,11 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.tagline}`,
   description: siteConfig.description,
+  alternates: { canonical: siteConfig.url + "/" },
 };
 
 export default function HomePage() {
-  const latestJobs    = getLatestPosts(50);
+  const latestJobs     = getLatestPosts(50);
   const latestJobsOnly = getLatestByType("job", 30);
   const latestResults  = getLatestByType("result", 20);
   const latestAdmits   = getLatestByType("admit", 20);
@@ -23,6 +25,16 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganizationJsonLd()) }}
+      />
+
       <LiveTicker posts={latestJobs.slice(0, 20)} />
       <HeroSection jobCount={latestJobs.length} todayCount={todayCount} />
 
@@ -32,7 +44,6 @@ export default function HomePage() {
 
       <div className="max-w-7xl mx-auto px-4 pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          {/* Main: Latest Jobs */}
           <AnimatedSection className="lg:col-span-2">
             <JobsTable
               posts={latestJobsOnly}
@@ -41,7 +52,6 @@ export default function HomePage() {
             />
           </AnimatedSection>
 
-          {/* Sidebar: Results + Admit Cards */}
           <div className="space-y-5">
             <AnimatedSection delay={0.1}>
               <JobsTable
