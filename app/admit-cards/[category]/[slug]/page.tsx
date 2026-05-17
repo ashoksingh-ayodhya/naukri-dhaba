@@ -3,7 +3,7 @@ export const dynamicParams = false;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPost, getAllPostMeta } from "@/lib/content";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
 import { siteConfig, CATEGORIES } from "@/config/site";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -28,9 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost("admit", category, slug);
   if (!post) return {};
   const { frontmatter: fm } = post;
+  const org = (fm.organization || fm.dept || "").trim();
+  const desc = fm.shortDescription ||
+    `Download ${org ? org + " " : ""}admit card ${new Date().getFullYear()}. Get hall ticket, exam date, reporting time, exam centre and instructions PDF from the official website.`;
   return buildMetadata({
     title: `${fm.title} Admit Card`,
-    description: fm.shortDescription || `Download ${fm.title} admit card / hall ticket.`,
+    description: desc.slice(0, 160),
     path: `/admit-cards/${category}/${slug}/`,
   });
 }
@@ -43,21 +46,31 @@ export default async function AdmitCardDetailPage({ params }: Props) {
   const cat = CATEGORIES.find((c) => c.slug === category);
   const pageUrl = `${siteConfig.url}/admit-cards/${category}/${slug}/`;
 
+  const breadcrumbs = [
+    { label: "Home", href: "/" },
+    { label: "Admit Cards", href: "/admit-cards/" },
+    { label: cat?.label || category, href: `/admit-cards/${category}/` },
+    { label: fm.title },
+  ];
+
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6">
-      <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Admit Cards", href: "/admit-cards/" }, { label: cat?.label || category, href: `/admit-cards/${category}/` }, { label: fm.title }]} />
-      <div className="mt-4 space-y-4">
-        <PostHeader fm={fm} />
-        {fm.shortDescription && <div className="card p-5"><p className="text-slate-700 leading-relaxed">{fm.shortDescription}</p></div>}
-        <ImportantDates fm={fm} />
-        <ImportantLinks fm={fm} />
-        {content?.trim() && (
-          <div className="card p-5 prose prose-sm max-w-none prose-headings:font-heading">
-            <MarkdownContent content={content} />
-          </div>
-        )}
-        <div className="card p-4"><ShareButtons title={fm.title} url={pageUrl} /></div>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(breadcrumbs)) }} />
+      <div className="max-w-5xl mx-auto px-4 py-6">
+        <Breadcrumb crumbs={breadcrumbs} />
+        <div className="mt-4 space-y-4">
+          <PostHeader fm={fm} />
+          {fm.shortDescription && <div className="card p-5"><p className="text-slate-700 leading-relaxed">{fm.shortDescription}</p></div>}
+          <ImportantDates fm={fm} />
+          <ImportantLinks fm={fm} />
+          {content?.trim() && (
+            <div className="card p-5 prose prose-sm max-w-none prose-headings:font-heading">
+              <MarkdownContent content={content} />
+            </div>
+          )}
+          <div className="card p-4"><ShareButtons title={fm.title} url={pageUrl} /></div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

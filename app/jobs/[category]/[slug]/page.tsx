@@ -3,7 +3,7 @@ export const dynamicParams = false;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPost, getAllPostMeta } from "@/lib/content";
-import { buildMetadata, buildJobJsonLd } from "@/lib/seo";
+import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 import { siteConfig, CATEGORIES } from "@/config/site";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -35,11 +35,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost("job", category, slug);
   if (!post) return {};
   const { frontmatter: fm } = post;
+  const cat = CATEGORIES.find((c) => c.slug === category);
+
+  const descParts: string[] = [];
+  const org = (fm.organization || fm.dept || "").trim();
+  if (org) descParts.push(`${org} recruitment ${new Date().getFullYear()}.`);
+  if (fm.totalPosts) descParts.push(`${fm.totalPosts} vacancies.`);
+  if (fm.qualification) descParts.push(`Eligibility: ${fm.qualification}.`);
+  if (fm.lastDate) descParts.push(`Last date: ${fm.lastDate}.`);
+  const desc = fm.shortDescription ||
+    (descParts.length > 0
+      ? descParts.join(" ") + ` Apply online at ${siteConfig.name}.`
+      : `${fm.title} — Check eligibility, last date and apply online. ${cat?.fullName || ""} recruitment notification.`);
+
   return buildMetadata({
     title: fm.title,
-    description:
-      fm.shortDescription ||
-      `${fm.title} — ${fm.totalPosts ? fm.totalPosts + " posts, " : ""}Last Date: ${fm.lastDate || "Check Notification"}. Apply online at ${siteConfig.name}.`,
+    description: desc.slice(0, 160),
     path: `/jobs/${category}/${slug}/`,
   });
 }
@@ -52,24 +63,21 @@ export default async function JobDetailPage({ params }: Props) {
   const { frontmatter: fm, content } = post;
   const cat = CATEGORIES.find((c) => c.slug === category);
   const pageUrl = `${siteConfig.url}/jobs/${category}/${slug}/`;
-  const jsonLd = buildJobJsonLd(fm, pageUrl);
+
+  const breadcrumbs = [
+    { label: "Home", href: "/" },
+    { label: "Jobs", href: "/jobs/" },
+    { label: cat?.label || category, href: `/jobs/${category}/` },
+    { label: fm.title },
+  ];
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJobJsonLd(fm, pageUrl)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(breadcrumbs)) }} />
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <Breadcrumb
-          crumbs={[
-            { label: "Home", href: "/" },
-            { label: "Jobs", href: "/jobs/" },
-            { label: cat?.label || category, href: `/jobs/${category}/` },
-            { label: fm.title },
-          ]}
-        />
+        <Breadcrumb crumbs={breadcrumbs} />
 
         <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main content */}
@@ -88,7 +96,7 @@ export default async function JobDetailPage({ params }: Props) {
             {fm.qualificationItems && fm.qualificationItems.length > 0 && (
               <div className="card mb-4">
                 <div className="px-4 py-3 border-b border-slate-100">
-                  <h2 className="section-title">🎓 Eligibility / Qualification</h2>
+                  <h2 className="section-title">Eligibility / Qualification</h2>
                 </div>
                 <ul className="px-4 py-4 space-y-2">
                   {fm.qualificationItems.map((item, i) => (
@@ -110,7 +118,7 @@ export default async function JobDetailPage({ params }: Props) {
 
             {fm.salary && (
               <div className="card mb-4 p-4">
-                <h2 className="section-title mb-2">💵 Salary / Pay Scale</h2>
+                <h2 className="section-title mb-2">Salary / Pay Scale</h2>
                 <p className="text-sm text-slate-700">{fm.salary}</p>
               </div>
             )}

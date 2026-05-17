@@ -10,8 +10,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
         {/* Brand */}
         <div className="col-span-2 md:col-span-1">
-          <Link href="/" className="flex items-center gap-2 font-heading font-bold text-lg text-white mb-3">
-            <span className="text-accent-500">🍽️</span>
+          <Link href="/" className="flex items-center gap-2 font-heading font-bold text-lg text-white mb-3" aria-label="Naukri Dhaba — Home">
+            <img src="/logo.svg" alt="Naukri Dhaba" width={28} height={28} className="w-7 h-7 rounded" />
             <span>Naukri Dhaba</span>
           </Link>
           <p className="text-sm text-slate-400 leading-relaxed mb-4">

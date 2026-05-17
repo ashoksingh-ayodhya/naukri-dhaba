@@ -9,6 +9,8 @@ import JobsTable from "@/components/listings/JobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
+const YEAR = new Date().getFullYear();
+
 interface Props { params: Promise<{ category: string }> }
 
 export function generateStaticParams() {
@@ -20,8 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = CATEGORIES.find((c) => c.slug === category);
   if (!cat) return {};
   return buildMetadata({
-    title: `${cat.label} Admit Card 2024`,
-    description: `Download latest ${cat.fullName} admit cards and hall tickets.`,
+    title: `${cat.label} Admit Card ${YEAR} — Download Hall Ticket`,
+    description: `Download latest ${YEAR} ${cat.fullName} admit cards and hall tickets. Get direct download link, exam date, reporting time and exam centre details.`,
     path: `/admit-cards/${cat.slug}/`,
   });
 }
@@ -35,7 +37,7 @@ export default async function AdmitCardCategoryPage({ params }: Props) {
     <div className="max-w-7xl mx-auto px-4 py-6">
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Admit Cards", href: "/admit-cards/" }, { label: cat.label }]} />
       <div className="mt-4 mb-6">
-        <h1 className="font-heading text-2xl font-bold text-slate-900">{cat.label} Admit Card 2024</h1>
+        <h1 className="font-heading text-2xl font-bold text-slate-900">{cat.label} Admit Card {YEAR}</h1>
         <p className="text-slate-500 text-sm">{posts.length} admit cards found</p>
       </div>
       <FilterBar baseHref="/admit-cards/" activeCategory={category} />

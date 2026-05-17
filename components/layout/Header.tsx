@@ -22,8 +22,8 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl tracking-tight">
-            <span className="text-accent-500">🍽️</span>
+          <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl tracking-tight" aria-label="Naukri Dhaba — Home">
+            <img src="/logo.svg" alt="Naukri Dhaba" width={32} height={32} className="w-8 h-8 rounded" />
             <span className="text-white">Naukri</span>
             <span className="text-accent-400">Dhaba</span>
           </Link>
