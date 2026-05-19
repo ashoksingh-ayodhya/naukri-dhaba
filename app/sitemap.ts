@@ -15,6 +15,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base + "/answer-keys/", changeFrequency: "weekly", priority: 0.8 },
     { url: base + "/syllabus/", changeFrequency: "weekly", priority: 0.7 },
     { url: base + "/search/", changeFrequency: "monthly", priority: 0.6 },
+    { url: base + "/about/", changeFrequency: "monthly", priority: 0.4 },
+    { url: base + "/privacy/", changeFrequency: "monthly", priority: 0.3 },
+    { url: base + "/disclaimer/", changeFrequency: "monthly", priority: 0.3 },
+    { url: base + "/contact/", changeFrequency: "monthly", priority: 0.4 },
     ...CATEGORIES.map((cat) => ({
       url: `${base}/jobs/${cat.slug}/`,
       changeFrequency: "daily" as const,

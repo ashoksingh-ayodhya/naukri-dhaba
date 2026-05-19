@@ -286,14 +286,23 @@ def generate_mdx(detail: "DetailData") -> Path | None:
     # Sanitize publishedAt — must be YYYY-MM-DD; fall back to scrape date if not
     _raw_date = detail.post_date or ""
     import re as _re
-    _iso_match = _re.match(r"(\d{1,2})/(\d{1,2})/(\d{4})", _raw_date)
-    if _re.match(r"^\d{4}-\d{2}-\d{2}$", _raw_date):
-        _publish_date = _raw_date
-    elif _iso_match:
-        _d, _m, _y = _iso_match.group(1), _iso_match.group(2), _iso_match.group(3)
-        _publish_date = f"{_y}-{_m.zfill(2)}-{_d.zfill(2)}"
-    else:
-        _publish_date = detail.scraped_at[:10]
+    _MONTHS = {'january':'01','february':'02','march':'03','april':'04','may':'05','june':'06',
+                'july':'07','august':'08','september':'09','october':'10','november':'11','december':'12'}
+    def _to_iso(s: str) -> str | None:
+        s = s.strip()
+        if _re.match(r'^\d{4}-\d{2}-\d{2}$', s):
+            return s
+        m = _re.match(r'(\d{1,2})/(\d{1,2})/(\d{4})', s)  # DD/MM/YYYY
+        if m:
+            return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
+        m = _re.match(r'(\w+)\s+(\d{1,2}),?\s+(\d{4})', s)  # "May 14, 2026"
+        if m and m.group(1).lower() in _MONTHS:
+            return f"{m.group(3)}-{_MONTHS[m.group(1).lower()]}-{m.group(2).zfill(2)}"
+        m = _re.match(r'(\d{1,2})\s+(\w+)\s+(\d{4})', s)  # "22 April 2026"
+        if m and m.group(2).lower() in _MONTHS:
+            return f"{m.group(3)}-{_MONTHS[m.group(2).lower()]}-{m.group(1).zfill(2)}"
+        return None
+    _publish_date = _to_iso(_raw_date) or detail.scraped_at[:10]
     frontmatter_lines.append(f"publishedAt: {_yaml_str(_publish_date)}")
     if detail.update_date:
         frontmatter_lines.append(f"updatedAt: {_yaml_str(detail.update_date)}")
