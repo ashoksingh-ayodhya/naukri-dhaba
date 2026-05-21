@@ -16486,3 +16486,1743 @@ Rebuilding listing pages from detail pages...
 2026-05-20 17:30:00 [INFO] API JSON generated: api/latest.json
 2026-05-20 17:30:00 [INFO] Telegram: TELEGRAM_BOT_TOKEN or TELEGRAM_CHANNEL_ID not set — skipping
 2026-05-20 17:30:00 [INFO] IndexNow: INDEXNOW_KEY not set or no new URLs — skipping
+2026-05-21 11:25:55 [INFO] CF Worker proxy configured: https://nd-proxy.awesomeashoksingh.worke...
+2026-05-21 11:25:55 [INFO] ============================================================
+2026-05-21 11:25:55 [INFO] NAUKRI DHABA SCRAPER  started 2026-05-21 11:25:55 IST
+2026-05-21 11:25:55 [INFO] Source: sarkariresult.com
+2026-05-21 11:25:55 [INFO] ============================================================
+2026-05-21 11:25:55 [INFO] 
+────────────────────────────────────────
+2026-05-21 11:25:55 [INFO] SOURCE: sarkariresult  (https://www.sarkariresult.com)
+2026-05-21 11:25:55 [INFO] ────────────────────────────────────────
+2026-05-21 11:25:55 [INFO] 
+Fetching JOB listing: https://www.sarkariresult.com/latestjob.php
+2026-05-21 11:25:55 [INFO] GET https://www.sarkariresult.com/latestjob.php via CF Worker
+2026-05-21 11:25:58 [INFO] CF Worker OK for https://www.sarkariresult.com/latestjob.php (origin status: 200, size: 649475 bytes)
+2026-05-21 11:26:01 [INFO]   Listing parser found 1 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:01 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:01 [INFO]   Anchor fallback found 150 raw rows
+2026-05-21 11:26:01 [INFO]   Raw items from sarkariresult: 150
+2026-05-21 11:26:01 [INFO]   Accepted new jobs from sarkariresult: 8
+2026-05-21 11:26:01 [INFO] 
+Fetching RESULT listing: https://www.sarkariresult.com/result.php
+2026-05-21 11:26:01 [INFO] GET https://www.sarkariresult.com/result.php via CF Worker
+2026-05-21 11:26:03 [INFO] CF Worker OK for https://www.sarkariresult.com/result.php (origin status: 200, size: 736522 bytes)
+2026-05-21 11:26:06 [INFO]   Listing parser found 0 raw rows (skipped 1 non-matching titles)
+2026-05-21 11:26:06 [INFO]   Skipped titles sample: ['UPSC Exam Calendar 2027']
+2026-05-21 11:26:07 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:07 [INFO]   Anchor fallback found 150 raw rows
+2026-05-21 11:26:07 [INFO]   Raw items from sarkariresult: 150
+2026-05-21 11:26:07 [INFO]   Accepted new results from sarkariresult: 6
+2026-05-21 11:26:07 [INFO] 
+Fetching ADMIT listing: https://www.sarkariresult.com/admitcard.php
+2026-05-21 11:26:07 [INFO] GET https://www.sarkariresult.com/admitcard.php via CF Worker
+2026-05-21 11:26:09 [INFO] CF Worker OK for https://www.sarkariresult.com/admitcard.php (origin status: 200, size: 781088 bytes)
+2026-05-21 11:26:12 [INFO]   Listing parser found 0 raw rows (skipped 1 non-matching titles)
+2026-05-21 11:26:12 [INFO]   Skipped titles sample: ['Sarkari Result']
+2026-05-21 11:26:13 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:13 [INFO]   Anchor fallback found 150 raw rows
+2026-05-21 11:26:13 [INFO]   Raw items from sarkariresult: 150
+2026-05-21 11:26:13 [INFO]   Accepted new admits from sarkariresult: 5
+2026-05-21 11:26:13 [INFO] 
+Fetching ANSWER-KEY listing: https://www.sarkariresult.com/answer-key.php
+2026-05-21 11:26:13 [INFO] GET https://www.sarkariresult.com/answer-key.php via CF Worker
+2026-05-21 11:26:14 [INFO] CF Worker OK for https://www.sarkariresult.com/answer-key.php (origin status: 200, size: 374 bytes)
+2026-05-21 11:26:17 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:17 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:17 [INFO]   Anchor fallback found 0 raw rows
+2026-05-21 11:26:17 [INFO]   [DIAG] 0 items found — 1 anchors, 0 tables. HTML text: 'Sarkari Result : SarkariResult.Com 404 Not Found Page Sorry This Page is Not Available Now Back to Home Page Click Here'
+2026-05-21 11:26:17 [INFO]   [sarkariresult] 0 items from HTTP fetch — trying Playwright JS-render fallback
+2026-05-21 11:26:17 [INFO]   [Playwright-stealth] Fetching https://www.sarkariresult.com/answer-key.php
+2026-05-21 11:26:31 [INFO]   [Playwright-stealth] Got 369 bytes, 1 anchors
+2026-05-21 11:26:31 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:31 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:31 [INFO]   Anchor fallback found 0 raw rows
+2026-05-21 11:26:31 [INFO]   [DIAG] 0 items found — 1 anchors, 0 tables. HTML text: 'Sarkari Result : SarkariResult.Com 404 Not Found Page Sorry This Page is Not Available Now Back to Home Page Click Here'
+2026-05-21 11:26:31 [INFO]   Playwright fallback found 0 raw rows
+2026-05-21 11:26:31 [INFO]   Raw items from sarkariresult: 0
+2026-05-21 11:26:31 [INFO]   Accepted new answer-keys from sarkariresult: 0
+2026-05-21 11:26:31 [INFO] 
+Fetching SYLLABUS listing: https://www.sarkariresult.com/syllabus.php
+2026-05-21 11:26:31 [INFO] GET https://www.sarkariresult.com/syllabus.php via CF Worker
+2026-05-21 11:26:32 [INFO] CF Worker OK for https://www.sarkariresult.com/syllabus.php (origin status: 200, size: 49309 bytes)
+2026-05-21 11:26:34 [INFO]   Listing parser found 1 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:34 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:34 [INFO]   Anchor fallback found 150 raw rows
+2026-05-21 11:26:34 [INFO]   Raw items from sarkariresult: 150
+2026-05-21 11:26:34 [INFO]   Accepted new syllabuss from sarkariresult: 150
+2026-05-21 11:26:34 [INFO] 
+────────────────────────────────────────
+2026-05-21 11:26:34 [INFO] SOURCE: freejobalert  (https://www.freejobalert.com)
+2026-05-21 11:26:34 [INFO] ────────────────────────────────────────
+2026-05-21 11:26:34 [INFO] 
+Fetching JOB listing: https://www.freejobalert.com/government-jobs/
+2026-05-21 11:26:34 [INFO] GET https://www.freejobalert.com/government-jobs/ via CF Worker
+2026-05-21 11:26:34 [INFO] CF Worker OK for https://www.freejobalert.com/government-jobs/ (origin status: 200, size: 117784 bytes)
+2026-05-21 11:26:37 [INFO]   Listing parser found 2 raw rows (skipped 1 non-matching titles)
+2026-05-21 11:26:37 [INFO]   Skipped titles sample: ['SSC GD Constable Admit Card 2026 (Out)']
+2026-05-21 11:26:37 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:37 [INFO]   Anchor fallback found 11 raw rows
+2026-05-21 11:26:37 [INFO]   Raw items from freejobalert: 11
+2026-05-21 11:26:37 [INFO]   Accepted new jobs from freejobalert: 5
+2026-05-21 11:26:37 [INFO] 
+Fetching RESULT listing: https://www.freejobalert.com/sarkariresult/
+2026-05-21 11:26:37 [INFO] GET https://www.freejobalert.com/sarkariresult/ via CF Worker
+2026-05-21 11:26:37 [INFO] CF Worker OK for https://www.freejobalert.com/sarkariresult/ (origin status: 200, size: 164832 bytes)
+2026-05-21 11:26:40 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:40 [INFO]   List/div fallback found 10 raw rows
+2026-05-21 11:26:40 [INFO]   Raw items from freejobalert: 10
+2026-05-21 11:26:40 [INFO]   Accepted new results from freejobalert: 10
+2026-05-21 11:26:40 [INFO] 
+Fetching ADMIT listing: https://www.freejobalert.com/admit-card/
+2026-05-21 11:26:40 [INFO] GET https://www.freejobalert.com/admit-card/ via CF Worker
+2026-05-21 11:26:40 [INFO] CF Worker OK for https://www.freejobalert.com/admit-card/ (origin status: 200, size: 987420 bytes)
+2026-05-21 11:26:44 [INFO]   Listing parser found 3 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:44 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:44 [INFO]   Anchor fallback found 25 raw rows
+2026-05-21 11:26:44 [INFO]   Raw items from freejobalert: 25
+2026-05-21 11:26:44 [INFO]   Accepted new admits from freejobalert: 4
+2026-05-21 11:26:44 [INFO] 
+Fetching ANSWER-KEY listing: https://www.freejobalert.com/answer-key/
+2026-05-21 11:26:44 [INFO] GET https://www.freejobalert.com/answer-key/ via CF Worker
+2026-05-21 11:26:45 [INFO] CF Worker OK for https://www.freejobalert.com/answer-key/ (origin status: 200, size: 587963 bytes)
+2026-05-21 11:26:48 [INFO]   Listing parser found 3 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:48 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:48 [INFO]   Anchor fallback found 25 raw rows
+2026-05-21 11:26:48 [INFO]   Raw items from freejobalert: 25
+2026-05-21 11:26:48 [INFO]   Accepted new answer-keys from freejobalert: 25
+2026-05-21 11:26:48 [INFO] 
+Fetching SYLLABUS listing: https://www.freejobalert.com/syllabus/
+2026-05-21 11:26:48 [INFO] GET https://www.freejobalert.com/syllabus/ via CF Worker
+2026-05-21 11:26:48 [INFO] CF Worker OK for https://www.freejobalert.com/syllabus/ (origin status: 200, size: 455043 bytes)
+2026-05-21 11:26:52 [INFO]   Listing parser found 3 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:52 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:52 [INFO]   Anchor fallback found 25 raw rows
+2026-05-21 11:26:52 [INFO]   Raw items from freejobalert: 25
+2026-05-21 11:26:52 [INFO]   Accepted new syllabuss from freejobalert: 25
+2026-05-21 11:26:52 [INFO] 
+────────────────────────────────────────
+2026-05-21 11:26:52 [INFO] SOURCE: rojgarresult  (https://www.rojgarresult.com)
+2026-05-21 11:26:52 [INFO] ────────────────────────────────────────
+2026-05-21 11:26:52 [INFO] 
+Fetching JOB listing: https://www.rojgarresult.com/recruitments/
+2026-05-21 11:26:52 [INFO] GET https://www.rojgarresult.com/recruitments/ via CF Worker
+2026-05-21 11:26:53 [INFO] CF Worker OK for https://www.rojgarresult.com/recruitments/ (origin status: 200, size: 230568 bytes)
+2026-05-21 11:26:56 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:26:56 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:26:56 [INFO]   Anchor fallback found 10 raw rows
+2026-05-21 11:26:56 [INFO]   Raw items from rojgarresult: 10
+2026-05-21 11:26:56 [INFO]   Accepted new jobs from rojgarresult: 7
+2026-05-21 11:26:56 [INFO] 
+Fetching RESULT listing: https://www.rojgarresult.com/latest-result/
+2026-05-21 11:26:56 [INFO] GET https://www.rojgarresult.com/latest-result/ via CF Worker
+2026-05-21 11:26:57 [INFO] CF Worker OK for https://www.rojgarresult.com/latest-result/ (origin status: 200, size: 168344 bytes)
+2026-05-21 11:27:00 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:00 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:00 [INFO]   Anchor fallback found 34 raw rows
+2026-05-21 11:27:00 [INFO]   Raw items from rojgarresult: 34
+2026-05-21 11:27:00 [INFO]   Accepted new results from rojgarresult: 3
+2026-05-21 11:27:00 [INFO] 
+Fetching ADMIT listing: https://www.rojgarresult.com/admit-card/
+2026-05-21 11:27:00 [INFO] GET https://www.rojgarresult.com/admit-card/ via CF Worker
+2026-05-21 11:27:01 [INFO] CF Worker OK for https://www.rojgarresult.com/admit-card/ (origin status: 200, size: 228162 bytes)
+2026-05-21 11:27:04 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:04 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:04 [INFO]   Anchor fallback found 6 raw rows
+2026-05-21 11:27:04 [INFO]   Raw items from rojgarresult: 6
+2026-05-21 11:27:04 [INFO]   Accepted new admits from rojgarresult: 1
+2026-05-21 11:27:04 [INFO] 
+────────────────────────────────────────
+2026-05-21 11:27:04 [INFO] SOURCE: sarkariexam  (https://www.sarkariexam.com)
+2026-05-21 11:27:04 [INFO] ────────────────────────────────────────
+2026-05-21 11:27:04 [INFO] 
+Fetching JOB listing: https://www.sarkariexam.com/category/jobs
+2026-05-21 11:27:04 [INFO] GET https://www.sarkariexam.com/category/jobs via CF Worker
+2026-05-21 11:27:05 [INFO] CF Worker OK for https://www.sarkariexam.com/category/jobs (origin status: 200, size: 178375 bytes)
+2026-05-21 11:27:08 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:08 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:08 [INFO]   Anchor fallback found 31 raw rows
+2026-05-21 11:27:08 [INFO]   Raw items from sarkariexam: 31
+2026-05-21 11:27:08 [INFO]   Accepted new jobs from sarkariexam: 0
+2026-05-21 11:27:08 [INFO] 
+Fetching RESULT listing: https://www.sarkariexam.com/exam-result
+2026-05-21 11:27:08 [INFO] GET https://www.sarkariexam.com/exam-result via CF Worker
+2026-05-21 11:27:09 [WARNING] CF Worker fetch failed for https://www.sarkariexam.com/exam-result: 404 Client Error: Not Found for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fwww.sarkariexam.com%2Fexam-result
+2026-05-21 11:27:09 [WARNING] CF Worker failed for https://www.sarkariexam.com/exam-result, falling back to direct fetch
+2026-05-21 11:27:09 [WARNING]   curl-cffi attempt 1: HTTP 403 for https://www.sarkariexam.com/exam-result
+2026-05-21 11:27:11 [WARNING]   curl-cffi attempt 2: HTTP 403 for https://www.sarkariexam.com/exam-result
+2026-05-21 11:27:16 [WARNING]   curl-cffi attempt 3: HTTP 403 for https://www.sarkariexam.com/exam-result
+2026-05-21 11:27:16 [INFO]   curl-cffi exhausted — trying playwright stealth for https://www.sarkariexam.com/exam-result
+2026-05-21 11:27:16 [INFO]   [Playwright-stealth] Fetching https://www.sarkariexam.com/exam-result
+2026-05-21 11:27:20 [INFO]   [Playwright-stealth] Got 481527 bytes, 21 anchors
+2026-05-21 11:27:20 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:20 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:20 [INFO]   Anchor fallback found 1 raw rows
+2026-05-21 11:27:20 [INFO]   Raw items from sarkariexam: 1
+2026-05-21 11:27:20 [INFO]   Accepted new results from sarkariexam: 0
+2026-05-21 11:27:20 [INFO] 
+Fetching ADMIT listing: https://www.sarkariexam.com/category/admit-card/
+2026-05-21 11:27:20 [INFO] GET https://www.sarkariexam.com/category/admit-card/ via CF Worker
+2026-05-21 11:27:20 [INFO] CF Worker OK for https://www.sarkariexam.com/category/admit-card/ (origin status: 200, size: 180087 bytes)
+2026-05-21 11:27:23 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:23 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:23 [INFO]   Anchor fallback found 37 raw rows
+2026-05-21 11:27:23 [INFO]   Raw items from sarkariexam: 37
+2026-05-21 11:27:23 [INFO]   Accepted new admits from sarkariexam: 10
+2026-05-21 11:27:23 [INFO] 
+Fetching ANSWER-KEY listing: https://www.sarkariexam.com/category/answer-key/
+2026-05-21 11:27:23 [INFO] GET https://www.sarkariexam.com/category/answer-key/ via CF Worker
+2026-05-21 11:27:24 [WARNING] CF Worker fetch failed for https://www.sarkariexam.com/category/answer-key/: 404 Client Error: Not Found for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fwww.sarkariexam.com%2Fcategory%2Fanswer-key%2F
+2026-05-21 11:27:24 [WARNING] CF Worker failed for https://www.sarkariexam.com/category/answer-key/, falling back to direct fetch
+2026-05-21 11:27:24 [WARNING]   curl-cffi attempt 1: HTTP 403 for https://www.sarkariexam.com/category/answer-key/
+2026-05-21 11:27:26 [WARNING]   curl-cffi attempt 2: HTTP 403 for https://www.sarkariexam.com/category/answer-key/
+2026-05-21 11:27:31 [WARNING]   curl-cffi attempt 3: HTTP 403 for https://www.sarkariexam.com/category/answer-key/
+2026-05-21 11:27:31 [INFO]   curl-cffi exhausted — trying playwright stealth for https://www.sarkariexam.com/category/answer-key/
+2026-05-21 11:27:31 [INFO]   [Playwright-stealth] Fetching https://www.sarkariexam.com/category/answer-key/
+2026-05-21 11:27:34 [INFO]   [Playwright-stealth] Got 481582 bytes, 21 anchors
+2026-05-21 11:27:34 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:34 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:34 [INFO]   Anchor fallback found 1 raw rows
+2026-05-21 11:27:34 [INFO]   Raw items from sarkariexam: 1
+2026-05-21 11:27:34 [INFO]   Accepted new answer-keys from sarkariexam: 1
+2026-05-21 11:27:34 [INFO] 
+Fetching SYLLABUS listing: https://www.sarkariexam.com/category/syllabus/
+2026-05-21 11:27:34 [INFO] GET https://www.sarkariexam.com/category/syllabus/ via CF Worker
+2026-05-21 11:27:35 [INFO] CF Worker OK for https://www.sarkariexam.com/category/syllabus/ (origin status: 200, size: 180444 bytes)
+2026-05-21 11:27:38 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:38 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:38 [INFO]   Anchor fallback found 0 raw rows
+2026-05-21 11:27:38 [INFO]   [DIAG] 0 items found — 65 anchors, 0 tables. HTML text: 'Syllabus Archives - Sarkari Exam Skip to content Sarkari Exam अपडेट सबसे पहले Menu Home Admit Card Hot Job Exam Result Top Online Form Sarkari Result Answer Keys << Home Syllabus SSC GD Constable Admit Card 2026 UPSSSC Lekhpal Admit Card 2026 NTA UGC NET June Online Form 2026 – Extend BPSC 72nd Pre Online Form 2026 (1186 Posts) – Start Bihar Police CSBC Prohibition Constable Exam Date 2026 UPSSSC Pharmacist Eligibility Result 2026 – Out CRPF Constable Tradesmen Correction / Edit Form 2026 MPESB Nursing Officer, Sister Tutor Answer Key 2026 BPSSC Bihar Police Havildar Clerk Admit Card Date 2026'
+2026-05-21 11:27:38 [INFO]   [sarkariexam] 0 items from HTTP fetch — trying Playwright JS-render fallback
+2026-05-21 11:27:38 [INFO]   [Playwright-stealth] Fetching https://www.sarkariexam.com/category/syllabus/
+2026-05-21 11:27:41 [INFO]   [Playwright-stealth] Got 844075 bytes, 65 anchors
+2026-05-21 11:27:41 [INFO]   Listing parser found 0 raw rows (skipped 0 non-matching titles)
+2026-05-21 11:27:41 [INFO]   List/div fallback found 0 raw rows
+2026-05-21 11:27:41 [INFO]   Anchor fallback found 0 raw rows
+2026-05-21 11:27:41 [INFO]   [DIAG] 0 items found — 65 anchors, 0 tables. HTML text: 'Syllabus Archives - Sarkari Exam Skip to content Sarkari Exam अपडेट सबसे पहले Menu Home Admit Card Hot Job Exam Result Top Online Form Sarkari Result Answer Keys << Home Discover more Quick Links Directory UGC NET resources UPSSSC Exam Prep Syllabus SSC GD Constable Admit Card 2026 UPSSSC Lekhpal Admit Card 2026 NTA UGC NET June Online Form 2026 – Extend BPSC 72nd Pre Online Form 2026 (1186 Posts) – Start Bihar Police CSBC Prohibition Constable Exam Date 2026 UPSSSC Pharmacist Eligibility Result 2026 – Out CRPF Constable Tradesmen Correction / Edit Form 2026 MPESB Nursing Officer, Sister Tutor'
+2026-05-21 11:27:41 [INFO]   Playwright fallback found 0 raw rows
+2026-05-21 11:27:41 [INFO]   Raw items from sarkariexam: 0
+2026-05-21 11:27:41 [INFO]   Accepted new syllabuss from sarkariexam: 0
+2026-05-21 11:27:41 [INFO] 
+────────────────────────────────────────────────────────────
+2026-05-21 11:27:41 [INFO] SCRAPE SUMMARY — new posts per source:
+2026-05-21 11:27:41 [INFO]   Source                 Jobs   Results   Admits   AnsKey  Syllabi   Total
+2026-05-21 11:27:41 [INFO]   ──────────────────── ────── ───────── ──────── ──────── ──────── ───────
+2026-05-21 11:27:41 [INFO]   sarkariresult             8         6        5        0      150     169   (https://www.sarkariresult.com)
+2026-05-21 11:27:41 [INFO]   freejobalert              5        10        4       25       25      69   (https://www.freejobalert.com)
+2026-05-21 11:27:41 [INFO]   rojgarresult              7         3        1        0        0      11   (https://www.rojgarresult.com)
+2026-05-21 11:27:41 [INFO]   sarkariexam               0         0       10        1        0      11   (https://www.sarkariexam.com)
+2026-05-21 11:27:41 [INFO]   ──────────────────── ────── ───────── ──────── ──────── ──────── ───────
+2026-05-21 11:27:41 [INFO]   TOTAL                    20        19       20       26      175     260
+2026-05-21 11:27:41 [INFO] ────────────────────────────────────────────────────────────
+2026-05-21 11:27:41 [INFO] 
+[JOB] UPSC CDS II Online Form 2026  (source: sarkariresult)
+2026-05-21 11:27:41 [INFO]   Detail URL: https://www.sarkariresult.com/upsc/upsc-cds-ii-exam-2026/
+2026-05-21 11:27:41 [INFO] GET https://www.sarkariresult.com/upsc/upsc-cds-ii-exam-2026/ via CF Worker
+2026-05-21 11:27:42 [INFO] CF Worker OK for https://www.sarkariresult.com/upsc/upsc-cds-ii-exam-2026/ (origin status: 200, size: 22965 bytes)
+2026-05-21 11:27:44 [INFO] CF Worker proxy configured: https://nd-proxy.awesomeashoksingh.worke...
+2026-05-21 11:27:46 [INFO]   Written (MDX): content/jobs/upsc/upsc-cds-ii-online-form-2026.mdx
+2026-05-21 11:27:46 [INFO] 
+[JOB] UPSC NDA II Online Form 2026  (source: sarkariresult)
+2026-05-21 11:27:46 [INFO]   Detail URL: https://www.sarkariresult.com/upsc/upsc-nda-ii-exam-2026/
+2026-05-21 11:27:46 [INFO] GET https://www.sarkariresult.com/upsc/upsc-nda-ii-exam-2026/ via CF Worker
+2026-05-21 11:27:46 [INFO] CF Worker OK for https://www.sarkariresult.com/upsc/upsc-nda-ii-exam-2026/ (origin status: 200, size: 23690 bytes)
+2026-05-21 11:27:49 [INFO]   Written (MDX): content/jobs/upsc/upsc-nda-ii-online-form-2026.mdx
+2026-05-21 11:27:49 [INFO] 
+[JOB] Railway SECR Nagpur Apprentices Online Form 2026  (source: sarkariresult)
+2026-05-21 11:27:49 [INFO]   Detail URL: https://www.sarkariresult.com/railway/secr-nagpur-apprentices-may26/
+2026-05-21 11:27:49 [INFO] GET https://www.sarkariresult.com/railway/secr-nagpur-apprentices-may26/ via CF Worker
+2026-05-21 11:27:49 [INFO] CF Worker OK for https://www.sarkariresult.com/railway/secr-nagpur-apprentices-may26/ (origin status: 200, size: 23374 bytes)
+2026-05-21 11:27:54 [INFO]   Written (MDX): content/jobs/railway/railway-secr-nagpur-apprentices-online-form-2026.mdx
+2026-05-21 11:27:54 [INFO] 
+[JOB] Railway SECR Bilaspur Apprentices Online Form 2026  (source: sarkariresult)
+2026-05-21 11:27:54 [INFO]   Detail URL: https://www.sarkariresult.com/railway/secr-bilaspur-apprentices-may26/
+2026-05-21 11:27:54 [INFO] GET https://www.sarkariresult.com/railway/secr-bilaspur-apprentices-may26/ via CF Worker
+2026-05-21 11:27:55 [INFO] CF Worker OK for https://www.sarkariresult.com/railway/secr-bilaspur-apprentices-may26/ (origin status: 200, size: 22116 bytes)
+2026-05-21 11:27:57 [INFO]   Written (MDX): content/jobs/railway/railway-secr-bilaspur-apprentices-online-form-2026.mdx
+2026-05-21 11:27:57 [INFO] 
+[JOB] State Bank of India SBI Apprentices Online Form 2026  (source: sarkariresult)
+2026-05-21 11:27:57 [INFO]   Detail URL: https://www.sarkariresult.com/bank/sbi-apprentices-2026/
+2026-05-21 11:27:57 [INFO] GET https://www.sarkariresult.com/bank/sbi-apprentices-2026/ via CF Worker
+2026-05-21 11:27:58 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/sbi-apprentices-2026/ (origin status: 200, size: 22653 bytes)
+2026-05-21 11:28:01 [INFO]   Written (MDX): content/jobs/banking/state-bank-of-india-sbi-apprentices-online-form-2026.mdx
+2026-05-21 11:28:01 [INFO] 
+[JOB] Bank of Baroda Apprentices Online Form 2026  (source: sarkariresult)
+2026-05-21 11:28:01 [INFO]   Detail URL: https://www.sarkariresult.com/bank/bob-apprentices-2026/
+2026-05-21 11:28:01 [INFO] GET https://www.sarkariresult.com/bank/bob-apprentices-2026/ via CF Worker
+2026-05-21 11:28:02 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/bob-apprentices-2026/ (origin status: 200, size: 34931 bytes)
+2026-05-21 11:28:05 [INFO]   Written (MDX): content/jobs/banking/bank-of-baroda-apprentices-online-form-2026.mdx
+2026-05-21 11:28:05 [INFO] 
+[JOB] Bihar Police BPSSC ASI Technical Online Form 2026  (source: sarkariresult)
+2026-05-21 11:28:05 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/bpssc-asi-technical-07-2026/
+2026-05-21 11:28:05 [INFO] GET https://www.sarkariresult.com/bihar/bpssc-asi-technical-07-2026/ via CF Worker
+2026-05-21 11:28:05 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/bpssc-asi-technical-07-2026/ (origin status: 200, size: 23290 bytes)
+2026-05-21 11:28:07 [INFO]   Written (MDX): content/jobs/police/bihar-police-bpssc-asi-technical-online-form-2026.mdx
+2026-05-21 11:28:07 [INFO] 
+[JOB] Railway RRB Technician CEN 02/2026 Online Form  (source: sarkariresult)
+2026-05-21 11:28:07 [INFO]   Detail URL: https://www.sarkariresult.com/railway/rrb-technician-cen-02-2026/
+2026-05-21 11:28:07 [INFO] GET https://www.sarkariresult.com/railway/rrb-technician-cen-02-2026/ via CF Worker
+2026-05-21 11:28:08 [INFO] CF Worker OK for https://www.sarkariresult.com/railway/rrb-technician-cen-02-2026/ (origin status: 200, size: 22831 bytes)
+2026-05-21 11:28:11 [INFO]   Written (MDX): content/jobs/railway/railway-rrb-technician-cen-022026-online-form.mdx
+2026-05-21 11:28:11 [INFO] 
+[JOB] UPSC CDS 2 Exam Notification 2026  (source: freejobalert)
+2026-05-21 11:28:11 [INFO]   Detail URL: https://www.freejobalert.com/articles/upsc-cds-2-examination-2026-apply-online-for-451-combined-defence-services-posts-3050029
+2026-05-21 11:28:11 [INFO] GET https://www.freejobalert.com/articles/upsc-cds-2-examination-2026-apply-online-for-451-combined-defence-services-posts-3050029 via CF Worker
+2026-05-21 11:28:11 [INFO] CF Worker OK for https://www.freejobalert.com/articles/upsc-cds-2-examination-2026-apply-online-for-451-combined-defence-services-posts-3050029 (origin status: 200, size: 211910 bytes)
+2026-05-21 11:28:14 [INFO]   Written (MDX): content/jobs/upsc/upsc-cds-2-exam-notification-2026.mdx
+2026-05-21 11:28:14 [INFO] 
+[JOB] Punjab & Sind Bank Apprentice Online Form 2026  (source: freejobalert)
+2026-05-21 11:28:14 [INFO]   Detail URL: https://www.freejobalert.com/articles/punjab-and-sind-bank-apprentice-recruitment-2026-apply-online-for-635-posts-3050022
+2026-05-21 11:28:14 [INFO] GET https://www.freejobalert.com/articles/punjab-and-sind-bank-apprentice-recruitment-2026-apply-online-for-635-posts-3050022 via CF Worker
+2026-05-21 11:28:15 [INFO] CF Worker OK for https://www.freejobalert.com/articles/punjab-and-sind-bank-apprentice-recruitment-2026-apply-online-for-635-posts-3050022 (origin status: 200, size: 214099 bytes)
+2026-05-21 11:28:17 [INFO]   Written (MDX): content/jobs/banking/punjab-sind-bank-apprentice-online-form-2026.mdx
+2026-05-21 11:28:17 [INFO] 
+[JOB] SBI 7150 Apprentice Online Form 2026  (source: freejobalert)
+2026-05-21 11:28:17 [INFO]   Detail URL: https://www.freejobalert.com/articles/sbi-apprentice-recruitment-2026-apply-online-for-7150-posts-3049634
+2026-05-21 11:28:17 [INFO] GET https://www.freejobalert.com/articles/sbi-apprentice-recruitment-2026-apply-online-for-7150-posts-3049634 via CF Worker
+2026-05-21 11:28:17 [INFO] CF Worker OK for https://www.freejobalert.com/articles/sbi-apprentice-recruitment-2026-apply-online-for-7150-posts-3049634 (origin status: 200, size: 217121 bytes)
+2026-05-21 11:28:21 [INFO]   Written (MDX): content/jobs/government/sbi-7150-apprentice-online-form-2026.mdx
+2026-05-21 11:28:21 [INFO] 
+[JOB] Bank of Baroda 5000 Apprentice Online Form 2026  (source: freejobalert)
+2026-05-21 11:28:21 [INFO]   Detail URL: https://www.freejobalert.com/articles/bank-of-baroda-apprentice-recruitment-2026-apply-online-for-5000-posts-3049627
+2026-05-21 11:28:21 [INFO] GET https://www.freejobalert.com/articles/bank-of-baroda-apprentice-recruitment-2026-apply-online-for-5000-posts-3049627 via CF Worker
+2026-05-21 11:28:21 [INFO] CF Worker OK for https://www.freejobalert.com/articles/bank-of-baroda-apprentice-recruitment-2026-apply-online-for-5000-posts-3049627 (origin status: 200, size: 208545 bytes)
+2026-05-21 11:28:24 [INFO]   Written (MDX): content/jobs/banking/bank-of-baroda-5000-apprentice-online-form-2026.mdx
+2026-05-21 11:28:24 [INFO] 
+[JOB] RRB 6565 Technician Online Form 2026 (Short Notice)  (source: freejobalert)
+2026-05-21 11:28:24 [INFO]   Detail URL: https://www.freejobalert.com/articles/rrb-technician-recruitment-2026-apply-online-for-6565-posts-3049539
+2026-05-21 11:28:24 [INFO] GET https://www.freejobalert.com/articles/rrb-technician-recruitment-2026-apply-online-for-6565-posts-3049539 via CF Worker
+2026-05-21 11:28:25 [INFO] CF Worker OK for https://www.freejobalert.com/articles/rrb-technician-recruitment-2026-apply-online-for-6565-posts-3049539 (origin status: 200, size: 171960 bytes)
+2026-05-21 11:28:27 [INFO]   Written (MDX): content/jobs/government/rrb-6565-technician-online-form-2026-short-notice.mdx
+2026-05-21 11:28:27 [INFO] 
+[JOB] Punjab & Sind Bank Apprentice Online Form 2026 for 635  (source: rojgarresult)
+2026-05-21 11:28:27 [INFO]   Detail URL: https://rojgarresult.com/punjab-sind-bank-apprentice-2026/
+2026-05-21 11:28:27 [INFO] GET https://rojgarresult.com/punjab-sind-bank-apprentice-2026/ via CF Worker
+2026-05-21 11:28:28 [INFO] CF Worker OK for https://rojgarresult.com/punjab-sind-bank-apprentice-2026/ (origin status: 200, size: 132219 bytes)
+2026-05-21 11:28:31 [INFO]   Written (MDX): content/jobs/banking/punjab-sind-bank-apprentice-online-form-2026-for-635.mdx
+2026-05-21 11:28:31 [INFO] 
+[JOB] JTET Online Form 2026 | Jharkhand Teacher Eligibility Test D  (source: rojgarresult)
+2026-05-21 11:28:31 [INFO]   Detail URL: https://rojgarresult.com/jharkhand-teacher-eligibility-test-2026/
+2026-05-21 11:28:31 [INFO] GET https://rojgarresult.com/jharkhand-teacher-eligibility-test-2026/ via CF Worker
+2026-05-21 11:28:32 [INFO] CF Worker OK for https://rojgarresult.com/jharkhand-teacher-eligibility-test-2026/ (origin status: 200, size: 129655 bytes)
+2026-05-21 11:28:37 [INFO]   Written (MDX): content/jobs/government/jtet-online-form-2026-jharkhand-teacher-eligibility-test-date-extended.mdx
+2026-05-21 11:28:37 [INFO] 
+[JOB] CSBC Bihar Police Prohibition Constable, Jail Warden & Other  (source: rojgarresult)
+2026-05-21 11:28:37 [INFO]   Detail URL: https://rojgarresult.com/csbc-jail-warden-advt-03-2025/
+2026-05-21 11:28:37 [INFO] GET https://rojgarresult.com/csbc-jail-warden-advt-03-2025/ via CF Worker
+2026-05-21 11:28:38 [INFO] CF Worker OK for https://rojgarresult.com/csbc-jail-warden-advt-03-2025/ (origin status: 200, size: 128457 bytes)
+2026-05-21 11:28:41 [INFO]   Written (MDX): content/jobs/police/csbc-bihar-police-prohibition-constable-jail-warden-other-post-exam-date-2026.mdx
+2026-05-21 11:28:41 [INFO] 
+[JOB] UPSC CDS II Online Form 2026 for 451 Post  (source: rojgarresult)
+2026-05-21 11:28:41 [INFO]   Detail URL: https://rojgarresult.com/upsc-cds-ii-2026/
+2026-05-21 11:28:41 [INFO] GET https://rojgarresult.com/upsc-cds-ii-2026/ via CF Worker
+2026-05-21 11:28:41 [INFO] CF Worker OK for https://rojgarresult.com/upsc-cds-ii-2026/ (origin status: 200, size: 132368 bytes)
+2026-05-21 11:28:44 [INFO]   Written (MDX): content/jobs/upsc/upsc-cds-ii-online-form-2026-for-451-post.mdx
+2026-05-21 11:28:44 [INFO] 
+[JOB] UPSC NDA II Online Form 2026 for 394 Post  (source: rojgarresult)
+2026-05-21 11:28:44 [INFO]   Detail URL: https://rojgarresult.com/upsc-nda-ii-2026/
+2026-05-21 11:28:44 [INFO] GET https://rojgarresult.com/upsc-nda-ii-2026/ via CF Worker
+2026-05-21 11:28:44 [INFO] CF Worker OK for https://rojgarresult.com/upsc-nda-ii-2026/ (origin status: 200, size: 133748 bytes)
+2026-05-21 11:28:47 [INFO]   Written (MDX): content/jobs/upsc/upsc-nda-ii-online-form-2026-for-394-post.mdx
+2026-05-21 11:28:47 [INFO] 
+[JOB] UGC NET June 2026 Online Form Date Extended  (source: rojgarresult)
+2026-05-21 11:28:47 [INFO]   Detail URL: https://rojgarresult.com/ugc-net-june-2026/
+2026-05-21 11:28:47 [INFO] GET https://rojgarresult.com/ugc-net-june-2026/ via CF Worker
+2026-05-21 11:28:48 [INFO] CF Worker OK for https://rojgarresult.com/ugc-net-june-2026/ (origin status: 200, size: 128763 bytes)
+2026-05-21 11:28:50 [INFO]   Written (MDX): content/jobs/government/ugc-net-june-2026-online-form-date-extended.mdx
+2026-05-21 11:28:50 [INFO] 
+[JOB] CSBC Bihar Police Constable Operator Exam Date 2026 | 993 Po  (source: rojgarresult)
+2026-05-21 11:28:50 [INFO]   Detail URL: https://rojgarresult.com/csbc-bihar-police-constable-operator-2026/
+2026-05-21 11:28:50 [INFO] GET https://rojgarresult.com/csbc-bihar-police-constable-operator-2026/ via CF Worker
+2026-05-21 11:28:51 [INFO] CF Worker OK for https://rojgarresult.com/csbc-bihar-police-constable-operator-2026/ (origin status: 200, size: 132888 bytes)
+2026-05-21 11:28:54 [INFO]   Written (MDX): content/jobs/police/csbc-bihar-police-constable-operator-exam-date-2026-993-post.mdx
+2026-05-21 11:28:54 [INFO] 
+[RESULT] DSSSB PGT Sanskrit Result 2026  (source: sarkariresult)
+2026-05-21 11:28:54 [INFO]   Detail URL: https://www.sarkariresult.com/delhi/dsssb-result-apr26/
+2026-05-21 11:28:54 [INFO] GET https://www.sarkariresult.com/delhi/dsssb-result-apr26/ via CF Worker
+2026-05-21 11:28:55 [INFO] CF Worker OK for https://www.sarkariresult.com/delhi/dsssb-result-apr26/ (origin status: 200, size: 21578 bytes)
+2026-05-21 11:28:57 [INFO]   Written (MDX): content/results/government/dsssb-pgt-sanskrit-result-2026.mdx
+2026-05-21 11:28:57 [INFO] 
+[RESULT] MPESB MP Police SI Phase II Mains Result 2026  (source: sarkariresult)
+2026-05-21 11:28:57 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mpesb-si-subedar-2025/
+2026-05-21 11:28:57 [INFO] GET https://www.sarkariresult.com/mp/mpesb-si-subedar-2025/ via CF Worker
+2026-05-21 11:28:58 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mpesb-si-subedar-2025/ (origin status: 200, size: 23613 bytes)
+2026-05-21 11:29:02 [INFO]   Written (MDX): content/results/police/mpesb-mp-police-si-phase-ii-mains-result-2026.mdx
+2026-05-21 11:29:02 [INFO] 
+[RESULT] UPSSSC Pharmacist Eligibility Result 2026  (source: sarkariresult)
+2026-05-21 11:29:02 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-pharmacist-01-2026/
+2026-05-21 11:29:02 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-pharmacist-01-2026/ via CF Worker
+2026-05-21 11:29:03 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-pharmacist-01-2026/ (origin status: 200, size: 23744 bytes)
+2026-05-21 11:29:06 [INFO]   Written (MDX): content/results/ssc/upsssc-pharmacist-eligibility-result-2026.mdx
+2026-05-21 11:29:06 [INFO] 
+[RESULT] MHA IB ACIO Tech 2025 Final Result  (source: sarkariresult)
+2026-05-21 11:29:06 [INFO]   Detail URL: https://doc.sarkariresults.org.in/IB_ACIO_Tech_Final_Result.pdf
+2026-05-21 11:29:06 [INFO] GET https://doc.sarkariresults.org.in/IB_ACIO_Tech_Final_Result.pdf via CF Worker
+2026-05-21 11:29:06 [WARNING] CF Worker fetch failed for https://doc.sarkariresults.org.in/IB_ACIO_Tech_Final_Result.pdf: 403 Client Error: Forbidden for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fdoc.sarkariresults.org.in%2FIB_ACIO_Tech_Final_Result.pdf
+2026-05-21 11:29:06 [WARNING] CF Worker failed for https://doc.sarkariresults.org.in/IB_ACIO_Tech_Final_Result.pdf, falling back to direct fetch
+2026-05-21 11:29:09 [INFO]   Written (MDX): content/results/government/mha-ib-acio-tech-2025-final-result.mdx
+2026-05-21 11:29:09 [INFO] 
+[RESULT] UPPSC LT Grade Assistant Teacher Computer Result 2026  (source: sarkariresult)
+2026-05-21 11:29:09 [INFO]   Detail URL: https://www.sarkariresult.com/2025/uppsc-lt-grade-teacher-2025/
+2026-05-21 11:29:09 [INFO] GET https://www.sarkariresult.com/2025/uppsc-lt-grade-teacher-2025/ via CF Worker
+2026-05-21 11:29:09 [INFO] CF Worker OK for https://www.sarkariresult.com/2025/uppsc-lt-grade-teacher-2025/ (origin status: 200, size: 30773 bytes)
+2026-05-21 11:29:25 [INFO]   Written (MDX): content/results/state-psc/uppsc-lt-grade-assistant-teacher-computer-result-2026.mdx
+2026-05-21 11:29:25 [INFO] 
+[RESULT] Rajasthan High Court Chauffeur, Driver Result 2026  (source: sarkariresult)
+2026-05-21 11:29:25 [INFO]   Detail URL: https://doc.sarkariresults.org.in/RHC_Chaufer_DriverNotice177903061428.pdf
+2026-05-21 11:29:25 [INFO] GET https://doc.sarkariresults.org.in/RHC_Chaufer_DriverNotice177903061428.pdf via CF Worker
+2026-05-21 11:29:25 [WARNING] CF Worker fetch failed for https://doc.sarkariresults.org.in/RHC_Chaufer_DriverNotice177903061428.pdf: 403 Client Error: Forbidden for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fdoc.sarkariresults.org.in%2FRHC_Chaufer_DriverNotice177903061428.pdf
+2026-05-21 11:29:26 [WARNING] CF Worker failed for https://doc.sarkariresults.org.in/RHC_Chaufer_DriverNotice177903061428.pdf, falling back to direct fetch
+2026-05-21 11:29:29 [INFO]   Written (MDX): content/results/government/rajasthan-high-court-chauffeur-driver-result-2026.mdx
+2026-05-21 11:29:29 [INFO] 
+[RESULT] • Calcutta High Court System Manager Result 2026  (source: freejobalert)
+2026-05-21 11:29:29 [INFO]   Detail URL: https://www.freejobalert.com/articles/calcutta-high-court-system-manager-result-2026-3050054
+2026-05-21 11:29:29 [INFO] GET https://www.freejobalert.com/articles/calcutta-high-court-system-manager-result-2026-3050054 via CF Worker
+2026-05-21 11:29:29 [INFO] CF Worker OK for https://www.freejobalert.com/articles/calcutta-high-court-system-manager-result-2026-3050054 (origin status: 200, size: 150852 bytes)
+2026-05-21 11:29:32 [INFO]   Written (MDX): content/results/government/calcutta-high-court-system-manager-result-2026.mdx
+2026-05-21 11:29:32 [INFO] 
+[RESULT] • Allahabad High Court LDCE Result 2026  (source: freejobalert)
+2026-05-21 11:29:32 [INFO]   Detail URL: https://www.freejobalert.com/articles/allahabad-high-court-ldce-result-2026-3050051
+2026-05-21 11:29:32 [INFO] GET https://www.freejobalert.com/articles/allahabad-high-court-ldce-result-2026-3050051 via CF Worker
+2026-05-21 11:29:32 [INFO] CF Worker OK for https://www.freejobalert.com/articles/allahabad-high-court-ldce-result-2026-3050051 (origin status: 200, size: 149763 bytes)
+2026-05-21 11:29:34 [INFO]   Written (MDX): content/results/government/allahabad-high-court-ldce-result-2026.mdx
+2026-05-21 11:29:34 [INFO] 
+[RESULT] • HPSC HCS Prelims Result 2026 - Out  (source: freejobalert)
+2026-05-21 11:29:34 [INFO]   Detail URL: https://www.freejobalert.com/articles/hpsc-hcs-prelims-result-2026-3049950
+2026-05-21 11:29:34 [INFO] GET https://www.freejobalert.com/articles/hpsc-hcs-prelims-result-2026-3049950 via CF Worker
+2026-05-21 11:29:35 [INFO] CF Worker OK for https://www.freejobalert.com/articles/hpsc-hcs-prelims-result-2026-3049950 (origin status: 200, size: 152541 bytes)
+2026-05-21 11:29:37 [INFO]   Written (MDX): content/results/government/hpsc-hcs-prelims-result-2026-out.mdx
+2026-05-21 11:29:37 [INFO] 
+[RESULT] • GSRTC Driver Result 2026 - Out  (source: freejobalert)
+2026-05-21 11:29:37 [INFO]   Detail URL: https://www.freejobalert.com/articles/gsrtc-driver-result-2026-3049896
+2026-05-21 11:29:37 [INFO] GET https://www.freejobalert.com/articles/gsrtc-driver-result-2026-3049896 via CF Worker
+2026-05-21 11:29:37 [INFO] CF Worker OK for https://www.freejobalert.com/articles/gsrtc-driver-result-2026-3049896 (origin status: 200, size: 149076 bytes)
+2026-05-21 11:29:40 [INFO]   Written (MDX): content/results/government/gsrtc-driver-result-2026-out.mdx
+2026-05-21 11:29:40 [INFO] 
+[RESULT] • OSSC CGL Result 2026 - Out  (source: freejobalert)
+2026-05-21 11:29:40 [INFO]   Detail URL: https://www.freejobalert.com/articles/ossc-cgl-result-2026-3049804
+2026-05-21 11:29:40 [INFO] GET https://www.freejobalert.com/articles/ossc-cgl-result-2026-3049804 via CF Worker
+2026-05-21 11:29:40 [INFO] CF Worker OK for https://www.freejobalert.com/articles/ossc-cgl-result-2026-3049804 (origin status: 200, size: 154076 bytes)
+2026-05-21 11:29:43 [INFO]   Written (MDX): content/results/ssc/ossc-cgl-result-2026-out.mdx
+2026-05-21 11:29:43 [INFO] 
+[RESULT] • DSSSB PGT and Other Posts Result 2026  (source: freejobalert)
+2026-05-21 11:29:43 [INFO]   Detail URL: https://www.freejobalert.com/articles/dsssb-various-posts-result-2026-3049801
+2026-05-21 11:29:43 [INFO] GET https://www.freejobalert.com/articles/dsssb-various-posts-result-2026-3049801 via CF Worker
+2026-05-21 11:29:44 [INFO] CF Worker OK for https://www.freejobalert.com/articles/dsssb-various-posts-result-2026-3049801 (origin status: 200, size: 154707 bytes)
+2026-05-21 11:29:46 [INFO]   Written (MDX): content/results/government/dsssb-pgt-and-other-posts-result-2026.mdx
+2026-05-21 11:29:46 [INFO] 
+[RESULT] • DSSSB JE/ Instructor Result 2026 Out  (source: freejobalert)
+2026-05-21 11:29:46 [INFO]   Detail URL: https://www.freejobalert.com/articles/dsssb-je-instructor-result-2026-3049787
+2026-05-21 11:29:46 [INFO] GET https://www.freejobalert.com/articles/dsssb-je-instructor-result-2026-3049787 via CF Worker
+2026-05-21 11:29:47 [INFO] CF Worker OK for https://www.freejobalert.com/articles/dsssb-je-instructor-result-2026-3049787 (origin status: 200, size: 152213 bytes)
+2026-05-21 11:29:50 [INFO]   Written (MDX): content/results/government/dsssb-je-instructor-result-2026-out.mdx
+2026-05-21 11:29:50 [INFO] 
+[RESULT] • NII Junior Assistant Result 2026 - Out  (source: freejobalert)
+2026-05-21 11:29:50 [INFO]   Detail URL: https://www.freejobalert.com/articles/nii-junior-assistant-result-2026-3049706
+2026-05-21 11:29:50 [INFO] GET https://www.freejobalert.com/articles/nii-junior-assistant-result-2026-3049706 via CF Worker
+2026-05-21 11:29:50 [INFO] CF Worker OK for https://www.freejobalert.com/articles/nii-junior-assistant-result-2026-3049706 (origin status: 200, size: 151851 bytes)
+2026-05-21 11:29:53 [INFO]   Written (MDX): content/results/government/nii-junior-assistant-result-2026-out.mdx
+2026-05-21 11:29:53 [INFO] 
+[RESULT] • HPRCA Hamirpur Assistant Staff Nurse Final Result 2026  (source: freejobalert)
+2026-05-21 11:29:53 [INFO]   Detail URL: https://www.freejobalert.com/articles/hprca-hamirpur-assistant-staff-nurse-final-result-2026-3049633
+2026-05-21 11:29:53 [INFO] GET https://www.freejobalert.com/articles/hprca-hamirpur-assistant-staff-nurse-final-result-2026-3049633 via CF Worker
+2026-05-21 11:29:53 [INFO] CF Worker OK for https://www.freejobalert.com/articles/hprca-hamirpur-assistant-staff-nurse-final-result-2026-3049633 (origin status: 200, size: 151425 bytes)
+2026-05-21 11:29:56 [INFO]   Written (MDX): content/results/government/hprca-hamirpur-assistant-staff-nurse-final-result-2026.mdx
+2026-05-21 11:29:56 [INFO] 
+[RESULT] • HSSC Group C Result 2026 - Out  (source: freejobalert)
+2026-05-21 11:29:56 [INFO]   Detail URL: https://www.freejobalert.com/articles/hssc-group-c-result-2026-3049632
+2026-05-21 11:29:56 [INFO] GET https://www.freejobalert.com/articles/hssc-group-c-result-2026-3049632 via CF Worker
+2026-05-21 11:29:57 [INFO] CF Worker OK for https://www.freejobalert.com/articles/hssc-group-c-result-2026-3049632 (origin status: 200, size: 149790 bytes)
+2026-05-21 11:29:59 [INFO]   Written (MDX): content/results/ssc/hssc-group-c-result-2026-out.mdx
+2026-05-21 11:29:59 [INFO] 
+[RESULT] MHA IB ACIO II / Tech Final Result 2025 for 258 Post  (source: rojgarresult)
+2026-05-21 11:29:59 [INFO]   Detail URL: https://rojgarresult.com/mha-ib-acio-tech-258-post-oct25/
+2026-05-21 11:29:59 [INFO] GET https://rojgarresult.com/mha-ib-acio-tech-258-post-oct25/ via CF Worker
+2026-05-21 11:30:02 [INFO] CF Worker OK for https://rojgarresult.com/mha-ib-acio-tech-258-post-oct25/ (origin status: 200, size: 126959 bytes)
+2026-05-21 11:30:08 [INFO]   [skip] Title no longer matches kind=result after detail parse: GATE 2023 OR GATE 2024 OR GATE 2025 Exam Passed.BE /B.Tech D
+2026-05-21 11:30:08 [INFO] 
+[RESULT] MPESB MP Police Subebdar Sub Inspector SI Result 2026  (source: rojgarresult)
+2026-05-21 11:30:08 [INFO]   Detail URL: https://rojgarresult.com/mpesb-mp-police-sub-inspector-si-oct-2025/
+2026-05-21 11:30:08 [INFO] GET https://rojgarresult.com/mpesb-mp-police-sub-inspector-si-oct-2025/ via CF Worker
+2026-05-21 11:30:09 [INFO] CF Worker OK for https://rojgarresult.com/mpesb-mp-police-sub-inspector-si-oct-2025/ (origin status: 200, size: 127836 bytes)
+2026-05-21 11:30:12 [INFO]   [skip] Title no longer matches kind=result after detail parse: Bachelor Degree in Any Stream from Any Recognized University
+2026-05-21 11:30:12 [INFO] 
+[RESULT] UPSSSC Pharmacist Download Result 2026 for 560 Post  (source: rojgarresult)
+2026-05-21 11:30:12 [INFO]   Detail URL: https://rojgarresult.com/upsssc-pharmacist-2026/
+2026-05-21 11:30:12 [INFO] GET https://rojgarresult.com/upsssc-pharmacist-2026/ via CF Worker
+2026-05-21 11:30:13 [INFO] CF Worker OK for https://rojgarresult.com/upsssc-pharmacist-2026/ (origin status: 200, size: 127123 bytes)
+2026-05-21 11:30:16 [INFO]   Written (MDX): content/results/ssc/upsssc-pharmacist-download-result-2026-for-560-post.mdx
+2026-05-21 11:30:16 [INFO] 
+[ADMIT] CSBC Bihar Police Prohibition Constable, Jail Warden & Mobil  (source: sarkariresult)
+2026-05-21 11:30:16 [INFO]   Detail URL: https://doc.sarkariresults.org.in/CSBC_Notice-03-2025-e-AdmitCard&Exam-20-05-2026.pdf
+2026-05-21 11:30:16 [INFO] GET https://doc.sarkariresults.org.in/CSBC_Notice-03-2025-e-AdmitCard&Exam-20-05-2026.pdf via CF Worker
+2026-05-21 11:30:16 [WARNING] CF Worker fetch failed for https://doc.sarkariresults.org.in/CSBC_Notice-03-2025-e-AdmitCard&Exam-20-05-2026.pdf: 403 Client Error: Forbidden for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fdoc.sarkariresults.org.in%2FCSBC_Notice-03-2025-e-AdmitCard%26Exam-20-05-2026.pdf
+2026-05-21 11:30:16 [WARNING] CF Worker failed for https://doc.sarkariresults.org.in/CSBC_Notice-03-2025-e-AdmitCard&Exam-20-05-2026.pdf, falling back to direct fetch
+2026-05-21 11:30:20 [INFO]   Written (MDX): content/admit-cards/police/csbc-bihar-police-prohibition-constable-jail-warden-mobile-squad-constable-exam-date-2026.mdx
+2026-05-21 11:30:20 [INFO] 
+[ADMIT] CSBC Bihar Police Constable Operator Exam Date 2026  (source: sarkariresult)
+2026-05-21 11:30:20 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/csbc-constable-operator-02-2026/
+2026-05-21 11:30:20 [INFO] GET https://www.sarkariresult.com/bihar/csbc-constable-operator-02-2026/ via CF Worker
+2026-05-21 11:30:20 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/csbc-constable-operator-02-2026/ (origin status: 200, size: 24581 bytes)
+2026-05-21 11:30:23 [INFO]   Written (MDX): content/admit-cards/police/csbc-bihar-police-constable-operator-exam-date-2026.mdx
+2026-05-21 11:30:23 [INFO] 
+[ADMIT] CSBC Bihar Police Constable Special Branch Exam Date 2026  (source: sarkariresult)
+2026-05-21 11:30:23 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/csbc-bihar-constable-special-01-2026/
+2026-05-21 11:30:23 [INFO] GET https://www.sarkariresult.com/bihar/csbc-bihar-constable-special-01-2026/ via CF Worker
+2026-05-21 11:30:24 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/csbc-bihar-constable-special-01-2026/ (origin status: 200, size: 23953 bytes)
+2026-05-21 11:30:26 [INFO]   Written (MDX): content/admit-cards/police/csbc-bihar-police-constable-special-branch-exam-date-2026.mdx
+2026-05-21 11:30:26 [INFO] 
+[ADMIT] Allahabad High Court HJS 2023 Mains Exam Date  (source: sarkariresult)
+2026-05-21 11:30:26 [INFO]   Detail URL: https://www.sarkariresult.com/2023/allahabad-hc-hjs-2023/
+2026-05-21 11:30:26 [INFO] GET https://www.sarkariresult.com/2023/allahabad-hc-hjs-2023/ via CF Worker
+2026-05-21 11:30:27 [INFO] CF Worker OK for https://www.sarkariresult.com/2023/allahabad-hc-hjs-2023/ (origin status: 200, size: 24551 bytes)
+2026-05-21 11:30:30 [INFO]   Written (MDX): content/admit-cards/government/allahabad-high-court-hjs-2023-mains-exam-date.mdx
+2026-05-21 11:30:30 [INFO] 
+[ADMIT] IMU CET Admit Card 2026  (source: sarkariresult)
+2026-05-21 11:30:30 [INFO]   Detail URL: https://www.sarkariresult.com/2026/imu-cet-2026/
+2026-05-21 11:30:30 [INFO] GET https://www.sarkariresult.com/2026/imu-cet-2026/ via CF Worker
+2026-05-21 11:30:31 [INFO] CF Worker OK for https://www.sarkariresult.com/2026/imu-cet-2026/ (origin status: 200, size: 21464 bytes)
+2026-05-21 11:30:33 [INFO]   Written (MDX): content/admit-cards/government/imu-cet-admit-card-2026.mdx
+2026-05-21 11:30:33 [INFO] 
+[ADMIT] HP SET Admit Card 2026 - Out  (source: freejobalert)
+2026-05-21 11:30:33 [INFO]   Detail URL: https://www.freejobalert.com/articles/hp-set-admit-card-2026-3049971
+2026-05-21 11:30:33 [INFO] GET https://www.freejobalert.com/articles/hp-set-admit-card-2026-3049971 via CF Worker
+2026-05-21 11:30:34 [INFO] CF Worker OK for https://www.freejobalert.com/articles/hp-set-admit-card-2026-3049971 (origin status: 200, size: 150619 bytes)
+2026-05-21 11:30:36 [INFO]   Written (MDX): content/admit-cards/government/hp-set-admit-card-2026-out.mdx
+2026-05-21 11:30:36 [INFO] 
+[ADMIT] MPPCB AE Admit Card 2026 - Out  (source: freejobalert)
+2026-05-21 11:30:36 [INFO]   Detail URL: https://www.freejobalert.com/articles/mppcb-ae-admit-card-2026-3049709
+2026-05-21 11:30:36 [INFO] GET https://www.freejobalert.com/articles/mppcb-ae-admit-card-2026-3049709 via CF Worker
+2026-05-21 11:30:36 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mppcb-ae-admit-card-2026-3049709 (origin status: 200, size: 152410 bytes)
+2026-05-21 11:30:39 [INFO]   Written (MDX): content/admit-cards/government/mppcb-ae-admit-card-2026-out.mdx
+2026-05-21 11:30:39 [INFO] 
+[ADMIT] PNB SO Admit Card 2026  (source: freejobalert)
+2026-05-21 11:30:39 [INFO]   Detail URL: https://www.freejobalert.com/articles/pnb-so-admit-card-2026-3049613
+2026-05-21 11:30:39 [INFO] GET https://www.freejobalert.com/articles/pnb-so-admit-card-2026-3049613 via CF Worker
+2026-05-21 11:30:39 [INFO] CF Worker OK for https://www.freejobalert.com/articles/pnb-so-admit-card-2026-3049613 (origin status: 200, size: 151702 bytes)
+2026-05-21 11:30:42 [INFO]   Written (MDX): content/admit-cards/government/pnb-so-admit-card-2026.mdx
+2026-05-21 11:30:42 [INFO] 
+[ADMIT] Chandigarh HC Stenographer Admit Card 2026  (source: freejobalert)
+2026-05-21 11:30:42 [INFO]   Detail URL: https://www.freejobalert.com/articles/chandigarh-hc-stenographer-admit-card-2026-3049592
+2026-05-21 11:30:42 [INFO] GET https://www.freejobalert.com/articles/chandigarh-hc-stenographer-admit-card-2026-3049592 via CF Worker
+2026-05-21 11:30:42 [INFO] CF Worker OK for https://www.freejobalert.com/articles/chandigarh-hc-stenographer-admit-card-2026-3049592 (origin status: 200, size: 153408 bytes)
+2026-05-21 11:30:44 [INFO]   Written (MDX): content/admit-cards/government/chandigarh-hc-stenographer-admit-card-2026.mdx
+2026-05-21 11:30:44 [INFO] 
+[ADMIT] CSBC Bihar Police Constable GD Special Branch Exam Date 2026  (source: rojgarresult)
+2026-05-21 11:30:44 [INFO]   Detail URL: https://rojgarresult.com/csbc-bihar-police-constable-gd-2026/
+2026-05-21 11:30:44 [INFO] GET https://rojgarresult.com/csbc-bihar-police-constable-gd-2026/ via CF Worker
+2026-05-21 11:30:45 [INFO] CF Worker OK for https://rojgarresult.com/csbc-bihar-police-constable-gd-2026/ (origin status: 200, size: 125273 bytes)
+2026-05-21 11:30:50 [INFO]   Written (MDX): content/admit-cards/police/csbc-bihar-police-constable-gd-special-branch-exam-date-2026.mdx
+2026-05-21 11:30:50 [INFO] 
+[ADMIT] MPESB Forest Guard & Jail Prahari New Exam Date 2026  (source: sarkariexam)
+2026-05-21 11:30:50 [INFO]   Detail URL: https://www.sarkariexam.com/mpesb-forest-guard-jail-prahari-2026/
+2026-05-21 11:30:50 [INFO] GET https://www.sarkariexam.com/mpesb-forest-guard-jail-prahari-2026/ via CF Worker
+2026-05-21 11:30:51 [INFO] CF Worker OK for https://www.sarkariexam.com/mpesb-forest-guard-jail-prahari-2026/ (origin status: 200, size: 182725 bytes)
+2026-05-21 11:30:54 [INFO]   Written (MDX): content/admit-cards/government/mpesb-forest-guard-jail-prahari-new-exam-date-2026.mdx
+2026-05-21 11:30:54 [INFO] 
+[ADMIT] Bihar Police CSBC Constable GD Exam Date 2026  (source: sarkariexam)
+2026-05-21 11:30:54 [INFO]   Detail URL: https://www.sarkariexam.com/bihar-police-csbc-constable-gd-2026/
+2026-05-21 11:30:54 [INFO] GET https://www.sarkariexam.com/bihar-police-csbc-constable-gd-2026/ via CF Worker
+2026-05-21 11:30:54 [INFO] CF Worker OK for https://www.sarkariexam.com/bihar-police-csbc-constable-gd-2026/ (origin status: 200, size: 185561 bytes)
+2026-05-21 11:30:57 [INFO]   Written (MDX): content/admit-cards/police/bihar-police-csbc-constable-gd-exam-date-2026.mdx
+2026-05-21 11:30:57 [INFO] 
+[ADMIT] Bihar Police CSBC Constable Operator Exam Date 2026  (source: sarkariexam)
+2026-05-21 11:30:57 [INFO]   Detail URL: https://www.sarkariexam.com/bihar-police-csbc-constable-operator-2026/
+2026-05-21 11:30:57 [INFO] GET https://www.sarkariexam.com/bihar-police-csbc-constable-operator-2026/ via CF Worker
+2026-05-21 11:30:58 [INFO] CF Worker OK for https://www.sarkariexam.com/bihar-police-csbc-constable-operator-2026/ (origin status: 200, size: 186876 bytes)
+2026-05-21 11:31:00 [INFO]   Written (MDX): content/admit-cards/police/bihar-police-csbc-constable-operator-exam-date-2026.mdx
+2026-05-21 11:31:00 [INFO] 
+[ADMIT] Bihar Police CSBC Prohibition Constable Exam Date 2026  (source: sarkariexam)
+2026-05-21 11:31:00 [INFO]   Detail URL: https://www.sarkariexam.com/bihar-police-csbc-prohibition-constable-2025/
+2026-05-21 11:31:00 [INFO] GET https://www.sarkariexam.com/bihar-police-csbc-prohibition-constable-2025/ via CF Worker
+2026-05-21 11:31:01 [INFO] CF Worker OK for https://www.sarkariexam.com/bihar-police-csbc-prohibition-constable-2025/ (origin status: 200, size: 189888 bytes)
+2026-05-21 11:31:04 [INFO]   Written (MDX): content/admit-cards/police/bihar-police-csbc-prohibition-constable-exam-date-2026.mdx
+2026-05-21 11:31:04 [INFO] 
+[ADMIT] RPSC Factories & Boiler Inspector Exam Date 2026  (source: sarkariexam)
+2026-05-21 11:31:04 [INFO]   Detail URL: https://www.sarkariexam.com/rpsc-factories-boiler-inspector-2025/
+2026-05-21 11:31:04 [INFO] GET https://www.sarkariexam.com/rpsc-factories-boiler-inspector-2025/ via CF Worker
+2026-05-21 11:31:05 [INFO] CF Worker OK for https://www.sarkariexam.com/rpsc-factories-boiler-inspector-2025/ (origin status: 200, size: 180776 bytes)
+2026-05-21 11:31:07 [INFO]   Written (MDX): content/admit-cards/government/rpsc-factories-boiler-inspector-exam-date-2026.mdx
+2026-05-21 11:31:07 [INFO] 
+[ADMIT] Allahabad High Court UPHJS 2023 Mains Exam Date 2026  (source: sarkariexam)
+2026-05-21 11:31:07 [INFO]   Detail URL: https://www.sarkariexam.com/allahabad-high-court-up-hjs-2023/
+2026-05-21 11:31:07 [INFO] GET https://www.sarkariexam.com/allahabad-high-court-up-hjs-2023/ via CF Worker
+2026-05-21 11:31:08 [INFO] CF Worker OK for https://www.sarkariexam.com/allahabad-high-court-up-hjs-2023/ (origin status: 200, size: 185640 bytes)
+2026-05-21 11:31:10 [INFO]   Written (MDX): content/admit-cards/government/allahabad-high-court-uphjs-2023-mains-exam-date-2026.mdx
+2026-05-21 11:31:10 [INFO] 
+[ADMIT] RRB Section Controller CBAT Exam Date 2026  (source: sarkariexam)
+2026-05-21 11:31:10 [INFO]   Detail URL: https://www.sarkariexam.com/rrb-section-controller-2025/
+2026-05-21 11:31:10 [INFO] GET https://www.sarkariexam.com/rrb-section-controller-2025/ via CF Worker
+2026-05-21 11:31:11 [INFO] CF Worker OK for https://www.sarkariexam.com/rrb-section-controller-2025/ (origin status: 200, size: 198615 bytes)
+2026-05-21 11:31:15 [INFO]   Written (MDX): content/admit-cards/government/rrb-section-controller-cbat-exam-date-2026.mdx
+2026-05-21 11:31:15 [INFO] 
+[ADMIT] BSEB Bihar D.El.Ed Admit Card Date 2026  (source: sarkariexam)
+2026-05-21 11:31:15 [INFO]   Detail URL: https://www.sarkariexam.com/bseb-bihar-d-el-ed-2026-28/
+2026-05-21 11:31:15 [INFO] GET https://www.sarkariexam.com/bseb-bihar-d-el-ed-2026-28/ via CF Worker
+2026-05-21 11:31:16 [INFO] CF Worker OK for https://www.sarkariexam.com/bseb-bihar-d-el-ed-2026-28/ (origin status: 200, size: 182199 bytes)
+2026-05-21 11:31:20 [INFO]   Written (MDX): content/admit-cards/government/bseb-bihar-deled-admit-card-date-2026.mdx
+2026-05-21 11:31:20 [INFO] 
+[ADMIT] Bihar BSEB Sakshamta Pariksha Phase 5th Admit Card Date 2026  (source: sarkariexam)
+2026-05-21 11:31:20 [INFO]   Detail URL: https://www.sarkariexam.com/bihar-bseb-sakshamta-pariksha-phase-5th-2026/
+2026-05-21 11:31:20 [INFO] GET https://www.sarkariexam.com/bihar-bseb-sakshamta-pariksha-phase-5th-2026/ via CF Worker
+2026-05-21 11:31:20 [INFO] CF Worker OK for https://www.sarkariexam.com/bihar-bseb-sakshamta-pariksha-phase-5th-2026/ (origin status: 200, size: 181524 bytes)
+2026-05-21 11:31:23 [INFO]   Written (MDX): content/admit-cards/government/bihar-bseb-sakshamta-pariksha-phase-5th-admit-card-date-2026.mdx
+2026-05-21 11:31:23 [INFO] 
+[ADMIT] JCECEB Jharkhand B.Ed Admit Card Notice 2026  (source: sarkariexam)
+2026-05-21 11:31:23 [INFO]   Detail URL: https://www.sarkariexam.com/jceceb-jharkhand-bed-2026/
+2026-05-21 11:31:23 [INFO] GET https://www.sarkariexam.com/jceceb-jharkhand-bed-2026/ via CF Worker
+2026-05-21 11:31:24 [INFO] CF Worker OK for https://www.sarkariexam.com/jceceb-jharkhand-bed-2026/ (origin status: 200, size: 179883 bytes)
+2026-05-21 11:31:27 [INFO]   Written (MDX): content/admit-cards/government/jceceb-jharkhand-bed-admit-card-notice-2026.mdx
+2026-05-21 11:31:27 [INFO] 
+[ANSWER-KEY] Answer Key  (source: freejobalert)
+2026-05-21 11:31:27 [INFO]   Detail URL: https://www.freejobalert.com/answer-key/
+2026-05-21 11:31:27 [INFO] GET https://www.freejobalert.com/answer-key/ via CF Worker
+2026-05-21 11:31:28 [INFO] CF Worker OK for https://www.freejobalert.com/answer-key/ (origin status: 200, size: 587963 bytes)
+2026-05-21 11:36:50 [INFO]   Written (MDX): content/answer-keys/answer-key.mdx
+2026-05-21 11:36:50 [INFO] 
+[ANSWER-KEY] PSSSB Group D Answer Key 2026 - Out  (source: freejobalert)
+2026-05-21 11:36:50 [INFO]   Detail URL: https://www.freejobalert.com/articles/psssb-group-d-answer-key-2026-3044321
+2026-05-21 11:36:50 [INFO] GET https://www.freejobalert.com/articles/psssb-group-d-answer-key-2026-3044321 via CF Worker
+2026-05-21 11:36:50 [INFO] CF Worker OK for https://www.freejobalert.com/articles/psssb-group-d-answer-key-2026-3044321 (origin status: 200, size: 157549 bytes)
+2026-05-21 11:36:53 [INFO]   Written (MDX): content/answer-keys/psssb-group-d-answer-key-2026-out.mdx
+2026-05-21 11:36:53 [INFO] 
+[ANSWER-KEY] Air Force Airmen Intake 01/2027 Answer Key 2026 - Out  (source: freejobalert)
+2026-05-21 11:36:53 [INFO]   Detail URL: https://www.freejobalert.com/articles/air-force-airmen-intake-01-2027-answer-key-2026-3044024
+2026-05-21 11:36:53 [INFO] GET https://www.freejobalert.com/articles/air-force-airmen-intake-01-2027-answer-key-2026-3044024 via CF Worker
+2026-05-21 11:36:53 [INFO] CF Worker OK for https://www.freejobalert.com/articles/air-force-airmen-intake-01-2027-answer-key-2026-3044024 (origin status: 200, size: 153470 bytes)
+2026-05-21 11:36:56 [INFO]   Written (MDX): content/answer-keys/air-force-airmen-intake-012027-answer-key-2026-out.mdx
+2026-05-21 11:36:56 [INFO] 
+[ANSWER-KEY] HPRCA TGT Arts Final Answer Key 2026 - Out  (source: freejobalert)
+2026-05-21 11:36:56 [INFO]   Detail URL: https://www.freejobalert.com/articles/hprca-tgt-arts-final-answer-key-2026-3044082
+2026-05-21 11:36:56 [INFO] GET https://www.freejobalert.com/articles/hprca-tgt-arts-final-answer-key-2026-3044082 via CF Worker
+2026-05-21 11:36:56 [INFO] CF Worker OK for https://www.freejobalert.com/articles/hprca-tgt-arts-final-answer-key-2026-3044082 (origin status: 200, size: 149085 bytes)
+2026-05-21 11:36:59 [INFO]   Written (MDX): content/answer-keys/hprca-tgt-arts-final-answer-key-2026-out.mdx
+2026-05-21 11:36:59 [INFO] 
+[ANSWER-KEY] SSC MTS Havaldar Answer Key 2026  (source: freejobalert)
+2026-05-21 11:36:59 [INFO]   Detail URL: https://www.freejobalert.com/articles/ssc-mts-havaldar-answer-key-2026-3039788
+2026-05-21 11:36:59 [INFO] GET https://www.freejobalert.com/articles/ssc-mts-havaldar-answer-key-2026-3039788 via CF Worker
+2026-05-21 11:36:59 [INFO] CF Worker OK for https://www.freejobalert.com/articles/ssc-mts-havaldar-answer-key-2026-3039788 (origin status: 200, size: 155066 bytes)
+2026-05-21 11:37:02 [INFO]   Written (MDX): content/answer-keys/ssc-mts-havaldar-answer-key-2026.mdx
+2026-05-21 11:37:02 [INFO] 
+[ANSWER-KEY] KVS NVS Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:02 [INFO]   Detail URL: https://www.freejobalert.com/articles/kvs-nvs-answer-key-2026-3034685
+2026-05-21 11:37:02 [INFO] GET https://www.freejobalert.com/articles/kvs-nvs-answer-key-2026-3034685 via CF Worker
+2026-05-21 11:37:02 [INFO] CF Worker OK for https://www.freejobalert.com/articles/kvs-nvs-answer-key-2026-3034685 (origin status: 200, size: 153542 bytes)
+2026-05-21 11:37:04 [INFO]   Written (MDX): content/answer-keys/kvs-nvs-answer-key-2026.mdx
+2026-05-21 11:37:04 [INFO] 
+[ANSWER-KEY] TN MRB Assistant Surgeon Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:04 [INFO]   Detail URL: https://www.freejobalert.com/articles/tn-mrb-assistant-surgeon-answer-key-2026-3035973
+2026-05-21 11:37:04 [INFO] GET https://www.freejobalert.com/articles/tn-mrb-assistant-surgeon-answer-key-2026-3035973 via CF Worker
+2026-05-21 11:37:04 [INFO] CF Worker OK for https://www.freejobalert.com/articles/tn-mrb-assistant-surgeon-answer-key-2026-3035973 (origin status: 200, size: 155943 bytes)
+2026-05-21 11:37:07 [INFO]   Written (MDX): content/answer-keys/tn-mrb-assistant-surgeon-answer-key-2026.mdx
+2026-05-21 11:37:07 [INFO] 
+[ANSWER-KEY] RSSB Ayush Officer Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:07 [INFO]   Detail URL: https://www.freejobalert.com/articles/rssb-ayush-officer-answer-key-2026-3035912
+2026-05-21 11:37:07 [INFO] GET https://www.freejobalert.com/articles/rssb-ayush-officer-answer-key-2026-3035912 via CF Worker
+2026-05-21 11:37:07 [INFO] CF Worker OK for https://www.freejobalert.com/articles/rssb-ayush-officer-answer-key-2026-3035912 (origin status: 200, size: 155729 bytes)
+2026-05-21 11:37:10 [INFO]   Written (MDX): content/answer-keys/rssb-ayush-officer-answer-key-2026.mdx
+2026-05-21 11:37:10 [INFO] 
+[ANSWER-KEY] UPSSSC Stenographer Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:10 [INFO]   Detail URL: https://www.freejobalert.com/articles/upsssc-stenographer-answer-key-2026-out-3035534
+2026-05-21 11:37:10 [INFO] GET https://www.freejobalert.com/articles/upsssc-stenographer-answer-key-2026-out-3035534 via CF Worker
+2026-05-21 11:37:10 [INFO] CF Worker OK for https://www.freejobalert.com/articles/upsssc-stenographer-answer-key-2026-out-3035534 (origin status: 200, size: 158440 bytes)
+2026-05-21 11:37:15 [INFO]   Written (MDX): content/answer-keys/upsssc-stenographer-answer-key-2026.mdx
+2026-05-21 11:37:15 [INFO] 
+[ANSWER-KEY] Delhi Police Constable Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:15 [INFO]   Detail URL: https://www.freejobalert.com/articles/delhi-police-constable-answer-key-2026-out-3034874
+2026-05-21 11:37:15 [INFO] GET https://www.freejobalert.com/articles/delhi-police-constable-answer-key-2026-out-3034874 via CF Worker
+2026-05-21 11:37:15 [INFO] CF Worker OK for https://www.freejobalert.com/articles/delhi-police-constable-answer-key-2026-out-3034874 (origin status: 200, size: 157950 bytes)
+2026-05-21 11:37:17 [INFO]   Written (MDX): content/answer-keys/delhi-police-constable-answer-key-2026.mdx
+2026-05-21 11:37:17 [INFO] 
+[ANSWER-KEY] CSIR NAL Junior Secretariat Assistant Final Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:17 [INFO]   Detail URL: https://www.freejobalert.com/articles/csir-nal-junior-secretariat-assistant-final-answer-key-2026-3050061
+2026-05-21 11:37:17 [INFO] GET https://www.freejobalert.com/articles/csir-nal-junior-secretariat-assistant-final-answer-key-2026-3050061 via CF Worker
+2026-05-21 11:37:17 [INFO] CF Worker OK for https://www.freejobalert.com/articles/csir-nal-junior-secretariat-assistant-final-answer-key-2026-3050061 (origin status: 200, size: 148607 bytes)
+2026-05-21 11:37:20 [INFO]   Written (MDX): content/answer-keys/csir-nal-junior-secretariat-assistant-final-answer-key-2026.mdx
+2026-05-21 11:37:20 [INFO] 
+[ANSWER-KEY] MPPSC SSE Final Answer Key 2026 - Out  (source: freejobalert)
+2026-05-21 11:37:20 [INFO]   Detail URL: https://www.freejobalert.com/articles/mppsc-sse-final-answer-key-2026-3049874
+2026-05-21 11:37:20 [INFO] GET https://www.freejobalert.com/articles/mppsc-sse-final-answer-key-2026-3049874 via CF Worker
+2026-05-21 11:37:20 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mppsc-sse-final-answer-key-2026-3049874 (origin status: 200, size: 154331 bytes)
+2026-05-21 11:37:23 [INFO]   Written (MDX): content/answer-keys/mppsc-sse-final-answer-key-2026-out.mdx
+2026-05-21 11:37:23 [INFO] 
+[ANSWER-KEY] MMRDA Answer Key 2026 OUT  (source: freejobalert)
+2026-05-21 11:37:23 [INFO]   Detail URL: https://www.freejobalert.com/articles/mmrda-group-a-b-and-c-answer-key-2026-3049768
+2026-05-21 11:37:23 [INFO] GET https://www.freejobalert.com/articles/mmrda-group-a-b-and-c-answer-key-2026-3049768 via CF Worker
+2026-05-21 11:37:23 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mmrda-group-a-b-and-c-answer-key-2026-3049768 (origin status: 200, size: 155146 bytes)
+2026-05-21 11:37:26 [INFO]   Written (MDX): content/answer-keys/mmrda-answer-key-2026-out.mdx
+2026-05-21 11:37:26 [INFO] 
+[ANSWER-KEY] NCERT LDC Answer Key 2026 - Out  (source: freejobalert)
+2026-05-21 11:37:26 [INFO]   Detail URL: https://www.freejobalert.com/articles/ncert-ldc-answer-key-2026-3049692
+2026-05-21 11:37:26 [INFO] GET https://www.freejobalert.com/articles/ncert-ldc-answer-key-2026-3049692 via CF Worker
+2026-05-21 11:37:26 [INFO] CF Worker OK for https://www.freejobalert.com/articles/ncert-ldc-answer-key-2026-3049692 (origin status: 200, size: 149652 bytes)
+2026-05-21 11:37:29 [INFO]   Written (MDX): content/answer-keys/ncert-ldc-answer-key-2026-out.mdx
+2026-05-21 11:37:29 [INFO] 
+[ANSWER-KEY] DSSSB MTS Answer Key 2026 - Out  (source: freejobalert)
+2026-05-21 11:37:29 [INFO]   Detail URL: https://www.freejobalert.com/articles/dsssb-mts-answer-key-2026-3049656
+2026-05-21 11:37:29 [INFO] GET https://www.freejobalert.com/articles/dsssb-mts-answer-key-2026-3049656 via CF Worker
+2026-05-21 11:37:29 [INFO] CF Worker OK for https://www.freejobalert.com/articles/dsssb-mts-answer-key-2026-3049656 (origin status: 200, size: 149438 bytes)
+2026-05-21 11:37:31 [INFO]   Written (MDX): content/answer-keys/dsssb-mts-answer-key-2026-out.mdx
+2026-05-21 11:37:31 [INFO] 
+[ANSWER-KEY] MPESB Nursing Officer and Sister Tutor Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:31 [INFO]   Detail URL: https://www.freejobalert.com/articles/mpesb-nursing-officer-and-sister-tutor-answer-key-2026-3049628
+2026-05-21 11:37:31 [INFO] GET https://www.freejobalert.com/articles/mpesb-nursing-officer-and-sister-tutor-answer-key-2026-3049628 via CF Worker
+2026-05-21 11:37:31 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mpesb-nursing-officer-and-sister-tutor-answer-key-2026-3049628 (origin status: 200, size: 152551 bytes)
+2026-05-21 11:37:34 [INFO]   Written (MDX): content/answer-keys/mpesb-nursing-officer-and-sister-tutor-answer-key-2026.mdx
+2026-05-21 11:37:34 [INFO] 
+[ANSWER-KEY] JKPSC Assistant Professor Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:34 [INFO]   Detail URL: https://www.freejobalert.com/articles/jkpsc-assistant-professor-answer-key-2026-3049546
+2026-05-21 11:37:34 [INFO] GET https://www.freejobalert.com/articles/jkpsc-assistant-professor-answer-key-2026-3049546 via CF Worker
+2026-05-21 11:37:34 [INFO] CF Worker OK for https://www.freejobalert.com/articles/jkpsc-assistant-professor-answer-key-2026-3049546 (origin status: 200, size: 156235 bytes)
+2026-05-21 11:37:37 [INFO]   Written (MDX): content/answer-keys/jkpsc-assistant-professor-answer-key-2026.mdx
+2026-05-21 11:37:37 [INFO] 
+[ANSWER-KEY] OPSC Assistant Professor Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:37 [INFO]   Detail URL: https://www.freejobalert.com/articles/opsc-assistant-professor-answer-key-2026-3049395
+2026-05-21 11:37:37 [INFO] GET https://www.freejobalert.com/articles/opsc-assistant-professor-answer-key-2026-3049395 via CF Worker
+2026-05-21 11:37:37 [INFO] CF Worker OK for https://www.freejobalert.com/articles/opsc-assistant-professor-answer-key-2026-3049395 (origin status: 200, size: 154851 bytes)
+2026-05-21 11:37:40 [INFO]   Written (MDX): content/answer-keys/opsc-assistant-professor-answer-key-2026.mdx
+2026-05-21 11:37:40 [INFO] 
+[ANSWER-KEY] DSSSB Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:40 [INFO]   Detail URL: https://www.freejobalert.com/articles/dsssb-answer-key-2026-out-3049363
+2026-05-21 11:37:40 [INFO] GET https://www.freejobalert.com/articles/dsssb-answer-key-2026-out-3049363 via CF Worker
+2026-05-21 11:37:40 [INFO] CF Worker OK for https://www.freejobalert.com/articles/dsssb-answer-key-2026-out-3049363 (origin status: 200, size: 154656 bytes)
+2026-05-21 11:37:43 [INFO]   Written (MDX): content/answer-keys/dsssb-answer-key-2026.mdx
+2026-05-21 11:37:43 [INFO] 
+[ANSWER-KEY] APPSC Lecturers Answer Key 2026 - Out  (source: freejobalert)
+2026-05-21 11:37:43 [INFO]   Detail URL: https://www.freejobalert.com/articles/appsc-lecturers-answer-key-2026-3049142
+2026-05-21 11:37:43 [INFO] GET https://www.freejobalert.com/articles/appsc-lecturers-answer-key-2026-3049142 via CF Worker
+2026-05-21 11:37:43 [INFO] CF Worker OK for https://www.freejobalert.com/articles/appsc-lecturers-answer-key-2026-3049142 (origin status: 200, size: 150264 bytes)
+2026-05-21 11:37:45 [INFO]   Written (MDX): content/answer-keys/appsc-lecturers-answer-key-2026-out.mdx
+2026-05-21 11:37:45 [INFO] 
+[ANSWER-KEY] Bihar Vidhan Parishad DEO LDC Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:45 [INFO]   Detail URL: https://www.freejobalert.com/articles/bihar-vidhan-parishad-deo-ldc-answer-key-2026-3049100
+2026-05-21 11:37:45 [INFO] GET https://www.freejobalert.com/articles/bihar-vidhan-parishad-deo-ldc-answer-key-2026-3049100 via CF Worker
+2026-05-21 11:37:45 [INFO] CF Worker OK for https://www.freejobalert.com/articles/bihar-vidhan-parishad-deo-ldc-answer-key-2026-3049100 (origin status: 200, size: 155855 bytes)
+2026-05-21 11:37:48 [INFO]   Written (MDX): content/answer-keys/bihar-vidhan-parishad-deo-ldc-answer-key-2026.mdx
+2026-05-21 11:37:48 [INFO] 
+[ANSWER-KEY] KVS NVS Teaching & Non-Teaching Tier-II Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:48 [INFO]   Detail URL: https://www.freejobalert.com/articles/kvs-nvs-teaching-and-non-teaching-tier-ii-answer-key-2026-3049059
+2026-05-21 11:37:48 [INFO] GET https://www.freejobalert.com/articles/kvs-nvs-teaching-and-non-teaching-tier-ii-answer-key-2026-3049059 via CF Worker
+2026-05-21 11:37:48 [INFO] CF Worker OK for https://www.freejobalert.com/articles/kvs-nvs-teaching-and-non-teaching-tier-ii-answer-key-2026-3049059 (origin status: 200, size: 153982 bytes)
+2026-05-21 11:37:50 [INFO]   Written (MDX): content/answer-keys/kvs-nvs-teaching-non-teaching-tier-ii-answer-key-2026.mdx
+2026-05-21 11:37:50 [INFO] 
+[ANSWER-KEY] EMRS Teaching and Non Teaching Tier-II Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:50 [INFO]   Detail URL: https://www.freejobalert.com/articles/emrs-teaching-and-non-teaching-tier-ii-answer-key-2026-3049048
+2026-05-21 11:37:50 [INFO] GET https://www.freejobalert.com/articles/emrs-teaching-and-non-teaching-tier-ii-answer-key-2026-3049048 via CF Worker
+2026-05-21 11:37:50 [INFO] CF Worker OK for https://www.freejobalert.com/articles/emrs-teaching-and-non-teaching-tier-ii-answer-key-2026-3049048 (origin status: 200, size: 155760 bytes)
+2026-05-21 11:37:53 [INFO]   Written (MDX): content/answer-keys/emrs-teaching-and-non-teaching-tier-ii-answer-key-2026.mdx
+2026-05-21 11:37:53 [INFO] 
+[ANSWER-KEY] RSSB Agriculture Supervisor Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:53 [INFO]   Detail URL: https://www.freejobalert.com/articles/rssb-agriculture-supervisor-answer-key-2026-3049035
+2026-05-21 11:37:53 [INFO] GET https://www.freejobalert.com/articles/rssb-agriculture-supervisor-answer-key-2026-3049035 via CF Worker
+2026-05-21 11:37:53 [INFO] CF Worker OK for https://www.freejobalert.com/articles/rssb-agriculture-supervisor-answer-key-2026-3049035 (origin status: 200, size: 156128 bytes)
+2026-05-21 11:37:56 [INFO]   Written (MDX): content/answer-keys/rssb-agriculture-supervisor-answer-key-2026.mdx
+2026-05-21 11:37:56 [INFO] 
+[ANSWER-KEY] Mizoram PSC CAO Final Answer Key 2026  (source: freejobalert)
+2026-05-21 11:37:56 [INFO]   Detail URL: https://www.freejobalert.com/articles/mizoram-psc-cao-final-answer-key-2026-3048993
+2026-05-21 11:37:56 [INFO] GET https://www.freejobalert.com/articles/mizoram-psc-cao-final-answer-key-2026-3048993 via CF Worker
+2026-05-21 11:37:56 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mizoram-psc-cao-final-answer-key-2026-3048993 (origin status: 200, size: 158131 bytes)
+2026-05-21 11:38:01 [INFO]   Written (MDX): content/answer-keys/mizoram-psc-cao-final-answer-key-2026.mdx
+2026-05-21 11:38:01 [INFO] 
+[ANSWER-KEY] Answer Keys  (source: sarkariexam)
+2026-05-21 11:38:01 [INFO]   Detail URL: https://www.sarkariexam.com/category/answer-keys/
+2026-05-21 11:38:01 [INFO] GET https://www.sarkariexam.com/category/answer-keys/ via CF Worker
+2026-05-21 11:38:01 [INFO] CF Worker OK for https://www.sarkariexam.com/category/answer-keys/ (origin status: 200, size: 179835 bytes)
+2026-05-21 11:38:52 [INFO]   Written (MDX): content/answer-keys/answer-keys.mdx
+2026-05-21 11:38:52 [INFO] 
+[SYLLABUS] UPSSSC UP Vidhan Bhawan Guard / Fireman Syllabus 2026  (source: sarkariresult)
+2026-05-21 11:38:52 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-vidhan-09-exam-2026/
+2026-05-21 11:38:52 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-vidhan-09-exam-2026/ via CF Worker
+2026-05-21 11:38:52 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-vidhan-09-exam-2026/ (origin status: 200, size: 25909 bytes)
+2026-05-21 11:38:59 [INFO]   Written (MDX): content/syllabus/upsssc-up-vidhan-bhawan-guard-fireman-syllabus-2026.mdx
+2026-05-21 11:38:59 [INFO] 
+[SYLLABUS] MPESB Nursing Officer, Sister Tutor Syllabus 2026  (source: sarkariresult)
+2026-05-21 11:38:59 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mpesb-nursing-officer-tutor-mar26/
+2026-05-21 11:38:59 [INFO] GET https://www.sarkariresult.com/mp/mpesb-nursing-officer-tutor-mar26/ via CF Worker
+2026-05-21 11:39:00 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mpesb-nursing-officer-tutor-mar26/ (origin status: 200, size: 23520 bytes)
+2026-05-21 11:39:04 [INFO]   Written (MDX): content/syllabus/mpesb-nursing-officer-sister-tutor-syllabus-2026.mdx
+2026-05-21 11:39:04 [INFO] 
+[SYLLABUS] Patna High Court Technical Assistant Syllabus 2026  (source: sarkariresult)
+2026-05-21 11:39:04 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/phc-technical-assistant-01-2026/
+2026-05-21 11:39:04 [INFO] GET https://www.sarkariresult.com/bihar/phc-technical-assistant-01-2026/ via CF Worker
+2026-05-21 11:39:05 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/phc-technical-assistant-01-2026/ (origin status: 200, size: 21134 bytes)
+2026-05-21 11:39:08 [INFO]   Written (MDX): content/syllabus/patna-high-court-technical-assistant-syllabus-2026.mdx
+2026-05-21 11:39:08 [INFO] 
+[SYLLABUS] UPSSSC Lower PCS Graduate Level Syllabus 2026  (source: sarkariresult)
+2026-05-21 11:39:08 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-lower-07-exam-2026/
+2026-05-21 11:39:08 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-lower-07-exam-2026/ via CF Worker
+2026-05-21 11:39:09 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-lower-07-exam-2026/ (origin status: 200, size: 30747 bytes)
+2026-05-21 11:39:16 [INFO]   Written (MDX): content/syllabus/upsssc-lower-pcs-graduate-level-syllabus-2026.mdx
+2026-05-21 11:39:16 [INFO] 
+[SYLLABUS] Jharkhand Teacher Eligibility Test JHTET Syllabus 2026  (source: sarkariresult)
+2026-05-21 11:39:16 [INFO]   Detail URL: https://www.sarkariresult.com/2026/jac-jhtet-2026/
+2026-05-21 11:39:16 [INFO] GET https://www.sarkariresult.com/2026/jac-jhtet-2026/ via CF Worker
+2026-05-21 11:39:16 [INFO] CF Worker OK for https://www.sarkariresult.com/2026/jac-jhtet-2026/ (origin status: 200, size: 23014 bytes)
+2026-05-21 11:39:21 [INFO]   Written (MDX): content/syllabus/jharkhand-teacher-eligibility-test-jhtet-syllabus-2026.mdx
+2026-05-21 11:39:21 [INFO] 
+[SYLLABUS] UPTET 2026 Syllabus  (source: sarkariresult)
+2026-05-21 11:39:21 [INFO]   Detail URL: https://www.sarkariresult.com/2026/uptet-2026/
+2026-05-21 11:39:21 [INFO] GET https://www.sarkariresult.com/2026/uptet-2026/ via CF Worker
+2026-05-21 11:39:21 [INFO] CF Worker OK for https://www.sarkariresult.com/2026/uptet-2026/ (origin status: 200, size: 23453 bytes)
+2026-05-21 11:39:28 [INFO]   Written (MDX): content/syllabus/uptet-2026-syllabus.mdx
+2026-05-21 11:39:28 [INFO] 
+[SYLLABUS] NTA NEET UG 2026 Syllabus  (source: sarkariresult)
+2026-05-21 11:39:28 [INFO]   Detail URL: https://www.sarkariresult.com/2026/nta-neet-ug-2026/
+2026-05-21 11:39:28 [INFO] GET https://www.sarkariresult.com/2026/nta-neet-ug-2026/ via CF Worker
+2026-05-21 11:39:28 [INFO] CF Worker OK for https://www.sarkariresult.com/2026/nta-neet-ug-2026/ (origin status: 200, size: 29180 bytes)
+2026-05-21 11:39:31 [INFO]   Written (MDX): content/syllabus/nta-neet-ug-2026-syllabus.mdx
+2026-05-21 11:39:31 [INFO] 
+[SYLLABUS] SSC GD Constable Syllabus 2026  (source: sarkariresult)
+2026-05-21 11:39:31 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-gd-2025-exam-2026/
+2026-05-21 11:39:31 [INFO] GET https://www.sarkariresult.com/ssc/ssc-gd-2025-exam-2026/ via CF Worker
+2026-05-21 11:39:31 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-gd-2025-exam-2026/ (origin status: 200, size: 34281 bytes)
+2026-05-21 11:39:36 [INFO]   Written (MDX): content/syllabus/ssc-gd-constable-syllabus-2026.mdx
+2026-05-21 11:39:36 [INFO] 
+[SYLLABUS] DRDO CEPTAM 11 Exam Syllabus  (source: sarkariresult)
+2026-05-21 11:39:36 [INFO]   Detail URL: https://www.sarkariresult.com/2025/drdo-ceptam-11/
+2026-05-21 11:39:36 [INFO] GET https://www.sarkariresult.com/2025/drdo-ceptam-11/ via CF Worker
+2026-05-21 11:39:37 [INFO] CF Worker OK for https://www.sarkariresult.com/2025/drdo-ceptam-11/ (origin status: 200, size: 22819 bytes)
+2026-05-21 11:39:40 [INFO]   Written (MDX): content/syllabus/drdo-ceptam-11-exam-syllabus.mdx
+2026-05-21 11:39:40 [INFO] 
+[SYLLABUS] UP Super TET Assistant Teacher Syllabus  (source: sarkariresult)
+2026-05-21 11:39:40 [INFO]   Detail URL: https://www.sarkariresult.com/2026/uptet-2026/
+2026-05-21 11:39:40 [INFO] GET https://www.sarkariresult.com/2026/uptet-2026/ via CF Worker
+2026-05-21 11:39:41 [INFO] CF Worker OK for https://www.sarkariresult.com/2026/uptet-2026/ (origin status: 200, size: 23453 bytes)
+2026-05-21 11:39:43 [INFO]   Written (MDX): content/syllabus/up-super-tet-assistant-teacher-syllabus.mdx
+2026-05-21 11:39:43 [INFO] 
+[SYLLABUS] UPTET 2026 Primary / Junior Level Syllabus  (source: sarkariresult)
+2026-05-21 11:39:43 [INFO]   Detail URL: https://www.sarkariresult.com/2026/uptet-2026/
+2026-05-21 11:39:43 [INFO] GET https://www.sarkariresult.com/2026/uptet-2026/ via CF Worker
+2026-05-21 11:39:43 [INFO] CF Worker OK for https://www.sarkariresult.com/2026/uptet-2026/ (origin status: 200, size: 23453 bytes)
+2026-05-21 11:39:46 [INFO]   Written (MDX): content/syllabus/uptet-2026-primary-junior-level-syllabus.mdx
+2026-05-21 11:39:46 [INFO] 
+[SYLLABUS] NTA JEEMAIN Syllabus 2025  (source: sarkariresult)
+2026-05-21 11:39:46 [INFO]   Detail URL: https://www.sarkariresult.com/2025/jeemain-session-1/
+2026-05-21 11:39:46 [INFO] GET https://www.sarkariresult.com/2025/jeemain-session-1/ via CF Worker
+2026-05-21 11:39:47 [INFO] CF Worker OK for https://www.sarkariresult.com/2025/jeemain-session-1/ (origin status: 200, size: 26003 bytes)
+2026-05-21 11:39:50 [INFO]   Written (MDX): content/syllabus/nta-jeemain-syllabus-2025.mdx
+2026-05-21 11:39:50 [INFO] 
+[SYLLABUS] UPSSSC Homeopathic Pharmacist Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:39:50 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:39:50 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:39:51 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:40:39 [INFO]   Written (MDX): content/syllabus/upsssc-homeopathic-pharmacist-syllabus-2024.mdx
+2026-05-21 11:40:39 [INFO] 
+[SYLLABUS] UPSSSC Junior Engineer JE Civil Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:40:39 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:40:39 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:40:40 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:40:42 [INFO]   Written (MDX): content/syllabus/upsssc-junior-engineer-je-civil-syllabus-2024.mdx
+2026-05-21 11:40:42 [INFO] 
+[SYLLABUS] UPSSSC Assistant Store Keeper Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:40:42 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:40:42 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:40:43 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:40:45 [INFO]   Written (MDX): content/syllabus/upsssc-assistant-store-keeper-syllabus-2024.mdx
+2026-05-21 11:40:45 [INFO] 
+[SYLLABUS] UPSSSC BCG Technician Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:40:45 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:40:45 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:40:46 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:40:49 [INFO]   Written (MDX): content/syllabus/upsssc-bcg-technician-syllabus-2024.mdx
+2026-05-21 11:40:49 [INFO] 
+[SYLLABUS] UPSSSC Sachiv Grade II Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:40:49 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:40:49 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:40:49 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:40:51 [INFO]   Written (MDX): content/syllabus/upsssc-sachiv-grade-ii-syllabus-2024.mdx
+2026-05-21 11:40:51 [INFO] 
+[SYLLABUS] UPSSSC Nakshanavish and Manchitrak 2023 Main Exam Syllabus  (source: sarkariresult)
+2026-05-21 11:40:51 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:40:51 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:40:52 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:40:55 [INFO]   Written (MDX): content/syllabus/upsssc-nakshanavish-and-manchitrak-2023-main-exam-syllabus.mdx
+2026-05-21 11:40:55 [INFO] 
+[SYLLABUS] Haryana HSSC Primary Teacher PRT Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:40:55 [INFO]   Detail URL: https://www.sarkariresult.com/hssc/hssc-primary-teacher-05-2024/
+2026-05-21 11:40:55 [INFO] GET https://www.sarkariresult.com/hssc/hssc-primary-teacher-05-2024/ via CF Worker
+2026-05-21 11:40:55 [INFO] CF Worker OK for https://www.sarkariresult.com/hssc/hssc-primary-teacher-05-2024/ (origin status: 200, size: 22748 bytes)
+2026-05-21 11:41:00 [INFO]   Written (MDX): content/syllabus/haryana-hssc-primary-teacher-prt-syllabus-2024.mdx
+2026-05-21 11:41:00 [INFO] 
+[SYLLABUS] HPSC Haryana PGT Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:00 [INFO]   Detail URL: https://www.sarkariresult.com/hssc/hpsc-pgt-18-37-2024/
+2026-05-21 11:41:00 [INFO] GET https://www.sarkariresult.com/hssc/hpsc-pgt-18-37-2024/ via CF Worker
+2026-05-21 11:41:00 [INFO] CF Worker OK for https://www.sarkariresult.com/hssc/hpsc-pgt-18-37-2024/ (origin status: 200, size: 30652 bytes)
+2026-05-21 11:41:02 [INFO]   Written (MDX): content/syllabus/hpsc-haryana-pgt-syllabus-2024.mdx
+2026-05-21 11:41:02 [INFO] 
+[SYLLABUS] RRB Junior Engineer JE Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:02 [INFO]   Detail URL: https://www.sarkariresult.com/railway/rrb-je-cen-03-2024/
+2026-05-21 11:41:02 [INFO] GET https://www.sarkariresult.com/railway/rrb-je-cen-03-2024/ via CF Worker
+2026-05-21 11:41:03 [INFO] CF Worker OK for https://www.sarkariresult.com/railway/rrb-je-cen-03-2024/ (origin status: 200, size: 43981 bytes)
+2026-05-21 11:41:12 [INFO]   Written (MDX): content/syllabus/rrb-junior-engineer-je-syllabus-2024.mdx
+2026-05-21 11:41:12 [INFO] 
+[SYLLABUS] SSC Stenographer Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:12 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-stenographer-2024/
+2026-05-21 11:41:12 [INFO] GET https://www.sarkariresult.com/ssc/ssc-stenographer-2024/ via CF Worker
+2026-05-21 11:41:12 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-stenographer-2024/ (origin status: 200, size: 31906 bytes)
+2026-05-21 11:41:20 [INFO]   Written (MDX): content/syllabus/ssc-stenographer-syllabus-2024.mdx
+2026-05-21 11:41:20 [INFO] 
+[SYLLABUS] UPSSSC Forest Guard 2023 Syllabus  (source: sarkariresult)
+2026-05-21 11:41:20 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:41:20 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:41:20 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:41:23 [INFO]   Written (MDX): content/syllabus/upsssc-forest-guard-2023-syllabus.mdx
+2026-05-21 11:41:23 [INFO] 
+[SYLLABUS] Punjab Police Constable Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:23 [INFO]   Detail URL: https://www.sarkariresult.com/2024/punjab-police-constable/
+2026-05-21 11:41:23 [INFO] GET https://www.sarkariresult.com/2024/punjab-police-constable/ via CF Worker
+2026-05-21 11:41:24 [INFO] CF Worker OK for https://www.sarkariresult.com/2024/punjab-police-constable/ (origin status: 200, size: 22238 bytes)
+2026-05-21 11:41:27 [INFO]   Written (MDX): content/syllabus/punjab-police-constable-syllabus-2024.mdx
+2026-05-21 11:41:27 [INFO] 
+[SYLLABUS] UKPSC Uttarakhand Police Sub Inspector Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:27 [INFO]   Detail URL: https://www.sarkariresult.com/uttrakhand/ukpsc-sub-inspector-jan24/
+2026-05-21 11:41:27 [INFO] GET https://www.sarkariresult.com/uttrakhand/ukpsc-sub-inspector-jan24/ via CF Worker
+2026-05-21 11:41:28 [INFO] CF Worker OK for https://www.sarkariresult.com/uttrakhand/ukpsc-sub-inspector-jan24/ (origin status: 200, size: 32450 bytes)
+2026-05-21 11:41:37 [INFO]   Written (MDX): content/syllabus/ukpsc-uttarakhand-police-sub-inspector-syllabus-2024.mdx
+2026-05-21 11:41:37 [INFO] 
+[SYLLABUS] UP Police Constable Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:37 [INFO]   Detail URL: https://www.sarkariresult.com/2023/up-police-constable-dec23/
+2026-05-21 11:41:37 [INFO] GET https://www.sarkariresult.com/2023/up-police-constable-dec23/ via CF Worker
+2026-05-21 11:41:38 [INFO] CF Worker OK for https://www.sarkariresult.com/2023/up-police-constable-dec23/ (origin status: 200, size: 40679 bytes)
+2026-05-21 11:41:45 [INFO]   Written (MDX): content/syllabus/up-police-constable-syllabus-2024.mdx
+2026-05-21 11:41:45 [INFO] 
+[SYLLABUS] UP Police Computer Operator, Programmer Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:45 [INFO]   Detail URL: https://www.sarkariresult.com/2024/up-police-computer-programmer/
+2026-05-21 11:41:45 [INFO] GET https://www.sarkariresult.com/2024/up-police-computer-programmer/ via CF Worker
+2026-05-21 11:41:46 [INFO] CF Worker OK for https://www.sarkariresult.com/2024/up-police-computer-programmer/ (origin status: 200, size: 27717 bytes)
+2026-05-21 11:41:51 [INFO]   Written (MDX): content/syllabus/up-police-computer-operator-programmer-syllabus-2024.mdx
+2026-05-21 11:41:51 [INFO] 
+[SYLLABUS] UP Police SI / ASI Syllabus 2024  (source: sarkariresult)
+2026-05-21 11:41:51 [INFO]   Detail URL: https://www.sarkariresult.com/2024/up-police-si-asi-jan24/
+2026-05-21 11:41:51 [INFO] GET https://www.sarkariresult.com/2024/up-police-si-asi-jan24/ via CF Worker
+2026-05-21 11:41:52 [INFO] CF Worker OK for https://www.sarkariresult.com/2024/up-police-si-asi-jan24/ (origin status: 200, size: 32562 bytes)
+2026-05-21 11:41:57 [INFO]   Written (MDX): content/syllabus/up-police-si-asi-syllabus-2024.mdx
+2026-05-21 11:41:57 [INFO] 
+[SYLLABUS] UPSSSC Stenographer Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:41:57 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:41:57 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:41:58 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:42:01 [INFO]   Written (MDX): content/syllabus/upsssc-stenographer-syllabus-2023.mdx
+2026-05-21 11:42:01 [INFO] 
+[SYLLABUS] UPSSSC Eye Testing Officer ETO Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:01 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:42:01 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:42:01 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:42:03 [INFO]   Written (MDX): content/syllabus/upsssc-eye-testing-officer-eto-syllabus-2023.mdx
+2026-05-21 11:42:03 [INFO] 
+[SYLLABUS] UPSSSC X Ray Technician Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:03 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:42:03 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:42:04 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:42:07 [INFO]   Written (MDX): content/syllabus/upsssc-x-ray-technician-syllabus-2023.mdx
+2026-05-21 11:42:07 [INFO] 
+[SYLLABUS] UPSSSC Dental Hygienist Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:07 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:42:07 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:42:07 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:42:09 [INFO]   Written (MDX): content/syllabus/upsssc-dental-hygienist-syllabus-2023.mdx
+2026-05-21 11:42:09 [INFO] 
+[SYLLABUS] UPSSSC Enforcement Constable Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:09 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:42:09 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:42:10 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:42:13 [INFO]   Written (MDX): content/syllabus/upsssc-enforcement-constable-syllabus-2023.mdx
+2026-05-21 11:42:13 [INFO] 
+[SYLLABUS] UPSSSC Gram Panchayat Adhikari Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:13 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:42:13 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:42:13 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:42:16 [INFO]   Written (MDX): content/syllabus/upsssc-gram-panchayat-adhikari-syllabus-2023.mdx
+2026-05-21 11:42:16 [INFO] 
+[SYLLABUS] UPSSSC Auditor Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:16 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:42:16 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:42:16 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:42:18 [INFO]   Written (MDX): content/syllabus/upsssc-auditor-syllabus-2023.mdx
+2026-05-21 11:42:18 [INFO] 
+[SYLLABUS] BSEB STET Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:18 [INFO]   Detail URL: https://www.sarkariresult.com/teacher/bihar-bseb-stet-2023/
+2026-05-21 11:42:18 [INFO] GET https://www.sarkariresult.com/teacher/bihar-bseb-stet-2023/ via CF Worker
+2026-05-21 11:42:19 [INFO] CF Worker OK for https://www.sarkariresult.com/teacher/bihar-bseb-stet-2023/ (origin status: 200, size: 29805 bytes)
+2026-05-21 11:42:42 [INFO]   Written (MDX): content/syllabus/bseb-stet-syllabus-2023.mdx
+2026-05-21 11:42:42 [INFO] 
+[SYLLABUS] UPSSSC Junior Assistant 2022 Syllabus  (source: sarkariresult)
+2026-05-21 11:42:42 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-junior-asst-08-2022/
+2026-05-21 11:42:42 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-junior-asst-08-2022/ via CF Worker
+2026-05-21 11:42:43 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-junior-asst-08-2022/ (origin status: 200, size: 30545 bytes)
+2026-05-21 11:42:51 [INFO]   Written (MDX): content/syllabus/upsssc-junior-assistant-2022-syllabus.mdx
+2026-05-21 11:42:51 [INFO] 
+[SYLLABUS] MP High School Selection Test HSTST Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:51 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mp-esb-high-school-hstst-may23/
+2026-05-21 11:42:51 [INFO] GET https://www.sarkariresult.com/mp/mp-esb-high-school-hstst-may23/ via CF Worker
+2026-05-21 11:42:51 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mp-esb-high-school-hstst-may23/ (origin status: 200, size: 25612 bytes)
+2026-05-21 11:42:57 [INFO]   Written (MDX): content/syllabus/mp-high-school-selection-test-hstst-syllabus-2023.mdx
+2026-05-21 11:42:57 [INFO] 
+[SYLLABUS] CRPF Sub Inspector and ASI Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:42:57 [INFO]   Detail URL: https://www.sarkariresult.com/2023/crpf-si-asi-group-bc-may23/
+2026-05-21 11:42:57 [INFO] GET https://www.sarkariresult.com/2023/crpf-si-asi-group-bc-may23/ via CF Worker
+2026-05-21 11:42:57 [INFO] CF Worker OK for https://www.sarkariresult.com/2023/crpf-si-asi-group-bc-may23/ (origin status: 200, size: 30296 bytes)
+2026-05-21 11:43:01 [INFO]   Written (MDX): content/syllabus/crpf-sub-inspector-and-asi-syllabus-2023.mdx
+2026-05-21 11:43:01 [INFO] 
+[SYLLABUS] UPSSSC Forest Guard Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:43:01 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:43:01 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:43:02 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:43:05 [INFO]   Written (MDX): content/syllabus/upsssc-forest-guard-syllabus-2023.mdx
+2026-05-21 11:43:05 [INFO] 
+[SYLLABUS] SSC MTS and Havaldar Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:43:05 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-mts-havaldar-2022/
+2026-05-21 11:43:05 [INFO] GET https://www.sarkariresult.com/ssc/ssc-mts-havaldar-2022/ via CF Worker
+2026-05-21 11:43:05 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-mts-havaldar-2022/ (origin status: 200, size: 29350 bytes)
+2026-05-21 11:43:08 [INFO]   Written (MDX): content/syllabus/ssc-mts-and-havaldar-syllabus-2023.mdx
+2026-05-21 11:43:08 [INFO] 
+[SYLLABUS] Rajasthan State Eligibility Test SET Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:43:08 [INFO]   Detail URL: https://www.sarkariresult.com/teacher/rajasthan-set-2023/
+2026-05-21 11:43:08 [INFO] GET https://www.sarkariresult.com/teacher/rajasthan-set-2023/ via CF Worker
+2026-05-21 11:43:09 [INFO] CF Worker OK for https://www.sarkariresult.com/teacher/rajasthan-set-2023/ (origin status: 200, size: 24106 bytes)
+2026-05-21 11:43:14 [INFO]   Written (MDX): content/syllabus/rajasthan-state-eligibility-test-set-syllabus-2023.mdx
+2026-05-21 11:43:14 [INFO] 
+[SYLLABUS] NVS Class 6th Admission Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:43:14 [INFO]   Detail URL: https://www.sarkariresult.com/2023/nvs-class-6th-2023/
+2026-05-21 11:43:14 [INFO] GET https://www.sarkariresult.com/2023/nvs-class-6th-2023/ via CF Worker
+2026-05-21 11:43:14 [INFO] CF Worker OK for https://www.sarkariresult.com/2023/nvs-class-6th-2023/ (origin status: 200, size: 21134 bytes)
+2026-05-21 11:43:17 [INFO]   Written (MDX): content/syllabus/nvs-class-6th-admission-syllabus-2023.mdx
+2026-05-21 11:43:17 [INFO] 
+[SYLLABUS] MPESB High School TET Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:43:17 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mp-high-school-tet-jan23/
+2026-05-21 11:43:17 [INFO] GET https://www.sarkariresult.com/mp/mp-high-school-tet-jan23/ via CF Worker
+2026-05-21 11:43:18 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mp-high-school-tet-jan23/ (origin status: 200, size: 26645 bytes)
+2026-05-21 11:43:22 [INFO]   Written (MDX): content/syllabus/mpesb-high-school-tet-syllabus-2023.mdx
+2026-05-21 11:43:22 [INFO] 
+[SYLLABUS] SSC 10+2 CHSL Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:43:22 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-chsl-2022/
+2026-05-21 11:43:22 [INFO] GET https://www.sarkariresult.com/ssc/ssc-chsl-2022/ via CF Worker
+2026-05-21 11:43:22 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-chsl-2022/ (origin status: 200, size: 28796 bytes)
+2026-05-21 11:43:26 [INFO]   Written (MDX): content/syllabus/ssc-102-chsl-syllabus-2022.mdx
+2026-05-21 11:43:26 [INFO] 
+[SYLLABUS] BPSC Drug Inspector Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:43:26 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/bpsc-drug-inspector-09-22/
+2026-05-21 11:43:26 [INFO] GET https://www.sarkariresult.com/bihar/bpsc-drug-inspector-09-22/ via CF Worker
+2026-05-21 11:43:26 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/bpsc-drug-inspector-09-22/ (origin status: 200, size: 24955 bytes)
+2026-05-21 11:43:29 [INFO]   Written (MDX): content/syllabus/bpsc-drug-inspector-syllabus-2022.mdx
+2026-05-21 11:43:29 [INFO] 
+[SYLLABUS] Allahabad High Court Group C and D Various Post Syllabus 202  (source: sarkariresult)
+2026-05-21 11:43:29 [INFO]   Detail URL: https://www.sarkariresult.com/2022/allahabad-hc-various-oct22/
+2026-05-21 11:43:29 [INFO] GET https://www.sarkariresult.com/2022/allahabad-hc-various-oct22/ via CF Worker
+2026-05-21 11:43:29 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/allahabad-hc-various-oct22/ (origin status: 200, size: 40496 bytes)
+2026-05-21 11:43:42 [INFO]   Written (MDX): content/syllabus/allahabad-high-court-group-c-and-d-various-post-syllabus-2022.mdx
+2026-05-21 11:43:42 [INFO] 
+[SYLLABUS] SSC GD Constable Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:43:42 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-gd-constable-2022/
+2026-05-21 11:43:42 [INFO] GET https://www.sarkariresult.com/ssc/ssc-gd-constable-2022/ via CF Worker
+2026-05-21 11:43:42 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-gd-constable-2022/ (origin status: 200, size: 46601 bytes)
+2026-05-21 11:43:51 [INFO]   Written (MDX): content/syllabus/ssc-gd-constable-syllabus-2022.mdx
+2026-05-21 11:43:51 [INFO] 
+[SYLLABUS] RSMSSB CET 10+2 Level Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:43:51 [INFO]   Detail URL: https://www.sarkariresult.com/rpsc/rsmssb-cet-inter-10-2022/
+2026-05-21 11:43:51 [INFO] GET https://www.sarkariresult.com/rpsc/rsmssb-cet-inter-10-2022/ via CF Worker
+2026-05-21 11:43:52 [INFO] CF Worker OK for https://www.sarkariresult.com/rpsc/rsmssb-cet-inter-10-2022/ (origin status: 200, size: 26178 bytes)
+2026-05-21 11:43:55 [INFO]   Written (MDX): content/syllabus/rsmssb-cet-102-level-syllabus-2022.mdx
+2026-05-21 11:43:55 [INFO] 
+[SYLLABUS] SSC Scientific Assistant Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:43:55 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-scientific-assistant-oct22/
+2026-05-21 11:43:55 [INFO] GET https://www.sarkariresult.com/ssc/ssc-scientific-assistant-oct22/ via CF Worker
+2026-05-21 11:43:56 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-scientific-assistant-oct22/ (origin status: 200, size: 26825 bytes)
+2026-05-21 11:43:59 [INFO]   Written (MDX): content/syllabus/ssc-scientific-assistant-syllabus-2022.mdx
+2026-05-21 11:43:59 [INFO] 
+[SYLLABUS] NVS Class 9th Admission Syllabus 2023  (source: sarkariresult)
+2026-05-21 11:43:59 [INFO]   Detail URL: https://www.sarkariresult.com/2023/nvs-class-9th-2023/
+2026-05-21 11:43:59 [INFO] GET https://www.sarkariresult.com/2023/nvs-class-9th-2023/ via CF Worker
+2026-05-21 11:44:00 [INFO] CF Worker OK for https://www.sarkariresult.com/2023/nvs-class-9th-2023/ (origin status: 200, size: 20684 bytes)
+2026-05-21 11:44:04 [INFO]   Written (MDX): content/syllabus/nvs-class-9th-admission-syllabus-2023.mdx
+2026-05-21 11:44:04 [INFO] 
+[SYLLABUS] UPSSSC Mukhya Sevika Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:44:04 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:44:04 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:44:04 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:44:07 [INFO]   Written (MDX): content/syllabus/upsssc-mukhya-sevika-syllabus-2022.mdx
+2026-05-21 11:44:07 [INFO] 
+[SYLLABUS] UPSSSC Combined Technical Services 2016 Revised Syllabus  (source: sarkariresult)
+2026-05-21 11:44:07 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:44:07 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:44:07 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:44:10 [INFO]   Written (MDX): content/syllabus/upsssc-combined-technical-services-2016-revised-syllabus.mdx
+2026-05-21 11:44:10 [INFO] 
+[SYLLABUS] SSC CPO SI 2022 Syllabus  (source: sarkariresult)
+2026-05-21 11:44:10 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-cpo-si-2022/
+2026-05-21 11:44:10 [INFO] GET https://www.sarkariresult.com/ssc/ssc-cpo-si-2022/ via CF Worker
+2026-05-21 11:44:11 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-cpo-si-2022/ (origin status: 200, size: 42532 bytes)
+2026-05-21 11:44:16 [INFO]   Written (MDX): content/syllabus/ssc-cpo-si-2022-syllabus.mdx
+2026-05-21 11:44:16 [INFO] 
+[SYLLABUS] Rajasthan 32000 Teacher Level 1, 2 Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:44:16 [INFO]   Detail URL: https://www.sarkariresult.com/teacher/rajasthan-32000-teacher/
+2026-05-21 11:44:16 [INFO] GET https://www.sarkariresult.com/teacher/rajasthan-32000-teacher/ via CF Worker
+2026-05-21 11:44:17 [INFO] CF Worker OK for https://www.sarkariresult.com/teacher/rajasthan-32000-teacher/ (origin status: 200, size: 29470 bytes)
+2026-05-21 11:44:29 [INFO]   Written (MDX): content/syllabus/rajasthan-32000-teacher-level-1-2-syllabus-2022.mdx
+2026-05-21 11:44:29 [INFO] 
+[SYLLABUS] UPHESC Assistant Professor Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:44:29 [INFO]   Detail URL: https://www.sarkariresult.com/2022/uphesc-asst-professor-51-2022/
+2026-05-21 11:44:29 [INFO] GET https://www.sarkariresult.com/2022/uphesc-asst-professor-51-2022/ via CF Worker
+2026-05-21 11:44:30 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/uphesc-asst-professor-51-2022/ (origin status: 200, size: 29847 bytes)
+2026-05-21 11:44:35 [INFO]   Written (MDX): content/syllabus/uphesc-assistant-professor-syllabus-2022.mdx
+2026-05-21 11:44:35 [INFO] 
+[SYLLABUS] IIT GATE 2023 Syllabus  (source: sarkariresult)
+2026-05-21 11:44:35 [INFO]   Detail URL: https://www.sarkariresult.com/2022/iit-gate-2023/
+2026-05-21 11:44:35 [INFO] GET https://www.sarkariresult.com/2022/iit-gate-2023/ via CF Worker
+2026-05-21 11:44:36 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/iit-gate-2023/ (origin status: 200, size: 22672 bytes)
+2026-05-21 11:44:38 [INFO]   Written (MDX): content/syllabus/iit-gate-2023-syllabus.mdx
+2026-05-21 11:44:38 [INFO] 
+[SYLLABUS] Territorial Army PIB Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:44:38 [INFO]   Detail URL: https://www.sarkariresult.com/force/territorial-army-pib-2022/
+2026-05-21 11:44:38 [INFO] GET https://www.sarkariresult.com/force/territorial-army-pib-2022/ via CF Worker
+2026-05-21 11:44:39 [INFO] CF Worker OK for https://www.sarkariresult.com/force/territorial-army-pib-2022/ (origin status: 200, size: 21658 bytes)
+2026-05-21 11:44:43 [INFO]   Written (MDX): content/syllabus/territorial-army-pib-syllabus-2022.mdx
+2026-05-21 11:44:43 [INFO] 
+[SYLLABUS] UPSSSC PET Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:44:43 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-pet-2022/
+2026-05-21 11:44:43 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-pet-2022/ via CF Worker
+2026-05-21 11:44:44 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-pet-2022/ (origin status: 200, size: 32214 bytes)
+2026-05-21 11:44:53 [INFO]   Written (MDX): content/syllabus/upsssc-pet-syllabus-2022.mdx
+2026-05-21 11:44:53 [INFO] 
+[SYLLABUS] HSSC CET Group C Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:44:53 [INFO]   Detail URL: https://www.sarkariresult.com/hssc/hssc-cet-group-c-01-2022/
+2026-05-21 11:44:53 [INFO] GET https://www.sarkariresult.com/hssc/hssc-cet-group-c-01-2022/ via CF Worker
+2026-05-21 11:44:54 [INFO] CF Worker OK for https://www.sarkariresult.com/hssc/hssc-cet-group-c-01-2022/ (origin status: 200, size: 21949 bytes)
+2026-05-21 11:44:57 [INFO]   Written (MDX): content/syllabus/hssc-cet-group-c-syllabus-2022.mdx
+2026-05-21 11:44:57 [INFO] 
+[SYLLABUS] DDA Various Post Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:44:57 [INFO]   Detail URL: https://www.sarkariresult.com/delhi/dda-03-2022/
+2026-05-21 11:44:57 [INFO] GET https://www.sarkariresult.com/delhi/dda-03-2022/ via CF Worker
+2026-05-21 11:44:58 [INFO] CF Worker OK for https://www.sarkariresult.com/delhi/dda-03-2022/ (origin status: 200, size: 27405 bytes)
+2026-05-21 11:45:02 [INFO]   Written (MDX): content/syllabus/dda-various-post-syllabus-2022.mdx
+2026-05-21 11:45:02 [INFO] 
+[SYLLABUS] UP PGT 2022 Syllabus All Subject  (source: sarkariresult)
+2026-05-21 11:45:02 [INFO]   Detail URL: https://www.sarkariresult.com/2020/upsessb-pgt-syllabus/
+2026-05-21 11:45:02 [INFO] GET https://www.sarkariresult.com/2020/upsessb-pgt-syllabus/ via CF Worker
+2026-05-21 11:45:02 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/upsessb-pgt-syllabus/ (origin status: 200, size: 21653 bytes)
+2026-05-21 11:45:34 [INFO]   Written (MDX): content/syllabus/up-pgt-2022-syllabus-all-subject.mdx
+2026-05-21 11:45:34 [INFO] 
+[SYLLABUS] UP TGT 2022 Syllabus All Subject  (source: sarkariresult)
+2026-05-21 11:45:34 [INFO]   Detail URL: https://www.sarkariresult.com/2020/upsessb-up-tgt-syllabus/
+2026-05-21 11:45:34 [INFO] GET https://www.sarkariresult.com/2020/upsessb-up-tgt-syllabus/ via CF Worker
+2026-05-21 11:45:34 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/upsessb-up-tgt-syllabus/ (origin status: 200, size: 19070 bytes)
+2026-05-21 11:45:56 [INFO]   Written (MDX): content/syllabus/up-tgt-2022-syllabus-all-subject.mdx
+2026-05-21 11:45:56 [INFO] 
+[SYLLABUS] SSC Delhi Police Head Constable Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:45:56 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-delhi-police-hc-may22/
+2026-05-21 11:45:56 [INFO] GET https://www.sarkariresult.com/ssc/ssc-delhi-police-hc-may22/ via CF Worker
+2026-05-21 11:45:57 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-delhi-police-hc-may22/ (origin status: 200, size: 33947 bytes)
+2026-05-21 11:46:03 [INFO]   Written (MDX): content/syllabus/ssc-delhi-police-head-constable-syllabus-2022.mdx
+2026-05-21 11:46:03 [INFO] 
+[SYLLABUS] SSC Selection Post X Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:03 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-selection-post-x/
+2026-05-21 11:46:03 [INFO] GET https://www.sarkariresult.com/ssc/ssc-selection-post-x/ via CF Worker
+2026-05-21 11:46:04 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-selection-post-x/ (origin status: 200, size: 28647 bytes)
+2026-05-21 11:46:08 [INFO]   Written (MDX): content/syllabus/ssc-selection-post-x-syllabus-2022.mdx
+2026-05-21 11:46:08 [INFO] 
+[SYLLABUS] ICAR IARI Assistant Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:08 [INFO]   Detail URL: https://www.sarkariresult.com/2022/icar-iari-assistant/
+2026-05-21 11:46:08 [INFO] GET https://www.sarkariresult.com/2022/icar-iari-assistant/ via CF Worker
+2026-05-21 11:46:09 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/icar-iari-assistant/ (origin status: 200, size: 27963 bytes)
+2026-05-21 11:46:14 [INFO]   Written (MDX): content/syllabus/icar-iari-assistant-syllabus-2022.mdx
+2026-05-21 11:46:14 [INFO] 
+[SYLLABUS] BSF Group B SI Work, JE Electrical Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:14 [INFO]   Detail URL: https://www.sarkariresult.com/force/bsf-group-b-apr22/
+2026-05-21 11:46:14 [INFO] GET https://www.sarkariresult.com/force/bsf-group-b-apr22/ via CF Worker
+2026-05-21 11:46:14 [INFO] CF Worker OK for https://www.sarkariresult.com/force/bsf-group-b-apr22/ (origin status: 200, size: 26624 bytes)
+2026-05-21 11:46:19 [INFO]   Written (MDX): content/syllabus/bsf-group-b-si-work-je-electrical-syllabus-2022.mdx
+2026-05-21 11:46:19 [INFO] 
+[SYLLABUS] UPPSC Assistant Prosecution Officer Exam APO Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:19 [INFO]   Detail URL: https://www.sarkariresult.com/2022/uppsc-adpo-2022/
+2026-05-21 11:46:19 [INFO] GET https://www.sarkariresult.com/2022/uppsc-adpo-2022/ via CF Worker
+2026-05-21 11:46:20 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/uppsc-adpo-2022/ (origin status: 200, size: 26270 bytes)
+2026-05-21 11:46:23 [INFO]   Written (MDX): content/syllabus/uppsc-assistant-prosecution-officer-exam-apo-syllabus-2022.mdx
+2026-05-21 11:46:23 [INFO] 
+[SYLLABUS] BIS Various Group A B C Post Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:23 [INFO]   Detail URL: https://www.sarkariresult.com/2022/bis-various-post-02-2022/
+2026-05-21 11:46:23 [INFO] GET https://www.sarkariresult.com/2022/bis-various-post-02-2022/ via CF Worker
+2026-05-21 11:46:24 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/bis-various-post-02-2022/ (origin status: 200, size: 30675 bytes)
+2026-05-21 11:46:28 [INFO]   Written (MDX): content/syllabus/bis-various-group-a-b-c-post-syllabus-2022.mdx
+2026-05-21 11:46:28 [INFO] 
+[SYLLABUS] Supreme Court of India Court Assistant / Junior Translator S  (source: sarkariresult)
+2026-05-21 11:46:28 [INFO]   Detail URL: https://www.sarkariresult.com/2022/sci-junior-translator-apr22/
+2026-05-21 11:46:28 [INFO] GET https://www.sarkariresult.com/2022/sci-junior-translator-apr22/ via CF Worker
+2026-05-21 11:46:28 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/sci-junior-translator-apr22/ (origin status: 200, size: 23052 bytes)
+2026-05-21 11:46:33 [INFO]   Written (MDX): content/syllabus/supreme-court-of-india-court-assistant-junior-translator-syllabus-2022.mdx
+2026-05-21 11:46:33 [INFO] 
+[SYLLABUS] Bihar 2 Year B.Ed Admission Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:33 [INFO]   Detail URL: https://www.sarkariresult.com/2022/bihar-2yr-bed-cet-2022/
+2026-05-21 11:46:33 [INFO] GET https://www.sarkariresult.com/2022/bihar-2yr-bed-cet-2022/ via CF Worker
+2026-05-21 11:46:34 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/bihar-2yr-bed-cet-2022/ (origin status: 200, size: 29533 bytes)
+2026-05-21 11:46:38 [INFO]   Written (MDX): content/syllabus/bihar-2-year-bed-admission-syllabus-2022.mdx
+2026-05-21 11:46:38 [INFO] 
+[SYLLABUS] Rajasthan REET 2022 Syllabus for Level I & II  (source: sarkariresult)
+2026-05-21 11:46:38 [INFO]   Detail URL: https://www.sarkariresult.com/teacher/rajasthan-reet-2022/
+2026-05-21 11:46:38 [INFO] GET https://www.sarkariresult.com/teacher/rajasthan-reet-2022/ via CF Worker
+2026-05-21 11:46:38 [INFO] CF Worker OK for https://www.sarkariresult.com/teacher/rajasthan-reet-2022/ (origin status: 200, size: 25730 bytes)
+2026-05-21 11:46:43 [INFO]   Written (MDX): content/syllabus/rajasthan-reet-2022-syllabus-for-level-i-ii.mdx
+2026-05-21 11:46:43 [INFO] 
+[SYLLABUS] MP PEB Sub Engineer Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:43 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mp-sub-engineer-mar22/
+2026-05-21 11:46:43 [INFO] GET https://www.sarkariresult.com/mp/mp-sub-engineer-mar22/ via CF Worker
+2026-05-21 11:46:44 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mp-sub-engineer-mar22/ (origin status: 200, size: 20202 bytes)
+2026-05-21 11:46:48 [INFO]   Written (MDX): content/syllabus/mp-peb-sub-engineer-syllabus-2022.mdx
+2026-05-21 11:46:48 [INFO] 
+[SYLLABUS] Bihar BPSC Syllabus for Primary School Head Teacher Exam 202  (source: sarkariresult)
+2026-05-21 11:46:48 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/bpsc-head-teacher-04-2022/
+2026-05-21 11:46:48 [INFO] GET https://www.sarkariresult.com/bihar/bpsc-head-teacher-04-2022/ via CF Worker
+2026-05-21 11:46:49 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/bpsc-head-teacher-04-2022/ (origin status: 200, size: 25002 bytes)
+2026-05-21 11:46:51 [INFO]   Written (MDX): content/syllabus/bihar-bpsc-syllabus-for-primary-school-head-teacher-exam-2022.mdx
+2026-05-21 11:46:51 [INFO] 
+[SYLLABUS] SSC Syllabus for Multi Tasking Staff MTS Exam 2022  (source: sarkariresult)
+2026-05-21 11:46:51 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-mts-2021/
+2026-05-21 11:46:51 [INFO] GET https://www.sarkariresult.com/ssc/ssc-mts-2021/ via CF Worker
+2026-05-21 11:46:52 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-mts-2021/ (origin status: 200, size: 41849 bytes)
+2026-05-21 11:46:57 [INFO]   Written (MDX): content/syllabus/ssc-syllabus-for-multi-tasking-staff-mts-exam-2022.mdx
+2026-05-21 11:46:57 [INFO] 
+[SYLLABUS] ECGC PO Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:46:57 [INFO]   Detail URL: https://www.sarkariresult.com/bank/ecgc-po-mar22/
+2026-05-21 11:46:57 [INFO] GET https://www.sarkariresult.com/bank/ecgc-po-mar22/ via CF Worker
+2026-05-21 11:46:58 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/ecgc-po-mar22/ (origin status: 200, size: 23082 bytes)
+2026-05-21 11:47:03 [INFO]   Written (MDX): content/syllabus/ecgc-po-syllabus-2022.mdx
+2026-05-21 11:47:03 [INFO] 
+[SYLLABUS] SIDBI Assistant Manager Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:47:03 [INFO]   Detail URL: https://www.sarkariresult.com/bank/sidbi-asst-manager-mar22/
+2026-05-21 11:47:03 [INFO] GET https://www.sarkariresult.com/bank/sidbi-asst-manager-mar22/ via CF Worker
+2026-05-21 11:47:04 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/sidbi-asst-manager-mar22/ (origin status: 200, size: 23197 bytes)
+2026-05-21 11:47:07 [INFO]   Written (MDX): content/syllabus/sidbi-assistant-manager-syllabus-2022.mdx
+2026-05-21 11:47:07 [INFO] 
+[SYLLABUS] JIPMER Syllabus for Group B and C Various Post Exam 2022  (source: sarkariresult)
+2026-05-21 11:47:07 [INFO]   Detail URL: https://www.sarkariresult.com/2022/jipmer-group-b-c-mar22/
+2026-05-21 11:47:07 [INFO] GET https://www.sarkariresult.com/2022/jipmer-group-b-c-mar22/ via CF Worker
+2026-05-21 11:47:08 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/jipmer-group-b-c-mar22/ (origin status: 200, size: 24336 bytes)
+2026-05-21 11:47:12 [INFO]   Written (MDX): content/syllabus/jipmer-syllabus-for-group-b-and-c-various-post-exam-2022.mdx
+2026-05-21 11:47:12 [INFO] 
+[SYLLABUS] UP NHM Lab Technician & Other Post Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:47:12 [INFO]   Detail URL: https://www.sarkariresult.com/2022/nhm-up-2900-post/
+2026-05-21 11:47:12 [INFO] GET https://www.sarkariresult.com/2022/nhm-up-2900-post/ via CF Worker
+2026-05-21 11:47:13 [INFO] CF Worker OK for https://www.sarkariresult.com/2022/nhm-up-2900-post/ (origin status: 200, size: 26613 bytes)
+2026-05-21 11:47:16 [INFO]   Written (MDX): content/syllabus/up-nhm-lab-technician-other-post-syllabus-2022.mdx
+2026-05-21 11:47:16 [INFO] 
+[SYLLABUS] UPPSC Assistant Professor Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:47:16 [INFO]   Detail URL: https://www.sarkariresult.com/2020/uppsc-assistant-professor-nov20/
+2026-05-21 11:47:16 [INFO] GET https://www.sarkariresult.com/2020/uppsc-assistant-professor-nov20/ via CF Worker
+2026-05-21 11:47:17 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/uppsc-assistant-professor-nov20/ (origin status: 200, size: 38348 bytes)
+2026-05-21 11:47:39 [INFO]   Written (MDX): content/syllabus/uppsc-assistant-professor-syllabus-2022.mdx
+2026-05-21 11:47:39 [INFO] 
+[SYLLABUS] BPSC Asst Sanitary & Waste Management Officer Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:47:39 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/bpsc-01-2022/
+2026-05-21 11:47:39 [INFO] GET https://www.sarkariresult.com/bihar/bpsc-01-2022/ via CF Worker
+2026-05-21 11:47:40 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/bpsc-01-2022/ (origin status: 200, size: 24419 bytes)
+2026-05-21 11:47:45 [INFO]   Written (MDX): content/syllabus/bpsc-asst-sanitary-waste-management-officer-syllabus-2022.mdx
+2026-05-21 11:47:45 [INFO] 
+[SYLLABUS] UPSSSC Lekhpal Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:47:45 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:47:45 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:47:46 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:47:48 [INFO]   Written (MDX): content/syllabus/upsssc-lekhpal-syllabus-2021.mdx
+2026-05-21 11:47:48 [INFO] 
+[SYLLABUS] NTA CSIR UGC NET Exam Syllabus 2022  (source: sarkariresult)
+2026-05-21 11:47:48 [INFO]   Detail URL: https://www.sarkariresult.com/nta/csir-ugc-net-june-2021/
+2026-05-21 11:47:48 [INFO] GET https://www.sarkariresult.com/nta/csir-ugc-net-june-2021/ via CF Worker
+2026-05-21 11:47:49 [INFO] CF Worker OK for https://www.sarkariresult.com/nta/csir-ugc-net-june-2021/ (origin status: 200, size: 25950 bytes)
+2026-05-21 11:47:59 [INFO]   Written (MDX): content/syllabus/nta-csir-ugc-net-exam-syllabus-2022.mdx
+2026-05-21 11:47:59 [INFO] 
+[SYLLABUS] RPSC RAS Mains Exam Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:47:59 [INFO]   Detail URL: https://www.sarkariresult.com/rpsc/rpsc-ras-2021/
+2026-05-21 11:47:59 [INFO] GET https://www.sarkariresult.com/rpsc/rpsc-ras-2021/ via CF Worker
+2026-05-21 11:48:00 [INFO] CF Worker OK for https://www.sarkariresult.com/rpsc/rpsc-ras-2021/ (origin status: 200, size: 25359 bytes)
+2026-05-21 11:48:04 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Rajasthan RPSC RAS Mains Result with Marks, Interview Letter
+2026-05-21 11:48:04 [INFO] 
+[SYLLABUS] MP High Court Assistant Grade 3, Stenographer Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:48:04 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mphc-ag3-steno-nov21/
+2026-05-21 11:48:04 [INFO] GET https://www.sarkariresult.com/mp/mphc-ag3-steno-nov21/ via CF Worker
+2026-05-21 11:48:05 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mphc-ag3-steno-nov21/ (origin status: 200, size: 25828 bytes)
+2026-05-21 11:48:09 [INFO]   Written (MDX): content/syllabus/mp-high-court-assistant-grade-3-stenographer-syllabus-2021.mdx
+2026-05-21 11:48:09 [INFO] 
+[SYLLABUS] UPSSSC Swasthya Karyakarta Exam Syllabus  (source: sarkariresult)
+2026-05-21 11:48:09 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:48:09 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:48:10 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:48:12 [INFO]   Written (MDX): content/syllabus/upsssc-swasthya-karyakarta-exam-syllabus.mdx
+2026-05-21 11:48:12 [INFO] 
+[SYLLABUS] UPSSSC Instructor 2016 Syllabus  (source: sarkariresult)
+2026-05-21 11:48:12 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/
+2026-05-21 11:48:12 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ via CF Worker
+2026-05-21 11:48:13 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-syllabus-pdf/ (origin status: 200, size: 38378 bytes)
+2026-05-21 11:48:15 [INFO]   Written (MDX): content/syllabus/upsssc-instructor-2016-syllabus.mdx
+2026-05-21 11:48:15 [INFO] 
+[SYLLABUS] UPHESC Assistant Professor Syllabus All Subject Download 202  (source: sarkariresult)
+2026-05-21 11:48:15 [INFO]   Detail URL: https://www.sarkariresult.com/2021/uphesc-admit-card/
+2026-05-21 11:48:15 [INFO] GET https://www.sarkariresult.com/2021/uphesc-admit-card/ via CF Worker
+2026-05-21 11:48:16 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/uphesc-admit-card/ (origin status: 200, size: 35818 bytes)
+2026-05-21 11:49:02 [INFO]   Written (MDX): content/syllabus/uphesc-assistant-professor-syllabus-all-subject-download-2021.mdx
+2026-05-21 11:49:02 [INFO] 
+[SYLLABUS] Allahabad High Court Review Officer Hindi Urdu Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:49:02 [INFO]   Detail URL: https://www.sarkariresult.com/2021/allahabad-hc-ro-oct21/
+2026-05-21 11:49:02 [INFO] GET https://www.sarkariresult.com/2021/allahabad-hc-ro-oct21/ via CF Worker
+2026-05-21 11:49:03 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/allahabad-hc-ro-oct21/ (origin status: 200, size: 26496 bytes)
+2026-05-21 11:49:07 [INFO]   Written (MDX): content/syllabus/allahabad-high-court-review-officer-hindi-urdu-syllabus-2021.mdx
+2026-05-21 11:49:07 [INFO] 
+[SYLLABUS] RSMSSB Patwari Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:49:07 [INFO]   Detail URL: https://www.sarkariresult.com/rpsc/rsmssb-patwari-jan2020/
+2026-05-21 11:49:07 [INFO] GET https://www.sarkariresult.com/rpsc/rsmssb-patwari-jan2020/ via CF Worker
+2026-05-21 11:49:08 [INFO] CF Worker OK for https://www.sarkariresult.com/rpsc/rsmssb-patwari-jan2020/ (origin status: 200, size: 17329 bytes)
+2026-05-21 11:49:15 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: RSMSSB Patwari Recruitment 2021 Final Result 2022
+2026-05-21 11:49:15 [INFO] 
+[SYLLABUS] UPPSC Technical Education Service Exam Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:49:15 [INFO]   Detail URL: https://www.sarkariresult.com/2021/uppsc-technical-service-exam-syllabus/
+2026-05-21 11:49:15 [INFO] GET https://www.sarkariresult.com/2021/uppsc-technical-service-exam-syllabus/ via CF Worker
+2026-05-21 11:49:15 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/uppsc-technical-service-exam-syllabus/ (origin status: 200, size: 27449 bytes)
+2026-05-21 11:49:51 [INFO]   Written (MDX): content/syllabus/uppsc-technical-education-service-exam-syllabus-2021.mdx
+2026-05-21 11:49:51 [INFO] 
+[SYLLABUS] Allahabad HC APS Exam Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:49:51 [INFO]   Detail URL: https://www.sarkariresult.com/2021/allahabad-hc-aps-2021/
+2026-05-21 11:49:51 [INFO] GET https://www.sarkariresult.com/2021/allahabad-hc-aps-2021/ via CF Worker
+2026-05-21 11:49:51 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/allahabad-hc-aps-2021/ (origin status: 200, size: 23836 bytes)
+2026-05-21 11:49:57 [INFO]   Written (MDX): content/syllabus/allahabad-hc-aps-exam-syllabus-2021.mdx
+2026-05-21 11:49:57 [INFO] 
+[SYLLABUS] UPSSSC Lower 2019 Mains Syllabus  (source: sarkariresult)
+2026-05-21 11:49:57 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-various-01-2019/
+2026-05-21 11:49:57 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-various-01-2019/ via CF Worker
+2026-05-21 11:49:58 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-various-01-2019/ (origin status: 200, size: 22679 bytes)
+2026-05-21 11:50:23 [INFO]   Written (MDX): content/syllabus/upsssc-lower-2019-mains-syllabus.mdx
+2026-05-21 11:50:23 [INFO] 
+[SYLLABUS] IIT JEE Advanced 2021 Syllabus  (source: sarkariresult)
+2026-05-21 11:50:23 [INFO]   Detail URL: https://www.sarkariresult.com/2021/iit-jee-advanced-2021/
+2026-05-21 11:50:23 [INFO] GET https://www.sarkariresult.com/2021/iit-jee-advanced-2021/ via CF Worker
+2026-05-21 11:50:24 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/iit-jee-advanced-2021/ (origin status: 200, size: 19729 bytes)
+2026-05-21 11:50:26 [INFO]   Written (MDX): content/syllabus/iit-jee-advanced-2021-syllabus.mdx
+2026-05-21 11:50:26 [INFO] 
+[SYLLABUS] UPSSSC Sub Engineer 2018 Syllabus  (source: sarkariresult)
+2026-05-21 11:50:26 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-engineer-04-2018/
+2026-05-21 11:50:26 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-engineer-04-2018/ via CF Worker
+2026-05-21 11:50:27 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-engineer-04-2018/ (origin status: 200, size: 19225 bytes)
+2026-05-21 11:50:31 [INFO]   Written (MDX): content/syllabus/upsssc-sub-engineer-2018-syllabus.mdx
+2026-05-21 11:50:31 [INFO] 
+[SYLLABUS] Allahabad High Court Computer Assistant Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:50:31 [INFO]   Detail URL: https://www.sarkariresult.com/2021/allahabad-hc-computer-assistant-aug21/
+2026-05-21 11:50:31 [INFO] GET https://www.sarkariresult.com/2021/allahabad-hc-computer-assistant-aug21/ via CF Worker
+2026-05-21 11:50:31 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/allahabad-hc-computer-assistant-aug21/ (origin status: 200, size: 20877 bytes)
+2026-05-21 11:50:35 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Allahabad High Court AHC Computer Assistant CA Result 2022
+2026-05-21 11:50:35 [INFO] 
+[SYLLABUS] Allahabad High Court RO / ARO Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:50:35 [INFO]   Detail URL: https://www.sarkariresult.com/2021/allahabad-hc-ro-aro-aug21/
+2026-05-21 11:50:35 [INFO] GET https://www.sarkariresult.com/2021/allahabad-hc-ro-aro-aug21/ via CF Worker
+2026-05-21 11:50:35 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/allahabad-hc-ro-aro-aug21/ (origin status: 200, size: 20266 bytes)
+2026-05-21 11:50:40 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Allahabad High Court RO /ARO Samiskha Adhikari Result with M
+2026-05-21 11:50:40 [INFO] 
+[SYLLABUS] UKPSC Lower PCS Pre / Mains Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:50:40 [INFO]   Detail URL: https://www.sarkariresult.com/uttrakhand/ukpsc-lower-aug21/
+2026-05-21 11:50:40 [INFO] GET https://www.sarkariresult.com/uttrakhand/ukpsc-lower-aug21/ via CF Worker
+2026-05-21 11:50:40 [INFO] CF Worker OK for https://www.sarkariresult.com/uttrakhand/ukpsc-lower-aug21/ (origin status: 200, size: 23576 bytes)
+2026-05-21 11:50:43 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Uttrakhand UKPSC Lower Subordinate Admit Card 2021
+2026-05-21 11:50:43 [INFO] 
+[SYLLABUS] CGPSC SES Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:50:43 [INFO]   Detail URL: https://www.sarkariresult.com/cg/cgpsc-state-engineering-05-2021/
+2026-05-21 11:50:43 [INFO] GET https://www.sarkariresult.com/cg/cgpsc-state-engineering-05-2021/ via CF Worker
+2026-05-21 11:50:44 [INFO] CF Worker OK for https://www.sarkariresult.com/cg/cgpsc-state-engineering-05-2021/ (origin status: 200, size: 17621 bytes)
+2026-05-21 11:50:46 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: CGPSC Chhattisgarh State Engineering Services Online Form 20
+2026-05-21 11:50:46 [INFO] 
+[SYLLABUS] UKPSC APO Pre / Mains Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:50:46 [INFO]   Detail URL: https://www.sarkariresult.com/uttrakhand/ukpsc-apo-2021/
+2026-05-21 11:50:46 [INFO] GET https://www.sarkariresult.com/uttrakhand/ukpsc-apo-2021/ via CF Worker
+2026-05-21 11:50:46 [INFO] CF Worker OK for https://www.sarkariresult.com/uttrakhand/ukpsc-apo-2021/ (origin status: 200, size: 19396 bytes)
+2026-05-21 11:50:50 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Uttrakhand UKPSC APO Online Form 2021
+2026-05-21 11:50:50 [INFO] 
+[SYLLABUS] UPSSSC Mandi Parishad 2018 Syllabus  (source: sarkariresult)
+2026-05-21 11:50:50 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-mandi-06-2018/
+2026-05-21 11:50:50 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-mandi-06-2018/ via CF Worker
+2026-05-21 11:50:51 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-mandi-06-2018/ (origin status: 200, size: 18154 bytes)
+2026-05-21 11:50:55 [INFO]   Written (MDX): content/syllabus/upsssc-mandi-parishad-2018-syllabus.mdx
+2026-05-21 11:50:55 [INFO] 
+[SYLLABUS] ASRB AO, FAO Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:50:55 [INFO]   Detail URL: https://www.sarkariresult.com/2021/asrb-ao-fao-july21/
+2026-05-21 11:50:55 [INFO] GET https://www.sarkariresult.com/2021/asrb-ao-fao-july21/ via CF Worker
+2026-05-21 11:50:55 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/asrb-ao-fao-july21/ (origin status: 200, size: 18495 bytes)
+2026-05-21 11:50:59 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: ASRB Administrative Officer AO, Finance & Accounts Officer F
+2026-05-21 11:50:59 [INFO] 
+[SYLLABUS] Nainital Bank Clerk / MT Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:50:59 [INFO]   Detail URL: https://www.sarkariresult.com/bank/nainital-bank-clerk-mt-jul21/
+2026-05-21 11:50:59 [INFO] GET https://www.sarkariresult.com/bank/nainital-bank-clerk-mt-jul21/ via CF Worker
+2026-05-21 11:51:00 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/nainital-bank-clerk-mt-jul21/ (origin status: 200, size: 19817 bytes)
+2026-05-21 11:51:06 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Nainital Bank Clerk and MT Admit Card 2021
+2026-05-21 11:51:06 [INFO] 
+[SYLLABUS] Territorial Army Officer Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:06 [INFO]   Detail URL: https://www.sarkariresult.com/force/territorial-army-officer-jul21/
+2026-05-21 11:51:06 [INFO] GET https://www.sarkariresult.com/force/territorial-army-officer-jul21/ via CF Worker
+2026-05-21 11:51:06 [INFO] CF Worker OK for https://www.sarkariresult.com/force/territorial-army-officer-jul21/ (origin status: 200, size: 18037 bytes)
+2026-05-21 11:51:13 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Join Territorial Army Officer Recruitment Result 2021
+2026-05-21 11:51:13 [INFO] 
+[SYLLABUS] SSC GD Constable Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:13 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-gd-constable-2021/
+2026-05-21 11:51:13 [INFO] GET https://www.sarkariresult.com/ssc/ssc-gd-constable-2021/ via CF Worker
+2026-05-21 11:51:13 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-gd-constable-2021/ (origin status: 200, size: 40962 bytes)
+2026-05-21 11:51:17 [INFO]   Written (MDX): content/syllabus/ssc-gd-constable-syllabus-2021.mdx
+2026-05-21 11:51:17 [INFO] 
+[SYLLABUS] NEET 2021 UG Syllabus  (source: sarkariresult)
+2026-05-21 11:51:17 [INFO]   Detail URL: https://www.sarkariresult.com/2021/neet-ug-2021/
+2026-05-21 11:51:17 [INFO] GET https://www.sarkariresult.com/2021/neet-ug-2021/ via CF Worker
+2026-05-21 11:51:18 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/neet-ug-2021/ (origin status: 200, size: 25270 bytes)
+2026-05-21 11:51:21 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: NTA NEET Admission 2021 Entrance Results
+2026-05-21 11:51:21 [INFO] 
+[SYLLABUS] MPPSC DSP Radio & Computer Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:21 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mppsc-dsp-05-2021/
+2026-05-21 11:51:21 [INFO] GET https://www.sarkariresult.com/mp/mppsc-dsp-05-2021/ via CF Worker
+2026-05-21 11:51:21 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mppsc-dsp-05-2021/ (origin status: 200, size: 20153 bytes)
+2026-05-21 11:51:24 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: MPPSC DSP Radio & Computer Recruitment 2021 Apply Online for
+2026-05-21 11:51:24 [INFO] 
+[SYLLABUS] SBI Clerk Pre / Mains Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:24 [INFO]   Detail URL: https://www.sarkariresult.com/bank/sbi-clerk-2021/
+2026-05-21 11:51:24 [INFO] GET https://www.sarkariresult.com/bank/sbi-clerk-2021/ via CF Worker
+2026-05-21 11:51:25 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/sbi-clerk-2021/ (origin status: 200, size: 40733 bytes)
+2026-05-21 11:51:27 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: State Bank SBI Clerk Recruitment 2021 Mains Exam Result for 
+2026-05-21 11:51:27 [INFO] 
+[SYLLABUS] Indian Navy SSR/AA Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:27 [INFO]   Detail URL: https://www.sarkariresult.com/force/navy-ssr-aa-aug21/
+2026-05-21 11:51:27 [INFO] GET https://www.sarkariresult.com/force/navy-ssr-aa-aug21/ via CF Worker
+2026-05-21 11:51:28 [INFO] CF Worker OK for https://www.sarkariresult.com/force/navy-ssr-aa-aug21/ (origin status: 200, size: 19843 bytes)
+2026-05-21 11:51:31 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Indian Navy Sailor Entry SSR / AA August 2021 Batch Result 2
+2026-05-21 11:51:31 [INFO] 
+[SYLLABUS] SBI Pharmacist Clerk Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:31 [INFO]   Detail URL: https://www.sarkariresult.com/bank/sbi-pharmacist-clerk-apr21/
+2026-05-21 11:51:31 [INFO] GET https://www.sarkariresult.com/bank/sbi-pharmacist-clerk-apr21/ via CF Worker
+2026-05-21 11:51:31 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/sbi-pharmacist-clerk-apr21/ (origin status: 200, size: 22765 bytes)
+2026-05-21 11:51:33 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: State Bank SBI Pharmacist Clerk Recruitment Final Result 202
+2026-05-21 11:51:33 [INFO] 
+[SYLLABUS] Bihar 2 Year Entrance Exam Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:33 [INFO]   Detail URL: https://www.sarkariresult.com/2021/bihar-2yr-bed/
+2026-05-21 11:51:33 [INFO] GET https://www.sarkariresult.com/2021/bihar-2yr-bed/ via CF Worker
+2026-05-21 11:51:34 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/bihar-2yr-bed/ (origin status: 200, size: 17809 bytes)
+2026-05-21 11:51:37 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Bihar Combined B.Ed Admission Test 2 Year Course Result 2021
+2026-05-21 11:51:37 [INFO] 
+[SYLLABUS] RSMSSB Rajasthan Forest Guard Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:37 [INFO]   Detail URL: https://www.sarkariresult.com/rpsc/rsmssb-forest-guard-04-2020/
+2026-05-21 11:51:37 [INFO] GET https://www.sarkariresult.com/rpsc/rsmssb-forest-guard-04-2020/ via CF Worker
+2026-05-21 11:51:37 [INFO] CF Worker OK for https://www.sarkariresult.com/rpsc/rsmssb-forest-guard-04-2020/ (origin status: 200, size: 22600 bytes)
+2026-05-21 11:51:40 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Rajasthan RSMSSB Forester and Forest Guard Recruitment 2020 
+2026-05-21 11:51:40 [INFO] 
+[SYLLABUS] UPTET 2021 Syllabus  (source: sarkariresult)
+2026-05-21 11:51:40 [INFO]   Detail URL: https://www.sarkariresult.com/2021/uptet-2021/
+2026-05-21 11:51:40 [INFO] GET https://www.sarkariresult.com/2021/uptet-2021/ via CF Worker
+2026-05-21 11:51:40 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/uptet-2021/ (origin status: 200, size: 18251 bytes)
+2026-05-21 11:51:43 [INFO]   Written (MDX): content/syllabus/uptet-2021-syllabus.mdx
+2026-05-21 11:51:43 [INFO] 
+[SYLLABUS] MP NHM CHO Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:43 [INFO]   Detail URL: https://www.sarkariresult.com/mp/nhm-mp-cho-feb21/
+2026-05-21 11:51:43 [INFO] GET https://www.sarkariresult.com/mp/nhm-mp-cho-feb21/ via CF Worker
+2026-05-21 11:51:44 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/nhm-mp-cho-feb21/ (origin status: 200, size: 18542 bytes)
+2026-05-21 11:51:46 [INFO]   Written (MDX): content/syllabus/mp-nhm-cho-syllabus-2021.mdx
+2026-05-21 11:51:46 [INFO] 
+[SYLLABUS] RPSC Rajasthan Lecturer Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:46 [INFO]   Detail URL: https://www.sarkariresult.com/rpsc/rpsc-lecturer-05-2020/
+2026-05-21 11:51:46 [INFO] GET https://www.sarkariresult.com/rpsc/rpsc-lecturer-05-2020/ via CF Worker
+2026-05-21 11:51:47 [INFO] CF Worker OK for https://www.sarkariresult.com/rpsc/rpsc-lecturer-05-2020/ (origin status: 200, size: 19292 bytes)
+2026-05-21 11:51:49 [INFO]   Written (MDX): content/syllabus/rpsc-rajasthan-lecturer-syllabus-2021.mdx
+2026-05-21 11:51:49 [INFO] 
+[SYLLABUS] UPPSC RO / ARO 2021 Syllabus  (source: sarkariresult)
+2026-05-21 11:51:49 [INFO]   Detail URL: https://www.sarkariresult.com/2021/uppsc-ro-aro-2021/
+2026-05-21 11:51:49 [INFO] GET https://www.sarkariresult.com/2021/uppsc-ro-aro-2021/ via CF Worker
+2026-05-21 11:51:50 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/uppsc-ro-aro-2021/ (origin status: 200, size: 28620 bytes)
+2026-05-21 11:51:54 [INFO]   Written (MDX): content/syllabus/uppsc-ro-aro-2021-syllabus.mdx
+2026-05-21 11:51:54 [INFO] 
+[SYLLABUS] UKPSC RO/ARO Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:54 [INFO]   Detail URL: https://www.sarkariresult.com/uttrakhand/ukpsc-ro-aro-march21/
+2026-05-21 11:51:54 [INFO] GET https://www.sarkariresult.com/uttrakhand/ukpsc-ro-aro-march21/ via CF Worker
+2026-05-21 11:51:54 [INFO] CF Worker OK for https://www.sarkariresult.com/uttrakhand/ukpsc-ro-aro-march21/ (origin status: 200, size: 18587 bytes)
+2026-05-21 11:51:57 [INFO]   Written (MDX): content/syllabus/ukpsc-roaro-syllabus-2021.mdx
+2026-05-21 11:51:57 [INFO] 
+[SYLLABUS] UPSC Civil Services IAS Pre Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:51:57 [INFO]   Detail URL: https://www.sarkariresult.com/upsc/upsc-ias-ifs-2021/
+2026-05-21 11:51:57 [INFO] GET https://www.sarkariresult.com/upsc/upsc-ias-ifs-2021/ via CF Worker
+2026-05-21 11:51:57 [INFO] CF Worker OK for https://www.sarkariresult.com/upsc/upsc-ias-ifs-2021/ (origin status: 200, size: 28097 bytes)
+2026-05-21 11:52:01 [INFO]   Written (MDX): content/syllabus/upsc-civil-services-ias-pre-syllabus-2021.mdx
+2026-05-21 11:52:01 [INFO] 
+[SYLLABUS] Coast Guard Yantrik / Navik GD / Navik DM Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:52:01 [INFO]   Detail URL: https://www.sarkariresult.com/force/coast-guard-navik-yantrik-02-2021/
+2026-05-21 11:52:01 [INFO] GET https://www.sarkariresult.com/force/coast-guard-navik-yantrik-02-2021/ via CF Worker
+2026-05-21 11:52:02 [INFO] CF Worker OK for https://www.sarkariresult.com/force/coast-guard-navik-yantrik-02-2021/ (origin status: 200, size: 24138 bytes)
+2026-05-21 11:52:04 [INFO]   Written (MDX): content/syllabus/coast-guard-yantrik-navik-gd-navik-dm-syllabus-2021.mdx
+2026-05-21 11:52:04 [INFO] 
+[SYLLABUS] UP Police Sub Inspector SI Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:52:04 [INFO]   Detail URL: https://www.sarkariresult.com/2021/up-police-si-2021/
+2026-05-21 11:52:04 [INFO] GET https://www.sarkariresult.com/2021/up-police-si-2021/ via CF Worker
+2026-05-21 11:52:04 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/up-police-si-2021/ (origin status: 200, size: 33535 bytes)
+2026-05-21 11:52:12 [INFO]   Written (MDX): content/syllabus/up-police-sub-inspector-si-syllabus-2021.mdx
+2026-05-21 11:52:12 [INFO] 
+[SYLLABUS] UPSSSC PET Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:52:12 [INFO]   Detail URL: https://www.sarkariresult.com/2021/upsssc-pet-syllabus/
+2026-05-21 11:52:12 [INFO] GET https://www.sarkariresult.com/2021/upsssc-pet-syllabus/ via CF Worker
+2026-05-21 11:52:13 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/upsssc-pet-syllabus/ (origin status: 200, size: 17964 bytes)
+2026-05-21 11:52:15 [INFO]   Written (MDX): content/syllabus/upsssc-pet-syllabus-2021.mdx
+2026-05-21 11:52:15 [INFO] 
+[SYLLABUS] UPPSC GIC Lecturer Syllabus 2021  (source: sarkariresult)
+2026-05-21 11:52:15 [INFO]   Detail URL: https://www.sarkariresult.com/2021/uppsc-gic-lecturer-dec20/
+2026-05-21 11:52:15 [INFO] GET https://www.sarkariresult.com/2021/uppsc-gic-lecturer-dec20/ via CF Worker
+2026-05-21 11:52:16 [INFO] CF Worker OK for https://www.sarkariresult.com/2021/uppsc-gic-lecturer-dec20/ (origin status: 200, size: 39051 bytes)
+2026-05-21 11:52:19 [INFO]   Written (MDX): content/syllabus/uppsc-gic-lecturer-syllabus-2021.mdx
+2026-05-21 11:52:19 [INFO] 
+[SYLLABUS] UPSESSB UP PGT Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:19 [INFO]   Detail URL: https://www.sarkariresult.com/2020/upsessb-pgt-syllabus/
+2026-05-21 11:52:19 [INFO] GET https://www.sarkariresult.com/2020/upsessb-pgt-syllabus/ via CF Worker
+2026-05-21 11:52:19 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/upsessb-pgt-syllabus/ (origin status: 200, size: 21653 bytes)
+2026-05-21 11:52:22 [INFO]   Written (MDX): content/syllabus/upsessb-up-pgt-syllabus-2020.mdx
+2026-05-21 11:52:22 [INFO] 
+[SYLLABUS] UPSESSB UP TGT Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:22 [INFO]   Detail URL: https://www.sarkariresult.com/2020/upsessb-up-tgt-syllabus/
+2026-05-21 11:52:22 [INFO] GET https://www.sarkariresult.com/2020/upsessb-up-tgt-syllabus/ via CF Worker
+2026-05-21 11:52:22 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/upsessb-up-tgt-syllabus/ (origin status: 200, size: 19070 bytes)
+2026-05-21 11:52:25 [INFO]   Written (MDX): content/syllabus/upsessb-up-tgt-syllabus-2020.mdx
+2026-05-21 11:52:25 [INFO] 
+[SYLLABUS] SSC Stenographer Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:25 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-stenographer-2020/
+2026-05-21 11:52:25 [INFO] GET https://www.sarkariresult.com/ssc/ssc-stenographer-2020/ via CF Worker
+2026-05-21 11:52:25 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-stenographer-2020/ (origin status: 200, size: 27863 bytes)
+2026-05-21 11:52:28 [INFO]   Written (MDX): content/syllabus/ssc-stenographer-syllabus-2020.mdx
+2026-05-21 11:52:28 [INFO] 
+[SYLLABUS] UPSC Geo Scientist 2021 Pre / Mains Syllabus  (source: sarkariresult)
+2026-05-21 11:52:28 [INFO]   Detail URL: https://www.sarkariresult.com/upsc/upsc-geo-scientist-2021/
+2026-05-21 11:52:28 [INFO] GET https://www.sarkariresult.com/upsc/upsc-geo-scientist-2021/ via CF Worker
+2026-05-21 11:52:29 [INFO] CF Worker OK for https://www.sarkariresult.com/upsc/upsc-geo-scientist-2021/ (origin status: 200, size: 21205 bytes)
+2026-05-21 11:52:31 [INFO]   Written (MDX): content/syllabus/upsc-geo-scientist-2021-pre-mains-syllabus.mdx
+2026-05-21 11:52:31 [INFO] 
+[SYLLABUS] UPRVUNL ARO Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:31 [INFO]   Detail URL: https://www.sarkariresult.com/2020/uprvunl-various-march20/
+2026-05-21 11:52:31 [INFO] GET https://www.sarkariresult.com/2020/uprvunl-various-march20/ via CF Worker
+2026-05-21 11:52:31 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/uprvunl-various-march20/ (origin status: 200, size: 28362 bytes)
+2026-05-21 11:52:34 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: UPRVUNL AE / Staff & Other Various Post ARO / Staff Nurse, T
+2026-05-21 11:52:34 [INFO] 
+[SYLLABUS] MP Jail Prahari Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:34 [INFO]   Detail URL: https://www.sarkariresult.com/mp/mp-peb-jail-prahari-2020/
+2026-05-21 11:52:34 [INFO] GET https://www.sarkariresult.com/mp/mp-peb-jail-prahari-2020/ via CF Worker
+2026-05-21 11:52:35 [INFO] CF Worker OK for https://www.sarkariresult.com/mp/mp-peb-jail-prahari-2020/ (origin status: 200, size: 25026 bytes)
+2026-05-21 11:52:37 [INFO]   Written (MDX): content/syllabus/mp-jail-prahari-syllabus-2020.mdx
+2026-05-21 11:52:37 [INFO] 
+[SYLLABUS] SSC Delhi Police Constable Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:37 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-delhi-constable-2020/
+2026-05-21 11:52:37 [INFO] GET https://www.sarkariresult.com/ssc/ssc-delhi-constable-2020/ via CF Worker
+2026-05-21 11:52:38 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-delhi-constable-2020/ (origin status: 200, size: 34961 bytes)
+2026-05-21 11:52:40 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: SSC Delhi Police Executive Constable Final Result Reserve Li
+2026-05-21 11:52:40 [INFO] 
+[SYLLABUS] UPSC CPF AC Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:40 [INFO]   Detail URL: https://www.sarkariresult.com/upsc/upsc-cpf-ac-2020/
+2026-05-21 11:52:40 [INFO] GET https://www.sarkariresult.com/upsc/upsc-cpf-ac-2020/ via CF Worker
+2026-05-21 11:52:41 [INFO] CF Worker OK for https://www.sarkariresult.com/upsc/upsc-cpf-ac-2020/ (origin status: 200, size: 21083 bytes)
+2026-05-21 11:52:43 [INFO]   Written (MDX): content/syllabus/upsc-cpf-ac-syllabus-2020.mdx
+2026-05-21 11:52:43 [INFO] 
+[SYLLABUS] Bihar Police Lady Constable Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:43 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/csbc-bihar-lady-constable-01-2020/
+2026-05-21 11:52:43 [INFO] GET https://www.sarkariresult.com/bihar/csbc-bihar-lady-constable-01-2020/ via CF Worker
+2026-05-21 11:52:44 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/csbc-bihar-lady-constable-01-2020/ (origin status: 200, size: 19982 bytes)
+2026-05-21 11:52:47 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Bihar Police Lady Constable Final Result 2021
+2026-05-21 11:52:47 [INFO] 
+[SYLLABUS] NCL Paramedical Post Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:47 [INFO]   Detail URL: https://www.sarkariresult.com/2020/ncl-paramedical-post/
+2026-05-21 11:52:47 [INFO] GET https://www.sarkariresult.com/2020/ncl-paramedical-post/ via CF Worker
+2026-05-21 11:52:47 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/ncl-paramedical-post/ (origin status: 200, size: 17527 bytes)
+2026-05-21 11:52:50 [INFO]   Written (MDX): content/syllabus/ncl-paramedical-post-syllabus-2020.mdx
+2026-05-21 11:52:50 [INFO] 
+[SYLLABUS] CTET Syllabus July 2020  (source: sarkariresult)
+2026-05-21 11:52:50 [INFO]   Detail URL: https://www.sarkariresult.com/2020/ctet-july-2020/
+2026-05-21 11:52:50 [INFO] GET https://www.sarkariresult.com/2020/ctet-july-2020/ via CF Worker
+2026-05-21 11:52:51 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/ctet-july-2020/ (origin status: 200, size: 19778 bytes)
+2026-05-21 11:52:53 [INFO]   Written (MDX): content/syllabus/ctet-syllabus-july-2020.mdx
+2026-05-21 11:52:53 [INFO] 
+[SYLLABUS] Indian Bank SO Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:53 [INFO]   Detail URL: https://www.sarkariresult.com/bank/indian-bank-so-jan2020/
+2026-05-21 11:52:53 [INFO] GET https://www.sarkariresult.com/bank/indian-bank-so-jan2020/ via CF Worker
+2026-05-21 11:52:54 [INFO] CF Worker OK for https://www.sarkariresult.com/bank/indian-bank-so-jan2020/ (origin status: 200, size: 16898 bytes)
+2026-05-21 11:52:56 [INFO]   [skip] Post date '10 September 2020' is before 2022-01-01 — skipping
+2026-05-21 11:52:56 [INFO] 
+[SYLLABUS] DRDO MTS Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:56 [INFO]   Detail URL: https://www.sarkariresult.com/2020/drdo-mts-dec19/
+2026-05-21 11:52:56 [INFO] GET https://www.sarkariresult.com/2020/drdo-mts-dec19/ via CF Worker
+2026-05-21 11:52:57 [INFO] CF Worker OK for https://www.sarkariresult.com/2020/drdo-mts-dec19/ (origin status: 200, size: 13670 bytes)
+2026-05-21 11:52:59 [INFO]   Written (MDX): content/syllabus/drdo-mts-syllabus-2020.mdx
+2026-05-21 11:52:59 [INFO] 
+[SYLLABUS] Bihar AMIN Syllabus 2020  (source: sarkariresult)
+2026-05-21 11:52:59 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/bihar-bcece-amin-dec19/
+2026-05-21 11:52:59 [INFO] GET https://www.sarkariresult.com/bihar/bihar-bcece-amin-dec19/ via CF Worker
+2026-05-21 11:53:00 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/bihar-bcece-amin-dec19/ (origin status: 200, size: 19237 bytes)
+2026-05-21 11:53:03 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Bihar Board AMIN 2020 Final Result with Rank Status 2023
+2026-05-21 11:53:03 [INFO] 
+[SYLLABUS] RPSC Librarian Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:03 [INFO]   Detail URL: https://www.sarkariresult.com/rpsc/rpsc-librarian-07-2019/
+2026-05-21 11:53:03 [INFO] GET https://www.sarkariresult.com/rpsc/rpsc-librarian-07-2019/ via CF Worker
+2026-05-21 11:53:04 [INFO] CF Worker OK for https://www.sarkariresult.com/rpsc/rpsc-librarian-07-2019/ (origin status: 200, size: 14661 bytes)
+2026-05-21 11:53:06 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: RPSC Librarian Recruitment Answer Key 2020
+2026-05-21 11:53:06 [INFO] 
+[SYLLABUS] UPSSSC Forest / Wildlife Guard Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:06 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/upsssc-forest-wildlife-guard-05-2019/
+2026-05-21 11:53:06 [INFO] GET https://www.sarkariresult.com/upsssc/upsssc-forest-wildlife-guard-05-2019/ via CF Worker
+2026-05-21 11:53:07 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/upsssc-forest-wildlife-guard-05-2019/ (origin status: 200, size: 19989 bytes)
+2026-05-21 11:53:10 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: UPSSSC Forest / Wild Life Guard Recruitment 2019 PET Result,
+2026-05-21 11:53:10 [INFO] 
+[SYLLABUS] Delhi Police Head Constable Clerk Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:10 [INFO]   Detail URL: https://www.sarkariresult.com/delhi/delhi-police-hc-oct19/
+2026-05-21 11:53:10 [INFO] GET https://www.sarkariresult.com/delhi/delhi-police-hc-oct19/ via CF Worker
+2026-05-21 11:53:11 [INFO] CF Worker OK for https://www.sarkariresult.com/delhi/delhi-police-hc-oct19/ (origin status: 200, size: 18025 bytes)
+2026-05-21 11:53:14 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Delhi Police Head Constable Exam Cancelled Notice 2021
+2026-05-21 11:53:14 [INFO] 
+[SYLLABUS] UPSSSC Combined Technical Recruitment 2016 Syllabus  (source: sarkariresult)
+2026-05-21 11:53:14 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/23exam2016/
+2026-05-21 11:53:14 [INFO] GET https://www.sarkariresult.com/upsssc/23exam2016/ via CF Worker
+2026-05-21 11:53:14 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/23exam2016/ (origin status: 200, size: 27073 bytes)
+2026-05-21 11:53:21 [INFO]   Written (MDX): content/syllabus/upsssc-combined-technical-recruitment-2016-syllabus.mdx
+2026-05-21 11:53:21 [INFO] 
+[SYLLABUS] FCI Manager II Various Post Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:21 [INFO]   Detail URL: https://www.sarkariresult.com/2019/fci-manager-02-2019/
+2026-05-21 11:53:21 [INFO] GET https://www.sarkariresult.com/2019/fci-manager-02-2019/ via CF Worker
+2026-05-21 11:53:21 [INFO] CF Worker OK for https://www.sarkariresult.com/2019/fci-manager-02-2019/ (origin status: 200, size: 26325 bytes)
+2026-05-21 11:53:24 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: FCI Various Category II Manager Post Final Result 2021
+2026-05-21 11:53:24 [INFO] 
+[SYLLABUS] SSC Stenographer Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:24 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-stenographer-2019/
+2026-05-21 11:53:24 [INFO] GET https://www.sarkariresult.com/ssc/ssc-stenographer-2019/ via CF Worker
+2026-05-21 11:53:25 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-stenographer-2019/ (origin status: 200, size: 20993 bytes)
+2026-05-21 11:53:27 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: SSC Stenographer 2019 Final Result 2022
+2026-05-21 11:53:27 [INFO] 
+[SYLLABUS] RPSC Junior Legal Officer JLO Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:27 [INFO]   Detail URL: https://www.sarkariresult.com/rpsc/rpsc-jlo-05-2019/
+2026-05-21 11:53:27 [INFO] GET https://www.sarkariresult.com/rpsc/rpsc-jlo-05-2019/ via CF Worker
+2026-05-21 11:53:28 [INFO] CF Worker OK for https://www.sarkariresult.com/rpsc/rpsc-jlo-05-2019/ (origin status: 200, size: 16295 bytes)
+2026-05-21 11:53:30 [INFO]   [skip] Post date '16 April 2021' is before 2022-01-01 — skipping
+2026-05-21 11:53:30 [INFO] 
+[SYLLABUS] UPSSSC Computer Operator Exam Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:30 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/25exam2016/
+2026-05-21 11:53:30 [INFO] GET https://www.sarkariresult.com/upsssc/25exam2016/ via CF Worker
+2026-05-21 11:53:31 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/25exam2016/ (origin status: 200, size: 21404 bytes)
+2026-05-21 11:53:35 [INFO]   Written (MDX): content/syllabus/upsssc-computer-operator-exam-syllabus-2019.mdx
+2026-05-21 11:53:35 [INFO] 
+[SYLLABUS] UPSSSC Junior Engineer JE 2017 Exam Syllabus  (source: sarkariresult)
+2026-05-21 11:53:35 [INFO]   Detail URL: https://www.sarkariresult.com/upsssc/28exam2016/
+2026-05-21 11:53:35 [INFO] GET https://www.sarkariresult.com/upsssc/28exam2016/ via CF Worker
+2026-05-21 11:53:35 [INFO] CF Worker OK for https://www.sarkariresult.com/upsssc/28exam2016/ (origin status: 200, size: 24620 bytes)
+2026-05-21 11:53:42 [INFO]   Written (MDX): content/syllabus/upsssc-junior-engineer-je-2017-exam-syllabus.mdx
+2026-05-21 11:53:42 [INFO] 
+[SYLLABUS] SSC CPO SI Sub Inspector Syllabus 2019 - Paper I & II  (source: sarkariresult)
+2026-05-21 11:53:42 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-cpo-si-2019/
+2026-05-21 11:53:42 [INFO] GET https://www.sarkariresult.com/ssc/ssc-cpo-si-2019/ via CF Worker
+2026-05-21 11:53:43 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-cpo-si-2019/ (origin status: 200, size: 31189 bytes)
+2026-05-21 11:53:48 [INFO]   [skip] Post date '08 April 2022' is before 2022-01-01 — skipping
+2026-05-21 11:53:48 [INFO] 
+[SYLLABUS] SSC Junior Engineer Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:48 [INFO]   Detail URL: https://www.sarkariresult.com/ssc/ssc-junior-engineer-je2019/
+2026-05-21 11:53:48 [INFO] GET https://www.sarkariresult.com/ssc/ssc-junior-engineer-je2019/ via CF Worker
+2026-05-21 11:53:48 [INFO] CF Worker OK for https://www.sarkariresult.com/ssc/ssc-junior-engineer-je2019/ (origin status: 200, size: 32166 bytes)
+2026-05-21 11:53:51 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: SSC Junior Engineer Recruitment 2019 Final Result with Cutof
+2026-05-21 11:53:51 [INFO] 
+[SYLLABUS] BPSC Assistant Engineer Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:51 [INFO]   Detail URL: https://www.sarkariresult.com/bihar/bpsc-asst-engineer-0304-2019/
+2026-05-21 11:53:51 [INFO] GET https://www.sarkariresult.com/bihar/bpsc-asst-engineer-0304-2019/ via CF Worker
+2026-05-21 11:53:52 [INFO] CF Worker OK for https://www.sarkariresult.com/bihar/bpsc-asst-engineer-0304-2019/ (origin status: 200, size: 16147 bytes)
+2026-05-21 11:53:54 [INFO]   [skip] Title no longer matches kind=syllabus after detail parse: Bihar BPSC Assistant Engineer Online Form 2019
+2026-05-21 11:53:54 [INFO] 
+[SYLLABUS] UPSSSC Junior Assistant Syllabus 2019  (source: sarkariresult)
+2026-05-21 11:53:54 [INFO]   Detail URL: https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/
+2026-05-21 11:53:54 [INFO] GET https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/ via CF Worker
+2026-05-21 11:53:54 [WARNING] CF Worker fetch failed for https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/: 403 Client Error: Forbidden for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fwww.sarkariresults.org.in%2Fpage%2Fupsssc-junior-assistant-042019%2F
+2026-05-21 11:53:54 [WARNING] CF Worker failed for https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/, falling back to direct fetch
+2026-05-21 11:53:55 [WARNING]   curl-cffi attempt 1: HTTP 404 for https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/
+2026-05-21 11:53:57 [WARNING]   curl-cffi attempt 2: HTTP 404 for https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/
+2026-05-21 11:54:03 [WARNING]   curl-cffi attempt 3: HTTP 404 for https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/
+2026-05-21 11:54:03 [INFO]   curl-cffi exhausted — trying playwright stealth for https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/
+2026-05-21 11:54:03 [INFO]   [Playwright-stealth] Fetching https://www.sarkariresults.org.in/page/upsssc-junior-assistant-042019/
+2026-05-21 11:54:14 [INFO]   [Playwright-stealth] Got 1128 bytes, 0 anchors
+2026-05-21 11:54:14 [INFO]   Written (MDX): content/syllabus/upsssc-junior-assistant-syllabus-2019.mdx
+2026-05-21 11:54:14 [INFO] 
+[SYLLABUS] UPSSSC Lower 2019 Syllabus  (source: sarkariresult)
+2026-05-21 11:54:14 [INFO]   Detail URL: https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r
+2026-05-21 11:54:14 [INFO] GET https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r via CF Worker
+2026-05-21 11:54:14 [WARNING] CF Worker fetch failed for https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r: 403 Client Error: Forbidden for url: https://nd-proxy.awesomeashoksingh.workers.dev/?url=https%3A%2F%2Fwww.sarkariresults.org.in%2Fpage%2Fupsssc-01-2019-lower%2Fr
+2026-05-21 11:54:14 [WARNING] CF Worker failed for https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r, falling back to direct fetch
+2026-05-21 11:54:15 [WARNING]   curl-cffi attempt 1: HTTP 404 for https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r
+2026-05-21 11:54:17 [WARNING]   curl-cffi attempt 2: HTTP 404 for https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r
+2026-05-21 11:54:23 [WARNING]   curl-cffi attempt 3: HTTP 404 for https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r
+2026-05-21 11:54:23 [INFO]   curl-cffi exhausted — trying playwright stealth for https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r
+2026-05-21 11:54:23 [INFO]   [Playwright-stealth] Fetching https://www.sarkariresults.org.in/page/upsssc-01-2019-lower/r
+2026-05-21 11:54:34 [INFO]   [Playwright-stealth] Got 1128 bytes, 0 anchors
+2026-05-21 11:54:34 [INFO]   Written (MDX): content/syllabus/upsssc-lower-2019-syllabus.mdx
+2026-05-21 11:54:34 [INFO] 
+[SYLLABUS] Exam Pattern  (source: freejobalert)
+2026-05-21 11:54:34 [INFO]   Detail URL: https://www.freejobalert.com/exam-pattern/
+2026-05-21 11:54:34 [INFO] GET https://www.freejobalert.com/exam-pattern/ via CF Worker
+2026-05-21 11:54:35 [INFO] CF Worker OK for https://www.freejobalert.com/exam-pattern/ (origin status: 200, size: 177255 bytes)
+2026-05-21 11:54:54 [INFO]   Written (MDX): content/syllabus/exam-pattern.mdx
+2026-05-21 11:54:54 [INFO] 
+[SYLLABUS] RRB Group D Syllabus 2026  (source: freejobalert)
+2026-05-21 11:54:54 [INFO]   Detail URL: https://www.freejobalert.com/articles/rrb-group-d-syllabus-2026-3037450
+2026-05-21 11:54:54 [INFO] GET https://www.freejobalert.com/articles/rrb-group-d-syllabus-2026-3037450 via CF Worker
+2026-05-21 11:54:54 [INFO] CF Worker OK for https://www.freejobalert.com/articles/rrb-group-d-syllabus-2026-3037450 (origin status: 200, size: 161569 bytes)
+2026-05-21 11:54:56 [INFO]   Written (MDX): content/syllabus/rrb-group-d-syllabus-2026.mdx
+2026-05-21 11:54:56 [INFO] 
+[SYLLABUS] RBI Assistant Syllabus 2026  (source: freejobalert)
+2026-05-21 11:54:56 [INFO]   Detail URL: https://www.freejobalert.com/articles/rbi-assistant-syllabus-2026-3037441
+2026-05-21 11:54:56 [INFO] GET https://www.freejobalert.com/articles/rbi-assistant-syllabus-2026-3037441 via CF Worker
+2026-05-21 11:54:57 [INFO] CF Worker OK for https://www.freejobalert.com/articles/rbi-assistant-syllabus-2026-3037441 (origin status: 200, size: 163062 bytes)
+2026-05-21 11:54:59 [INFO]   Written (MDX): content/syllabus/rbi-assistant-syllabus-2026.mdx
+2026-05-21 11:54:59 [INFO] 
+[SYLLABUS] UPSC CSE Syllabus 2026  (source: freejobalert)
+2026-05-21 11:54:59 [INFO]   Detail URL: https://www.freejobalert.com/articles/upsc-cse-syllabus-2026-3035817
+2026-05-21 11:54:59 [INFO] GET https://www.freejobalert.com/articles/upsc-cse-syllabus-2026-3035817 via CF Worker
+2026-05-21 11:55:00 [INFO] CF Worker OK for https://www.freejobalert.com/articles/upsc-cse-syllabus-2026-3035817 (origin status: 200, size: 166398 bytes)
+2026-05-21 11:55:03 [INFO]   Written (MDX): content/syllabus/upsc-cse-syllabus-2026.mdx
+2026-05-21 11:55:03 [INFO] 
+[SYLLABUS] MPPKVVCL Welfare Officer and Other Posts Syllabus 2026  (source: freejobalert)
+2026-05-21 11:55:03 [INFO]   Detail URL: https://www.freejobalert.com/articles/mppkvvcl-je-welfare-officer-and-other-posts-syllabus-2026-3034824
+2026-05-21 11:55:03 [INFO] GET https://www.freejobalert.com/articles/mppkvvcl-je-welfare-officer-and-other-posts-syllabus-2026-3034824 via CF Worker
+2026-05-21 11:55:03 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mppkvvcl-je-welfare-officer-and-other-posts-syllabus-2026-3034824 (origin status: 200, size: 164396 bytes)
+2026-05-21 11:55:06 [INFO]   Written (MDX): content/syllabus/mppkvvcl-welfare-officer-and-other-posts-syllabus-2026.mdx
+2026-05-21 11:55:06 [INFO] 
+[SYLLABUS] Haryana CET Group C Mains Syllabus 2026  (source: freejobalert)
+2026-05-21 11:55:06 [INFO]   Detail URL: https://www.freejobalert.com/articles/haryana-cet-group-c-mains-syllabus-2026-3034751
+2026-05-21 11:55:06 [INFO] GET https://www.freejobalert.com/articles/haryana-cet-group-c-mains-syllabus-2026-3034751 via CF Worker
+2026-05-21 11:55:06 [INFO] CF Worker OK for https://www.freejobalert.com/articles/haryana-cet-group-c-mains-syllabus-2026-3034751 (origin status: 200, size: 165711 bytes)
+2026-05-21 11:55:09 [INFO]   Written (MDX): content/syllabus/haryana-cet-group-c-mains-syllabus-2026.mdx
+2026-05-21 11:55:09 [INFO] 
+[SYLLABUS] TG SET Syllabus 2025  (source: freejobalert)
+2026-05-21 11:55:09 [INFO]   Detail URL: https://www.freejobalert.com/articles/tg-set-syllabus-2025-out-3033108
+2026-05-21 11:55:09 [INFO] GET https://www.freejobalert.com/articles/tg-set-syllabus-2025-out-3033108 via CF Worker
+2026-05-21 11:55:09 [INFO] CF Worker OK for https://www.freejobalert.com/articles/tg-set-syllabus-2025-out-3033108 (origin status: 200, size: 157491 bytes)
+2026-05-21 11:55:12 [INFO]   Written (MDX): content/syllabus/tg-set-syllabus-2025.mdx
+2026-05-21 11:55:12 [INFO] 
+[SYLLABUS] UP Lekhpal Syllabus 2025  (source: freejobalert)
+2026-05-21 11:55:12 [INFO]   Detail URL: https://www.freejobalert.com/articles/up-lekhpal-syllabus-2025-3033102
+2026-05-21 11:55:12 [INFO] GET https://www.freejobalert.com/articles/up-lekhpal-syllabus-2025-3033102 via CF Worker
+2026-05-21 11:55:12 [INFO] CF Worker OK for https://www.freejobalert.com/articles/up-lekhpal-syllabus-2025-3033102 (origin status: 200, size: 166319 bytes)
+2026-05-21 11:55:15 [INFO]   Written (MDX): content/syllabus/up-lekhpal-syllabus-2025.mdx
+2026-05-21 11:55:15 [INFO] 
+[SYLLABUS] OICL Administrative Officer Syllabus 2025  (source: freejobalert)
+2026-05-21 11:55:15 [INFO]   Detail URL: https://www.freejobalert.com/articles/oicl-administrative-officer-syllabus-2025-3033101
+2026-05-21 11:55:15 [INFO] GET https://www.freejobalert.com/articles/oicl-administrative-officer-syllabus-2025-3033101 via CF Worker
+2026-05-21 11:55:15 [INFO] CF Worker OK for https://www.freejobalert.com/articles/oicl-administrative-officer-syllabus-2025-3033101 (origin status: 200, size: 159615 bytes)
+2026-05-21 11:55:18 [INFO]   Written (MDX): content/syllabus/oicl-administrative-officer-syllabus-2025.mdx
+2026-05-21 11:55:18 [INFO] 
+[SYLLABUS] IBPS RRB PO Syllabus 2025  (source: freejobalert)
+2026-05-21 11:55:18 [INFO]   Detail URL: https://www.freejobalert.com/articles/ibps-rrb-po-syllabus-2025-3033099
+2026-05-21 11:55:18 [INFO] GET https://www.freejobalert.com/articles/ibps-rrb-po-syllabus-2025-3033099 via CF Worker
+2026-05-21 11:55:18 [INFO] CF Worker OK for https://www.freejobalert.com/articles/ibps-rrb-po-syllabus-2025-3033099 (origin status: 200, size: 161156 bytes)
+2026-05-21 11:55:21 [INFO]   Written (MDX): content/syllabus/ibps-rrb-po-syllabus-2025.mdx
+2026-05-21 11:55:21 [INFO] 
+[SYLLABUS] UPSSSC AGTA Syllabus 2026  (source: freejobalert)
+2026-05-21 11:55:21 [INFO]   Detail URL: https://www.freejobalert.com/articles/upsssc-agta-syllabus-and-exam-pattern-3050031
+2026-05-21 11:55:21 [INFO] GET https://www.freejobalert.com/articles/upsssc-agta-syllabus-and-exam-pattern-3050031 via CF Worker
+2026-05-21 11:55:21 [INFO] CF Worker OK for https://www.freejobalert.com/articles/upsssc-agta-syllabus-and-exam-pattern-3050031 (origin status: 200, size: 164228 bytes)
+2026-05-21 11:55:23 [INFO]   Written (MDX): content/syllabus/upsssc-agta-syllabus-2026.mdx
+2026-05-21 11:55:23 [INFO] 
+[SYLLABUS] MPTET Varg 2 Teacher Syllabus 2026  (source: freejobalert)
+2026-05-21 11:55:23 [INFO]   Detail URL: https://www.freejobalert.com/articles/mptet-varg-2-teacher-syllabus-and-exam-pattern-3049998
+2026-05-21 11:55:23 [INFO] GET https://www.freejobalert.com/articles/mptet-varg-2-teacher-syllabus-and-exam-pattern-3049998 via CF Worker
+2026-05-21 11:55:23 [INFO] CF Worker OK for https://www.freejobalert.com/articles/mptet-varg-2-teacher-syllabus-and-exam-pattern-3049998 (origin status: 200, size: 157832 bytes)
+2026-05-21 11:55:26 [INFO]   Written (MDX): content/syllabus/mptet-varg-2-teacher-syllabus-2026.mdx
+2026-05-21 11:55:26 [INFO] 
+[SYLLABUS] OSSC Food Safety Officer Syllabus 2026  (source: freejobalert)
+2026-05-21 11:55:26 [INFO]   Detail URL: https://www.freejobalert.com/articles/ossc-food-safety-officer-syllabus-and-exam-pattern-3049989
+2026-05-21 11:55:26 [INFO] GET https://www.freejobalert.com/articles/ossc-food-safety-officer-syllabus-and-exam-pattern-3049989 via CF Worker
+2026-05-21 11:55:26 [INFO] CF Worker OK for https://www.freejobalert.com/articles/ossc-food-safety-officer-syllabus-and-exam-pattern-3049989 (origin status: 200, size: 169294 bytes)
+2026-05-21 11:55:29 [INFO]   Written (MDX): content/syllabus/ossc-food-safety-officer-syllabus-2026.mdx
+2026-05-21 11:55:29 [INFO] 
+[SYLLABUS] TNPSC CTS Syllabus 2026  (source: freejobalert)
+2026-05-21 11:55:29 [INFO]   Detail URL: https://www.freejobalert.com/articles/tnpsc-cts-syllabus-and-exam-pattern-3049976
+2026-05-21 11:55:29 [INFO] GET https://www.freejobalert.com/articles/tnpsc-cts-syllabus-and-exam-pattern-3049976 via CF Worker
+2026-05-21 11:55:29 [INFO] CF Worker OK for https://www.freejobalert.com/articles/tnpsc-cts-syllabus-and-exam-pattern-3049976 (origin status: 200, size: 159943 bytes)
