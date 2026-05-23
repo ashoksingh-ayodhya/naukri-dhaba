@@ -7,8 +7,9 @@ const CONTENT_ROOT = path.join(process.cwd(), "content");
 
 function parseDDMMYYYY(dateStr: string | undefined): Date | null {
   if (!dateStr) return null;
-  const [dd, mm, yyyy] = dateStr.split("/");
-  if (!dd || !mm || !yyyy) return null;
+  const match = dateStr.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  if (!match) return null;
+  const [, dd, mm, yyyy] = match;
   const d = new Date(`${yyyy}-${mm}-${dd}`);
   return isNaN(d.getTime()) ? null : d;
 }
@@ -196,20 +197,14 @@ export function isNew(publishedAt: string): boolean {
 }
 
 export function isDeadlineSoon(lastDate: string | undefined): boolean {
-  if (!lastDate) return false;
-  const [dd, mm, yyyy] = lastDate.split("/");
-  if (!dd || !mm || !yyyy) return false;
-  const deadline = new Date(`${yyyy}-${mm}-${dd}`);
-  const today = new Date();
-  const diffMs = deadline.getTime() - today.getTime();
-  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  const deadline = parseDDMMYYYY(lastDate);
+  if (!deadline) return false;
+  const diffDays = (deadline.getTime() - Date.now()) / (1000 * 60 * 60 * 24);
   return diffDays >= 0 && diffDays <= 7;
 }
 
 export function isExpired(lastDate: string | undefined): boolean {
-  if (!lastDate) return false;
-  const [dd, mm, yyyy] = lastDate.split("/");
-  if (!dd || !mm || !yyyy) return false;
-  const deadline = new Date(`${yyyy}-${mm}-${dd}`);
+  const deadline = parseDDMMYYYY(lastDate);
+  if (!deadline) return false;
   return deadline < new Date();
 }
