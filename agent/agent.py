@@ -477,35 +477,44 @@ def audit_freshness(counts: dict[str, int], prev: dict[str, int], commits: list[
 
 # ── Task 3+4: seen_items + scraper trigger ────────────────────────────────────
 
-def clear_and_trigger(commits: list[str]) -> None:
-    if commits:
-        log("Tasks 3+4: Content fresh — no action needed.")
+def clear_and_trigger(counts: dict[str, int], commits: list[str]) -> None:
+    GOALS = {"jobs": 3000, "results": 2000, "admit-cards": 1500}
+    goals_met = all(counts.get(t, 0) >= g for t, g in GOALS.items())
+
+    if goals_met:
+        log("Tasks 3+4: Content goals met — scraper loop complete.")
         return
 
-    cleared  = False
-    triggered = False
+    remaining = {t: max(0, g - counts.get(t, 0)) for t, g in GOALS.items()}
+    log(f"Tasks 3+4: Goals not met — still need: {remaining}")
 
-    if SEEN_FILE.exists():
-        try:
-            count = len(json.loads(SEEN_FILE.read_text()))
-        except Exception:
-            count = 0
-        log(f"Task 3: Clearing seen_items.json ({count} entries)...")
-        SEEN_FILE.write_text("[]")
-        FIXES_APPLIED.append(f"Cleared seen_items.json ({count} entries)")
-        cleared = True
+    cleared = False
+    if not commits:
+        # No progress in 24h — clear seen_items to force full re-scrape
+        if SEEN_FILE.exists():
+            try:
+                count = len(json.loads(SEEN_FILE.read_text()))
+            except Exception:
+                count = 0
+            log(f"Task 3: Clearing seen_items.json ({count} entries) — no progress in 24h...")
+            SEEN_FILE.write_text("[]")
+            FIXES_APPLIED.append(f"Cleared seen_items.json ({count} entries)")
+            cleared = True
+    else:
+        log(f"Task 3: Scraper is making progress ({len(commits)} commits in 24h) — keeping seen_items.")
 
+    # Always write run-now to trigger immediate scraper run when goals not met
     ts = datetime.now().isoformat()
     RUN_NOW_FILE.write_text(f"Agent re-run triggered at {ts}\n")
-    log("Task 4: Wrote scraper/run-now.")
+    log("Task 4: Wrote scraper/run-now — triggering immediate scraper run.")
     FIXES_APPLIED.append("Wrote scraper/run-now → triggers immediate scraper")
-    triggered = True
 
     paths = []
-    if cleared:  paths.append(str(SEEN_FILE))
-    if triggered: paths.append(str(RUN_NOW_FILE))
+    if cleared:
+        paths.append(str(SEEN_FILE))
+    paths.append(str(RUN_NOW_FILE))
     git_commit(
-        "fix(agent): clear seen_items + trigger scraper re-run [skip ci]",
+        f"fix(agent): trigger scraper — {sum(remaining.values())} posts still needed [skip ci]",
         paths,
     )
 
@@ -645,8 +654,8 @@ def main() -> None:
     # 2. Freshness audit (escalates to Copilot if stale)
     audit_freshness(counts, prev, commits)
 
-    # 3+4. Clear seen_items + trigger scraper if stale
-    clear_and_trigger(commits)
+    # 3+4. Clear seen_items + trigger scraper if goals not met
+    clear_and_trigger(counts, commits)
 
     # 5. SEO field audit (escalates missing fields to Copilot)
     audit_seo_fields()
