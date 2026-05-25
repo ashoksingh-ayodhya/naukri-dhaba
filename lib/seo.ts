@@ -150,3 +150,120 @@ export function buildOrganizationJsonLd(): object {
     sameAs: [siteConfig.links.twitter, siteConfig.links.telegram],
   };
 }
+
+export function buildResultJsonLd(fm: PostFrontmatter, url: string): object {
+  const orgName = (fm.organization || fm.dept || "Government of India").trim();
+  const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
+  return {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    name: fm.title,
+    description: buildDescription(fm),
+    url,
+    datePublished: datePosted,
+    ...(fm.updatedAt ? { dateModified: toIsoDate(fm.updatedAt) || datePosted } : {}),
+    provider: { "@type": "Organization", name: orgName },
+    educationalLevel: "Government Exam",
+    inLanguage: "en-IN",
+    isAccessibleForFree: true,
+  };
+}
+
+export function buildAdmitJsonLd(fm: PostFrontmatter, url: string): object {
+  const orgName = (fm.organization || fm.dept || "Government of India").trim();
+  const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
+  const examDateIso = fm.examDate ? toIsoDate(fm.examDate) : undefined;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: fm.title,
+    description: buildDescription(fm),
+    url,
+    startDate: examDateIso || datePosted,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: "As per Admit Card",
+      address: { "@type": "PostalAddress", addressCountry: "IN" },
+    },
+    organizer: { "@type": "Organization", name: orgName, url: fm.officialWebsite || siteConfig.url },
+    offers: { "@type": "Offer", price: "0", priceCurrency: "INR", availability: "https://schema.org/InStock" },
+  };
+}
+
+export function buildAnswerKeyJsonLd(fm: PostFrontmatter, url: string): object {
+  const orgName = (fm.organization || fm.dept || "Government of India").trim();
+  const datePosted = toIsoDate(fm.publishedAt) || "2026-01-01";
+  return {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    name: fm.title,
+    description: buildDescription(fm),
+    url,
+    datePublished: datePosted,
+    provider: { "@type": "Organization", name: orgName },
+    educationalUse: "Answer Key",
+    inLanguage: "en-IN",
+    isAccessibleForFree: true,
+  };
+}
+
+export function buildSyllabusJsonLd(fm: PostFrontmatter, url: string): object {
+  const orgName = (fm.organization || fm.dept || "Government of India").trim();
+  const datePosted = toIsoDate(fm.publishedAt) || "2026-01-01";
+  return {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: fm.title,
+    description: buildDescription(fm),
+    url,
+    datePublished: datePosted,
+    provider: { "@type": "Organization", name: orgName },
+    educationalLevel: "Government Exam Preparation",
+    inLanguage: "en-IN",
+    isAccessibleForFree: true,
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      instructor: { "@type": "Organization", name: orgName },
+    },
+  };
+}
+
+export function buildListingPageJsonLd(
+  title: string,
+  url: string,
+  items: Array<{ name: string; url: string; description?: string }>
+): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: title,
+    url,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: items.slice(0, 50).map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        url: item.url,
+        ...(item.description ? { description: item.description } : {}),
+      })),
+    },
+  };
+}
+
+export function buildFaqJsonLd(
+  faqs: Array<{ question: string; answer: string }>
+): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  };
+}

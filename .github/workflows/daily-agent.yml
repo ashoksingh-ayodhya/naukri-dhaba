@@ -12,7 +12,8 @@ name: Naukri Dhaba Agent
 
 on:
   schedule:
-    - cron: "0 6 * * *"   # 11:30 AM IST — 1h after scraper, daily
+    # Every 3 hours until the site is fully fixed and indexed
+    - cron: "0 */3 * * *"
   workflow_dispatch:       # manual trigger any time
 
 permissions:

@@ -5,10 +5,16 @@ Naukri Dhaba — Autonomous Agent
 Runs daily via GitHub Actions.
 
 Goals (in priority order):
-  1. Fix branding contamination — remove "Sarkari Result" from all MDX files
+  0. PRIMARY: Full SEO rewrite of every MDX file —
+       - Strip all Sarkari Result branding
+       - Generate unique 200-word keyword-rich shortDescription per job
+       - Replace stock howToApply with clean Naukri Dhaba copy
+       - Enrich body: lead paragraph, key details table, eligibility,
+         numbered steps, 5-Q FAQ — all unique per page
+  1. Fix branding contamination — fast pass for any missed instances
   2. Audit content freshness — alert if no new content in 24h
   3. Audit content counts — alert if count drops
-  4. Clear seen_items.json when content is stale — forces scraper to collect more
+  4. Clear seen_items.json when stale — forces scraper to collect more
   5. Trigger scraper re-run by writing scraper/run-now
   6. Report all open problems from the board
 
@@ -36,6 +42,9 @@ RUN_NOW_FILE  = SCRAPER_DIR / "run-now"
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 GITHUB_REPO  = os.environ.get("GITHUB_REPOSITORY", "ashoksingh-ayodhya/naukri-dhaba")
+
+# Make scraper modules importable
+sys.path.insert(0, str(REPO_ROOT / "scraper"))
 
 CONTENT_TYPES = ["jobs", "results", "admit-cards", "answer-keys", "syllabus"]
 FLAT_TYPES    = {"answer-keys", "syllabus"}
@@ -374,6 +383,10 @@ def main() -> None:
     date = datetime.now().strftime("%Y-%m-%d")
 
     log(f"=== Naukri Dhaba Agent starting at {ts} ===")
+    log("GOALS: (1) All sarkariresult.com content from 2023→present on naukridhaba.in")
+    log("       (2) Zero Sarkari Result branding anywhere")
+    log("       (3) Full SEO: unique content, schema markup, keywords, meta")
+    log("       (4) Every page indexed in Google")
 
     # Current state
     counts  = count_mdx()
@@ -384,11 +397,25 @@ def main() -> None:
 
     log(f"Content: {counts} | Total: {total}")
 
-    # --- Task 1: Fix branding contamination (commit separately) ---
+    # --- Task 0 (PRIMARY): Full SEO rewrite of all MDX files ---
+    log("Task 0 [PRIMARY]: Running SEO rewriter on all MDX files...")
+    try:
+        from tasks.seo_rewriter import run as seo_run
+        seo_changed = seo_run()
+        if seo_changed > 0:
+            FIXES_APPLIED.append(f"SEO rewrite: {seo_changed} MDX files rewritten with unique keyword-rich content")
+            git_commit(
+                f"fix(agent): SEO rewrite — {seo_changed} MDX files: unique content, clean branding, FAQ [skip ci]",
+                ["content/"],
+            )
+    except Exception as exc:
+        log(f"  [WARNING] SEO rewriter failed: {exc}")
+
+    # --- Task 1: Branding fast-pass (catch any missed instances) ---
     branded_fixed = fix_branding()
     if branded_fixed > 0:
         git_commit(
-            f"fix(agent): remove Sarkari Result branding from {branded_fixed} MDX files [skip ci]",
+            f"fix(agent): remove residual Sarkari Result branding from {branded_fixed} files [skip ci]",
             ["content/"],
         )
 

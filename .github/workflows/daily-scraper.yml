@@ -6,8 +6,10 @@ on:
     paths:
       - 'scraper/run-now'
   schedule:
-    - cron: "30 4 * * *"   # 10 AM IST daily
-    - cron: "30 10 * * *"  # 4 PM IST daily
+    - cron: "30 1 * * *"   # 7 AM IST
+    - cron: "30 7 * * *"   # 1 PM IST
+    - cron: "30 13 * * *"  # 7 PM IST
+    - cron: "30 19 * * *"  # 1 AM IST
   workflow_dispatch:
     inputs:
       dry_run:
