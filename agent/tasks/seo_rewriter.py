@@ -364,7 +364,7 @@ def rewrite_file(fpath: Path, dry_run: bool = False) -> bool:
         # For results/admits: just clean branding in body
         new_body = _clean(parts[2])
 
-    new_content = "---" + front + "---" + new_body
+    new_content = "---" + front.rstrip("\n") + "\n---" + new_body
 
     if new_content == original:
         return False

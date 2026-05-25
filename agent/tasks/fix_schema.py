@@ -196,7 +196,7 @@ def wire_faq_schema_job_page() -> bool:
     faq_block = (
         '      {(() => {\n'
         '        const faqs: Array<{question: string; answer: string}> = [];\n'
-        '        const faqRe = /\\*\\*Q:\\*\\*\\s*(.+?)\\s*\\n\\s*\\*\\*A:\\*\\*\\s*(.+?)(?=\\n\\s*\\*\\*Q:|$)/gs;\n'
+        '        const faqRe = /\\*\\*Q:\\*\\*\\s*(.+?)\\s*\\n\\s*\\*\\*A:\\*\\*\\s*([\\s\\S]+?)(?=\\n\\s*\\*\\*Q:|$)/g;\n'
         '        let m;\n'
         '        while ((m = faqRe.exec(content || "")) !== null) {\n'
         '          faqs.push({ question: m[1].trim(), answer: m[2].trim() });\n'
