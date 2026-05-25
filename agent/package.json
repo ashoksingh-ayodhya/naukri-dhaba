@@ -1,0 +1,24 @@
+{
+  "name": "naukri-dhaba-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SEO monitoring + scraper guardian agent for naukridhaba.in",
+  "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm index.ts",
+    "schedule": "node --loader ts-node/esm scheduler.ts",
+    "dev": "node --loader ts-node/esm index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "dotenv": "^16.4.0",
+    "googleapis": "^144.0.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/node-cron": "^3.0.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
