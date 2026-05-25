@@ -2,7 +2,7 @@
 """
 Naukri Dhaba — Autonomous Agent
 ================================
-Runs daily via GitHub Actions.
+Runs every 3 hours via GitHub Actions.
 
 Goals (in priority order):
   0. PRIMARY: Full SEO rewrite of every MDX file —
@@ -11,15 +11,19 @@ Goals (in priority order):
        - Replace stock howToApply with clean Naukri Dhaba copy
        - Enrich body: lead paragraph, key details table, eligibility,
          numbered steps, 5-Q FAQ — all unique per page
-  1. Fix branding contamination — fast pass for any missed instances
+  1. Branding fast-pass — catch any missed Sarkari Result mentions
   2. Audit content freshness — alert if no new content in 24h
   3. Audit content counts — alert if count drops
-  4. Clear seen_items.json when stale — forces scraper to collect more
+  4. Clear seen_items.json when stale — forces scraper to re-collect
   5. Trigger scraper re-run by writing scraper/run-now
-  6. Report all open problems from the board
+  6. Check Copilot PRs — test build, merge to main if passing
+  7. Report open problem board
 
-The agent commits its own fixes and creates GitHub issues for anything
-that needs human attention.
+Escalation policy:
+  When the agent cannot fix something itself, it creates a GitHub issue,
+  assigns it to GitHub Copilot for resolution, and tracks it in state.json.
+  On the next run, the agent checks whether Copilot opened a PR for it,
+  runs a full build test, and merges to main if the build is green.
 """
 
 from __future__ import annotations
@@ -42,30 +46,38 @@ RUN_NOW_FILE  = SCRAPER_DIR / "run-now"
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 GITHUB_REPO  = os.environ.get("GITHUB_REPOSITORY", "ashoksingh-ayodhya/naukri-dhaba")
+[GITHUB_OWNER, GITHUB_REPO_NAME] = (GITHUB_REPO.split("/", 1) + ["naukri-dhaba"])[:2]
 
-# Make scraper modules importable
 sys.path.insert(0, str(REPO_ROOT / "scraper"))
 
 CONTENT_TYPES = ["jobs", "results", "admit-cards", "answer-keys", "syllabus"]
 FLAT_TYPES    = {"answer-keys", "syllabus"}
 
-# Branding patterns to strip from MDX content
 BRAND_PATTERNS = [
     (re.compile(r'(?i)sarkari\s*results?(?:\.(?:com|org|in))?'), "Naukri Dhaba"),
     (re.compile(r'(?i)www\.sarkariresults?\.(?:com|org|in)'),    "www.naukridhaba.in"),
-    (re.compile(r'(?i)sarkariresult\.com'),                       "naukridhaba.in"),
-    (re.compile(r'(?i)sarkariresults\.com'),                      "naukridhaba.in"),
-    # Keep source URLs intact — only clean display text
+    (re.compile(r'(?i)sarkariresults?\.(?:com|org|in)'),         "naukridhaba.in"),
 ]
 
 ISSUES_CREATED: list[str] = []
 FIXES_APPLIED:  list[str] = []
+ESCALATED:      list[dict] = []
 
 
 # ── Utilities ─────────────────────────────────────────────────────────────────
 
 def log(msg: str) -> None:
     print(f"[agent] {msg}", flush=True)
+
+
+def _gh(args: list[str], timeout: int = 30) -> subprocess.CompletedProcess:
+    """Run a gh CLI command with the GitHub token."""
+    return subprocess.run(
+        ["gh"] + args,
+        capture_output=True, text=True, timeout=timeout,
+        env={**os.environ, "GH_TOKEN": GITHUB_TOKEN},
+        cwd=REPO_ROOT,
+    )
 
 
 def count_mdx() -> dict[str, int]:
@@ -83,60 +95,29 @@ def count_mdx() -> dict[str, int]:
 
 def recent_content_commits(hours: int = 24) -> list[str]:
     try:
-        result = subprocess.run(
+        r = subprocess.run(
             ["git", "log", f"--since={hours} hours ago", "--oneline", "--", "content/"],
             capture_output=True, text=True, cwd=REPO_ROOT, timeout=30,
         )
-        return [l for l in result.stdout.strip().splitlines() if l]
+        return [l for l in r.stdout.strip().splitlines() if l]
     except Exception as exc:
         log(f"git log failed: {exc}")
         return []
 
 
-def create_issue(title: str, body: str) -> str:
-    if not GITHUB_TOKEN:
-        log("No GITHUB_TOKEN — cannot create issue.")
-        return ""
-    try:
-        result = subprocess.run(
-            ["gh", "issue", "create", "--title", title, "--body", body],
-            capture_output=True, text=True, timeout=30,
-            env={**os.environ, "GH_TOKEN": GITHUB_TOKEN},
-        )
-        url = result.stdout.strip()
-        if result.returncode == 0:
-            log(f"Issue created: {url}")
-            ISSUES_CREATED.append(url)
-            return url
-        else:
-            log(f"Issue creation failed: {result.stderr.strip()}")
-    except Exception as exc:
-        log(f"Error creating issue: {exc}")
-    return ""
-
-
 def git_commit(message: str, paths: list[str]) -> bool:
     try:
-        subprocess.run(
-            ["git", "config", "user.name", "Naukri Dhaba Agent"],
-            cwd=REPO_ROOT, check=True, capture_output=True,
-        )
-        subprocess.run(
-            ["git", "config", "user.email", "bot@naukridhaba.in"],
-            cwd=REPO_ROOT, check=True, capture_output=True,
-        )
+        subprocess.run(["git", "config", "user.name", "Naukri Dhaba Agent"],
+                       cwd=REPO_ROOT, check=True, capture_output=True)
+        subprocess.run(["git", "config", "user.email", "bot@naukridhaba.in"],
+                       cwd=REPO_ROOT, check=True, capture_output=True)
         subprocess.run(["git", "add"] + paths, cwd=REPO_ROOT, check=True, capture_output=True)
-        result = subprocess.run(
-            ["git", "diff", "--cached", "--quiet"],
-            cwd=REPO_ROOT, capture_output=True,
-        )
-        if result.returncode == 0:
+        if subprocess.run(["git", "diff", "--cached", "--quiet"],
+                          cwd=REPO_ROOT, capture_output=True).returncode == 0:
             log("Nothing to commit.")
             return False
-        subprocess.run(
-            ["git", "commit", "-m", message],
-            cwd=REPO_ROOT, check=True, capture_output=True,
-        )
+        subprocess.run(["git", "commit", "-m", message],
+                       cwd=REPO_ROOT, check=True, capture_output=True)
         log(f"Committed: {message}")
         return True
     except subprocess.CalledProcessError as exc:
@@ -172,293 +153,507 @@ def counts_table(counts: dict[str, int]) -> str:
     return f"| Type | Count |\n|------|-------|\n{rows}\n| **Total** | **{total}** |"
 
 
-# ── Task 1: Fix branding contamination ────────────────────────────────────────
+# ── Copilot escalation ────────────────────────────────────────────────────────
 
-def fix_branding(dry_run: bool = False) -> int:
-    """Scan all MDX files and remove 'Sarkari Result' mentions from YAML values and body text.
-
-    Skips sourceUrl fields — we keep the original source URL for reference.
-    Returns number of files fixed.
+def escalate_to_copilot(title: str, body: str, error: str = "") -> str:
     """
-    log("Task 1: Scanning for branding contamination...")
+    Create a GitHub issue, assign it to GitHub Copilot, and track it in state.json.
 
-    fixed = 0
-    mdx_files = list(CONTENT_DIR.rglob("*.mdx"))
+    On the next agent run, check_copilot_prs() will pick up any PR Copilot
+    opened for this issue, run a full build test, and merge to main if green.
 
-    for fpath in mdx_files:
-        original = fpath.read_text(encoding="utf-8")
-        cleaned  = original
+    Returns the issue URL or '' on failure.
+    """
+    if not GITHUB_TOKEN:
+        log("No GITHUB_TOKEN — cannot escalate.")
+        return ""
 
-        # Split into frontmatter and body
-        parts = cleaned.split("---", 2)
-        if len(parts) < 3:
-            # No proper frontmatter — clean whole file
-            for pattern, replacement in BRAND_PATTERNS:
-                cleaned = pattern.sub(replacement, cleaned)
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M IST")
+    full_body = f"""{body}
+
+---
+
+## Error details
+```
+{error or "No error details captured."}
+```
+
+## Agent instructions for Copilot
+1. Investigate the root cause described above
+2. Create a PR with a minimal, correct fix
+3. Do NOT modify unrelated files
+4. The Naukri Dhaba Agent will automatically test your PR (`npm run build`) and merge it to `main` if it passes
+
+*Escalated by Naukri Dhaba Agent at {ts}*"""
+
+    # Try assigning to Copilot (requires Copilot to be enabled on the repo)
+    r = _gh(["issue", "create",
+              "--title", title,
+              "--body", full_body,
+              "--assignee", "Copilot",
+              "--label", "agent-escalation,copilot"])
+
+    if r.returncode != 0:
+        # Copilot not assignable — create without assignee, mention in body
+        fallback_body = full_body + "\n\n> @github-copilot please fix this issue."
+        r = _gh(["issue", "create",
+                 "--title", title,
+                 "--body", fallback_body,
+                 "--label", "agent-escalation"])
+
+    url = r.stdout.strip()
+    if r.returncode == 0 and url:
+        log(f"Escalated to Copilot: {url}")
+        ESCALATED.append({"title": title, "url": url, "created": ts})
+        ISSUES_CREATED.append(url)
+
+        # Extract issue number and track it
+        m = re.search(r'/issues/(\d+)', url)
+        if m:
+            state = load_state()
+            pending = state.get("copilot_issues", [])
+            pending.append({"issue": int(m.group(1)), "title": title, "url": url, "created": ts})
+            state["copilot_issues"] = pending
+            save_state(state)
+        return url
+    else:
+        log(f"Escalation failed: {r.stderr.strip()}")
+        return ""
+
+
+# ── Copilot PR tester ─────────────────────────────────────────────────────────
+
+def _run_build() -> tuple[bool, str]:
+    """Run `npm ci && npm run build`. Returns (passed, output)."""
+    log("  Running npm ci...")
+    r1 = subprocess.run(
+        ["npm", "ci", "--prefer-offline"],
+        capture_output=True, text=True, cwd=REPO_ROOT, timeout=300,
+    )
+    if r1.returncode != 0:
+        return False, r1.stdout[-3000:] + r1.stderr[-2000:]
+
+    log("  Running npm run build...")
+    r2 = subprocess.run(
+        ["npm", "run", "build"],
+        capture_output=True, text=True, cwd=REPO_ROOT, timeout=600,
+        env={**os.environ, "NEXT_PUBLIC_SITE_URL": "https://naukridhaba.in"},
+    )
+    output = (r2.stdout + r2.stderr)[-4000:]
+    return r2.returncode == 0, output
+
+
+def _comment_on_pr(pr_number: int, body: str) -> None:
+    _gh(["pr", "comment", str(pr_number), "--body", body])
+
+
+def check_copilot_prs() -> None:
+    """
+    Find PRs opened by GitHub Copilot that fix agent-escalated issues.
+    For each: run npm build → merge to main if green, comment error if red.
+    """
+    log("Task 6: Checking for Copilot PRs to test and merge...")
+
+    state   = load_state()
+    pending = state.get("copilot_issues", [])
+    if not pending:
+        log("  No pending Copilot issues.")
+        return
+
+    # Get open PRs from Copilot
+    r = _gh(["pr", "list",
+              "--author", "app/github-copilot",
+              "--state", "open",
+              "--json", "number,title,headRefName,url,body"])
+
+    if r.returncode != 0:
+        # Try alternative author format
+        r = _gh(["pr", "list",
+                  "--state", "open",
+                  "--json", "number,title,headRefName,url,body,author"])
+
+    try:
+        prs = json.loads(r.stdout or "[]")
+    except Exception:
+        log(f"  Could not parse PR list: {r.stdout[:200]}")
+        return
+
+    log(f"  Found {len(prs)} open PR(s) to evaluate.")
+
+    resolved_issues: list[int] = []
+
+    for pr in prs:
+        pr_num    = pr["number"]
+        pr_branch = pr.get("headRefName", "")
+        pr_url    = pr.get("url", "")
+        pr_title  = pr.get("title", "")
+        pr_body   = pr.get("body", "") or ""
+
+        # Check if this PR references any of our tracked issues
+        issue_nums_in_pr = set(int(m) for m in re.findall(r'#(\d+)', pr_body + pr_title))
+        tracked_nums     = {item["issue"] for item in pending}
+        matched          = issue_nums_in_pr & tracked_nums
+
+        if not matched and not any(
+            item["title"].lower() in (pr_title + pr_body).lower() for item in pending
+        ):
+            log(f"  PR #{pr_num} doesn't match any tracked issue — skipping.")
+            continue
+
+        log(f"  Testing PR #{pr_num}: {pr_title} (branch: {pr_branch})")
+
+        # Checkout the PR branch
+        checkout = subprocess.run(
+            ["git", "fetch", "origin", f"{pr_branch}:{pr_branch}"],
+            capture_output=True, text=True, cwd=REPO_ROOT, timeout=60,
+        )
+        if checkout.returncode != 0:
+            log(f"  Could not fetch branch {pr_branch}: {checkout.stderr[:200]}")
+            continue
+
+        # Stash current changes, test PR branch
+        subprocess.run(["git", "stash"], cwd=REPO_ROOT, capture_output=True)
+        subprocess.run(["git", "checkout", pr_branch], cwd=REPO_ROOT, capture_output=True)
+
+        passed, output = _run_build()
+
+        # Return to original branch
+        current_branch = os.environ.get("GITHUB_REF_NAME", "main")
+        subprocess.run(["git", "checkout", current_branch], cwd=REPO_ROOT, capture_output=True)
+        subprocess.run(["git", "stash", "pop"], cwd=REPO_ROOT, capture_output=True)
+
+        if passed:
+            log(f"  ✅ PR #{pr_num} build PASSED — merging to main.")
+            _comment_on_pr(pr_num, (
+                "## ✅ Agent build test passed\n\n"
+                f"The Naukri Dhaba Agent ran `npm run build` on branch `{pr_branch}` and it succeeded.\n\n"
+                "Merging to `main` now.\n\n"
+                "*— Naukri Dhaba Agent*"
+            ))
+            merge = _gh(["pr", "merge", str(pr_num),
+                          "--merge", "--subject", f"fix: merge Copilot fix for #{pr_num}"])
+            if merge.returncode == 0:
+                log(f"  Merged PR #{pr_num} to main.")
+                FIXES_APPLIED.append(f"Merged Copilot PR #{pr_num}: {pr_title}")
+                resolved_issues.update(matched)
+            else:
+                log(f"  Merge failed: {merge.stderr[:200]}")
         else:
-            front = parts[1]
-            body  = parts[2]
+            log(f"  ❌ PR #{pr_num} build FAILED.")
+            _comment_on_pr(pr_num, (
+                "## ❌ Agent build test failed\n\n"
+                f"The Naukri Dhaba Agent ran `npm run build` on branch `{pr_branch}` and it **failed**.\n\n"
+                "```\n"
+                f"{output[-2000:]}\n"
+                "```\n\n"
+                "Please fix the errors above and push an update to this PR.\n\n"
+                "*— Naukri Dhaba Agent*"
+            ))
 
-            # In frontmatter: only clean values that are NOT sourceUrl/source lines
-            front_lines = front.split("\n")
-            cleaned_front_lines = []
-            for line in front_lines:
-                # Preserve sourceUrl and source fields unchanged
-                if re.match(r'\s*source(?:Url)?:', line, re.I):
-                    cleaned_front_lines.append(line)
-                    continue
-                new_line = line
-                for pattern, replacement in BRAND_PATTERNS:
-                    new_line = pattern.sub(replacement, new_line)
-                cleaned_front_lines.append(new_line)
+    # Remove resolved issues from tracking
+    if resolved_issues:
+        state["copilot_issues"] = [
+            item for item in pending if item["issue"] not in resolved_issues
+        ]
+        save_state(state)
 
-            # Clean body text fully
-            cleaned_body = body
-            for pattern, replacement in BRAND_PATTERNS:
-                cleaned_body = pattern.sub(replacement, cleaned_body)
 
-            cleaned = "---" + "\n".join(cleaned_front_lines) + "---" + cleaned_body
+# ── Task 0: SEO rewrite ───────────────────────────────────────────────────────
 
-        if cleaned != original:
-            if not dry_run:
+def run_seo_rewrite() -> None:
+    log("Task 0 [PRIMARY]: Running SEO rewriter on all MDX files...")
+    try:
+        from tasks.seo_rewriter import run as seo_run
+        changed = seo_run()
+        if changed > 0:
+            FIXES_APPLIED.append(f"SEO rewrite: {changed} MDX files — unique content, clean branding, FAQ")
+            git_commit(
+                f"fix(agent): SEO rewrite — {changed} files: unique content, branding removed, FAQ added [skip ci]",
+                ["content/"],
+            )
+    except Exception as exc:
+        log(f"  SEO rewriter failed: {exc}")
+        escalate_to_copilot(
+            title="🔧 Agent SEO rewriter crashed — needs fix",
+            body=(
+                "## Problem\n\n"
+                "The agent's SEO rewriter (`agent/tasks/seo_rewriter.py`) crashed during execution. "
+                "This means 218+ MDX files still contain 'Sarkari Result' branding and lack proper "
+                "SEO content. This directly causes Google to suppress naukridhaba.in pages.\n\n"
+                "## Expected behaviour\n"
+                "The rewriter should scan all `content/**/*.mdx` files, replace branding, "
+                "generate unique `shortDescription`, replace `howToApply`, and enrich the MDX body."
+            ),
+            error=str(exc),
+        )
+
+
+# ── Task 1: Branding fast-pass ────────────────────────────────────────────────
+
+def fix_branding() -> int:
+    log("Task 1: Branding fast-pass...")
+    fixed = 0
+    for fpath in CONTENT_DIR.rglob("*.mdx"):
+        try:
+            original = fpath.read_text(encoding="utf-8")
+            cleaned  = original
+            parts    = cleaned.split("---", 2)
+            if len(parts) < 3:
+                for p, r in BRAND_PATTERNS:
+                    cleaned = p.sub(r, cleaned)
+            else:
+                front_lines = parts[1].split("\n")
+                new_front   = []
+                for line in front_lines:
+                    if re.match(r'\s*source(?:Url)?:', line, re.I):
+                        new_front.append(line)
+                    else:
+                        for p, r in BRAND_PATTERNS:
+                            line = p.sub(r, line)
+                        new_front.append(line)
+                body = parts[2]
+                for p, r in BRAND_PATTERNS:
+                    body = p.sub(r, body)
+                cleaned = "---" + "\n".join(new_front) + "---" + body
+
+            if cleaned != original:
                 fpath.write_text(cleaned, encoding="utf-8")
-            fixed += 1
+                fixed += 1
+        except Exception:
+            pass
 
-    log(f"Task 1: {'Would fix' if dry_run else 'Fixed'} {fixed}/{len(mdx_files)} files with branding contamination.")
+    log(f"  Fixed {fixed} files.")
     if fixed > 0:
-        FIXES_APPLIED.append(f"Removed 'Sarkari Result' branding from {fixed} MDX files")
+        FIXES_APPLIED.append(f"Branding fast-pass: removed Sarkari Result from {fixed} files")
     return fixed
 
 
-# ── Task 2: Audit content freshness + alert ───────────────────────────────────
+# ── Task 2: Freshness audit ───────────────────────────────────────────────────
 
-def audit_freshness(counts: dict[str, int], prev_counts: dict[str, int]) -> None:
-    """Check if scraper ran in last 24h. Alert if stale or if count dropped."""
+def audit_freshness(counts: dict[str, int], prev: dict[str, int], commits: list[str]) -> None:
     log("Task 2: Auditing content freshness...")
-
     total      = sum(counts.values())
-    prev_total = sum(prev_counts.values()) if prev_counts else None
-    commits    = recent_content_commits(24)
-
-    log(f"  Content commits (24h): {len(commits)}")
-    log(f"  Total MDX: {total}  (prev: {prev_total})")
+    prev_total = sum(prev.values()) if prev else None
+    log(f"  Commits (24h): {len(commits)} | Total MDX: {total} (prev: {prev_total})")
 
     if not commits:
-        body = f"""## ⚠️ No content refresh in the last 24 hours
+        escalate_to_copilot(
+            title=f"⚠️ Scraper stale — no content in 24h ({datetime.now().strftime('%d %b %Y')})",
+            body=(
+                "## No content refresh in 24 hours\n\n"
+                f"**Current content:**\n{counts_table(counts)}\n\n"
+                "The scraper has not committed any new MDX content in the last 24 hours. "
+                "This may mean the scraper is blocked, crashing, or `seen_items.json` is too full.\n\n"
+                "**The agent has already:**\n"
+                "- Cleared `seen_items.json` to allow full re-scrape\n"
+                "- Written `scraper/run-now` to trigger an immediate scrape\n\n"
+                "**If the next scraper run also fails**, please investigate:\n"
+                "1. `scraper/logs/scraper.log` for block/error patterns\n"
+                "2. The CF Worker proxy secret (`CF_WORKER_PROXY_URL` in GitHub secrets)\n"
+                "3. Whether sarkariresult.com changed its HTML structure"
+            ),
+        )
 
-**Detected at:** {datetime.now().strftime('%Y-%m-%d %H:%M IST')}
-
-**Current content:**
-{counts_table(counts)}
-
-The scraper has not committed any new content in 24 hours. Possible causes:
-- Scraper failed or was blocked (check [Daily Scraper logs](https://github.com/{GITHUB_REPO}/actions/workflows/daily-scraper.yml))
-- `seen_items.json` is preventing re-scrape of valid new jobs
-- CF Worker proxy is down
-
-**The agent has cleared `seen_items.json` and touched `scraper/run-now` to force a re-run.**
-Check the next scraper run to confirm new content is being collected.
-
-*— Naukri Dhaba Agent*"""
-        create_issue(f"⚠️ No content refresh in 24h — {datetime.now().strftime('%d %b %Y')}", body)
-
-    if prev_total is not None and total < prev_total:
+    if prev_total and total < prev_total:
         diff = prev_total - total
-        body = f"""## 🚨 Content count dropped by {diff}
-
-**Detected at:** {datetime.now().strftime('%Y-%m-%d %H:%M IST')}
-
-| | Count |
-|--|--|
-| Yesterday | {prev_total} |
-| Today | {total} |
-| **Drop** | **-{diff}** |
-
-{counts_table(counts)}
-
-MDX files were deleted. Check `git log -- content/` to find what was removed.
-
-*— Naukri Dhaba Agent*"""
-        create_issue(f"🚨 Content dropped by {diff} — {datetime.now().strftime('%d %b %Y')}", body)
+        escalate_to_copilot(
+            title=f"🚨 Content dropped by {diff} files ({datetime.now().strftime('%d %b %Y')})",
+            body=(
+                f"## Content count decreased by {diff}\n\n"
+                f"| | Count |\n|--|--|\n"
+                f"| Yesterday | {prev_total} |\n"
+                f"| Today | {total} |\n"
+                f"| **Drop** | **-{diff}** |\n\n"
+                f"{counts_table(counts)}\n\n"
+                "MDX files have been deleted from the repo. "
+                "Check `git log -- content/` to find what happened."
+            ),
+        )
 
 
-# ── Task 3: Clear seen_items to unlock more scraping ─────────────────────────
+# ── Task 3+4: seen_items + scraper trigger ────────────────────────────────────
 
-def clear_seen_items_if_stale(commits: list[str]) -> bool:
-    """If no new content in 24h, clear seen_items.json so scraper re-collects everything."""
+def clear_and_trigger(commits: list[str]) -> None:
     if commits:
-        log("Task 3: Content is fresh — keeping seen_items.json.")
-        return False
+        log("Tasks 3+4: Content fresh — no action needed.")
+        return
 
-    if not SEEN_FILE.exists():
-        log("Task 3: seen_items.json not found.")
-        return False
+    cleared  = False
+    triggered = False
 
-    count = 0
-    try:
-        data = json.loads(SEEN_FILE.read_text())
-        count = len(data) if isinstance(data, list) else len(data)
-    except Exception:
-        pass
-
-    log(f"Task 3: Content stale — clearing seen_items.json ({count} entries). Scraper will re-collect everything.")
-    SEEN_FILE.write_text("[]")
-    FIXES_APPLIED.append(f"Cleared seen_items.json ({count} entries) to allow full re-scrape")
-    return True
-
-
-# ── Task 4: Trigger scraper re-run ───────────────────────────────────────────
-
-def trigger_scraper_if_stale(commits: list[str]) -> bool:
-    """Write scraper/run-now to trigger the daily-scraper workflow."""
-    if commits:
-        log("Task 4: Content is fresh — not triggering scraper.")
-        return False
+    if SEEN_FILE.exists():
+        try:
+            count = len(json.loads(SEEN_FILE.read_text()))
+        except Exception:
+            count = 0
+        log(f"Task 3: Clearing seen_items.json ({count} entries)...")
+        SEEN_FILE.write_text("[]")
+        FIXES_APPLIED.append(f"Cleared seen_items.json ({count} entries)")
+        cleared = True
 
     ts = datetime.now().isoformat()
-    RUN_NOW_FILE.write_text(f"Agent-triggered re-run at {ts}\n")
-    log(f"Task 4: Wrote scraper/run-now — daily-scraper workflow will be triggered.")
-    FIXES_APPLIED.append("Wrote scraper/run-now to trigger immediate scraper re-run")
-    return True
+    RUN_NOW_FILE.write_text(f"Agent re-run triggered at {ts}\n")
+    log("Task 4: Wrote scraper/run-now.")
+    FIXES_APPLIED.append("Wrote scraper/run-now → triggers immediate scraper")
+    triggered = True
+
+    paths = []
+    if cleared:  paths.append(str(SEEN_FILE))
+    if triggered: paths.append(str(RUN_NOW_FILE))
+    git_commit(
+        "fix(agent): clear seen_items + trigger scraper re-run [skip ci]",
+        paths,
+    )
 
 
-# ── Task 5: Audit SEO issues in MDX files ────────────────────────────────────
+# ── Task 5: SEO field audit ───────────────────────────────────────────────────
 
-def audit_seo() -> None:
-    """Flag MDX files missing critical SEO fields."""
-    log("Task 5: Auditing SEO fields...")
-
-    missing_title     = []
-    missing_org       = []
-    missing_last_date = []
-    bad_publish_date  = []
-
+def audit_seo_fields() -> None:
+    log("Task 5: SEO field audit...")
+    missing: dict[str, list[str]] = {"title": [], "organization": [], "lastDate": [], "publishedAt": []}
     for fpath in (CONTENT_DIR / "jobs").rglob("*.mdx"):
-        text  = fpath.read_text(encoding="utf-8")
-        parts = text.split("---", 2)
-        if len(parts) < 3:
-            continue
-        front = parts[1]
+        front = fpath.read_text(encoding="utf-8").split("---", 2)
+        if len(front) < 3: continue
+        f = front[1]
+        for key in missing:
+            if not re.search(rf'^{key}:', f, re.M):
+                missing[key].append(fpath.stem)
 
-        has_title     = re.search(r'^title:', front, re.M)
-        has_org       = re.search(r'^organization:', front, re.M)
-        has_last_date = re.search(r'^lastDate:', front, re.M)
-        has_published = re.search(r'^publishedAt:', front, re.M)
-
-        slug = fpath.stem
-        if not has_title:
-            missing_title.append(slug)
-        if not has_org:
-            missing_org.append(slug)
-        if not has_last_date:
-            missing_last_date.append(slug)
-        if not has_published:
-            bad_publish_date.append(slug)
-
-    log(f"  Missing title: {len(missing_title)}")
-    log(f"  Missing organization: {len(missing_org)}")
-    log(f"  Missing lastDate: {len(missing_last_date)}")
-    log(f"  Missing publishedAt: {len(bad_publish_date)}")
-
-    if missing_title:
-        log(f"  ⚠️  Files missing title (first 5): {missing_title[:5]}")
+    for key, slugs in missing.items():
+        log(f"  Missing {key}: {len(slugs)} files")
+        if len(slugs) > 20:
+            escalate_to_copilot(
+                title=f"🔍 {len(slugs)} job MDX files missing `{key}` field",
+                body=(
+                    f"## Missing `{key}` in MDX frontmatter\n\n"
+                    f"{len(slugs)} job MDX files are missing the `{key}` field. "
+                    f"This field is required for SEO metadata and schema markup.\n\n"
+                    f"**First 10 affected files:**\n"
+                    + "\n".join(f"- `content/jobs/**/{s}.mdx`" for s in slugs[:10]) +
+                    "\n\n**Fix:** Add a `{key}` field to each file's frontmatter. "
+                    "For `publishedAt` use today's date (`YYYY-MM-DD`) if unknown."
+                ),
+            )
 
 
-# ── Task 6: Problem board summary ────────────────────────────────────────────
+# ── Task 7: Problem board ─────────────────────────────────────────────────────
 
 def print_problem_board() -> None:
-    log("Task 6: Open problem board:")
-    problems = load_problems()
-    open_p   = [p for p in problems if p.get("status") == "open"]
+    log("Task 7: Open problem board:")
+    open_p = [p for p in load_problems() if p.get("status") == "open"]
     for p in open_p:
         log(f"  [{p['priority'].upper():8s}] {p['id']}: {p['title']}")
     if not open_p:
-        log("  All problems resolved!")
+        log("  All tracked problems resolved!")
 
 
-# ── Main ─────────────────────────────────────────────────────────────────────
+# ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     ts   = datetime.now().strftime("%Y-%m-%d %H:%M IST")
     date = datetime.now().strftime("%Y-%m-%d")
 
-    log(f"=== Naukri Dhaba Agent starting at {ts} ===")
-    log("GOALS: (1) All sarkariresult.com content from 2023→present on naukridhaba.in")
-    log("       (2) Zero Sarkari Result branding anywhere")
-    log("       (3) Full SEO: unique content, schema markup, keywords, meta")
-    log("       (4) Every page indexed in Google")
+    log(f"=== Naukri Dhaba Agent — {ts} ===")
+    log("GOALS:")
+    log("  • Mirror all sarkariresult.com content from 2023→present")
+    log("  • Zero Sarkari Result branding in any page")
+    log("  • Full SEO: unique content, schema markup, meta, keywords")
+    log("  • Every page indexed in Google with job rich results")
 
-    # Current state
     counts  = count_mdx()
     total   = sum(counts.values())
     commits = recent_content_commits(24)
     state   = load_state()
     prev    = state.get("counts", {})
-
     log(f"Content: {counts} | Total: {total}")
 
-    # --- Task 0 (PRIMARY): Full SEO rewrite of all MDX files ---
-    log("Task 0 [PRIMARY]: Running SEO rewriter on all MDX files...")
-    try:
-        from tasks.seo_rewriter import run as seo_run
-        seo_changed = seo_run()
-        if seo_changed > 0:
-            FIXES_APPLIED.append(f"SEO rewrite: {seo_changed} MDX files rewritten with unique keyword-rich content")
-            git_commit(
-                f"fix(agent): SEO rewrite — {seo_changed} MDX files: unique content, clean branding, FAQ [skip ci]",
-                ["content/"],
-            )
-    except Exception as exc:
-        log(f"  [WARNING] SEO rewriter failed: {exc}")
+    # 0. SEO rewrite (primary — fixes branding + generates unique content)
+    run_seo_rewrite()
 
-    # --- Task 1: Branding fast-pass (catch any missed instances) ---
-    branded_fixed = fix_branding()
-    if branded_fixed > 0:
+    # 1. Branding fast-pass (catch anything the rewriter missed)
+    fixed = fix_branding()
+    if fixed > 0:
         git_commit(
-            f"fix(agent): remove residual Sarkari Result branding from {branded_fixed} files [skip ci]",
+            f"fix(agent): branding fast-pass — {fixed} files [skip ci]",
             ["content/"],
         )
 
-    # --- Task 2: Audit freshness and alert ---
-    audit_freshness(counts, prev)
+    # 2. Freshness audit (escalates to Copilot if stale)
+    audit_freshness(counts, prev, commits)
 
-    # --- Task 3: Clear seen_items if stale ---
-    cleared = clear_seen_items_if_stale(commits)
+    # 3+4. Clear seen_items + trigger scraper if stale
+    clear_and_trigger(commits)
 
-    # --- Task 4: Trigger scraper if stale ---
-    triggered = trigger_scraper_if_stale(commits)
+    # 5. SEO field audit (escalates missing fields to Copilot)
+    audit_seo_fields()
 
-    if cleared or triggered:
-        paths = []
-        if cleared:
-            paths.append(str(SEEN_FILE))
-        if triggered:
-            paths.append(str(RUN_NOW_FILE))
-        git_commit(
-            f"fix(agent): {'clear seen_items + ' if cleared else ''}trigger scraper re-run [skip ci]",
-            paths,
-        )
+    # 6. Check Copilot PRs → test build → merge to main if green
+    if GITHUB_TOKEN:
+        try:
+            check_copilot_prs()
+        except Exception as exc:
+            log(f"  Copilot PR check failed: {exc}")
 
-    # --- Task 5: SEO audit ---
-    audit_seo()
+    # 7. Schema audit — fetch live pages, compare with sarkariresult, escalate gaps
+    log("Task 7: Running live schema audit (fetches real URLs — no cached knowledge)...")
+    try:
+        from tasks.schema_audit import run as schema_run
+        audit = schema_run()
+        summary = audit.get("summary", {})
+        issues  = audit.get("issues", [])
 
-    # --- Task 6: Problem board ---
+        # Log what we have vs what sarkariresult has
+        log(f"  Our schema types:    {summary.get('our_schema_types', [])}")
+        log(f"  Source schema types: {summary.get('source_schema_types', [])}")
+        log(f"  We have, they don't: {summary.get('types_we_have_they_dont', [])}  ← our SEO advantage")
+        they_have = summary.get("types_they_have_we_dont", [])
+        if they_have:
+            log(f"  They have, we don't: {they_have}  ← GAP to fix")
+            escalate_to_copilot(
+                title=f"🔍 Schema gap vs sarkariresult: {', '.join(they_have)}",
+                body=(
+                    "## Schema markup gap detected\n\n"
+                    "The live schema audit found that sarkariresult.com uses schema types "
+                    "that naukridhaba.in is missing:\n\n"
+                    f"**Missing from naukridhaba.in:** `{'`, `'.join(they_have)}`\n\n"
+                    f"**Our current types:** `{'`, `'.join(summary.get('our_schema_types', []))}`\n\n"
+                    f"**Source types:** `{'`, `'.join(summary.get('source_schema_types', []))}`\n\n"
+                    "Please add the missing schema type(s) to the relevant page components in `lib/seo.ts` "
+                    "and wire them into the appropriate `app/.../page.tsx` files."
+                ),
+            )
+
+        # Escalate individual page issues
+        for issue in issues:
+            escalate_to_copilot(
+                title=f"🔍 Schema issue on {issue['url']}",
+                body=(
+                    f"## Missing/incomplete schema on live page\n\n"
+                    f"**URL:** {issue['url']}\n\n"
+                    f"**Problem:** {issue['problem']}\n\n"
+                    f"**Missing fields:** `{'`, `'.join(issue.get('missing_fields', []))}`\n\n"
+                    "Check `lib/seo.ts` → `buildJobJsonLd()` and ensure all required `JobPosting` "
+                    "fields are populated from the MDX frontmatter."
+                ),
+            )
+    except Exception as exc:
+        log(f"  Schema audit failed: {exc}")
+
+    # 9. Problem board
     print_problem_board()
 
-    # --- Save state ---
-    save_state({"date": date, "counts": counts})
+    # Save state
+    s = load_state()
+    s["date"]   = date
+    s["counts"] = counts
+    save_state(s)
 
-    # --- Summary ---
-    log("\n=== AGENT RUN SUMMARY ===")
-    log(f"Fixes applied ({len(FIXES_APPLIED)}):")
-    for f in FIXES_APPLIED:
-        log(f"  ✓ {f}")
-    log(f"Issues created ({len(ISSUES_CREATED)}):")
-    for i in ISSUES_CREATED:
-        log(f"  → {i}")
-    if not FIXES_APPLIED and not ISSUES_CREATED:
-        log("  Nothing to fix — site is healthy.")
-    log("=========================")
+    # Summary
+    log("\n=== SUMMARY ===")
+    log(f"Fixes ({len(FIXES_APPLIED)}):     " + " | ".join(FIXES_APPLIED) if FIXES_APPLIED else "Fixes (0): none")
+    log(f"Escalated ({len(ESCALATED)}):  " + " | ".join(e["title"] for e in ESCALATED) if ESCALATED else "Escalated (0): none")
+    log(f"Issues created: {len(ISSUES_CREATED)}")
+    log("===============")
 
 
 if __name__ == "__main__":
