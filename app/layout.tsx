@@ -86,6 +86,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`}
         />
+        <Script
+          id="adsense"
+          strategy="afterInteractive"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5296074722684627"
+          crossOrigin="anonymous"
+        />
       </head>
       <body>
         {/* GTM noscript fallback */}
