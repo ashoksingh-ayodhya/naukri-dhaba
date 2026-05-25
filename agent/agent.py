@@ -17,7 +17,11 @@ Goals (in priority order):
   4. Clear seen_items.json when stale — forces scraper to re-collect
   5. Trigger scraper re-run by writing scraper/run-now
   6. Check Copilot PRs — test build, merge to main if passing
-  7. Report open problem board
+  7. Live schema audit — fetch real URLs, compare vs sarkariresult, escalate gaps
+  8. Fix schema code gaps — lib/seo.ts + page wiring per agent/knowledge.md
+  9. Report open problem board
+
+Knowledge base: agent/knowledge.md — read this for all schema specs and SEO rules.
 
 Escalation policy:
   When the agent cannot fix something itself, it creates a GitHub issue,
@@ -536,7 +540,67 @@ def audit_seo_fields() -> None:
             )
 
 
-# ── Task 7: Problem board ─────────────────────────────────────────────────────
+# ── Task 8: Schema code fixer ─────────────────────────────────────────────────
+
+def fix_schema_code() -> None:
+    """
+    Task 8: Fix known schema code gaps in lib/seo.ts and wire schema into page
+    components, as documented in agent/knowledge.md.
+
+    Fixes applied (idempotent — safe to run every 3h):
+    - buildOrganizationJsonLd: logo → ImageObject
+    - buildAdmitJsonLd: add endDate + image
+    - buildSyllabusJsonLd: add teaches field
+    - app/answer-keys/[slug]/page.tsx: wire buildAnswerKeyJsonLd
+    - app/syllabus/[slug]/page.tsx: wire buildSyllabusJsonLd
+    - app/jobs/[category]/[slug]/page.tsx: wire buildFaqJsonLd
+    - app/jobs/[category]/page.tsx: wire buildListingPageJsonLd
+    - app/results/[category]/page.tsx: wire buildListingPageJsonLd
+    - app/admit-cards/[category]/page.tsx: wire buildListingPageJsonLd
+    """
+    log("Task 8: Fixing schema code gaps (per agent/knowledge.md)...")
+    try:
+        from tasks.fix_schema import run as schema_fix_run
+        fixed = schema_fix_run()
+        if fixed > 0:
+            FIXES_APPLIED.append(f"Schema code fixes: {fixed} changes in lib/seo.ts + page components")
+            git_commit(
+                f"fix(agent): schema markup — {fixed} fixes in seo.ts + page wiring [skip ci]",
+                [
+                    "lib/seo.ts",
+                    "app/jobs/",
+                    "app/results/",
+                    "app/admit-cards/",
+                    "app/answer-keys/",
+                    "app/syllabus/",
+                ],
+            )
+        else:
+            log("  Schema code: all checks passed — no gaps.")
+    except Exception as exc:
+        log(f"  fix_schema crashed: {exc}")
+        escalate_to_copilot(
+            title="🔧 Agent schema fixer crashed — needs investigation",
+            body=(
+                "## Problem\n\n"
+                "The agent's `fix_schema` task (`agent/tasks/fix_schema.py`) crashed.\n\n"
+                "This means the following schema gaps remain unfixed:\n"
+                "- `buildOrganizationJsonLd`: logo must be ImageObject (not bare URL)\n"
+                "- `buildAdmitJsonLd`: missing `endDate` and `image` fields\n"
+                "- `buildSyllabusJsonLd`: missing `teaches` field\n"
+                "- `app/answer-keys/[slug]/page.tsx`: `buildAnswerKeyJsonLd` not wired\n"
+                "- `app/syllabus/[slug]/page.tsx`: `buildSyllabusJsonLd` not wired\n"
+                "- `app/jobs/[category]/[slug]/page.tsx`: `buildFaqJsonLd` not wired\n"
+                "- Category listing pages: `buildListingPageJsonLd` not wired\n\n"
+                "**Fix:** Debug `agent/tasks/fix_schema.py` and ensure the string patches "
+                "match the current content of `lib/seo.ts` and the page.tsx files exactly.\n\n"
+                "See `agent/knowledge.md` section 10 for full gap details."
+            ),
+            error=str(exc),
+        )
+
+
+# ── Task 9: Problem board ─────────────────────────────────────────────────────
 
 def print_problem_board() -> None:
     log("Task 7: Open problem board:")
@@ -596,6 +660,7 @@ def main() -> None:
 
     # 7. Schema audit — fetch live pages, compare with sarkariresult, escalate gaps
     log("Task 7: Running live schema audit (fetches real URLs — no cached knowledge)...")
+
     try:
         from tasks.schema_audit import run as schema_run
         audit = schema_run()
@@ -638,6 +703,9 @@ def main() -> None:
             )
     except Exception as exc:
         log(f"  Schema audit failed: {exc}")
+
+    # 8. Fix schema code gaps (idempotent — reads knowledge.md as spec)
+    fix_schema_code()
 
     # 9. Problem board
     print_problem_board()

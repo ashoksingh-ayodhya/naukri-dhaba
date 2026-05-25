@@ -71,9 +71,32 @@ function buildDescription(fm: PostFrontmatter): string {
     : `${fm.title}. Government of India recruitment notification. Apply online at the official website.`;
 }
 
+/** Parse "₹18,000 – ₹45,000 per month" → { min: 18000, max: 45000 } or null */
+function parseSalaryRange(raw: string | undefined): { min: number; max: number } | null {
+  if (!raw) return null;
+  const nums = raw.replace(/[₹,\s]/g, "").match(/\d+/g);
+  if (!nums || nums.length < 1) return null;
+  const values = nums.map(Number).filter((n) => n >= 1000);
+  if (values.length === 0) return null;
+  return { min: values[0], max: values[values.length - 1] };
+}
+
+/** Map a qualification string to a schema.org credentialCategory */
+function credentialCategory(qual: string | undefined): string {
+  if (!qual) return "degree";
+  const q = qual.toLowerCase();
+  if (q.includes("10th") || q.includes("matriculation") || q.includes("sslc")) return "highschool";
+  if (q.includes("12th") || q.includes("intermediate") || q.includes("hsc")) return "highschool";
+  if (q.includes("diploma")) return "associate degree";
+  if (q.includes("degree") || q.includes("graduate") || q.includes("b.sc") ||
+      q.includes("b.a") || q.includes("b.com") || q.includes("b.e") || q.includes("b.tech")) return "bachelor degree";
+  if (q.includes("post graduate") || q.includes("m.sc") || q.includes("m.a") ||
+      q.includes("m.tech") || q.includes("mba")) return "postgraduate degree";
+  return "degree";
+}
+
 export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
-  const orgName =
-    ((fm.organization || fm.dept || "Government of India").trim()) || "Government of India";
+  const orgName = (fm.organization || fm.dept || "Government of India").trim() || "Government of India";
   const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
 
   const ld: Record<string, unknown> = {
@@ -81,28 +104,86 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
     "@type": "JobPosting",
     title: fm.title,
     description: buildDescription(fm),
+    url,
+    datePosted,
+    employmentType: "FULL_TIME",
+    industry: "Government",
+    occupationalCategory: "Government Services",
     hiringOrganization: {
       "@type": "Organization",
       name: orgName,
-      ...(fm.officialWebsite ? { sameAs: fm.officialWebsite } : {}),
+      sameAs: fm.officialWebsite || `https://www.google.com/search?q=${encodeURIComponent(orgName)}`,
     },
     jobLocation: {
       "@type": "Place",
-      address: { "@type": "PostalAddress", addressCountry: "IN", addressRegion: "India" },
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "IN",
+        addressRegion: "India",
+      },
     },
-    employmentType: "FULL_TIME",
-    url,
-    datePosted,
+    applicantLocationRequirements: {
+      "@type": "Country",
+      name: "India",
+    },
   };
 
+  // validThrough — last date to apply
   if (fm.lastDate) {
     const iso = toIsoDate(fm.lastDate);
     if (iso) ld.validThrough = `${iso}T23:59:59+05:30`;
   }
 
+  // totalJobOpenings
   const totalPosts = parseInt((fm.totalPosts || "").replace(/[^0-9]/g, ""));
   if (totalPosts > 0) ld.totalJobOpenings = totalPosts;
 
+  // baseSalary — parsed from salary string into MonetaryAmount
+  const salaryRange = parseSalaryRange(fm.salary);
+  if (salaryRange) {
+    ld.baseSalary = {
+      "@type": "MonetaryAmount",
+      currency: "INR",
+      value: {
+        "@type": "QuantitativeValue",
+        minValue: salaryRange.min,
+        maxValue: salaryRange.max,
+        unitText: "MONTH",
+      },
+    };
+  }
+
+  // educationRequirements
+  if (fm.qualification) {
+    ld.educationRequirements = {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: credentialCategory(fm.qualification),
+      competencyRequired: fm.qualification,
+    };
+  }
+
+  // identifier — advertisement number
+  if (fm.advertisementNo) {
+    ld.identifier = {
+      "@type": "PropertyValue",
+      name: "Advertisement Number",
+      value: fm.advertisementNo,
+    };
+  }
+
+  // Age requirements as experienceRequirements
+  if (fm.ageMin && fm.ageMax) {
+    ld.experienceRequirements = {
+      "@type": "OccupationalExperienceRequirements",
+      monthsOfExperience: 0,
+    };
+    ld.applicantLocationRequirements = {
+      "@type": "Country",
+      name: "India",
+    };
+  }
+
+  // directApply — false means candidates go to official site
   if (fm.applyUrl && fm.applyUrl !== "#") ld.directApply = false;
 
   return ld;
@@ -145,7 +226,12 @@ export function buildOrganizationJsonLd(): object {
     "@type": "Organization",
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/logo.svg`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteConfig.url}/logo.svg`,
+      width: 512,
+      height: 512,
+    },
     description: siteConfig.description,
     sameAs: [siteConfig.links.twitter, siteConfig.links.telegram],
   };
@@ -180,6 +266,8 @@ export function buildAdmitJsonLd(fm: PostFrontmatter, url: string): object {
     description: buildDescription(fm),
     url,
     startDate: examDateIso || datePosted,
+    endDate: examDateIso || datePosted,
+    image: `${siteConfig.url}${siteConfig.ogImage}`,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: {
@@ -223,6 +311,7 @@ export function buildSyllabusJsonLd(fm: PostFrontmatter, url: string): object {
     educationalLevel: "Government Exam Preparation",
     inLanguage: "en-IN",
     isAccessibleForFree: true,
+    teaches: fm.qualification || "Government Exam Syllabus",
     hasCourseInstance: {
       "@type": "CourseInstance",
       courseMode: "online",
