@@ -1,0 +1,131 @@
+{
+  "last_updated": "2026-05-25",
+  "goals": {
+    "content_target": {
+      "description": "Match sarkariresult.com content volume for 2023–present",
+      "date_range": "2023-01-01 to present",
+      "target_jobs": 3000,
+      "target_results": 2000,
+      "target_admit_cards": 1500,
+      "current_jobs": 243,
+      "current_results": 294,
+      "current_admit_cards": 242,
+      "status": "in_progress"
+    },
+    "seo_target": {
+      "description": "Every page fully indexed in Google with proper schema, unique content, keyword-optimised meta",
+      "requirements": [
+        "Zero Sarkari Result branding in any page content",
+        "Unique 200+ word shortDescription per job (not copied from source)",
+        "JobPosting schema on every job page",
+        "LearningResource schema on result pages",
+        "Event schema on admit card pages",
+        "Course schema on syllabus pages",
+        "LearningResource schema on answer key pages",
+        "CollectionPage + ItemList schema on category listing pages",
+        "FAQ schema on all detail pages",
+        "BreadcrumbList schema on all pages (done)",
+        "Meta title ≤ 60 chars with primary keyword",
+        "Meta description ≤ 155 chars with org, vacancy count, last date",
+        "Canonical URL set on every page (done via buildMetadata)",
+        "robots.txt allowing all crawlers (done)",
+        "Sitemap.xml with all URLs submitted to Google Search Console"
+      ],
+      "status": "in_progress"
+    }
+  },
+  "problems": [
+    {
+      "id": "P001",
+      "title": "Insufficient job listings — ~243 jobs vs 3000+ on sarkariresult",
+      "description": "Target: all sarkariresult.com jobs, results, admit-cards from 2023 to present. Current: 243 jobs / 294 results / 242 admit-cards. Scraper runs 4x/day and agent clears seen_items when stale to force re-scrape.",
+      "status": "open",
+      "priority": "critical",
+      "created": "2026-05-25",
+      "target": "3000+ jobs, 2000+ results, 1500+ admit-cards",
+      "actions": [
+        "Scraper now runs 4x/day (7AM, 1PM, 7PM, 1AM IST)",
+        "Agent clears seen_items.json when content is stale to force full re-scrape",
+        "Agent writes scraper/run-now to trigger immediate re-run",
+        "MIN_POST_DATE set to 2023-01-01 — only 2023-present content",
+        "CF Worker proxy must be configured with CF_WORKER_PROXY_URL secret for scraper to bypass blocks"
+      ]
+    },
+    {
+      "id": "P002",
+      "title": "SEO branding contamination — 218/243 job pages had Sarkari Result text",
+      "description": "Scraped howToApply and description fields contained raw 'Sarkari Result' mentions. Google treats this as duplicate/scraped content from sarkariresult.com, suppressing rankings and causing manual penalties.",
+      "status": "in_progress",
+      "priority": "critical",
+      "created": "2026-05-25",
+      "actions": [
+        "Agent Task 0 (PRIMARY): Full SEO rewrite of every MDX file every 3 hours",
+        "Generates unique 200-word shortDescription per job using job's own data fields",
+        "Replaces howToApply with clean Naukri Dhaba branded steps",
+        "Enriches body: lead paragraph + key details table + eligibility + steps + 5-Q FAQ",
+        "Agent Task 1: Fast-pass branding cleaner for any missed instances"
+      ]
+    },
+    {
+      "id": "P003",
+      "title": "Schema markup missing on results, admit-cards, answer-keys, syllabus pages",
+      "description": "Only job pages had JobPosting schema. Results, admit-cards had only BreadcrumbList. Google cannot identify content type, reducing rich result eligibility.",
+      "status": "resolved",
+      "priority": "high",
+      "created": "2026-05-25",
+      "resolved": "2026-05-25",
+      "fix": "Added LearningResource schema to result pages, Event schema to admit-card pages. Also added buildAnswerKeyJsonLd (LearningResource), buildSyllabusJsonLd (Course), buildListingPageJsonLd (CollectionPage+ItemList), buildFaqJsonLd to lib/seo.ts"
+    },
+    {
+      "id": "P004",
+      "title": "Google indexing failure — pages not appearing in Google index",
+      "description": "Root causes: (1) Sarkari Result duplicate content suppressed pages. (2) Thin content with no unique value. (3) Missing schema types. All three being fixed by agent.",
+      "status": "in_progress",
+      "priority": "critical",
+      "created": "2026-05-25",
+      "actions": [
+        "Fix P002 (branding) — agent runs every 3 hours",
+        "Fix schema markup — done (P003 resolved)",
+        "Submit sitemap.xml to Google Search Console manually",
+        "Use URL Inspection in GSC to request indexing for high-priority pages",
+        "IndexNow ping already wired in push_to_index.py — verify it's running"
+      ]
+    },
+    {
+      "id": "P005",
+      "title": "Zero organic SEO traffic",
+      "description": "Consequence of P002 + P004. Once branding is clean and pages indexed, organic traffic will grow. Timeline: 4–8 weeks after indexing begins.",
+      "status": "open",
+      "priority": "critical",
+      "created": "2026-05-25",
+      "actions": [
+        "Primary keyword in every meta title: {Job Name} {Year} Apply Online",
+        "Secondary keywords in description: vacancy count, org name, last date",
+        "FAQ schema on all detail pages — enables FAQ rich results",
+        "JobPosting schema on all job pages — enables job posting rich results",
+        "Internal linking: category pages link to all jobs, homepage links to latest",
+        "Content volume: reach 3000+ jobs so more long-tail keywords are covered"
+      ]
+    },
+    {
+      "id": "P006",
+      "title": "Expired jobs showing Active badge",
+      "description": "lastDate values with trailing text broke date parsing.",
+      "status": "resolved",
+      "priority": "high",
+      "created": "2026-05-24",
+      "resolved": "2026-05-25",
+      "fix": "Fixed parseDDMMYYYY() to use regex. Merged to main via PR #133."
+    },
+    {
+      "id": "P007",
+      "title": "Google AdSense verification failing",
+      "description": "Script injected via JS not visible to AdSense crawler.",
+      "status": "resolved",
+      "priority": "medium",
+      "created": "2026-05-24",
+      "resolved": "2026-05-25",
+      "fix": "Replaced Next.js Script with plain <script async> in <head>. Merged to main via PR #134."
+    }
+  ]
+}

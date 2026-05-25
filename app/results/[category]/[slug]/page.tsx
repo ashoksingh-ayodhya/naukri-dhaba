@@ -3,7 +3,7 @@ export const dynamicParams = false;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPost, getAllPostMeta } from "@/lib/content";
-import { buildMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildMetadata, buildBreadcrumbJsonLd, buildResultJsonLd } from "@/lib/seo";
 import { siteConfig, CATEGORIES } from "@/config/site";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -55,6 +55,7 @@ export default async function ResultDetailPage({ params }: Props) {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildResultJsonLd(fm, pageUrl)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(breadcrumbs)) }} />
       <div className="max-w-5xl mx-auto px-4 py-6">
         <Breadcrumb crumbs={breadcrumbs} />
