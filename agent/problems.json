@@ -1,0 +1,89 @@
+{
+  "last_updated": "2026-05-25",
+  "problems": [
+    {
+      "id": "P001",
+      "title": "Insufficient job listings — only ~243 jobs vs thousands on source sites",
+      "description": "Sarkariresult.com and other sources have thousands of jobs. Our site has only ~243. Scraper is either being blocked, over-filtering via seen_items.json, or not paginating enough source pages.",
+      "status": "open",
+      "priority": "critical",
+      "created": "2026-05-25",
+      "actions": [
+        "Check if seen_items.json (1104 entries) is blocking re-scrape of valid jobs",
+        "Verify CF Worker proxy is not rate-limiting or returning errors",
+        "Check scraper logs for block/403/captcha patterns",
+        "Ensure pagination is scraping beyond page 1 of source listings",
+        "Add freejobalert.com and rojgarresult.com as active secondary sources"
+      ]
+    },
+    {
+      "id": "P002",
+      "title": "404 pages on live site",
+      "description": "Pages are 404ing — either generateStaticParams is missing slugs, Cloudflare Pages routing is wrong, or MDX files exist but aren't being built into static pages.",
+      "status": "open",
+      "priority": "high",
+      "created": "2026-05-25",
+      "actions": [
+        "Audit generateStaticParams in app/jobs/[category]/[slug]/page.tsx",
+        "Verify dynamicParams = false is set — it is, which means unbuilt slugs 404",
+        "Check if all CATEGORIES in config/site.ts match actual content category folders",
+        "Verify Cloudflare Pages build output has all expected routes",
+        "Check next.config.js for correct output: 'export' config"
+      ]
+    },
+    {
+      "id": "P003",
+      "title": "Pages not indexed by Google",
+      "description": "Job posting pages are not appearing in Google Search despite being live. Core indexing pipeline is broken.",
+      "status": "open",
+      "priority": "critical",
+      "created": "2026-05-25",
+      "actions": [
+        "Verify /sitemap.xml is accessible and contains all job URLs",
+        "Check /robots.txt is not blocking Googlebot",
+        "Confirm canonical URLs in generateMetadata match actual page URLs exactly",
+        "Submit sitemap in Google Search Console",
+        "Check if noindex meta tag is accidentally present on job pages",
+        "Use URL Inspection in GSC to test individual job page crawlability"
+      ]
+    },
+    {
+      "id": "P004",
+      "title": "Zero organic SEO traffic",
+      "description": "No organic search traffic. Site is invisible to search engines. Root causes are P001 (thin content) and P003 (indexing failure).",
+      "status": "open",
+      "priority": "critical",
+      "created": "2026-05-25",
+      "actions": [
+        "Fix indexing issue first (P003) — traffic cannot come if pages aren't indexed",
+        "Fix content volume (P001) — more pages = more chances to rank",
+        "Audit title tags: must include job name + year + 'Apply Online' for search intent",
+        "Audit meta descriptions: must include vacancy count, last date, organization",
+        "Verify JobPosting structured data is valid via Google Rich Results Test",
+        "Build internal links: home -> category -> job detail",
+        "Add breadcrumbs with schema markup (already done — verify it's rendering)",
+        "Target long-tail keywords: '{exam name} 2026 apply online', '{org} recruitment 2026'"
+      ]
+    },
+    {
+      "id": "P005",
+      "title": "Expired jobs showing as Active badge",
+      "description": "lastDate values with trailing text like '18/02/2026 upto 05 PM Only' broke date parsing via split('/'), returning Invalid Date and causing isExpired() to return false.",
+      "status": "resolved",
+      "priority": "high",
+      "created": "2026-05-24",
+      "resolved": "2026-05-25",
+      "fix": "Rewrote parseDDMMYYYY() to use regex /(\\ d{2})\\/(\\ d{2})\\/(\\ d{4})/ instead of split. Merged to main via PR #133."
+    },
+    {
+      "id": "P006",
+      "title": "Google AdSense verification failing",
+      "description": "AdSense crawler does a static HTTP fetch and never sees scripts injected by JS. Next.js <Script strategy='afterInteractive'> is not in raw HTML source.",
+      "status": "resolved",
+      "priority": "medium",
+      "created": "2026-05-24",
+      "resolved": "2026-05-25",
+      "fix": "Replaced Next.js Script component with plain <script async> tag directly in <head> in app/layout.tsx. Merged to main via PR #134."
+    }
+  ]
+}
