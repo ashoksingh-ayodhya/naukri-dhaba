@@ -113,7 +113,7 @@ HEADERS = {
     'Referer': BASE,
     'Connection': 'keep-alive',
 }
-DELAY   = 2.5   # seconds between requests (polite)
+DELAY   = 1.0   # seconds between requests
 TIMEOUT = 20
 
 # ── Department → category folder mapping ──────────────────
@@ -4063,47 +4063,65 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         log.info(f'{"─"*40}')
 
         for kind, url in source['urls'].items():
-            log.info(f'\nFetching {kind.upper()} listing: {url}')
-            soup = fetch(url)
-            if not soup:
-                log.warning(f'  [{src_name}] Could not fetch {kind} listing — skipping')
-                continue
-            successful_listings += 1
-            raw = parse_listing(soup, kind, source_base=src_base)
+            # For sarkariresult, try paginated archive pages to get historical data
+            archive_base_map = {
+                'job':        'https://www.sarkariresult.com/latestjob/page/',
+                'result':     'https://www.sarkariresult.com/result/page/',
+                'admit':      'https://www.sarkariresult.com/admitcard/page/',
+                'answer-key': 'https://www.sarkariresult.com/answer-key/page/',
+                'syllabus':   'https://www.sarkariresult.com/syllabus/page/',
+            }
+            max_archive_pages = 50 if src_name == 'sarkariresult' else 1
+            archive_base = archive_base_map.get(kind, '') if src_name == 'sarkariresult' else ''
 
-            # Playwright fallback: when normal fetch returns 0 items the page is likely
-            # JavaScript-rendered.  Try a headless-browser render before giving up.
-            if len(raw) == 0:
-                log.info(f'  [{src_name}] 0 items from HTTP fetch — trying Playwright JS-render fallback')
-                pw_soup = _fetch_with_playwright(url)
-                if pw_soup:
-                    pw_raw = parse_listing(pw_soup, kind, source_base=src_base)
-                    log.info(f'  Playwright fallback found {len(pw_raw)} raw rows')
-                    if len(pw_raw) > len(raw):
-                        raw = pw_raw
+            pages_to_fetch = [url]
+            if archive_base:
+                pages_to_fetch += [f'{archive_base}{p}/' for p in range(2, max_archive_pages + 1)]
 
-            log.info(f'  Raw items from {src_name}: {len(raw)}')
+            for page_url in pages_to_fetch:
+                log.info(f'\nFetching {kind.upper()} listing: {page_url}')
+                soup = fetch(page_url)
+                if not soup:
+                    if page_url == url:
+                        log.warning(f'  [{src_name}] Could not fetch {kind} listing — skipping')
+                    else:
+                        log.debug(f'  [{src_name}] Archive page not found: {page_url} — stopping pagination')
+                    break
+                successful_listings += 1
+                raw = parse_listing(soup, kind, source_base=src_base)
 
-            accepted = 0
-            for item in raw:
-                if not kind_matches_title(item.get('title', ''), kind):
-                    continue
-                # Skip items older than the previous year (dynamic, so it stays current)
-                _cutoff_year = datetime.now().year - 1
-                iso = to_iso_date(item.get('date_str', ''))
-                if iso and int(iso[:4]) < _cutoff_year:
-                    log.debug(f'  [skip] pre-{_cutoff_year} item: {item["title"][:50]} ({iso})')
-                    continue
-                iid = item_id(item['title'], item['dept'])
-                if not refresh_existing and iid in seen:
-                    log.debug(f'  [skip] already seen: {item["title"][:50]}')
-                    continue
-                seen.add(iid)
-                item['source'] = src_name
-                all_items[kind].append(item)
-                source_counts[src_name][kind] += 1
-                accepted += 1
-            log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
+                # Playwright fallback: when normal fetch returns 0 items the page is likely
+                # JavaScript-rendered.  Try a headless-browser render before giving up.
+                if len(raw) == 0:
+                    log.info(f'  [{src_name}] 0 items from HTTP fetch — trying Playwright JS-render fallback')
+                    pw_soup = _fetch_with_playwright(page_url)
+                    if pw_soup:
+                        pw_raw = parse_listing(pw_soup, kind, source_base=src_base)
+                        log.info(f'  Playwright fallback found {len(pw_raw)} raw rows')
+                        if len(pw_raw) > len(raw):
+                            raw = pw_raw
+
+                log.info(f'  Raw items from {src_name}: {len(raw)}')
+
+                accepted = 0
+                for item in raw:
+                    if not kind_matches_title(item.get('title', ''), kind):
+                        continue
+                    _cutoff_year = int(MIN_POST_DATE[:4])  # respect MIN_POST_DATE (2023)
+                    iso = to_iso_date(item.get('date_str', ''))
+                    if iso and int(iso[:4]) < _cutoff_year:
+                        log.debug(f'  [skip] pre-{_cutoff_year} item: {item["title"][:50]} ({iso})')
+                        continue
+                    iid = item_id(item['title'], item['dept'])
+                    if not refresh_existing and iid in seen:
+                        log.debug(f'  [skip] already seen: {item["title"][:50]}')
+                        continue
+                    seen.add(iid)
+                    item['source'] = src_name
+                    all_items[kind].append(item)
+                    source_counts[src_name][kind] += 1
+                    accepted += 1
+                log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
