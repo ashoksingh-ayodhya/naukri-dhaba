@@ -37,7 +37,7 @@ export default function JobsTable({ posts, title, viewAllHref, showHeader = true
 
           {/* Desktop: table */}
           <div className="hidden sm:block overflow-x-auto">
-            <table className="w-full text-left">
+            <table className="w-full text-left" aria-label={title || "Jobs listing table"}>
               <thead>
                 <tr className="table-header">
                   <th className="px-4 py-2.5 text-left">Post Name</th>

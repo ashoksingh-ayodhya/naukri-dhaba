@@ -15,6 +15,7 @@ export default function JobRow({ post, index }: JobRowProps) {
           <div>
             <Link
               href={post.href}
+              aria-label={`View details for ${post.title}`}
               className="text-sm font-medium text-primary-900 hover:text-primary-700 hover:underline transition-colors leading-snug"
             >
               {post.title}

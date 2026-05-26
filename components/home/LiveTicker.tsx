@@ -18,6 +18,7 @@ export default function LiveTicker({ posts }: { posts: ListingPost[] }) {
               <Link
                 key={`${post.slug}-${i}`}
                 href={post.href}
+                aria-label={`Live update: ${post.title}`}
                 className="text-xs text-white/80 hover:text-white transition-colors shrink-0"
               >
                 <span className="text-accent-400 mr-1">▸</span>

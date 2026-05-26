@@ -8,6 +8,7 @@ export default function MobileJobCard({ post }: { post: ListingPost }) {
   return (
     <Link
       href={post.href}
+      aria-label={`View details for ${post.title}`}
       className="flex items-start gap-3 px-4 py-3.5 hover:bg-slate-50 active:bg-slate-100 transition-colors"
     >
       {/* Status stripe */}
