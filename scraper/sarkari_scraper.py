@@ -4006,6 +4006,184 @@ def ping_indexnow(new_urls: list) -> None:
 
 
 # ══════════════════════════════════════════════════════════
+# SITEMAP-BASED HISTORICAL URL DISCOVERY
+# ══════════════════════════════════════════════════════════
+
+import xml.etree.ElementTree as ET
+_SITEMAP_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
+
+# sarkariresult.com URL path segments that mean this is NOT a post page
+_SITEMAP_SKIP_PATHS = {
+    'latestjob', 'result', 'admitcard', 'syllabus', 'answerkey', 'answer-key',
+    'admission', 'board', 'contactus', 'about', 'privacy', 'sitemap',
+    'search', 'videozone', 'top10', 'archive', 'tag', 'category', 'page',
+    'author', 'feed', 'wp-content', 'wp-includes', 'wp-admin',
+}
+
+def _fetch_raw(url: str) -> str | None:
+    """Fetch URL as raw text (for XML sitemaps). Uses cffi → CF Worker → requests."""
+    if _cffi_session:
+        try:
+            r = _cffi_session.get(url, timeout=30)
+            if r.status_code == 200:
+                return r.text
+        except Exception:
+            pass
+    if _CF_WORKER_URL:
+        try:
+            proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
+            hdrs = {'X-Proxy-Secret': _CF_WORKER_SECRET} if _CF_WORKER_SECRET else {}
+            r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY, verify=False)
+            if r.status_code == 200:
+                # CF Worker may wrap in JSON; try to extract body field
+                try:
+                    j = r.json()
+                    return j.get('body', r.text)
+                except Exception:
+                    return r.text
+        except Exception:
+            pass
+    try:
+        r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False)
+        if r.status_code == 200:
+            return r.text
+    except Exception:
+        pass
+    return None
+
+
+def _parse_sitemap(xml_text: str) -> list[tuple[str, str | None]]:
+    """Return list of (url, lastmod_YYYY-MM-DD_or_None) from a sitemap XML string."""
+    results: list[tuple[str, str | None]] = []
+    try:
+        root = ET.fromstring(xml_text)
+        ns = {'sm': _SITEMAP_NS}
+        local = root.tag.split('}')[-1] if '}' in root.tag else root.tag
+        items = root.findall('sm:sitemap', ns) if local == 'sitemapindex' else root.findall('sm:url', ns)
+        for el in items:
+            loc = el.findtext('sm:loc', namespaces=ns) or ''
+            lm  = el.findtext('sm:lastmod', namespaces=ns) or ''
+            loc = loc.strip()
+            lm  = lm.strip()[:10] if lm else None
+            if loc:
+                results.append((loc, lm))
+    except Exception as exc:
+        log.warning(f'[sitemap] XML parse error: {exc}')
+    return results
+
+
+def _classify_sitemap_url(url: str) -> str | None:
+    """Classify a sarkariresult.com URL as job/result/admit/answer-key/syllabus, or None to skip."""
+    path = urlparse(url).path.lower().rstrip('/')
+    parts = [p for p in path.split('/') if p]
+
+    # Skip non-post pages (0 or 1 segment = home or top-level category)
+    if len(parts) < 2:
+        return None
+    # Skip known non-post segments
+    if parts[0] in _SITEMAP_SKIP_PATHS:
+        return None
+
+    slug = parts[-1]
+    t = (slug + ' ' + ' '.join(parts)).replace('-', ' ')
+
+    if re.search(r'\badmit\b|\bhall ticket\b|\be admit\b', t):
+        return 'admit'
+    if re.search(r'\bsyllabus\b|\bexam pattern\b', t):
+        return 'syllabus'
+    if re.search(r'\banswer key\b|\bans key\b', t):
+        return 'answer-key'
+    if re.search(r'\bresult\b|\bmerit list\b|\bselection list\b|\bcutoff\b|\bfinal list\b', t):
+        return 'result'
+    return 'job'
+
+
+def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> dict[str, list[dict]]:
+    """
+    Crawl sarkariresult.com's XML sitemap to discover all post URLs from 2023+.
+    Returns items dict to merge into all_items before detail-page scraping.
+    """
+    new_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': [], 'answer-key': [], 'syllabus': []}
+    cutoff = MIN_POST_DATE  # "2023-01-01"
+    SITEMAP_ROOT = 'https://www.sarkariresult.com/sitemap.xml'
+
+    log.info(f'\n[sitemap] Crawling sarkariresult.com sitemap for posts >= {cutoff}')
+
+    # 1. Fetch root sitemap
+    xml = _fetch_raw(SITEMAP_ROOT)
+    if not xml:
+        log.warning('[sitemap] Could not fetch root sitemap — skipping')
+        return new_items
+
+    root_entries = _parse_sitemap(xml)
+    log.info(f'[sitemap] Root: {len(root_entries)} entries')
+
+    # 2. Separate sub-sitemaps from direct post URLs
+    sub_sitemaps = [(u, lm) for u, lm in root_entries if u.endswith('.xml') or 'sitemap' in u.lower()]
+    post_urls:  list[tuple[str, str | None]] = [(u, lm) for u, lm in root_entries if not (u.endswith('.xml') or 'sitemap' in u.lower())]
+
+    # 3. Expand sub-sitemaps (filter by year if possible)
+    for sub_url, sub_lm in sub_sitemaps:
+        # If sub-sitemap's lastmod is before cutoff year, skip it entirely
+        if sub_lm and sub_lm < cutoff[:4]:
+            continue
+        time.sleep(0.3)
+        sub_xml = _fetch_raw(sub_url)
+        if not sub_xml:
+            continue
+        sub_entries = _parse_sitemap(sub_xml)
+        log.info(f'[sitemap] Sub-sitemap {sub_url.rsplit("/", 1)[-1]}: {len(sub_entries)} entries')
+        for u, lm in sub_entries:
+            # Keep if lastmod >= cutoff, or if URL contains 2023+ year, or if no date info
+            keep = False
+            if lm and lm >= cutoff:
+                keep = True
+            elif not lm:
+                if re.search(r'/(202[3-9]|20[3-9]\d)/', u):
+                    keep = True
+                else:
+                    keep = True  # No date info — include and let detail page filter
+            if keep:
+                post_urls.append((u, lm))
+
+    log.info(f'[sitemap] Total candidate URLs: {len(post_urls)}')
+
+    # 4. Classify and build items
+    added = skipped_seen = skipped_kind = 0
+    for url, lm in post_urls:
+        kind = _classify_sitemap_url(url)
+        if kind is None:
+            skipped_kind += 1
+            continue
+
+        # Use URL path as stable ID (more reliable than title for sitemap items)
+        url_id = hashlib.md5(url.encode()).hexdigest()[:14]
+        if not refresh_existing and url_id in seen:
+            skipped_seen += 1
+            continue
+        seen.add(url_id)
+
+        # Rough title from slug — detail parser will replace with real title
+        slug = urlparse(url).path.rstrip('/').rsplit('/', 1)[-1]
+        rough_title = slug.replace('-', ' ').replace('_', ' ').title()
+
+        new_items[kind].append({
+            'title':      rough_title,
+            'dept':       '',
+            'date_str':   lm or '',
+            'detail_url': url,
+            'source':     'sarkariresult',
+        })
+        added += 1
+
+    log.info(f'[sitemap] {added} new items added  ({skipped_seen} already seen, {skipped_kind} non-post URLs skipped)')
+    for k, lst in new_items.items():
+        if lst:
+            log.info(f'  {k}: {len(lst)}')
+    return new_items
+
+
+# ══════════════════════════════════════════════════════════
 # MAIN ORCHESTRATOR
 # ══════════════════════════════════════════════════════════
 
@@ -4126,6 +4304,15 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
         return 0  # exit 0 so GitHub Actions step stays green; commit step skips (0 MDX files)
+
+    # ── Sitemap-based historical backfill (sarkariresult.com) ──
+    sitemap_new = scrape_sarkariresult_sitemap(seen, refresh_existing=refresh_existing)
+    for kind, items in sitemap_new.items():
+        for item in items:
+            item['source'] = 'sarkariresult'
+            all_items[kind].append(item)
+            source_counts.setdefault('sarkariresult', {'job': 0, 'result': 0, 'admit': 0, 'answer-key': 0, 'syllabus': 0})
+            source_counts['sarkariresult'][kind] = source_counts['sarkariresult'].get(kind, 0) + 1
 
     # Per-source summary table
     log.info('\n' + '─' * 60)
