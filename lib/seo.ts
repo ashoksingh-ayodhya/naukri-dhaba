@@ -95,9 +95,38 @@ function credentialCategory(qual: string | undefined): string {
   return "degree";
 }
 
+/** Derive a valid addressLocality from the hiring org name (for state PSC jobs). */
+function inferLocality(orgName: string): string {
+  const o = orgName.toLowerCase();
+  if (o.includes("madhya pradesh") || o.includes("mppsc")) return "Bhopal";
+  if (o.includes("uttar pradesh") || o.includes("uppsc") || o.includes("upsssc")) return "Lucknow";
+  if (o.includes("rajasthan") || o.includes("rpsc") || o.includes("rsmssb")) return "Jaipur";
+  if (o.includes("bihar") || o.includes("bpsc") || o.includes("bssc")) return "Patna";
+  if (o.includes("gujarat") || o.includes("gpsc")) return "Gandhinagar";
+  if (o.includes("maharashtra") || o.includes("mpsc")) return "Mumbai";
+  if (o.includes("karnataka") || o.includes("kpsc")) return "Bengaluru";
+  if (o.includes("tamil nadu") || o.includes("tnpsc")) return "Chennai";
+  if (o.includes("andhra pradesh") || o.includes("appsc")) return "Amaravati";
+  if (o.includes("telangana") || o.includes("tspsc")) return "Hyderabad";
+  if (o.includes("kerala") || o.includes("kerala psc")) return "Thiruvananthapuram";
+  if (o.includes("west bengal") || o.includes("wbpsc") || o.includes("wbssc")) return "Kolkata";
+  if (o.includes("punjab") || o.includes("ppsc")) return "Chandigarh";
+  if (o.includes("haryana") || o.includes("hpsc") || o.includes("hssc")) return "Chandigarh";
+  if (o.includes("himachal") || o.includes("hppsc")) return "Shimla";
+  if (o.includes("jharkhand") || o.includes("jpsc") || o.includes("jssc")) return "Ranchi";
+  if (o.includes("odisha") || o.includes("opsc") || o.includes("ossc")) return "Bhubaneswar";
+  if (o.includes("chhattisgarh") || o.includes("cgpsc") || o.includes("cgvyapam")) return "Raipur";
+  if (o.includes("assam") || o.includes("apsc") || o.includes("slrc")) return "Guwahati";
+  if (o.includes("uttarakhand") || o.includes("ukpsc") || o.includes("uksssc")) return "Dehradun";
+  return "New Delhi";
+}
+
 export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
   const orgName = (fm.organization || fm.dept || "Government of India").trim() || "Government of India";
   const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
+
+  // Only include sameAs when it's a real official website URL (not a search fallback)
+  const officialSite = fm.officialWebsite && fm.officialWebsite.startsWith("http") ? fm.officialWebsite : undefined;
 
   const ld: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -112,14 +141,15 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
     hiringOrganization: {
       "@type": "Organization",
       name: orgName,
-      sameAs: fm.officialWebsite || `https://www.google.com/search?q=${encodeURIComponent(orgName)}`,
+      ...(officialSite ? { sameAs: officialSite } : {}),
     },
+    // jobLocation uses a real city (inferred from org name) — "India" is NOT a valid addressRegion
     jobLocation: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
+        addressLocality: inferLocality(orgName),
         addressCountry: "IN",
-        addressRegion: "India",
       },
     },
     applicantLocationRequirements: {
@@ -176,10 +206,6 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
     ld.experienceRequirements = {
       "@type": "OccupationalExperienceRequirements",
       monthsOfExperience: 0,
-    };
-    ld.applicantLocationRequirements = {
-      "@type": "Country",
-      name: "India",
     };
   }
 
