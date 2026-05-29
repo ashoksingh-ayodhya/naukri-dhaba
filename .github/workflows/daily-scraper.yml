@@ -19,7 +19,7 @@ on:
 
 concurrency:
   group: scraper
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -77,7 +77,7 @@ jobs:
           git commit -m "chore: scrape $(date +'%d %b %Y') — $COUNT new posts [skip ci]"
           git fetch origin ${{ github.ref_name }}
           git merge -X ours FETCH_HEAD --no-edit || true
-          git push origin HEAD:${{ github.ref_name }}
+          git push origin HEAD:${{ github.ref_name }} || true
           echo "Pushed $COUNT MDX files."
 
       - name: Trigger Next.js deploy
@@ -94,13 +94,22 @@ jobs:
         run: |
           git config user.name "Naukri Dhaba Bot" 2>/dev/null || true
           git config user.email "bot@naukridhaba.in" 2>/dev/null || true
+          git add content/ 2>/dev/null || true
           git add -f scraper/logs/scraper.log 2>/dev/null || true
           git add -f scraper/seen_items.json 2>/dev/null || true
           if ! git diff --cached --quiet 2>/dev/null; then
-            git commit -m "debug: scraper log $(date +'%d %b %Y %H:%M IST') [skip ci]" || true
-            git fetch origin ${{ github.ref_name }} || true
-            git merge -X ours FETCH_HEAD --no-edit || true
-            git push origin HEAD:${{ github.ref_name }} || true
+            UNPUSHED_MDX=$(git diff --cached --name-only 2>/dev/null | grep "\.mdx$" | wc -l)
+            if [ "$UNPUSHED_MDX" -gt "0" ]; then
+              MSG="chore: scrape $(date +'%d %b %Y') — $UNPUSHED_MDX new posts [skip ci]"
+            else
+              MSG="debug: scraper log $(date +'%d %b %Y %H:%M IST') [skip ci]"
+            fi
+            git commit -m "$MSG" || true
+            for attempt in 1 2 3; do
+              git fetch origin ${{ github.ref_name }} || true
+              git merge -X ours FETCH_HEAD --no-edit || true
+              git push origin HEAD:${{ github.ref_name }} && break || sleep $((attempt * 5))
+            done || true
           fi
 
       - name: Show scraper log
