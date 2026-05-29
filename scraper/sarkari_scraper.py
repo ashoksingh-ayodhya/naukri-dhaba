@@ -4208,6 +4208,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             if archive_base:
                 pages_to_fetch += [f'{archive_base}{p}/' for p in range(2, max_archive_pages + 1)]
 
+            consecutive_empty = 0
             for page_url in pages_to_fetch:
                 log.info(f'\nFetching {kind.upper()} listing: {page_url}')
                 soup = fetch(page_url)
@@ -4252,6 +4253,15 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     source_counts[src_name][kind] += 1
                     accepted += 1
                 log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
+
+                # Stop paginating if 3 consecutive pages return 0 raw items (404/empty)
+                if len(raw) == 0:
+                    consecutive_empty += 1
+                    if consecutive_empty >= 3:
+                        log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
+                        break
+                else:
+                    consecutive_empty = 0
 
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
