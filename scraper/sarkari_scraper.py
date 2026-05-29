@@ -4059,13 +4059,19 @@ def fetch_from_wayback(original_url: str, timestamp: str) -> BeautifulSoup | Non
 
 
 def discover_via_wayback(seen: set, refresh_existing: bool = False,
-                          from_date: str = '20230101', max_urls: int = 5000
+                          from_date: str = '20230101', max_urls: int = 5000,
+                          max_new: int = 300
                           ) -> dict[str, list[dict]]:
     """
     Query archive.org CDX API for all sarkariresult.com post URLs archived from 2023+.
     Returns an items dict to merge into all_items before detail-page scraping.
     Each item carries _wayback_ts so fetch() can fall back to archive.org if the
     live site returns 403.
+
+    max_new caps how many new (unseen) URLs are returned per run so that detail
+    fetching completes within the 55-minute GitHub Actions timeout (~7s per URL).
+    URL IDs are saved to seen_items.json after a successful run, so subsequent
+    runs automatically pick up the next batch of unseen URLs.
     """
     new_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': [], 'answer-key': [], 'syllabus': []}
     today = datetime.now().strftime('%Y%m%d')
@@ -4078,7 +4084,7 @@ def discover_via_wayback(seen: set, refresh_existing: bool = False,
         f'&fl=timestamp,original&collapse=urlkey'
         f'&limit={max_urls}&fastLatest=true'
     )
-    log.info(f'\n[wayback] CDX query: sarkariresult.com posts from {from_date[:4]}+')
+    log.info(f'\n[wayback] CDX query: sarkariresult.com posts from {from_date[:4]}+ (max_new={max_new})')
 
     try:
         r = _CDX_SESSION.get(cdx_url, timeout=120)
@@ -4127,6 +4133,9 @@ def discover_via_wayback(seen: set, refresh_existing: bool = False,
             'source':      'sarkariresult',
         })
         added += 1
+        if added >= max_new:
+            log.info(f'[wayback] Reached max_new={max_new} — remaining URLs deferred to next run')
+            break
 
     log.info(f'[wayback] {added} new  |  {skipped_seen} already seen  |  {skipped_kind} non-post skipped')
     for k, lst in new_items.items():
@@ -4267,9 +4276,11 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         log.error('All source listings failed — no data fetched this run.')
         return 0  # exit 0 so GitHub Actions step stays green; commit step skips (0 MDX files)
 
-    # ── Sitemap-based historical backfill (sarkariresult.com) ──
-    # Wayback Machine CDX backfill — not blocked by sarkariresult.com's CloudFront
+    # ── Wayback Machine CDX backfill — not blocked by sarkariresult.com's CloudFront ──
     wb_new = discover_via_wayback(seen, refresh_existing=refresh_existing)
+    # Save seen immediately so CDX URL IDs persist even if detail fetching times out.
+    # Next run will skip these IDs and process the next batch.
+    save_seen(seen)
     for kind, items in wb_new.items():
         for item in items:
             all_items[kind].append(item)
