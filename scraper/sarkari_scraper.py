@@ -4202,16 +4202,39 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         log.info(f'{"─"*40}')
 
         for kind, url in source['urls'].items():
-            # For sarkariresult, try paginated archive pages to get historical data
-            archive_base_map = {
-                'job':        'https://www.sarkariresult.com/latestjob/page/',
-                'result':     'https://www.sarkariresult.com/result/page/',
-                'admit':      'https://www.sarkariresult.com/admitcard/page/',
-                'answer-key': 'https://www.sarkariresult.com/answer-key/page/',
-                'syllabus':   'https://www.sarkariresult.com/syllabus/page/',
+            # Pagination base URLs per source per content type.
+            # For WordPress sites the pattern is: base_url + "page/N/"
+            # sarkariresult uses a different path (/latestjob/page/ vs /latestjob.php)
+            all_archive_bases = {
+                'sarkariresult': {
+                    'job':        'https://www.sarkariresult.com/latestjob/page/',
+                    'result':     'https://www.sarkariresult.com/result/page/',
+                    'admit':      'https://www.sarkariresult.com/admitcard/page/',
+                    'answer-key': 'https://www.sarkariresult.com/answer-key/page/',
+                    'syllabus':   'https://www.sarkariresult.com/syllabus/page/',
+                },
+                'freejobalert': {
+                    'job':        'https://www.freejobalert.com/government-jobs/page/',
+                    'result':     'https://www.freejobalert.com/sarkariresult/page/',
+                    'admit':      'https://www.freejobalert.com/admit-card/page/',
+                    'answer-key': 'https://www.freejobalert.com/answer-key/page/',
+                    'syllabus':   'https://www.freejobalert.com/syllabus/page/',
+                },
+                'rojgarresult': {
+                    'job':        'https://www.rojgarresult.com/recruitments/page/',
+                    'result':     'https://www.rojgarresult.com/latest-result/page/',
+                    'admit':      'https://www.rojgarresult.com/admit-card/page/',
+                },
+                'sarkariexam': {
+                    'job':        'https://www.sarkariexam.com/category/jobs/page/',
+                    'result':     'https://www.sarkariexam.com/exam-result/page/',
+                    'admit':      'https://www.sarkariexam.com/category/admit-card/page/',
+                    'answer-key': 'https://www.sarkariexam.com/category/answer-key/page/',
+                    'syllabus':   'https://www.sarkariexam.com/category/syllabus/page/',
+                },
             }
-            max_archive_pages = 50 if src_name == 'sarkariresult' else 1
-            archive_base = archive_base_map.get(kind, '') if src_name == 'sarkariresult' else ''
+            max_archive_pages = 50
+            archive_base = all_archive_bases.get(src_name, {}).get(kind, '')
 
             pages_to_fetch = [url]
             if archive_base:
@@ -4310,8 +4333,19 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # Build a lookup of primary-source sources for dedup
     primary_sources = {s['name'] for s in SOURCES if s.get('primary', False)}
 
+    # Cap detail fetches per run so we don't exceed the 55-min GitHub Actions timeout.
+    # Items beyond the cap have their IDs removed from `seen` so the next run re-discovers
+    # them from the listing pages and fetches their details then.
+    MAX_DETAIL_PER_RUN = 200
+    detail_fetch_count = 0
+
     for kind, items in all_items.items():
         for item in items:
+            if detail_fetch_count >= MAX_DETAIL_PER_RUN:
+                # Defer this item: remove from seen so next run picks it up
+                seen.discard(item_id(item['title'], item.get('dept', '')))
+                log.debug(f'  [defer] Detail cap reached — deferring: {item["title"][:50]}')
+                continue
             src_name = item.get('source', 'unknown')
             is_primary = src_name in primary_sources
             log.info(f'\n[{kind.upper()}] {item["title"][:60]}  (source: {src_name})')
@@ -4401,9 +4435,12 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
                 log.info(f'  Written (MDX): {mdx_path.relative_to(SITE_ROOT)}')
                 generated[kind].append(rich)
+                detail_fetch_count += 1
 
             except Exception as exc:
                 log.warning(f'  [mdx] Failed to write MDX for {rich.get("slug")}: {exc}')
+
+    log.info(f'\nDetail pages fetched this run: {detail_fetch_count} / {sum(len(v) for v in all_items.values())} discovered (cap={MAX_DETAIL_PER_RUN})')
 
     # ── 2b. Save staging manifest ──────────────────────────
     if staging_manifest:
