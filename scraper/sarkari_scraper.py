@@ -4013,7 +4013,7 @@ import xml.etree.ElementTree as ET
 _SITEMAP_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 
 # sarkariresult.com URL path segments that mean this is NOT a post page
-_SITEMAP_SKIP_PATHS = {
+_SITEMAP_SKIP_PATHS = _SKIP_PATHS = {
     'latestjob', 'result', 'admitcard', 'syllabus', 'answerkey', 'answer-key',
     'admission', 'board', 'contactus', 'about', 'privacy', 'sitemap',
     'search', 'videozone', 'top10', 'archive', 'tag', 'category', 'page',
@@ -4035,7 +4035,6 @@ def _fetch_raw(url: str) -> str | None:
             hdrs = {'X-Proxy-Secret': _CF_WORKER_SECRET} if _CF_WORKER_SECRET else {}
             r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY, verify=False)
             if r.status_code == 200:
-                # CF Worker may wrap in JSON; try to extract body field
                 try:
                     j = r.json()
                     return j.get('body', r.text)
@@ -4076,17 +4075,12 @@ def _classify_sitemap_url(url: str) -> str | None:
     """Classify a sarkariresult.com URL as job/result/admit/answer-key/syllabus, or None to skip."""
     path = urlparse(url).path.lower().rstrip('/')
     parts = [p for p in path.split('/') if p]
-
-    # Skip non-post pages (0 or 1 segment = home or top-level category)
     if len(parts) < 2:
         return None
-    # Skip known non-post segments
     if parts[0] in _SITEMAP_SKIP_PATHS:
         return None
-
     slug = parts[-1]
     t = (slug + ' ' + ' '.join(parts)).replace('-', ' ')
-
     if re.search(r'\badmit\b|\bhall ticket\b|\be admit\b', t):
         return 'admit'
     if re.search(r'\bsyllabus\b|\bexam pattern\b', t):
@@ -4096,6 +4090,9 @@ def _classify_sitemap_url(url: str) -> str | None:
     if re.search(r'\bresult\b|\bmerit list\b|\bselection list\b|\bcutoff\b|\bfinal list\b', t):
         return 'result'
     return 'job'
+
+# alias used by older code paths
+_classify_url = _classify_sitemap_url
 
 
 def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> dict[str, list[dict]]:
@@ -4109,7 +4106,6 @@ def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> d
 
     log.info(f'\n[sitemap] Crawling sarkariresult.com sitemap for posts >= {cutoff}')
 
-    # 1. Fetch root sitemap
     xml = _fetch_raw(SITEMAP_ROOT)
     if not xml:
         log.warning('[sitemap] Could not fetch root sitemap — skipping')
@@ -4118,13 +4114,10 @@ def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> d
     root_entries = _parse_sitemap(xml)
     log.info(f'[sitemap] Root: {len(root_entries)} entries')
 
-    # 2. Separate sub-sitemaps from direct post URLs
     sub_sitemaps = [(u, lm) for u, lm in root_entries if u.endswith('.xml') or 'sitemap' in u.lower()]
-    post_urls:  list[tuple[str, str | None]] = [(u, lm) for u, lm in root_entries if not (u.endswith('.xml') or 'sitemap' in u.lower())]
+    post_urls: list[tuple[str, str | None]] = [(u, lm) for u, lm in root_entries if not (u.endswith('.xml') or 'sitemap' in u.lower())]
 
-    # 3. Expand sub-sitemaps (filter by year if possible)
     for sub_url, sub_lm in sub_sitemaps:
-        # If sub-sitemap's lastmod is before cutoff year, skip it entirely
         if sub_lm and sub_lm < cutoff[:4]:
             continue
         time.sleep(0.3)
@@ -4134,39 +4127,25 @@ def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> d
         sub_entries = _parse_sitemap(sub_xml)
         log.info(f'[sitemap] Sub-sitemap {sub_url.rsplit("/", 1)[-1]}: {len(sub_entries)} entries')
         for u, lm in sub_entries:
-            # Keep if lastmod >= cutoff, or if URL contains 2023+ year, or if no date info
-            keep = False
-            if lm and lm >= cutoff:
-                keep = True
-            elif not lm:
-                if re.search(r'/(202[3-9]|20[3-9]\d)/', u):
-                    keep = True
-                else:
-                    keep = True  # No date info — include and let detail page filter
+            keep = lm >= cutoff if lm else True
             if keep:
                 post_urls.append((u, lm))
 
     log.info(f'[sitemap] Total candidate URLs: {len(post_urls)}')
 
-    # 4. Classify and build items
     added = skipped_seen = skipped_kind = 0
     for url, lm in post_urls:
         kind = _classify_sitemap_url(url)
         if kind is None:
             skipped_kind += 1
             continue
-
-        # Use URL path as stable ID (more reliable than title for sitemap items)
         url_id = hashlib.md5(url.encode()).hexdigest()[:14]
         if not refresh_existing and url_id in seen:
             skipped_seen += 1
             continue
         seen.add(url_id)
-
-        # Rough title from slug — detail parser will replace with real title
         slug = urlparse(url).path.rstrip('/').rsplit('/', 1)[-1]
         rough_title = slug.replace('-', ' ').replace('_', ' ').title()
-
         new_items[kind].append({
             'title':      rough_title,
             'dept':       '',
@@ -4241,21 +4220,42 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         log.info(f'{"─"*40}')
 
         for kind, url in source['urls'].items():
-            # For sarkariresult, try paginated archive pages to get historical data
-            archive_base_map = {
-                'job':        'https://www.sarkariresult.com/latestjob/page/',
-                'result':     'https://www.sarkariresult.com/result/page/',
-                'admit':      'https://www.sarkariresult.com/admitcard/page/',
-                'answer-key': 'https://www.sarkariresult.com/answer-key/page/',
-                'syllabus':   'https://www.sarkariresult.com/syllabus/page/',
+            all_archive_bases = {
+                'sarkariresult': {
+                    'job':        'https://www.sarkariresult.com/latestjob/page/',
+                    'result':     'https://www.sarkariresult.com/result/page/',
+                    'admit':      'https://www.sarkariresult.com/admitcard/page/',
+                    'answer-key': 'https://www.sarkariresult.com/answer-key/page/',
+                    'syllabus':   'https://www.sarkariresult.com/syllabus/page/',
+                },
+                'freejobalert': {
+                    'job':        'https://www.freejobalert.com/government-jobs/page/',
+                    'result':     'https://www.freejobalert.com/sarkariresult/page/',
+                    'admit':      'https://www.freejobalert.com/admit-card/page/',
+                    'answer-key': 'https://www.freejobalert.com/answer-key/page/',
+                    'syllabus':   'https://www.freejobalert.com/syllabus/page/',
+                },
+                'rojgarresult': {
+                    'job':        'https://www.rojgarresult.com/recruitments/page/',
+                    'result':     'https://www.rojgarresult.com/latest-result/page/',
+                    'admit':      'https://www.rojgarresult.com/admit-card/page/',
+                },
+                'sarkariexam': {
+                    'job':        'https://www.sarkariexam.com/category/jobs/page/',
+                    'result':     'https://www.sarkariexam.com/exam-result/page/',
+                    'admit':      'https://www.sarkariexam.com/category/admit-card/page/',
+                    'answer-key': 'https://www.sarkariexam.com/category/answer-key/page/',
+                    'syllabus':   'https://www.sarkariexam.com/category/syllabus/page/',
+                },
             }
-            max_archive_pages = 50 if src_name == 'sarkariresult' else 1
-            archive_base = archive_base_map.get(kind, '') if src_name == 'sarkariresult' else ''
+            max_archive_pages = 50
+            archive_base = all_archive_bases.get(src_name, {}).get(kind, '')
 
             pages_to_fetch = [url]
             if archive_base:
                 pages_to_fetch += [f'{archive_base}{p}/' for p in range(2, max_archive_pages + 1)]
 
+            consecutive_empty = 0
             for page_url in pages_to_fetch:
                 log.info(f'\nFetching {kind.upper()} listing: {page_url}')
                 soup = fetch(page_url)
@@ -4301,15 +4301,24 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     accepted += 1
                 log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
+                # Stop paginating if 3 consecutive pages return 0 raw items (404/empty)
+                if len(raw) == 0:
+                    consecutive_empty += 1
+                    if consecutive_empty >= 3:
+                        log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
+                        break
+                else:
+                    consecutive_empty = 0
+
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
         return 0  # exit 0 so GitHub Actions step stays green; commit step skips (0 MDX files)
 
     # ── Sitemap-based historical backfill (sarkariresult.com) ──
     sitemap_new = scrape_sarkariresult_sitemap(seen, refresh_existing=refresh_existing)
+    save_seen(seen)
     for kind, items in sitemap_new.items():
         for item in items:
-            item['source'] = 'sarkariresult'
             all_items[kind].append(item)
             source_counts.setdefault('sarkariresult', {'job': 0, 'result': 0, 'admit': 0, 'answer-key': 0, 'syllabus': 0})
             source_counts['sarkariresult'][kind] = source_counts['sarkariresult'].get(kind, 0) + 1
@@ -4337,14 +4346,29 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # Build a lookup of primary-source sources for dedup
     primary_sources = {s['name'] for s in SOURCES if s.get('primary', False)}
 
+    # Cap detail fetches per run so we don't exceed the 55-min GitHub Actions timeout.
+    # Items beyond the cap have their IDs removed from `seen` so the next run re-discovers
+    # them from the listing pages and fetches their details then.
+    MAX_DETAIL_PER_RUN = 200
+    detail_fetch_count = 0
+
     for kind, items in all_items.items():
         for item in items:
+            if detail_fetch_count >= MAX_DETAIL_PER_RUN:
+                # Defer this item: remove from seen so next run picks it up
+                seen.discard(item_id(item['title'], item.get('dept', '')))
+                log.debug(f'  [defer] Detail cap reached — deferring: {item["title"][:50]}')
+                continue
             src_name = item.get('source', 'unknown')
             is_primary = src_name in primary_sources
             log.info(f'\n[{kind.upper()}] {item["title"][:60]}  (source: {src_name})')
             log.info(f'  Detail URL: {item["detail_url"]}')
 
             detail_soup = fetch(item['detail_url'])
+            # Wayback fallback: if live site blocked, fetch archived copy from archive.org
+            if not detail_soup and item.get('_wayback_ts'):
+                log.info(f'  [wayback] Live fetch failed — trying archive.org snapshot {item["_wayback_ts"][:8]}')
+                detail_soup = fetch_from_wayback(item['detail_url'], item['_wayback_ts'])
             if not detail_soup:
                 log.warning(f'  Detail page unavailable — generating from listing data: {item["detail_url"]}')
 
@@ -4424,9 +4448,12 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
 
                 log.info(f'  Written (MDX): {mdx_path.relative_to(SITE_ROOT)}')
                 generated[kind].append(rich)
+                detail_fetch_count += 1
 
             except Exception as exc:
                 log.warning(f'  [mdx] Failed to write MDX for {rich.get("slug")}: {exc}')
+
+    log.info(f'\nDetail pages fetched this run: {detail_fetch_count} / {sum(len(v) for v in all_items.values())} discovered (cap={MAX_DETAIL_PER_RUN})')
 
     # ── 2b. Save staging manifest ──────────────────────────
     if staging_manifest:

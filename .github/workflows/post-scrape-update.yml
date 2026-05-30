@@ -76,7 +76,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "Nothing changed — no deploy commit needed."
           else
-            git commit -m "deploy: $(date +'%d %b %Y %H:%M IST') [skip ci]"
+            git commit -m "deploy: $(date +'%d %b %Y %H:%M IST')"
             git push origin HEAD:main || echo "⚠️  Push blocked (branch protection). Configure CF Pages to run 'npm run build' with output dir 'out' — then this step is not needed."
           fi
 
