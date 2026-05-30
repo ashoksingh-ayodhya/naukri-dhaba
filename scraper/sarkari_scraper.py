@@ -4273,6 +4273,11 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 for item in raw:
                     if not kind_matches_title(item.get('title', ''), kind):
                         continue
+                    # Reject navigation/category/archive URLs (not real post pages)
+                    detail_path_parts = [p for p in urlparse(item.get('detail_url', '')).path.split('/') if p]
+                    if any(p in _SKIP_PATHS for p in detail_path_parts):
+                        log.debug(f'  [skip] nav/category URL: {item.get("detail_url", "")}')
+                        continue
                     _cutoff_year = int(MIN_POST_DATE[:4])  # respect MIN_POST_DATE (2023)
                     iso = to_iso_date(item.get('date_str', ''))
                     if iso and int(iso[:4]) < _cutoff_year:
