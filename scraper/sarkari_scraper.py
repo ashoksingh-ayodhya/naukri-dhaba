@@ -1676,6 +1676,11 @@ else:
     log.warning('CF_WORKER_PROXY_URL is NOT set — direct requests will be used. '
                 'Set this secret in GitHub Actions if scraping fails.')
 
+# URLs where CF Worker confirmed the target page is gone (404/410).
+# fetch() skips all fallback attempts for these — saves ~40s per dead URL.
+_cf_worker_404s: set[str] = set()
+
+
 def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     """Fetch a URL through the Cloudflare Worker proxy."""
     import gzip
@@ -1694,8 +1699,14 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
         if r.status_code == 503 and r.headers.get('X-Challenge-Detected'):
             log.warning(f'CF Worker: Cloudflare challenge page detected for {url} — site is blocking scraper requests')
             return None
+        # Read origin status BEFORE raise_for_status so we can distinguish
+        # "target is 404" from "CF Worker itself failed".
+        origin_status = r.headers.get('X-Origin-Status', str(r.status_code))
+        if r.status_code in (404, 410) or origin_status in ('404', '410'):
+            log.info(f'CF Worker: target returned {origin_status} for {url} — marking as dead, skipping fallbacks')
+            _cf_worker_404s.add(url)
+            return None
         r.raise_for_status()
-        origin_status = r.headers.get('X-Origin-Status', '?')
         raw = r.content
 
         # Defensive decompression: CF Worker strips Content-Encoding but passes
@@ -1829,12 +1840,22 @@ def _fetch_with_playwright(url: str) -> BeautifulSoup | None:
         soup = BeautifulSoup(html, 'lxml')
         anchors = soup.find_all('a', href=True)
         log.info(f'  [Playwright-stealth] Got {len(html)} bytes, {len(anchors)} anchors')
+        # Reject challenge/error pages: real job pages have many links
+        if len(anchors) < 5:
+            log.warning(f'  [Playwright-stealth] Too few anchors ({len(anchors)}) — likely a challenge page, rejecting')
+            return None
         return soup
     except Exception as exc:
         log.warning(f'  [Playwright-stealth] fetch failed for {url}: {exc}')
         return None
 
 def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
+    # If CF Worker previously confirmed this URL is 404/410 on the target,
+    # skip all fetch attempts — saves ~40s of retries per dead page.
+    if url in _cf_worker_404s:
+        log.debug(f'Skipping {url} — confirmed dead (404/410) by CF Worker')
+        return None
+
     # Try Cloudflare Worker first if configured
     if _CF_WORKER_URL:
         log.info(f'GET {url} via CF Worker')
@@ -4172,6 +4193,7 @@ def _parse_sitemap(xml_text: str) -> list[tuple[str, str | None]]:
 # skip detail pages just because their prefix is a known category word.
 _SARKARI_PREFIX_KIND = {
     'latestjob':  'job',
+    'result':     'result',
     'admitcard':  'admit',
     'syllabus':   'syllabus',
     'answer-key': 'answer-key',
@@ -4542,7 +4564,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # Per-category caps: guarantees jobs get slots even when admits outnumber them.
     # Listing phase now stops early (5-consecutive-all-seen), freeing ~30 min for
     # detail fetching.  At ~5s/page, 400 pages ≈ 33 min — within 55-min timeout.
-    MAX_PER_KIND = {'job': 200, 'result': 100, 'admit': 100, 'answer-key': 20, 'syllabus': 20}
+    MAX_PER_KIND = {'job': 400, 'result': 300, 'admit': 300, 'answer-key': 50, 'syllabus': 50}
     kind_fetch_count: dict[str, int] = {k: 0 for k in MAX_PER_KIND}
 
     for kind, items in all_items.items():

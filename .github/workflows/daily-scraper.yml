@@ -134,7 +134,7 @@ jobs:
             git config user.email "bot@naukridhaba.in"
             date > scraper/run-now
             git add scraper/run-now
-            git commit -m "chore: auto-trigger scraper ($JOBS jobs / $RESULTS results / $ADMITS admits) [skip ci]" || true
+            git commit -m "chore: auto-trigger scraper ($JOBS jobs / $RESULTS results / $ADMITS admits)" || true
             git fetch origin ${{ github.ref_name }}
             git merge -X ours FETCH_HEAD --no-edit || true
             git push origin HEAD:${{ github.ref_name }} || true
