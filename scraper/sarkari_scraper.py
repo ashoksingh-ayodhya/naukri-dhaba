@@ -4163,6 +4163,7 @@ def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> d
             'date_str':   lm or '',
             'detail_url': url,
             'source':     'sarkariresult',
+            '_seen_id':   url_id,  # URL-based hash — needed for correct cap-discard
         })
         added += 1
 
@@ -4376,8 +4377,10 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         kind_cap = MAX_PER_KIND.get(kind, 20)
         for item in items:
             if kind_fetch_count.get(kind, 0) >= kind_cap:
-                # Defer this item: remove from seen so next run picks it up
-                seen.discard(item_id(item['title'], item.get('dept', '')))
+                # Defer this item: remove from seen so next run picks it up.
+                # Sitemap items use a URL hash (_seen_id); listing items use title hash.
+                _sid = item.get('_seen_id') or item_id(item['title'], item.get('dept', ''))
+                seen.discard(_sid)
                 log.debug(f'  [defer] {kind} cap ({kind_cap}) reached — deferring: {item["title"][:50]}')
                 continue
             src_name = item.get('source', 'unknown')
