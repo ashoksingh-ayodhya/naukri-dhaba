@@ -7,7 +7,8 @@ const CONTENT_ROOT = path.join(process.cwd(), "content");
 
 function parseDDMMYYYY(dateStr: string | undefined): Date | null {
   if (!dateStr) return null;
-  const match = dateStr.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  // Accept both DD/MM/YYYY and DD-MM-YYYY (scraper writes either)
+  const match = dateStr.match(/(\d{2})[\/\-](\d{2})[\/\-](\d{4})/);
   if (!match) return null;
   const [, dd, mm, yyyy] = match;
   const d = new Date(`${yyyy}-${mm}-${dd}`);
