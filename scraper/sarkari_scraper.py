@@ -4050,103 +4050,95 @@ def _fetch_raw(url: str) -> str | None:
     """Fetch URL as raw text (for XML sitemaps). Tries CF Worker proxy then direct."""
     import zlib as _zlib
 
-    raw_bytes: bytes | None = None
-    content_encoding: str = ''
-
-    if _CF_WORKER_URL:
-        try:
-            proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
-            hdrs = {
-                # Use identity so the server prefers plain text, but Cloudflare CDN
-                # may still compress; we handle all encodings explicitly below.
-                'Accept-Encoding': 'identity',
-            }
-            if _CF_WORKER_SECRET:
-                hdrs['X-Proxy-Secret'] = _CF_WORKER_SECRET
-            # stream=True + decode_content=False → get truly raw bytes before
-            # any urllib3 auto-decompression, so we control decompression 100%.
-            r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY,
-                             verify=False, stream=True)
-            r.raw.decode_content = False
-            raw_bytes = r.raw.read()
-            content_encoding = r.headers.get('Content-Encoding', '').lower()
-            log.info(
-                f'[sitemap] CF Worker → {url[:80]}: status={r.status_code} '
-                f'size={len(raw_bytes)}b ct={r.headers.get("Content-Type","?")} '
-                f'ce={content_encoding or "none"}'
-            )
-            if r.status_code != 200 or not raw_bytes:
-                raw_bytes = None
-        except Exception as e:
-            log.warning(f'[sitemap] CF Worker fetch error: {e}')
-
-    if raw_bytes is None:
-        try:
-            r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False,
-                             stream=True)
-            r.raw.decode_content = False
-            raw_bytes = r.raw.read()
-            content_encoding = r.headers.get('Content-Encoding', '').lower()
-            if r.status_code != 200 or not raw_bytes:
-                raw_bytes = None
-        except Exception:
-            pass
-
-    if not raw_bytes:
-        log.warning(f'[sitemap] Empty or failed response for {url}')
-        return None
-
-    # Explicit decompression based on Content-Encoding header or magic bytes.
-    # Order: respect the header first, then fall back to magic-byte sniffing.
-    def _try_decompress(data: bytes) -> bytes:
-        # 1. gzip (header says so, or magic \x1f\x8b)
-        if 'gzip' in content_encoding or data[:2] == b'\x1f\x8b':
+    def _decompress_bytes(data: bytes, ce: str, label: str) -> bytes:
+        """Decompress bytes per Content-Encoding ce; falls back to magic-byte sniff."""
+        # 1. gzip
+        if 'gzip' in ce or data[:2] == b'\x1f\x8b':
             try:
-                return _gzip.decompress(data)
+                out = _gzip.decompress(data)
+                log.info(f'[sitemap] {label}: gzip decompressed → {len(out)}b')
+                return out
             except Exception as e:
-                log.warning(f'[sitemap] gzip decompress failed: {e}')
+                log.warning(f'[sitemap] {label}: gzip decompress failed: {e}')
         # 2. deflate (zlib)
-        if 'deflate' in content_encoding or data[:2] in (b'\x78\x9c', b'\x78\x01', b'\x78\xda'):
+        if 'deflate' in ce or data[:2] in (b'\x78\x9c', b'\x78\x01', b'\x78\xda'):
             try:
                 return _zlib.decompress(data)
             except Exception:
                 try:
-                    return _zlib.decompress(data, -15)  # raw deflate
-                except Exception:
-                    pass
-        # 3. brotli — try if header says br, or fall back to attempting it on
-        #    any data that doesn't decode cleanly as UTF-8 XML.
-        if 'br' in content_encoding:
+                    return _zlib.decompress(data, -15)
+                except Exception as e:
+                    log.warning(f'[sitemap] {label}: deflate decompress failed: {e}')
+        # 3. brotli (header-declared or sniffed when bytes don't look like XML)
+        if 'br' in ce or (data[:1] and data.lstrip()[:1] != b'<'):
             try:
                 import brotli as _br
-                decompressed = _br.decompress(data)
-                log.info(f'[sitemap] brotli decompressed (header) → {len(decompressed)}b')
-                return decompressed
+                out = _br.decompress(data)
+                log.info(f'[sitemap] {label}: brotli decompressed → {len(out)}b')
+                return out
             except Exception as e:
-                log.warning(f'[sitemap] brotli decompress (header) failed: {e}')
-        # 4. If no header match, sniff: try brotli if not valid XML start
-        if not data.lstrip()[:1] == b'<':
-            try:
-                import brotli as _br
-                decompressed = _br.decompress(data)
-                log.info(f'[sitemap] brotli decompressed (sniff) → {len(decompressed)}b')
-                return decompressed
-            except Exception:
-                pass
+                if 'br' in ce:
+                    log.warning(f'[sitemap] {label}: brotli decompress failed: {e}')
         return data
 
-    raw_bytes = _try_decompress(raw_bytes)
+    def _raw_get(target: str, extra_hdrs: dict | None = None) -> tuple[bytes, str, int]:
+        """GET a URL with stream+decode_content=False; returns (bytes, ce_header, status)."""
+        hdrs = {
+            # Exclude brotli: Cloudflare may serve brotli that the Python brotli
+            # library cannot decompress for certain window-size values.
+            'Accept-Encoding': 'gzip, deflate',
+        }
+        if extra_hdrs:
+            hdrs.update(extra_hdrs)
+        r = _session.get(target, headers=hdrs, timeout=30, proxies=_NO_PROXY,
+                         verify=False, stream=True)
+        r.raw.decode_content = False
+        raw = r.raw.read()
+        ce = r.headers.get('Content-Encoding', '').lower()
+        return raw, ce, r.status_code
 
-    # Strip BOM
-    if raw_bytes[:3] == b'\xef\xbb\xbf':
-        raw_bytes = raw_bytes[3:]
+    # ── Try 1: CF Worker proxy ────────────────────────────────────────────────
+    if _CF_WORKER_URL:
+        try:
+            proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
+            extra = {}
+            if _CF_WORKER_SECRET:
+                extra['X-Proxy-Secret'] = _CF_WORKER_SECRET
+            raw_bytes, ce, status = _raw_get(proxy, extra)
+            log.info(
+                f'[sitemap] CF Worker → {url[:80]}: status={status} '
+                f'size={len(raw_bytes)}b ce={ce or "none"}'
+            )
+            if status == 200 and raw_bytes:
+                data = _decompress_bytes(raw_bytes, ce, 'CF Worker')
+                if data[:3] == b'\xef\xbb\xbf':
+                    data = data[3:]
+                log.info(f'[sitemap] CF Worker preview: {data[:100]!r}')
+                try:
+                    return data.decode('utf-8')
+                except Exception:
+                    return data.decode('latin-1', errors='replace')
+        except Exception as e:
+            log.warning(f'[sitemap] CF Worker fetch error: {e}')
 
-    log.info(f'[sitemap] Content preview: {raw_bytes[:120]!r}')
-
+    # ── Try 2: direct fetch (sitemaps are public for search-engine crawlers) ──
     try:
-        return raw_bytes.decode('utf-8')
-    except Exception:
-        return raw_bytes.decode('latin-1', errors='replace')
+        raw_bytes, ce, status = _raw_get(url)
+        log.info(f'[sitemap] Direct → {url[:80]}: status={status} size={len(raw_bytes)}b ce={ce or "none"}')
+        if status == 200 and raw_bytes:
+            data = _decompress_bytes(raw_bytes, ce, 'Direct')
+            if data[:3] == b'\xef\xbb\xbf':
+                data = data[3:]
+            log.info(f'[sitemap] Direct preview: {data[:100]!r}')
+            try:
+                return data.decode('utf-8')
+            except Exception:
+                return data.decode('latin-1', errors='replace')
+    except Exception as e:
+        log.warning(f'[sitemap] Direct fetch error: {e}')
+
+    log.warning(f'[sitemap] All fetch attempts failed for {url}')
+    return None
 
 
 def _parse_sitemap(xml_text: str) -> list[tuple[str, str | None]]:
