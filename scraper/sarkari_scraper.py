@@ -4035,7 +4035,12 @@ def _fetch_raw(url: str) -> str | None:
     if _CF_WORKER_URL:
         try:
             proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
-            hdrs = {'X-Proxy-Secret': _CF_WORKER_SECRET} if _CF_WORKER_SECRET else {}
+            # Use identity encoding so CF Worker / Cloudflare edge does not
+            # re-compress the XML bytes; magic-byte decompression below handles
+            # any gzip that still slips through.
+            hdrs = {'Accept-Encoding': 'identity'}
+            if _CF_WORKER_SECRET:
+                hdrs['X-Proxy-Secret'] = _CF_WORKER_SECRET
             r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY, verify=False)
             log.info(f'[sitemap] CF Worker → {url[:80]}: status={r.status_code} size={len(r.content)}b ct={r.headers.get("Content-Type","?")}')
             if r.status_code == 200 and len(r.content) > 0:
