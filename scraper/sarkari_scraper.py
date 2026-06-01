@@ -1712,14 +1712,21 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
                 log.info(f'CF Worker: zlib-decompressed response for {url}')
             except Exception:
                 pass
-        elif len(raw) > 0 and raw[0] not in (ord('<'), ord('{'), ord('['), ord(' '), ord('\t'), ord('\n'), 0xEF):
-            # Likely brotli — try to decompress before handing to BS4
+        else:
+            # May be brotli — attempt decompression if content doesn't parse as valid text.
+            # Brotli streams don't have a standard magic number so we just try.
             try:
-                import brotli as _brotli
-                raw = _brotli.decompress(raw)
-                log.info(f'CF Worker: brotli-decompressed response for {url}')
-            except Exception:
-                pass
+                raw_text_check = raw[:200].decode('utf-8', errors='strict')
+                # Starts with valid UTF-8 text — no decompression needed
+                if not raw_text_check.lstrip().startswith(('<', '{', '[')):
+                    raise ValueError('not typical HTML/JSON/XML start')
+            except (UnicodeDecodeError, ValueError):
+                try:
+                    import brotli as _brotli
+                    raw = _brotli.decompress(raw)
+                    log.info(f'CF Worker: brotli-decompressed response for {url}')
+                except Exception:
+                    pass
 
         size = len(raw)
         log.info(f'CF Worker OK for {url} (origin status: {origin_status}, size: {size} bytes)')
@@ -4078,13 +4085,16 @@ def _fetch_raw(url: str) -> str | None:
             log.info(f'[sitemap] gzip decompressed → {len(raw_bytes)}b')
         except Exception as e:
             log.warning(f'[sitemap] gzip decompress failed: {e}')
-    elif len(raw_bytes) > 0 and raw_bytes[0] not in (ord('<'), ord(' '), ord('\t'), ord('\n'), 0xEF):
+    else:
         try:
-            import brotli as _br
-            raw_bytes = _br.decompress(raw_bytes)
-            log.info(f'[sitemap] brotli decompressed → {len(raw_bytes)}b')
-        except Exception:
-            pass
+            raw_bytes[:200].decode('utf-8', errors='strict')
+        except UnicodeDecodeError:
+            try:
+                import brotli as _br
+                raw_bytes = _br.decompress(raw_bytes)
+                log.info(f'[sitemap] brotli decompressed → {len(raw_bytes)}b')
+            except Exception:
+                pass
 
     # Strip BOM
     if raw_bytes[:3] == b'\xef\xbb\xbf':
