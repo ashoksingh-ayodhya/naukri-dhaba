@@ -4020,28 +4020,54 @@ _SKIP_PATHS = {
 }
 
 
+import gzip as _gzip
+
+
 def _fetch_raw(url: str) -> str | None:
     """Fetch URL as raw text (for XML sitemaps). Tries CF Worker proxy then direct."""
+    raw_bytes: bytes | None = None
+
     if _CF_WORKER_URL:
         try:
             proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
             hdrs = {'X-Proxy-Secret': _CF_WORKER_SECRET} if _CF_WORKER_SECRET else {}
             r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY, verify=False)
-            if r.status_code == 200:
-                try:
-                    j = r.json()
-                    return j.get('body', r.text)
-                except Exception:
-                    return r.text
+            log.info(f'[sitemap] CF Worker → {url[:80]}: status={r.status_code} size={len(r.content)}b ct={r.headers.get("Content-Type","?")}')
+            if r.status_code == 200 and len(r.content) > 0:
+                raw_bytes = r.content
+        except Exception as e:
+            log.warning(f'[sitemap] CF Worker fetch error: {e}')
+
+    if raw_bytes is None:
+        try:
+            r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False)
+            if r.status_code == 200 and len(r.content) > 0:
+                raw_bytes = r.content
         except Exception:
             pass
+
+    if not raw_bytes:
+        log.warning(f'[sitemap] Empty or failed response for {url}')
+        return None
+
+    # Decompress gzip if CF Worker passed through compressed bytes
+    if raw_bytes[:2] == b'\x1f\x8b':
+        try:
+            raw_bytes = _gzip.decompress(raw_bytes)
+            log.info(f'[sitemap] gzip decompressed → {len(raw_bytes)}b')
+        except Exception as e:
+            log.warning(f'[sitemap] gzip decompress failed: {e}')
+
+    # Strip BOM
+    if raw_bytes[:3] == b'\xef\xbb\xbf':
+        raw_bytes = raw_bytes[3:]
+
+    log.info(f'[sitemap] Content preview: {raw_bytes[:120]!r}')
+
     try:
-        r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False)
-        if r.status_code == 200:
-            return r.text
+        return raw_bytes.decode('utf-8')
     except Exception:
-        pass
-    return None
+        return raw_bytes.decode('latin-1', errors='replace')
 
 
 def _parse_sitemap(xml_text: str) -> list[tuple[str, str | None]]:
