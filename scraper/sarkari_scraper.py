@@ -4588,6 +4588,10 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 log.info(f'  [wayback] Live fetch failed — trying archive.org snapshot {item["_wayback_ts"][:8]}')
                 detail_soup = fetch_from_wayback(item['detail_url'], item['_wayback_ts'])
             if not detail_soup:
+                # If CF Worker confirmed the page is 404/410, skip entirely — don't write stub MDX.
+                if item['detail_url'] in _cf_worker_404s:
+                    log.info(f'  Confirmed 404/410 — skipping MDX: {item["detail_url"]}')
+                    continue
                 log.warning(f'  Detail page unavailable — generating from listing data: {item["detail_url"]}')
 
             # ── New detail parser ──────────────────────────────
