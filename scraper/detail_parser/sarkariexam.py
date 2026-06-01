@@ -84,7 +84,7 @@ class SarkariExamParser(SarkariResultParser):
                 if is_junk_row(text):
                     continue
                 if re.search(r'(apply|result|admit|notification|answer\s*key|syllabus|download)', text, re.I):
-                    from scraper.detail_parser.utils import classify_link
+                    from .utils import classify_link
                     data.important_links.append({
                         "label": text,
                         "url": href,
