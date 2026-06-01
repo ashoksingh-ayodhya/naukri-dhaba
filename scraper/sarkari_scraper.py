@@ -4175,6 +4175,22 @@ def _classify_url(url: str) -> str | None:
     return 'job'
 
 
+def _discover_sitemap_url(base_url: str) -> str | None:
+    """Try robots.txt to discover the real sitemap URL for a site."""
+    try:
+        robots_url = base_url.rstrip('/') + '/robots.txt'
+        xml = _fetch_raw(robots_url)
+        if xml:
+            for line in xml.splitlines():
+                if line.lower().startswith('sitemap:'):
+                    url = line.split(':', 1)[1].strip()
+                    if url.startswith('http'):
+                        return url
+    except Exception:
+        pass
+    return None
+
+
 def _scrape_sitemap_generic(
     sitemap_root: str,
     source_name: str,
@@ -4191,9 +4207,33 @@ def _scrape_sitemap_generic(
 
     log.info(f'\n[sitemap:{source_name}] Crawling {sitemap_root} for posts >= {cutoff}')
     xml = _fetch_raw(sitemap_root)
-    if not xml:
-        log.warning(f'[sitemap:{source_name}] Could not fetch root sitemap — skipping')
-        return new_items
+
+    # If root sitemap fails, try alternative URL patterns and robots.txt discovery
+    if not xml or not _parse_sitemap(xml):
+        base = '/'.join(sitemap_root.split('/')[:3])  # https://www.example.com
+        alt_urls = [
+            f'{base}/wp-sitemap.xml',
+            f'{base}/sitemap_index.xml',
+            f'{base}/post-sitemap.xml',
+        ]
+        # Also try robots.txt discovery
+        discovered = _discover_sitemap_url(base)
+        if discovered and discovered != sitemap_root:
+            alt_urls.insert(0, discovered)
+
+        for alt_url in alt_urls:
+            if alt_url == sitemap_root:
+                continue
+            log.info(f'[sitemap:{source_name}] Root failed — trying {alt_url}')
+            alt_xml = _fetch_raw(alt_url)
+            if alt_xml and _parse_sitemap(alt_xml):
+                log.info(f'[sitemap:{source_name}] Found working sitemap at {alt_url}')
+                xml = alt_xml
+                break
+        else:
+            if not xml:
+                log.warning(f'[sitemap:{source_name}] Could not fetch root sitemap — skipping')
+                return new_items
 
     root_entries = _parse_sitemap(xml)
     log.info(f'[sitemap:{source_name}] Root: {len(root_entries)} entries')
@@ -4464,9 +4504,9 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     primary_sources = {s['name'] for s in SOURCES if s.get('primary', False)}
 
     # Per-category caps: guarantees jobs get slots even when admits outnumber them.
-    # Total budget ~200 detail pages per run to stay within the 55-min timeout.
-    # Items beyond cap have IDs removed from seen so next run re-discovers them.
-    MAX_PER_KIND = {'job': 100, 'result': 50, 'admit': 50, 'answer-key': 10, 'syllabus': 10}
+    # Listing phase now stops early (5-consecutive-all-seen), freeing ~30 min for
+    # detail fetching.  At ~5s/page, 400 pages ≈ 33 min — within 55-min timeout.
+    MAX_PER_KIND = {'job': 200, 'result': 100, 'admit': 100, 'answer-key': 20, 'syllabus': 20}
     kind_fetch_count: dict[str, int] = {k: 0 for k in MAX_PER_KIND}
 
     for kind, items in all_items.items():
