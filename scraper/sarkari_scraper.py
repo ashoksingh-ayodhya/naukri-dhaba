@@ -4048,29 +4048,47 @@ import gzip as _gzip
 
 def _fetch_raw(url: str) -> str | None:
     """Fetch URL as raw text (for XML sitemaps). Tries CF Worker proxy then direct."""
+    import zlib as _zlib
+
     raw_bytes: bytes | None = None
+    content_encoding: str = ''
 
     if _CF_WORKER_URL:
         try:
             proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
-            # Use identity encoding so CF Worker / Cloudflare edge does not
-            # re-compress the XML bytes; magic-byte decompression below handles
-            # any gzip that still slips through.
-            hdrs = {'Accept-Encoding': 'identity'}
+            hdrs = {
+                # Use identity so the server prefers plain text, but Cloudflare CDN
+                # may still compress; we handle all encodings explicitly below.
+                'Accept-Encoding': 'identity',
+            }
             if _CF_WORKER_SECRET:
                 hdrs['X-Proxy-Secret'] = _CF_WORKER_SECRET
-            r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY, verify=False)
-            log.info(f'[sitemap] CF Worker → {url[:80]}: status={r.status_code} size={len(r.content)}b ct={r.headers.get("Content-Type","?")}')
-            if r.status_code == 200 and len(r.content) > 0:
-                raw_bytes = r.content
+            # stream=True + decode_content=False → get truly raw bytes before
+            # any urllib3 auto-decompression, so we control decompression 100%.
+            r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY,
+                             verify=False, stream=True)
+            r.raw.decode_content = False
+            raw_bytes = r.raw.read()
+            content_encoding = r.headers.get('Content-Encoding', '').lower()
+            log.info(
+                f'[sitemap] CF Worker → {url[:80]}: status={r.status_code} '
+                f'size={len(raw_bytes)}b ct={r.headers.get("Content-Type","?")} '
+                f'ce={content_encoding or "none"}'
+            )
+            if r.status_code != 200 or not raw_bytes:
+                raw_bytes = None
         except Exception as e:
             log.warning(f'[sitemap] CF Worker fetch error: {e}')
 
     if raw_bytes is None:
         try:
-            r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False)
-            if r.status_code == 200 and len(r.content) > 0:
-                raw_bytes = r.content
+            r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False,
+                             stream=True)
+            r.raw.decode_content = False
+            raw_bytes = r.raw.read()
+            content_encoding = r.headers.get('Content-Encoding', '').lower()
+            if r.status_code != 200 or not raw_bytes:
+                raw_bytes = None
         except Exception:
             pass
 
@@ -4078,23 +4096,46 @@ def _fetch_raw(url: str) -> str | None:
         log.warning(f'[sitemap] Empty or failed response for {url}')
         return None
 
-    # Decompress if CF Worker passed through compressed bytes (strips Content-Encoding)
-    if raw_bytes[:2] == b'\x1f\x8b':
-        try:
-            raw_bytes = _gzip.decompress(raw_bytes)
-            log.info(f'[sitemap] gzip decompressed → {len(raw_bytes)}b')
-        except Exception as e:
-            log.warning(f'[sitemap] gzip decompress failed: {e}')
-    else:
-        try:
-            raw_bytes[:200].decode('utf-8', errors='strict')
-        except UnicodeDecodeError:
+    # Explicit decompression based on Content-Encoding header or magic bytes.
+    # Order: respect the header first, then fall back to magic-byte sniffing.
+    def _try_decompress(data: bytes) -> bytes:
+        # 1. gzip (header says so, or magic \x1f\x8b)
+        if 'gzip' in content_encoding or data[:2] == b'\x1f\x8b':
+            try:
+                return _gzip.decompress(data)
+            except Exception as e:
+                log.warning(f'[sitemap] gzip decompress failed: {e}')
+        # 2. deflate (zlib)
+        if 'deflate' in content_encoding or data[:2] in (b'\x78\x9c', b'\x78\x01', b'\x78\xda'):
+            try:
+                return _zlib.decompress(data)
+            except Exception:
+                try:
+                    return _zlib.decompress(data, -15)  # raw deflate
+                except Exception:
+                    pass
+        # 3. brotli — try if header says br, or fall back to attempting it on
+        #    any data that doesn't decode cleanly as UTF-8 XML.
+        if 'br' in content_encoding:
             try:
                 import brotli as _br
-                raw_bytes = _br.decompress(raw_bytes)
-                log.info(f'[sitemap] brotli decompressed → {len(raw_bytes)}b')
+                decompressed = _br.decompress(data)
+                log.info(f'[sitemap] brotli decompressed (header) → {len(decompressed)}b')
+                return decompressed
+            except Exception as e:
+                log.warning(f'[sitemap] brotli decompress (header) failed: {e}')
+        # 4. If no header match, sniff: try brotli if not valid XML start
+        if not data.lstrip()[:1] == b'<':
+            try:
+                import brotli as _br
+                decompressed = _br.decompress(data)
+                log.info(f'[sitemap] brotli decompressed (sniff) → {len(decompressed)}b')
+                return decompressed
             except Exception:
                 pass
+        return data
+
+    raw_bytes = _try_decompress(raw_bytes)
 
     # Strip BOM
     if raw_bytes[:3] == b'\xef\xbb\xbf':
