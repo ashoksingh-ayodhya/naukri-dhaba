@@ -1698,7 +1698,8 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
         origin_status = r.headers.get('X-Origin-Status', '?')
         raw = r.content
 
-        # Defensive decompression: if Worker still returns compressed bytes, decompress here
+        # Defensive decompression: CF Worker strips Content-Encoding but passes
+        # raw compressed bytes. Detect and decompress gzip, zlib, or brotli.
         if raw[:2] == b'\x1f\x8b':
             try:
                 raw = gzip.decompress(raw)
@@ -1709,6 +1710,14 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
             try:
                 raw = zlib.decompress(raw)
                 log.info(f'CF Worker: zlib-decompressed response for {url}')
+            except Exception:
+                pass
+        elif len(raw) > 0 and raw[0] not in (ord('<'), ord('{'), ord('['), ord(' '), ord('\t'), ord('\n'), 0xEF):
+            # Likely brotli — try to decompress before handing to BS4
+            try:
+                import brotli as _brotli
+                raw = _brotli.decompress(raw)
+                log.info(f'CF Worker: brotli-decompressed response for {url}')
             except Exception:
                 pass
 
@@ -1980,10 +1989,12 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
         if len(li_items) > len(items):
             items = li_items
 
-    # Fallback 2: broad anchor scan
+    # Fallback 2: broad anchor scan — only replace if we find MORE items
     if len(items) <= 3:
-        items = parse_listing_from_anchors(soup, page_type, source_base=source_base)
-        log.info(f'  Anchor fallback found {len(items)} raw rows')
+        anc_items = parse_listing_from_anchors(soup, page_type, source_base=source_base)
+        log.info(f'  Anchor fallback found {len(anc_items)} raw rows')
+        if len(anc_items) > len(items):
+            items = anc_items
 
     # Diagnostics: when all fallbacks returned nothing, log an HTML snippet so the
     # next reader can see what the page actually looks like (bot-protection page, empty
@@ -4060,13 +4071,20 @@ def _fetch_raw(url: str) -> str | None:
         log.warning(f'[sitemap] Empty or failed response for {url}')
         return None
 
-    # Decompress gzip if CF Worker passed through compressed bytes
+    # Decompress if CF Worker passed through compressed bytes (strips Content-Encoding)
     if raw_bytes[:2] == b'\x1f\x8b':
         try:
             raw_bytes = _gzip.decompress(raw_bytes)
             log.info(f'[sitemap] gzip decompressed → {len(raw_bytes)}b')
         except Exception as e:
             log.warning(f'[sitemap] gzip decompress failed: {e}')
+    elif len(raw_bytes) > 0 and raw_bytes[0] not in (ord('<'), ord(' '), ord('\t'), ord('\n'), 0xEF):
+        try:
+            import brotli as _br
+            raw_bytes = _br.decompress(raw_bytes)
+            log.info(f'[sitemap] brotli decompressed → {len(raw_bytes)}b')
+        except Exception:
+            pass
 
     # Strip BOM
     if raw_bytes[:3] == b'\xef\xbb\xbf':
