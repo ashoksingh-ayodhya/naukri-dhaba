@@ -30,7 +30,7 @@ jobs:
   scrape:
     name: Scrape → MDX → Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 80
     env:
       TZ: Asia/Kolkata
 
