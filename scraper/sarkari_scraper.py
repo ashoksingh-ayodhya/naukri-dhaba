@@ -4337,6 +4337,7 @@ def _scrape_sitemap_generic(
             'detail_url': url,
             'source':     source_name,
             '_seen_id':   url_id,
+            'page_type':  kind,  # critical: ensures generate_mdx writes to correct directory
         })
         added += 1
 
@@ -4627,6 +4628,9 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             # ── Write MDX file ────────────────────────────────────
             try:
                 if _detail_data_cache is not None:
+                    # Ensure page_type is set — sitemap items had no page_type in their dict
+                    if not _detail_data_cache.page_type:
+                        _detail_data_cache.page_type = kind
                     # Preferred path: use the DetailData object directly
                     mdx_path = generate_mdx(_detail_data_cache)
                 else:
