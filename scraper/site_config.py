@@ -55,6 +55,14 @@ SOURCES = [
             "syllabus":   "https://www.sarkariexam.com/category/syllabus/",
         },
     },
+    {
+        "name": "employmentnews",
+        "base": "https://www.employmentnews.gov.in",
+        "primary": False,
+        "urls": {
+            "job": "https://www.employmentnews.gov.in/NewNotification.aspx",
+        },
+    },
 ]
 
 SOURCE_HOSTS = {
@@ -76,6 +84,8 @@ SOURCE_HOSTS = {
     "www.rojgarresult.com",
     "sarkariexam.com",
     "www.sarkariexam.com",
+    "employmentnews.gov.in",
+    "www.employmentnews.gov.in",
 }
 
 STAGING_DIR = "staging"

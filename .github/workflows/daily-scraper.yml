@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'scraper/run-now'
+  repository_dispatch:
+    types: [scrape]
   schedule:
     - cron: "30 1 * * *"   # 7 AM IST
     - cron: "30 7 * * *"   # 1 PM IST

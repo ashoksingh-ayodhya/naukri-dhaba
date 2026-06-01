@@ -1676,6 +1676,11 @@ else:
     log.warning('CF_WORKER_PROXY_URL is NOT set — direct requests will be used. '
                 'Set this secret in GitHub Actions if scraping fails.')
 
+# URLs where CF Worker confirmed the target page is gone (404/410).
+# fetch() skips all fallback attempts for these — saves ~40s per dead URL.
+_cf_worker_404s: set[str] = set()
+
+
 def _fetch_via_worker(url: str) -> BeautifulSoup | None:
     """Fetch a URL through the Cloudflare Worker proxy."""
     import gzip
@@ -1694,11 +1699,18 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
         if r.status_code == 503 and r.headers.get('X-Challenge-Detected'):
             log.warning(f'CF Worker: Cloudflare challenge page detected for {url} — site is blocking scraper requests')
             return None
+        # Read origin status BEFORE raise_for_status so we can distinguish
+        # "target is 404" from "CF Worker itself failed".
+        origin_status = r.headers.get('X-Origin-Status', str(r.status_code))
+        if r.status_code in (404, 410) or origin_status in ('404', '410'):
+            log.info(f'CF Worker: target returned {origin_status} for {url} — marking as dead, skipping fallbacks')
+            _cf_worker_404s.add(url)
+            return None
         r.raise_for_status()
-        origin_status = r.headers.get('X-Origin-Status', '?')
         raw = r.content
 
-        # Defensive decompression: if Worker still returns compressed bytes, decompress here
+        # Defensive decompression: CF Worker strips Content-Encoding but passes
+        # raw compressed bytes. Detect and decompress gzip, zlib, or brotli.
         if raw[:2] == b'\x1f\x8b':
             try:
                 raw = gzip.decompress(raw)
@@ -1711,6 +1723,21 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
                 log.info(f'CF Worker: zlib-decompressed response for {url}')
             except Exception:
                 pass
+        else:
+            # May be brotli — attempt decompression if content doesn't parse as valid text.
+            # Brotli streams don't have a standard magic number so we just try.
+            try:
+                raw_text_check = raw[:200].decode('utf-8', errors='strict')
+                # Starts with valid UTF-8 text — no decompression needed
+                if not raw_text_check.lstrip().startswith(('<', '{', '[')):
+                    raise ValueError('not typical HTML/JSON/XML start')
+            except (UnicodeDecodeError, ValueError):
+                try:
+                    import brotli as _brotli
+                    raw = _brotli.decompress(raw)
+                    log.info(f'CF Worker: brotli-decompressed response for {url}')
+                except Exception:
+                    pass
 
         size = len(raw)
         log.info(f'CF Worker OK for {url} (origin status: {origin_status}, size: {size} bytes)')
@@ -1813,12 +1840,22 @@ def _fetch_with_playwright(url: str) -> BeautifulSoup | None:
         soup = BeautifulSoup(html, 'lxml')
         anchors = soup.find_all('a', href=True)
         log.info(f'  [Playwright-stealth] Got {len(html)} bytes, {len(anchors)} anchors')
+        # Reject challenge/error pages: real job pages have many links
+        if len(anchors) < 5:
+            log.warning(f'  [Playwright-stealth] Too few anchors ({len(anchors)}) — likely a challenge page, rejecting')
+            return None
         return soup
     except Exception as exc:
         log.warning(f'  [Playwright-stealth] fetch failed for {url}: {exc}')
         return None
 
 def fetch(url: str, retries: int = 3) -> BeautifulSoup | None:
+    # If CF Worker previously confirmed this URL is 404/410 on the target,
+    # skip all fetch attempts — saves ~40s of retries per dead page.
+    if url in _cf_worker_404s:
+        log.debug(f'Skipping {url} — confirmed dead (404/410) by CF Worker')
+        return None
+
     # Try Cloudflare Worker first if configured
     if _CF_WORKER_URL:
         log.info(f'GET {url} via CF Worker')
@@ -1980,10 +2017,12 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
         if len(li_items) > len(items):
             items = li_items
 
-    # Fallback 2: broad anchor scan
+    # Fallback 2: broad anchor scan — only replace if we find MORE items
     if len(items) <= 3:
-        items = parse_listing_from_anchors(soup, page_type, source_base=source_base)
-        log.info(f'  Anchor fallback found {len(items)} raw rows')
+        anc_items = parse_listing_from_anchors(soup, page_type, source_base=source_base)
+        log.info(f'  Anchor fallback found {len(anc_items)} raw rows')
+        if len(anc_items) > len(items):
+            items = anc_items
 
     # Diagnostics: when all fallbacks returned nothing, log an HTML snippet so the
     # next reader can see what the page actually looks like (bot-protection page, empty
@@ -4353,6 +4392,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     detail_fetch_count = 0
 
     for kind, items in all_items.items():
+        kind_cap = MAX_PER_KIND.get(kind, 20)
         for item in items:
             if detail_fetch_count >= MAX_DETAIL_PER_RUN:
                 # Defer this item: remove from seen so next run picks it up
@@ -4370,6 +4410,10 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 log.info(f'  [wayback] Live fetch failed — trying archive.org snapshot {item["_wayback_ts"][:8]}')
                 detail_soup = fetch_from_wayback(item['detail_url'], item['_wayback_ts'])
             if not detail_soup:
+                # If CF Worker confirmed the page is 404/410, skip entirely — don't write stub MDX.
+                if item['detail_url'] in _cf_worker_404s:
+                    log.info(f'  Confirmed 404/410 — skipping MDX: {item["detail_url"]}')
+                    continue
                 log.warning(f'  Detail page unavailable — generating from listing data: {item["detail_url"]}')
 
             # ── New detail parser ──────────────────────────────
@@ -4402,6 +4446,9 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             # ── Write MDX file ────────────────────────────────────
             try:
                 if _detail_data_cache is not None:
+                    # Ensure page_type is set — sitemap items had no page_type in their dict
+                    if not _detail_data_cache.page_type:
+                        _detail_data_cache.page_type = kind
                     # Preferred path: use the DetailData object directly
                     mdx_path = generate_mdx(_detail_data_cache)
                 else:
