@@ -4472,25 +4472,23 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     accepted += 1
                 log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
-                # Stop paginating if 3 consecutive pages return 0 raw items (404/empty)
-                if len(raw) == 0:
-                    consecutive_empty += 1
-                    if consecutive_empty >= 3:
-                        log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
-                        break
-                else:
+                # Unified "no new content" counter: increments for both empty pages
+                # and all-seen pages.  Previously the two counters could cancel each
+                # other out (an empty page reset consecutive_all_seen and vice-versa),
+                # causing pagination to never stop even after 50+ useless pages.
+                if accepted > 0:
                     consecutive_empty = 0
-
-                # Stop paginating if 5 consecutive pages have items but all are already seen.
-                # Listing pages go newest→oldest; if 5 pages in a row yield nothing new, we've
-                # exhausted the new content window for this source/kind combination.
-                if len(raw) > 0 and accepted == 0:
+                    consecutive_all_seen = 0
+                else:
+                    if len(raw) == 0:
+                        consecutive_empty += 1
+                        if consecutive_empty >= 3:
+                            log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
+                            break
                     consecutive_all_seen += 1
                     if consecutive_all_seen >= 5:
-                        log.info(f'  [{src_name}] 5 consecutive all-seen pages — stopping {kind} pagination')
+                        log.info(f'  [{src_name}] 5 consecutive no-new pages — stopping {kind} pagination')
                         break
-                else:
-                    consecutive_all_seen = 0
 
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
