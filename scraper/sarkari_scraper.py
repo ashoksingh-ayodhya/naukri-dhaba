@@ -4441,7 +4441,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 },
             }
             # Deeper archives for result/admit — they have long history and we need many more
-            max_archive_pages = 100 if kind in ('result', 'admit') else 50
+            max_archive_pages = 60 if kind in ('result', 'admit') else 40
             archive_base = all_archive_bases.get(src_name, {}).get(kind, '')
 
             pages_to_fetch = [url]
@@ -4515,7 +4515,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                             break
                     consecutive_all_seen += 1
                     # Allow deeper dig for result/admit archives before giving up
-                    _all_seen_limit = 15 if kind in ('result', 'admit') else 5
+                    _all_seen_limit = 10 if kind in ('result', 'admit') else 5
                     if consecutive_all_seen >= _all_seen_limit:
                         log.info(f'  [{src_name}] {_all_seen_limit} consecutive no-new pages — stopping {kind} pagination')
                         break
@@ -4567,7 +4567,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # Per-category caps: guarantees jobs get slots even when admits outnumber them.
     # Listing phase now stops early (5-consecutive-all-seen), freeing ~30 min for
     # detail fetching.  At ~5s/page, 400 pages ≈ 33 min — within 55-min timeout.
-    MAX_PER_KIND = {'job': 400, 'result': 300, 'admit': 300, 'answer-key': 50, 'syllabus': 50}
+    MAX_PER_KIND = {'job': 250, 'result': 200, 'admit': 200, 'answer-key': 30, 'syllabus': 30}
     kind_fetch_count: dict[str, int] = {k: 0 for k in MAX_PER_KIND}
 
     for kind, items in all_items.items():
