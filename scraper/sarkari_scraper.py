@@ -4111,19 +4111,18 @@ def _classify_url(url: str) -> str | None:
     """Classify a URL as job/result/admit/answer-key/syllabus, or None to skip."""
     path = urlparse(url).path.lower().rstrip('/')
     parts = [p for p in path.split('/') if p]
-    if len(parts) < 2:
+    if not parts:
         return None
 
     # sarkariresult.com uses /latestjob/<slug>, /admitcard/<slug>, etc.
     # Map the known category prefix directly to a kind before the generic skip check.
     if parts[0] in _SARKARI_PREFIX_KIND and len(parts) >= 2:
         prefix_kind = _SARKARI_PREFIX_KIND[parts[0]]
-        # Verify the second segment looks like a post slug (has at least one hyphen or digit)
         slug = parts[1]
         if re.search(r'[-\d]', slug):
             return prefix_kind
 
-    # Skip pure category/navigation paths (no meaningful post slug follows)
+    # Skip pure category/navigation paths
     _GENERIC_SKIP = {
         'admission', 'board', 'contactus', 'about', 'privacy', 'sitemap',
         'search', 'videozone', 'top10', 'archive', 'tag', 'category', 'page',
@@ -4133,6 +4132,9 @@ def _classify_url(url: str) -> str | None:
         return None
 
     t = ' '.join(parts).replace('-', ' ')
+    # Must look like a real post slug — not a bare short word or pagination
+    if len(t) < 10 and not re.search(r'\d', t):
+        return None
     if re.search(r'\badmit\b|\bhall.?ticket\b|\be.?admit\b', t):      return 'admit'
     if re.search(r'\bsyllabus\b|\bexam.?pattern\b', t):               return 'syllabus'
     if re.search(r'\banswer.?key\b|\bans.?key\b', t):                 return 'answer-key'
@@ -4140,25 +4142,28 @@ def _classify_url(url: str) -> str | None:
     return 'job'
 
 
-def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> dict[str, list[dict]]:
+def _scrape_sitemap_generic(
+    sitemap_root: str,
+    source_name: str,
+    seen: set,
+    refresh_existing: bool = False,
+) -> dict[str, list[dict]]:
     """
-    Crawl sarkariresult.com's XML sitemap to discover all post URLs from 2023+.
-    Uses CF Worker proxy as fallback if the direct fetch is blocked by CloudFront.
-    Returns items dict to merge into all_items before detail-page scraping.
+    Generic XML sitemap crawler. Fetches sitemap_root, follows sub-sitemaps,
+    classifies URLs, and returns new items dict keyed by content kind.
+    Skips URLs with lastmod before MIN_POST_DATE.
     """
     new_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': [], 'answer-key': [], 'syllabus': []}
-    cutoff = MIN_POST_DATE  # "2023-01-01"
-    SITEMAP_ROOT = 'https://www.sarkariresult.com/sitemap.xml'
+    cutoff = MIN_POST_DATE
 
-    log.info(f'\n[sitemap] Crawling sarkariresult.com sitemap for posts >= {cutoff}')
-
-    xml = _fetch_raw(SITEMAP_ROOT)
+    log.info(f'\n[sitemap:{source_name}] Crawling {sitemap_root} for posts >= {cutoff}')
+    xml = _fetch_raw(sitemap_root)
     if not xml:
-        log.warning('[sitemap] Could not fetch root sitemap — skipping')
+        log.warning(f'[sitemap:{source_name}] Could not fetch root sitemap — skipping')
         return new_items
 
     root_entries = _parse_sitemap(xml)
-    log.info(f'[sitemap] Root: {len(root_entries)} entries')
+    log.info(f'[sitemap:{source_name}] Root: {len(root_entries)} entries')
 
     sub_sitemaps = [(u, lm) for u, lm in root_entries if u.endswith('.xml') or 'sitemap' in u.lower()]
     post_urls: list[tuple[str, str | None]] = [(u, lm) for u, lm in root_entries
@@ -4172,13 +4177,12 @@ def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> d
         if not sub_xml:
             continue
         sub_entries = _parse_sitemap(sub_xml)
-        log.info(f'[sitemap] Sub-sitemap {sub_url.rsplit("/", 1)[-1]}: {len(sub_entries)} entries')
+        log.info(f'[sitemap:{source_name}] Sub {sub_url.rsplit("/", 1)[-1]}: {len(sub_entries)} entries')
         for u, lm in sub_entries:
-            keep = (lm >= cutoff) if lm else True
-            if keep:
+            if (lm >= cutoff) if lm else True:
                 post_urls.append((u, lm))
 
-    log.info(f'[sitemap] Total candidate URLs: {len(post_urls)}')
+    log.info(f'[sitemap:{source_name}] Total candidate URLs: {len(post_urls)}')
 
     added = skipped_seen = skipped_kind = 0
     for url, lm in post_urls:
@@ -4198,16 +4202,20 @@ def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> d
             'dept':       '',
             'date_str':   lm or '',
             'detail_url': url,
-            'source':     'sarkariresult',
-            '_seen_id':   url_id,  # URL-based hash — needed for correct cap-discard
+            'source':     source_name,
+            '_seen_id':   url_id,
         })
         added += 1
 
-    log.info(f'[sitemap] {added} new items  ({skipped_seen} already seen, {skipped_kind} non-post skipped)')
+    log.info(f'[sitemap:{source_name}] {added} new  ({skipped_seen} seen, {skipped_kind} non-post skipped)')
     for k, lst in new_items.items():
         if lst:
             log.info(f'  {k}: {len(lst)}')
     return new_items
+
+
+def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> dict[str, list[dict]]:
+    return _scrape_sitemap_generic('https://www.sarkariresult.com/sitemap.xml', 'sarkariresult', seen, refresh_existing)
 
 
 # ══════════════════════════════════════════════════════════
@@ -4382,15 +4390,22 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         log.error('All source listings failed — no data fetched this run.')
         return 0  # exit 0 so GitHub Actions step stays green; commit step skips (0 MDX files)
 
-    # ── Sitemap-based historical backfill (sarkariresult.com via CF Worker) ──
-    sitemap_new = scrape_sarkariresult_sitemap(seen, refresh_existing=refresh_existing)
+    # ── Sitemap-based historical backfill (all major sources via CF Worker) ──
+    _SITEMAP_SOURCES = [
+        ('https://www.sarkariresult.com/sitemap.xml',  'sarkariresult'),
+        ('https://www.freejobalert.com/sitemap.xml',   'freejobalert'),
+        ('https://www.sarkariexam.com/sitemap.xml',    'sarkariexam'),
+        ('https://www.rojgarresult.com/sitemap.xml',   'rojgarresult'),
+    ]
+    for _sm_url, _sm_src in _SITEMAP_SOURCES:
+        sitemap_new = _scrape_sitemap_generic(_sm_url, _sm_src, seen, refresh_existing=refresh_existing)
+        for kind, items in sitemap_new.items():
+            for item in items:
+                all_items[kind].append(item)
+                source_counts.setdefault(_sm_src, {'job': 0, 'result': 0, 'admit': 0, 'answer-key': 0, 'syllabus': 0})
+                source_counts[_sm_src][kind] = source_counts[_sm_src].get(kind, 0) + 1
     # Save seen so sitemap URL IDs persist even if detail fetching times out.
     save_seen(seen)
-    for kind, items in sitemap_new.items():
-        for item in items:
-            all_items[kind].append(item)
-            source_counts.setdefault('sarkariresult', {'job': 0, 'result': 0, 'admit': 0, 'answer-key': 0, 'syllabus': 0})
-            source_counts['sarkariresult'][kind] = source_counts['sarkariresult'].get(kind, 0) + 1
 
     # Per-source summary table
     log.info('\n' + '─' * 60)
