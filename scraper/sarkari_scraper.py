@@ -4012,11 +4012,16 @@ def ping_indexnow(new_urls: list) -> None:
 import xml.etree.ElementTree as ET
 _SITEMAP_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 
+# Path segments that mark pure navigation / category pages and should never
+# appear in a real post URL.  sarkariresult.com uses /latestjob/<slug>,
+# /result/<slug>, /admitcard/<slug> etc. as detail URLs, so those prefixes
+# must NOT be listed here — they're handled by _SARKARI_PREFIX_KIND above and
+# by the listing parser which already receives the direct href from the page.
 _SKIP_PATHS = {
-    'latestjob', 'result', 'admitcard', 'syllabus', 'answerkey', 'answer-key',
     'admission', 'board', 'contactus', 'about', 'privacy', 'sitemap',
     'search', 'videozone', 'top10', 'archive', 'tag', 'category', 'page',
     'author', 'feed', 'wp-content', 'wp-includes', 'wp-admin',
+    'top-online-form', 'latest-jobs', 'sarkari-result',
 }
 
 
@@ -4090,12 +4095,43 @@ def _parse_sitemap(xml_text: str) -> list[tuple[str, str | None]]:
     return results
 
 
+# Category prefix → kind mapping for sarkariresult.com.
+# These prefixes appear as the first path component of BOTH listing pages
+# (/latestjob.php) AND detail pages (/latestjob/post-slug/).  We must not
+# skip detail pages just because their prefix is a known category word.
+_SARKARI_PREFIX_KIND = {
+    'latestjob':  'job',
+    'admitcard':  'admit',
+    'syllabus':   'syllabus',
+    'answer-key': 'answer-key',
+    'answerkey':  'answer-key',
+}
+
 def _classify_url(url: str) -> str | None:
-    """Classify a sarkariresult.com URL as job/result/admit/answer-key/syllabus, or None to skip."""
+    """Classify a URL as job/result/admit/answer-key/syllabus, or None to skip."""
     path = urlparse(url).path.lower().rstrip('/')
     parts = [p for p in path.split('/') if p]
-    if len(parts) < 2 or parts[0] in _SKIP_PATHS:
+    if len(parts) < 2:
         return None
+
+    # sarkariresult.com uses /latestjob/<slug>, /admitcard/<slug>, etc.
+    # Map the known category prefix directly to a kind before the generic skip check.
+    if parts[0] in _SARKARI_PREFIX_KIND and len(parts) >= 2:
+        prefix_kind = _SARKARI_PREFIX_KIND[parts[0]]
+        # Verify the second segment looks like a post slug (has at least one hyphen or digit)
+        slug = parts[1]
+        if re.search(r'[-\d]', slug):
+            return prefix_kind
+
+    # Skip pure category/navigation paths (no meaningful post slug follows)
+    _GENERIC_SKIP = {
+        'admission', 'board', 'contactus', 'about', 'privacy', 'sitemap',
+        'search', 'videozone', 'top10', 'archive', 'tag', 'category', 'page',
+        'author', 'feed', 'wp-content', 'wp-includes', 'wp-admin',
+    }
+    if parts[0] in _GENERIC_SKIP:
+        return None
+
     t = ' '.join(parts).replace('-', ' ')
     if re.search(r'\badmit\b|\bhall.?ticket\b|\be.?admit\b', t):      return 'admit'
     if re.search(r'\bsyllabus\b|\bexam.?pattern\b', t):               return 'syllabus'
@@ -4271,6 +4307,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 pages_to_fetch += [f'{archive_base}{p}/' for p in range(2, max_archive_pages + 1)]
 
             consecutive_empty = 0
+            consecutive_all_seen = 0
             for page_url in pages_to_fetch:
                 log.info(f'\nFetching {kind.upper()} listing: {page_url}')
                 soup = fetch(page_url)
@@ -4329,6 +4366,17 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                         break
                 else:
                     consecutive_empty = 0
+
+                # Stop paginating if 5 consecutive pages have items but all are already seen.
+                # Listing pages go newest→oldest; if 5 pages in a row yield nothing new, we've
+                # exhausted the new content window for this source/kind combination.
+                if len(raw) > 0 and accepted == 0:
+                    consecutive_all_seen += 1
+                    if consecutive_all_seen >= 5:
+                        log.info(f'  [{src_name}] 5 consecutive all-seen pages — stopping {kind} pagination')
+                        break
+                else:
+                    consecutive_all_seen = 0
 
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
