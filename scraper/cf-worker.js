@@ -95,16 +95,22 @@ export default {
 
       const body = await resp.arrayBuffer();
       const ct = resp.headers.get("Content-Type") || "text/html; charset=utf-8";
+      // Forward Content-Encoding so the Python client can auto-decompress.
+      // Without this, the client sees raw gzip bytes with no hint to decompress.
+      const ce = resp.headers.get("Content-Encoding") || "";
+
+      const outHeaders = {
+        "Content-Type": ct,
+        "X-Proxied-Status": String(resp.status),
+        "X-Proxied-Host": targetUrl.hostname,
+        "X-Origin-Status": String(resp.status),
+        "Access-Control-Allow-Origin": "*",
+      };
+      if (ce) outHeaders["Content-Encoding"] = ce;
 
       return new Response(body, {
         status: resp.status,
-        headers: {
-          "Content-Type": ct,
-          "X-Proxied-Status": String(resp.status),
-          "X-Proxied-Host": targetUrl.hostname,
-          // Allow the scraper to read this response
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: outHeaders,
       });
     } catch (err) {
       return new Response(`Proxy fetch error: ${err.message}`, { status: 502 });
