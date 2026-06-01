@@ -4048,64 +4048,102 @@ import gzip as _gzip
 
 def _fetch_raw(url: str) -> str | None:
     """Fetch URL as raw text (for XML sitemaps). Tries CF Worker proxy then direct."""
-    raw_bytes: bytes | None = None
+    import zlib as _zlib
 
+    def _decompress_bytes(data: bytes, ce: str, label: str) -> bytes:
+        """Decompress bytes per Content-Encoding ce; falls back to magic-byte sniff."""
+        # 1. gzip
+        if 'gzip' in ce or data[:2] == b'\x1f\x8b':
+            try:
+                out = _gzip.decompress(data)
+                log.info(f'[sitemap] {label}: gzip decompressed → {len(out)}b')
+                return out
+            except Exception as e:
+                log.warning(f'[sitemap] {label}: gzip decompress failed: {e}')
+        # 2. deflate (zlib)
+        if 'deflate' in ce or data[:2] in (b'\x78\x9c', b'\x78\x01', b'\x78\xda'):
+            try:
+                return _zlib.decompress(data)
+            except Exception:
+                try:
+                    return _zlib.decompress(data, -15)
+                except Exception as e:
+                    log.warning(f'[sitemap] {label}: deflate decompress failed: {e}')
+        # 3. brotli (header-declared or sniffed when bytes don't look like XML)
+        if 'br' in ce or (data[:1] and data.lstrip()[:1] != b'<'):
+            try:
+                import brotli as _br
+                out = _br.decompress(data)
+                log.info(f'[sitemap] {label}: brotli decompressed → {len(out)}b')
+                return out
+            except Exception as e:
+                if 'br' in ce:
+                    log.warning(f'[sitemap] {label}: brotli decompress failed: {e}')
+        return data
+
+    def _raw_get(target: str, extra_hdrs: dict | None = None) -> tuple[bytes, str, int]:
+        """GET a URL with stream+decode_content=False; returns (bytes, ce_header, status)."""
+        hdrs = {
+            # Exclude brotli: Cloudflare may serve brotli that the Python brotli
+            # library cannot decompress for certain window-size values.
+            'Accept-Encoding': 'gzip, deflate',
+        }
+        if extra_hdrs:
+            hdrs.update(extra_hdrs)
+        r = _session.get(target, headers=hdrs, timeout=30, proxies=_NO_PROXY,
+                         verify=False, stream=True)
+        r.raw.decode_content = False
+        raw = r.raw.read()
+        ce = r.headers.get('Content-Encoding', '').lower()
+        return raw, ce, r.status_code
+
+    def _decode_and_validate(data: bytes, label: str) -> str | None:
+        """Decode bytes to text; return None if the result doesn't look like XML."""
+        if data[:3] == b'\xef\xbb\xbf':
+            data = data[3:]
+        log.info(f'[sitemap] {label} preview: {data[:100]!r}')
+        if not data.lstrip()[:1] == b'<':
+            log.warning(f'[sitemap] {label}: data does not look like XML after decompression — skipping')
+            return None
+        try:
+            return data.decode('utf-8')
+        except Exception:
+            return data.decode('latin-1', errors='replace')
+
+    # ── Try 1: CF Worker proxy ────────────────────────────────────────────────
     if _CF_WORKER_URL:
         try:
             proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
-            # Use identity encoding so CF Worker / Cloudflare edge does not
-            # re-compress the XML bytes; magic-byte decompression below handles
-            # any gzip that still slips through.
-            hdrs = {'Accept-Encoding': 'identity'}
+            extra = {}
             if _CF_WORKER_SECRET:
-                hdrs['X-Proxy-Secret'] = _CF_WORKER_SECRET
-            r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY, verify=False)
-            log.info(f'[sitemap] CF Worker → {url[:80]}: status={r.status_code} size={len(r.content)}b ct={r.headers.get("Content-Type","?")}')
-            if r.status_code == 200 and len(r.content) > 0:
-                raw_bytes = r.content
+                extra['X-Proxy-Secret'] = _CF_WORKER_SECRET
+            raw_bytes, ce, status = _raw_get(proxy, extra)
+            log.info(
+                f'[sitemap] CF Worker → {url[:80]}: status={status} '
+                f'size={len(raw_bytes)}b ce={ce or "none"}'
+            )
+            if status == 200 and raw_bytes:
+                data = _decompress_bytes(raw_bytes, ce, 'CF Worker')
+                result = _decode_and_validate(data, 'CF Worker')
+                if result is not None:
+                    return result
         except Exception as e:
             log.warning(f'[sitemap] CF Worker fetch error: {e}')
 
-    if raw_bytes is None:
-        try:
-            r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False)
-            if r.status_code == 200 and len(r.content) > 0:
-                raw_bytes = r.content
-        except Exception:
-            pass
-
-    if not raw_bytes:
-        log.warning(f'[sitemap] Empty or failed response for {url}')
-        return None
-
-    # Decompress if CF Worker passed through compressed bytes (strips Content-Encoding)
-    if raw_bytes[:2] == b'\x1f\x8b':
-        try:
-            raw_bytes = _gzip.decompress(raw_bytes)
-            log.info(f'[sitemap] gzip decompressed → {len(raw_bytes)}b')
-        except Exception as e:
-            log.warning(f'[sitemap] gzip decompress failed: {e}')
-    else:
-        try:
-            raw_bytes[:200].decode('utf-8', errors='strict')
-        except UnicodeDecodeError:
-            try:
-                import brotli as _br
-                raw_bytes = _br.decompress(raw_bytes)
-                log.info(f'[sitemap] brotli decompressed → {len(raw_bytes)}b')
-            except Exception:
-                pass
-
-    # Strip BOM
-    if raw_bytes[:3] == b'\xef\xbb\xbf':
-        raw_bytes = raw_bytes[3:]
-
-    log.info(f'[sitemap] Content preview: {raw_bytes[:120]!r}')
-
+    # ── Try 2: direct fetch (sitemaps are public for search-engine crawlers) ──
     try:
-        return raw_bytes.decode('utf-8')
-    except Exception:
-        return raw_bytes.decode('latin-1', errors='replace')
+        raw_bytes, ce, status = _raw_get(url)
+        log.info(f'[sitemap] Direct → {url[:80]}: status={status} size={len(raw_bytes)}b ce={ce or "none"}')
+        if status == 200 and raw_bytes:
+            data = _decompress_bytes(raw_bytes, ce, 'Direct')
+            result = _decode_and_validate(data, 'Direct')
+            if result is not None:
+                return result
+    except Exception as e:
+        log.warning(f'[sitemap] Direct fetch error: {e}')
+
+    log.warning(f'[sitemap] All fetch attempts failed for {url}')
+    return None
 
 
 def _parse_sitemap(xml_text: str) -> list[tuple[str, str | None]]:
@@ -4175,6 +4213,22 @@ def _classify_url(url: str) -> str | None:
     return 'job'
 
 
+def _discover_sitemap_url(base_url: str) -> str | None:
+    """Try robots.txt to discover the real sitemap URL for a site."""
+    try:
+        robots_url = base_url.rstrip('/') + '/robots.txt'
+        xml = _fetch_raw(robots_url)
+        if xml:
+            for line in xml.splitlines():
+                if line.lower().startswith('sitemap:'):
+                    url = line.split(':', 1)[1].strip()
+                    if url.startswith('http'):
+                        return url
+    except Exception:
+        pass
+    return None
+
+
 def _scrape_sitemap_generic(
     sitemap_root: str,
     source_name: str,
@@ -4191,9 +4245,33 @@ def _scrape_sitemap_generic(
 
     log.info(f'\n[sitemap:{source_name}] Crawling {sitemap_root} for posts >= {cutoff}')
     xml = _fetch_raw(sitemap_root)
-    if not xml:
-        log.warning(f'[sitemap:{source_name}] Could not fetch root sitemap — skipping')
-        return new_items
+
+    # If root sitemap fails, try alternative URL patterns and robots.txt discovery
+    if not xml or not _parse_sitemap(xml):
+        base = '/'.join(sitemap_root.split('/')[:3])  # https://www.example.com
+        alt_urls = [
+            f'{base}/wp-sitemap.xml',
+            f'{base}/sitemap_index.xml',
+            f'{base}/post-sitemap.xml',
+        ]
+        # Also try robots.txt discovery
+        discovered = _discover_sitemap_url(base)
+        if discovered and discovered != sitemap_root:
+            alt_urls.insert(0, discovered)
+
+        for alt_url in alt_urls:
+            if alt_url == sitemap_root:
+                continue
+            log.info(f'[sitemap:{source_name}] Root failed — trying {alt_url}')
+            alt_xml = _fetch_raw(alt_url)
+            if alt_xml and _parse_sitemap(alt_xml):
+                log.info(f'[sitemap:{source_name}] Found working sitemap at {alt_url}')
+                xml = alt_xml
+                break
+        else:
+            if not xml:
+                log.warning(f'[sitemap:{source_name}] Could not fetch root sitemap — skipping')
+                return new_items
 
     root_entries = _parse_sitemap(xml)
     log.info(f'[sitemap:{source_name}] Root: {len(root_entries)} entries')
@@ -4399,25 +4477,23 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     accepted += 1
                 log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
-                # Stop paginating if 3 consecutive pages return 0 raw items (404/empty)
-                if len(raw) == 0:
-                    consecutive_empty += 1
-                    if consecutive_empty >= 3:
-                        log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
-                        break
-                else:
+                # Unified "no new content" counter: increments for both empty pages
+                # and all-seen pages.  Previously the two counters could cancel each
+                # other out (an empty page reset consecutive_all_seen and vice-versa),
+                # causing pagination to never stop even after 50+ useless pages.
+                if accepted > 0:
                     consecutive_empty = 0
-
-                # Stop paginating if 5 consecutive pages have items but all are already seen.
-                # Listing pages go newest→oldest; if 5 pages in a row yield nothing new, we've
-                # exhausted the new content window for this source/kind combination.
-                if len(raw) > 0 and accepted == 0:
+                    consecutive_all_seen = 0
+                else:
+                    if len(raw) == 0:
+                        consecutive_empty += 1
+                        if consecutive_empty >= 3:
+                            log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
+                            break
                     consecutive_all_seen += 1
                     if consecutive_all_seen >= 5:
-                        log.info(f'  [{src_name}] 5 consecutive all-seen pages — stopping {kind} pagination')
+                        log.info(f'  [{src_name}] 5 consecutive no-new pages — stopping {kind} pagination')
                         break
-                else:
-                    consecutive_all_seen = 0
 
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
@@ -4464,9 +4540,9 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     primary_sources = {s['name'] for s in SOURCES if s.get('primary', False)}
 
     # Per-category caps: guarantees jobs get slots even when admits outnumber them.
-    # Total budget ~200 detail pages per run to stay within the 55-min timeout.
-    # Items beyond cap have IDs removed from seen so next run re-discovers them.
-    MAX_PER_KIND = {'job': 100, 'result': 50, 'admit': 50, 'answer-key': 10, 'syllabus': 10}
+    # Listing phase now stops early (5-consecutive-all-seen), freeing ~30 min for
+    # detail fetching.  At ~5s/page, 400 pages ≈ 33 min — within 55-min timeout.
+    MAX_PER_KIND = {'job': 200, 'result': 100, 'admit': 100, 'answer-key': 20, 'syllabus': 20}
     kind_fetch_count: dict[str, int] = {k: 0 for k in MAX_PER_KIND}
 
     for kind, items in all_items.items():
