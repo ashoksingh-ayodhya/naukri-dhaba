@@ -180,6 +180,20 @@ def generate_mdx(detail: "DetailData") -> Path | None:
     if not is_within_date_range(detail.post_date):
         return None
 
+    # Infer page_type from slug when empty — catches scraper pipeline failures
+    if not detail.page_type:
+        s = detail.slug.lower()
+        if re.search(r'syllabus|exam[\-_]pattern', s):
+            detail.page_type = 'syllabus'
+        elif re.search(r'answer[\-_]key|ans[\-_]key', s):
+            detail.page_type = 'answer-key'
+        elif re.search(r'admit[\-_]card|admit|hall[\-_]ticket|e[\-_]admit', s):
+            detail.page_type = 'admit'
+        elif re.search(r'result|merit[\-_]list|cutoff|final[\-_]list', s):
+            detail.page_type = 'result'
+        else:
+            detail.page_type = 'job'
+
     # Determine content type directory
     type_dir = TYPE_DIR_MAP.get(detail.page_type, "jobs")
 
