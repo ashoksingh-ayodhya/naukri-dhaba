@@ -4097,6 +4097,19 @@ def _fetch_raw(url: str) -> str | None:
         ce = r.headers.get('Content-Encoding', '').lower()
         return raw, ce, r.status_code
 
+    def _decode_and_validate(data: bytes, label: str) -> str | None:
+        """Decode bytes to text; return None if the result doesn't look like XML."""
+        if data[:3] == b'\xef\xbb\xbf':
+            data = data[3:]
+        log.info(f'[sitemap] {label} preview: {data[:100]!r}')
+        if not data.lstrip()[:1] == b'<':
+            log.warning(f'[sitemap] {label}: data does not look like XML after decompression — skipping')
+            return None
+        try:
+            return data.decode('utf-8')
+        except Exception:
+            return data.decode('latin-1', errors='replace')
+
     # ── Try 1: CF Worker proxy ────────────────────────────────────────────────
     if _CF_WORKER_URL:
         try:
@@ -4111,13 +4124,9 @@ def _fetch_raw(url: str) -> str | None:
             )
             if status == 200 and raw_bytes:
                 data = _decompress_bytes(raw_bytes, ce, 'CF Worker')
-                if data[:3] == b'\xef\xbb\xbf':
-                    data = data[3:]
-                log.info(f'[sitemap] CF Worker preview: {data[:100]!r}')
-                try:
-                    return data.decode('utf-8')
-                except Exception:
-                    return data.decode('latin-1', errors='replace')
+                result = _decode_and_validate(data, 'CF Worker')
+                if result is not None:
+                    return result
         except Exception as e:
             log.warning(f'[sitemap] CF Worker fetch error: {e}')
 
@@ -4127,13 +4136,9 @@ def _fetch_raw(url: str) -> str | None:
         log.info(f'[sitemap] Direct → {url[:80]}: status={status} size={len(raw_bytes)}b ce={ce or "none"}')
         if status == 200 and raw_bytes:
             data = _decompress_bytes(raw_bytes, ce, 'Direct')
-            if data[:3] == b'\xef\xbb\xbf':
-                data = data[3:]
-            log.info(f'[sitemap] Direct preview: {data[:100]!r}')
-            try:
-                return data.decode('utf-8')
-            except Exception:
-                return data.decode('latin-1', errors='replace')
+            result = _decode_and_validate(data, 'Direct')
+            if result is not None:
+                return result
     except Exception as e:
         log.warning(f'[sitemap] Direct fetch error: {e}')
 
