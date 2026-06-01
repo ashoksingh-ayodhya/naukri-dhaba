@@ -4440,7 +4440,8 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     'syllabus':   'https://www.sarkariexam.com/category/syllabus/page/',
                 },
             }
-            max_archive_pages = 50
+            # Deeper archives for result/admit — they have long history and we need many more
+            max_archive_pages = 100 if kind in ('result', 'admit') else 50
             archive_base = all_archive_bases.get(src_name, {}).get(kind, '')
 
             pages_to_fetch = [url]
@@ -4483,7 +4484,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     if any(p in _SKIP_PATHS for p in detail_path_parts):
                         log.debug(f'  [skip] nav/category URL: {item.get("detail_url", "")}')
                         continue
-                    _cutoff_year = int(MIN_POST_DATE[:4])  # respect MIN_POST_DATE (2023)
+                    _cutoff_year = int(MIN_POST_DATE[:4])  # respect MIN_POST_DATE
                     iso = to_iso_date(item.get('date_str', ''))
                     if iso and int(iso[:4]) < _cutoff_year:
                         log.debug(f'  [skip] pre-{_cutoff_year} item: {item["title"][:50]} ({iso})')
@@ -4513,8 +4514,10 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                             log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
                             break
                     consecutive_all_seen += 1
-                    if consecutive_all_seen >= 5:
-                        log.info(f'  [{src_name}] 5 consecutive no-new pages — stopping {kind} pagination')
+                    # Allow deeper dig for result/admit archives before giving up
+                    _all_seen_limit = 15 if kind in ('result', 'admit') else 5
+                    if consecutive_all_seen >= _all_seen_limit:
+                        log.info(f'  [{src_name}] {_all_seen_limit} consecutive no-new pages — stopping {kind} pagination')
                         break
 
     if successful_listings == 0:

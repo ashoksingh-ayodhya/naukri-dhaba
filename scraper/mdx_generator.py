@@ -29,7 +29,7 @@ TYPE_DIR_MAP = {
 }
 
 # Only scrape posts from this date onwards (YYYY-MM-DD)
-MIN_POST_DATE = "2023-01-01"
+MIN_POST_DATE = "2022-01-01"
 
 # ── Category mapping ──────────────────────────────────────────────────────────
 
