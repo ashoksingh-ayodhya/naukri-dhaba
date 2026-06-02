@@ -2,7 +2,7 @@ export const dynamicParams = false;
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPost, getAllPostMeta } from "@/lib/content";
+import { getPost, getAllPostMeta, getAllPosts } from "@/lib/content";
 import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { siteConfig, CATEGORIES } from "@/config/site";
 import MarkdownContent from "@/components/ui/MarkdownContent";
@@ -63,6 +63,7 @@ export default async function JobDetailPage({ params }: Props) {
   const { frontmatter: fm, content } = post;
   const cat = CATEGORIES.find((c) => c.slug === category);
   const pageUrl = `${siteConfig.url}/jobs/${category}/${slug}/`;
+  const relatedPosts = getAllPosts("job", category).filter((p) => p.slug !== slug).slice(0, 5);
 
   const breadcrumbs = [
     { label: "Home", href: "/" },
@@ -192,6 +193,35 @@ export default async function JobDetailPage({ params }: Props) {
                 )}
               </dl>
             </div>
+
+            {relatedPosts.length > 0 && (
+              <div className="card p-4">
+                <h3 className="font-heading font-semibold text-slate-900 mb-3 text-sm">
+                  More {cat?.label || category} Jobs
+                </h3>
+                <ul className="space-y-2">
+                  {relatedPosts.map((p) => (
+                    <li key={p.slug}>
+                      <a
+                        href={p.href}
+                        className="text-xs text-primary-700 hover:underline leading-snug line-clamp-2 block"
+                      >
+                        {p.title}
+                      </a>
+                      {p.lastDate && (
+                        <span className="text-[11px] text-slate-400">Last: {p.lastDate}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={`/jobs/${category}/`}
+                  className="text-xs text-primary-700 font-medium hover:underline mt-3 block"
+                >
+                  View all {cat?.label} jobs →
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

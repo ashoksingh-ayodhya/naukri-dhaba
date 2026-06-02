@@ -4,6 +4,8 @@ import type { MetadataRoute } from "next";
 import { siteConfig, CATEGORIES, STATES } from "@/config/site";
 import { getAllPosts } from "@/lib/content";
 
+const QUALIFICATION_LEVELS = ["10th-pass", "12th-pass", "diploma", "graduate", "engineering", "postgraduate"];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url;
 
@@ -38,6 +40,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${base}/state/${state.slug}/`,
       changeFrequency: "daily" as const,
       priority: 0.7,
+    })),
+    ...QUALIFICATION_LEVELS.map((level) => ({
+      url: `${base}/jobs/qualification/${level}/`,
+      changeFrequency: "daily" as const,
+      priority: 0.8,
     })),
   ];
 
