@@ -4571,7 +4571,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
     # Per-category caps: guarantees jobs get slots even when admits outnumber them.
     # Listing phase now stops early (5-consecutive-all-seen), freeing ~30 min for
     # detail fetching.  At ~5s/page, 400 pages ≈ 33 min — within 55-min timeout.
-    MAX_PER_KIND = {'job': 250, 'result': 200, 'admit': 200, 'answer-key': 30, 'syllabus': 30}
+    MAX_PER_KIND = {'job': 400, 'result': 350, 'admit': 350, 'answer-key': 60, 'syllabus': 60}
     kind_fetch_count: dict[str, int] = {k: 0 for k in MAX_PER_KIND}
 
     for kind, items in all_items.items():
@@ -4621,12 +4621,16 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             # Re-validate kind after detail parse (title may have changed)
             if not kind_matches_title(rich.get('title', ''), kind):
                 log.info(f'  [skip] Title no longer matches kind={kind} after detail parse: {rich["title"][:60]}')
+                if item.get('_seen_id'):
+                    seen.add(item['_seen_id'])  # Don't retry kind-mismatch items
                 continue
 
             # ── Date filter: skip posts before 2022 ───────────────
             post_date = rich.get('post_date', '') or rich.get('date_str', '')
             if not is_within_date_range(post_date):
                 log.info(f'  [skip] Post date {post_date!r} is before {MIN_POST_DATE} — skipping')
+                if item.get('_seen_id'):
+                    seen.add(item['_seen_id'])  # Don't retry pre-date-cutoff items
                 continue
 
             # ── Write MDX file ────────────────────────────────────
