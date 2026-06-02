@@ -20,7 +20,10 @@ export default function AdmitCardsPage() {
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Admit Cards" }]} />
       <div className="mt-4 mb-6">
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Admit Card {YEAR}</h1>
-        <p className="text-slate-500 text-sm">{posts.length} admit cards available</p>
+        <h2 className="text-base font-semibold text-slate-700 mt-1 mb-1">
+          Download Latest Government Exam Admit Cards &amp; Hall Tickets {YEAR}
+        </h2>
+        <p className="text-slate-500 text-sm">{posts.length} admit cards available — direct download links</p>
       </div>
       <FilterBar baseHref="/admit-cards/" activeCategory={undefined} />
       <JobsTable posts={posts} title="All Admit Cards" showHeader={false} />
