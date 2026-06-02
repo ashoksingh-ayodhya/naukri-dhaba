@@ -54,6 +54,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@naukridhaba",
+    creator: "@naukridhaba",
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
     images: [{ url: siteConfig.ogImage, alt: `${siteConfig.name} — Sarkari Naukri Portal` }],
@@ -68,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS Feed`} href="/feed.xml" />
 
         {/* Google Tag Manager — dataLayer init + GTM script */}
         <Script id="gtm-init" strategy="beforeInteractive">{`

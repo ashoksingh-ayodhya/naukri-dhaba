@@ -209,3 +209,33 @@ export function isExpired(lastDate: string | undefined): boolean {
   if (!deadline) return false;
   return deadline < new Date();
 }
+
+export type QualificationLevel =
+  | "10th-pass"
+  | "12th-pass"
+  | "diploma"
+  | "graduate"
+  | "engineering"
+  | "postgraduate";
+
+export function qualificationLevel(qual: string | undefined): QualificationLevel | null {
+  if (!qual) return null;
+  const q = qual.toLowerCase();
+  if (/10th|matriculation|sslc|class 10|matric/.test(q)) return "10th-pass";
+  if (/12th|intermediate|hsc|class 12|higher secondary/.test(q)) return "12th-pass";
+  if (/diploma|iti |iti$|polytechnic|ncvt|scvt/.test(q)) return "diploma";
+  if (/b\.e\b|b\.tech|be\/|btech|engineering degree/.test(q)) return "engineering";
+  if (/post.?graduate|m\.sc|m\.a\b|m\.tech|mba|master degree|phd|m\.ed|m\.com/.test(q)) return "postgraduate";
+  if (/graduate|degree|b\.sc|b\.a\b|b\.com|bsc|bca|bachelor|any degree|any stream/.test(q)) return "graduate";
+  return null;
+}
+
+export function getPostsByQualification(level: QualificationLevel): ListingPost[] {
+  const all = getAllPosts("job");
+  return all.filter((p) => {
+    const filePath = path.join(CONTENT_ROOT, "jobs", p.category, `${p.slug}.mdx`);
+    if (!fs.existsSync(filePath)) return false;
+    const { frontmatter: fm } = readMdx(filePath);
+    return qualificationLevel(fm.qualification) === level;
+  });
+}
