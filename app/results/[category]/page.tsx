@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts } from "@/lib/content";
 import { buildMetadata, buildListingPageJsonLd } from "@/lib/seo";
 import { CATEGORIES, siteConfig } from "@/config/site";
+import { CATEGORY_DESCRIPTIONS } from "@/lib/category-descriptions";
 import JobsTable from "@/components/listings/JobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -45,8 +46,18 @@ export default async function ResultCategoryPage({ params }: Props) {
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Results", href: "/results/" }, { label: cat.label }]} />
       <div className="mt-4 mb-6">
         <h1 className="font-heading text-2xl font-bold text-slate-900">{cat.fullName} Result {YEAR}</h1>
+        <h2 className="text-base font-semibold text-slate-700 mt-1 mb-1">
+          {cat.fullName} Exam Results {YEAR} — Merit List, Cut-off &amp; Scorecard
+        </h2>
         <p className="text-slate-500 text-sm">{posts.length} results found</p>
       </div>
+      {CATEGORY_DESCRIPTIONS[category] && (
+        <div className="mb-4">
+          <p className="text-slate-600 text-sm leading-relaxed">
+            {CATEGORY_DESCRIPTIONS[category].description}
+          </p>
+        </div>
+      )}
       <FilterBar baseHref="/results/" activeCategory={category} />
       <JobsTable posts={posts} title={`${cat.label} Results`} showHeader={false} />
     </div>
