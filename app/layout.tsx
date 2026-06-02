@@ -54,9 +54,15 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@naukridhaba",
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
     images: [{ url: siteConfig.ogImage, alt: `${siteConfig.name} — Sarkari Naukri Portal` }],
+  },
+  alternates: {
+    types: {
+      "application/rss+xml": `${siteConfig.url}/feed.xml`,
+    },
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   other: { "theme-color": "#1e3a8a" },

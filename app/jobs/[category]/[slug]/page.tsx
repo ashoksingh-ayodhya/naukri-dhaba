@@ -3,7 +3,7 @@ export const dynamicParams = false;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPost, getAllPostMeta } from "@/lib/content";
-import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { siteConfig, CATEGORIES } from "@/config/site";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -75,6 +75,9 @@ export default async function JobDetailPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJobJsonLd(fm, pageUrl)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(breadcrumbs)) }} />
+      {fm.howToApply && fm.howToApply.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildHowToJsonLd(fm.title, fm.howToApply, pageUrl)) }} />
+      )}
       {(() => {
         const faqs: Array<{question: string; answer: string}> = [];
         const faqRe = /\*\*Q:\*\*\s*(.+?)\s*\n\s*\*\*A:\*\*\s*([\s\S]+?)(?=\n\s*\*\*Q:|$)/g;

@@ -34,6 +34,7 @@ export function buildMetadata({
     },
     twitter: {
       card: "summary_large_image",
+      site: "@naukridhaba",
       title: `${title} | ${siteConfig.name}`,
       description,
       images: [{ url: ogImage, alt: `${title} | ${siteConfig.name}` }],
@@ -47,8 +48,8 @@ export function buildMetadata({
 function toIsoDate(raw: string | undefined): string | undefined {
   if (!raw) return undefined;
   if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
-  // Extract DD/MM/YYYY from string — handles "13/02/2026 (Extended)" etc.
-  const m = raw.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  // Extract DD/MM/YYYY or DD-MM-YYYY from string — handles "13/02/2026 (Extended)" etc.
+  const m = raw.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
   if (m) return `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
   return undefined;
 }
@@ -379,6 +380,26 @@ export function buildFaqJsonLd(
       "@type": "Question",
       name: faq.question,
       acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  };
+}
+
+export function buildHowToJsonLd(
+  title: string,
+  steps: string[],
+  url: string
+): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `How to Apply for ${title}`,
+    description: `Step-by-step guide to apply for ${title} government job.`,
+    url,
+    step: steps.map((text, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: text.length > 60 ? text.slice(0, 57) + "…" : text,
+      text,
     })),
   };
 }
