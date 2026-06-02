@@ -40,8 +40,7 @@ class SarkariResultParser(BaseDetailParser):
             text = clean(tag.get_text())
             if text and len(text) > 15 and not re.search(r'sarkari\s*result', text, re.I):
                 data.post_name = text
-                if not data.title:
-                    data.title = text
+                data.title = text
                 break
 
         # Organization name and advt number from bold/colored text blocks
