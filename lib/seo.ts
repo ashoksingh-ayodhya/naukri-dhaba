@@ -34,6 +34,8 @@ export function buildMetadata({
     },
     twitter: {
       card: "summary_large_image",
+      site: "@naukridhaba",
+      creator: "@naukridhaba",
       title: `${title} | ${siteConfig.name}`,
       description,
       images: [{ url: ogImage, alt: `${title} | ${siteConfig.name}` }],
@@ -296,41 +298,46 @@ export function buildResultJsonLd(fm: PostFrontmatter, url: string): object {
   const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
   return {
     "@context": "https://schema.org",
-    "@type": "LearningResource",
-    name: fm.title,
+    "@type": "NewsArticle",
+    headline: fm.title,
     description: buildDescription(fm),
     url,
     datePublished: datePosted,
-    ...(fm.updatedAt ? { dateModified: toIsoDate(fm.updatedAt) || datePosted } : {}),
-    provider: { "@type": "Organization", name: orgName },
-    educationalLevel: "Government Exam",
+    dateModified: toIsoDate(fm.updatedAt) || datePosted,
+    author: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: { "@type": "ImageObject", url: `${siteConfig.url}/logo.svg`, width: 512, height: 512 },
+    },
+    image: `${siteConfig.url}${siteConfig.ogImage}`,
     inLanguage: "en-IN",
-    isAccessibleForFree: true,
+    about: { "@type": "Organization", name: orgName },
   };
 }
 
 export function buildAdmitJsonLd(fm: PostFrontmatter, url: string): object {
   const orgName = (fm.organization || fm.dept || "Government of India").trim();
   const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
-  const examDateIso = fm.examDate ? toIsoDate(fm.examDate) : undefined;
   return {
     "@context": "https://schema.org",
-    "@type": "Event",
-    name: fm.title,
+    "@type": "NewsArticle",
+    headline: fm.title,
     description: buildDescription(fm),
     url,
-    startDate: examDateIso || datePosted,
-    endDate: examDateIso || datePosted,
-    image: `${siteConfig.url}${siteConfig.ogImage}`,
-    eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    location: {
-      "@type": "Place",
-      name: "As per Admit Card",
-      address: { "@type": "PostalAddress", addressCountry: "IN" },
+    datePublished: datePosted,
+    dateModified: toIsoDate(fm.updatedAt) || datePosted,
+    author: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: { "@type": "ImageObject", url: `${siteConfig.url}/logo.svg`, width: 512, height: 512 },
     },
-    organizer: { "@type": "Organization", name: orgName, url: fm.officialWebsite || siteConfig.url },
-    offers: { "@type": "Offer", price: "0", priceCurrency: "INR", availability: "https://schema.org/InStock" },
+    image: `${siteConfig.url}${siteConfig.ogImage}`,
+    inLanguage: "en-IN",
+    about: { "@type": "Organization", name: orgName },
   };
 }
 
@@ -411,16 +418,19 @@ export function buildDefaultFaqs(fm: PostFrontmatter): Array<{ question: string;
   return faqs.slice(0, 4);
 }
 
-export function buildFaqJsonLd(
-  faqs: Array<{ question: string; answer: string }>
+/** HowTo schema for how-to-apply steps — replaces deprecated FAQPage (dead since May 7 2026) */
+export function buildHowToJsonLd(
+  title: string,
+  steps: string[]
 ): object {
   return {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    "@type": "HowTo",
+    name: title,
+    step: steps.map((text, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      text,
     })),
   };
 }
