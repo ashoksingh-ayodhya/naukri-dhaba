@@ -22,10 +22,13 @@ Run once manually or via the daily agent workflow.
 
 from __future__ import annotations
 
+import logging
 import re
 import sys
 from datetime import datetime
 from pathlib import Path
+
+log = logging.getLogger("NaukriDhaba")
 
 CONTENT_ROOT = Path(__file__).parent.parent.parent / "content"
 YEAR = datetime.now().year
@@ -305,8 +308,24 @@ def _set_list_field(front: str, key: str, items: list[str]) -> str:
 
 # ── File rewriter ─────────────────────────────────────────────────────────────
 
-def rewrite_file(fpath: Path, dry_run: bool = False) -> bool:
-    """Rewrite a single MDX file with full SEO optimisation. Returns True if changed."""
+_SKIP_NUMERIC    = "skip_numeric"
+_SKIP_SHORT      = "skip_short"
+_SKIP_NO_SOURCE  = "skip_no_source"
+_SKIP_NO_TITLE   = "skip_no_title"
+_BLOCKED_WRITE   = "blocked_write"
+
+
+def rewrite_file(fpath: Path, dry_run: bool = False):
+    """Rewrite a single MDX file with full SEO optimisation.
+
+    Returns:
+      True            — file was changed
+      False           — file unchanged (already clean)
+      _SKIP_*         — file skipped due to guard condition
+      _BLOCKED_WRITE  — rewriter tried to change the title; write blocked
+    """
+    slug = fpath.stem
+
     original = fpath.read_text(encoding="utf-8")
 
     parts = original.split("---", 2)
@@ -329,14 +348,37 @@ def rewrite_file(fpath: Path, dry_run: bool = False) -> bool:
         "feeGeneral":      _field(front, "feeGeneral"),
         "feeSCST":         _field(front, "feeSCST"),
         "applyUrl":        _field(front, "applyUrl"),
+        "sourceUrl":       _field(front, "sourceUrl"),
+        "source_url":      _field(front, "source_url"),
         "category":        _field(front, "category"),
         "ageMin":          _field(front, "ageMin"),
         "ageMax":          _field(front, "ageMax"),
         "type":            _field(front, "type"),
     }
 
-    if not fm["title"]:
-        return False
+    title      = fm["title"]
+    source_url = fm.get("sourceUrl", "") or fm.get("source_url", "")
+
+    if not title:
+        log.warning(f"  [rewriter] SKIP {slug}: no title")
+        return _SKIP_NO_TITLE
+
+    # Guard: skip files that would produce fake content
+
+    # Skip if title is purely numeric (freejobalert numeric ID)
+    if title.strip().isdigit():
+        log.warning(f"  [rewriter] SKIP {slug}: numeric title '{title}'")
+        return _SKIP_NUMERIC
+
+    # Skip if title is very short (< 10 chars) — likely a bad scrape
+    if len(title.strip()) < 10:
+        log.warning(f"  [rewriter] SKIP {slug}: title too short ({len(title.strip())} chars)")
+        return _SKIP_SHORT
+
+    # Skip if no sourceUrl — indicates bad data
+    if not source_url:
+        log.warning(f"  [rewriter] SKIP {slug}: no sourceUrl")
+        return _SKIP_NO_SOURCE
 
     # Clean all text fields in frontmatter
     for key in ("title", "organization", "dept", "qualification", "salary",
@@ -369,6 +411,16 @@ def rewrite_file(fpath: Path, dry_run: bool = False) -> bool:
     if new_content == original:
         return False
 
+    # Validate: the rewriter must NOT change the title field
+    new_front_only = new_content.split("---", 2)[1] if len(new_content.split("---", 2)) >= 3 else ""
+    new_title = _clean(_field(new_front_only, "title"))
+    if new_title != title:
+        log.error(
+            f"  [rewriter] BLOCKED write to {slug}: rewriter changed title "
+            f"from '{title}' to '{new_title}'"
+        )
+        return _BLOCKED_WRITE
+
     if not dry_run:
         fpath.write_text(new_content, encoding="utf-8")
     return True
@@ -379,21 +431,51 @@ def rewrite_file(fpath: Path, dry_run: bool = False) -> bool:
 def run(dry_run: bool = False) -> int:
     """Rewrite all MDX files. Returns number of files changed."""
     files = list(CONTENT_ROOT.rglob("*.mdx"))
-    changed = 0
-    errors  = 0
+    changed          = 0
+    errors           = 0
+    skipped_numeric  = 0
+    skipped_short    = 0
+    skipped_no_source = 0
+    skipped_no_title = 0
+    blocked_writes   = 0
 
     for fpath in files:
         try:
-            if rewrite_file(fpath, dry_run=dry_run):
+            result = rewrite_file(fpath, dry_run=dry_run)
+            if result is True:
                 changed += 1
+            elif result == _SKIP_NUMERIC:
+                skipped_numeric += 1
+            elif result == _SKIP_SHORT:
+                skipped_short += 1
+            elif result == _SKIP_NO_SOURCE:
+                skipped_no_source += 1
+            elif result == _SKIP_NO_TITLE:
+                skipped_no_title += 1
+            elif result == _BLOCKED_WRITE:
+                blocked_writes += 1
+            # False means unchanged — no counter needed
         except Exception as exc:
             print(f"  [seo_rewriter] ERROR {fpath.name}: {exc}", file=sys.stderr)
             errors += 1
 
+    total_skipped = skipped_numeric + skipped_short + skipped_no_source + skipped_no_title
     print(
         f"[seo_rewriter] {'Would change' if dry_run else 'Changed'} "
         f"{changed}/{len(files)} files ({errors} errors)."
     )
+    print(
+        f"[seo_rewriter] Skipped {total_skipped} files — "
+        f"numeric title: {skipped_numeric}, "
+        f"title too short: {skipped_short}, "
+        f"no sourceUrl: {skipped_no_source}, "
+        f"no title: {skipped_no_title}."
+    )
+    if blocked_writes:
+        print(
+            f"[seo_rewriter] BLOCKED {blocked_writes} write(s) where rewriter attempted to change title.",
+            file=sys.stderr,
+        )
     return changed
 
 
