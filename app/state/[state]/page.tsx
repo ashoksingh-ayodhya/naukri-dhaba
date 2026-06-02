@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const state = STATES.find((s) => s.slug === stateSlug);
   if (!state) return {};
   return buildMetadata({
-    title: `${state.label} Government Jobs`,
+    title: `${state.label} Government Jobs ${new Date().getFullYear()} — Latest Sarkari Naukri`,
     description: `Latest ${state.label} (${state.abbr}) government jobs — state PSC, police, teaching and all state recruitment notifications.`,
     path: `/state/${state.slug}/`,
   });

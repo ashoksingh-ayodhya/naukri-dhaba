@@ -47,14 +47,20 @@ export function buildMetadata({
 function toIsoDate(raw: string | undefined): string | undefined {
   if (!raw) return undefined;
   if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
-  // Extract DD/MM/YYYY from string — handles "13/02/2026 (Extended)" etc.
-  const m = raw.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  // Accept both DD/MM/YYYY and DD-MM-YYYY separators — handles "13/02/2026 (Extended)" etc.
+  const m = raw.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
   if (m) return `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
   return undefined;
 }
 
 function buildDescription(fm: PostFrontmatter): string {
-  if (fm.shortDescription && fm.shortDescription.length > 60) return fm.shortDescription;
+  // If shortDescription exists and is within the ideal 60-160 char range, use it as-is
+  if (fm.shortDescription && fm.shortDescription.length >= 60 && fm.shortDescription.length <= 160)
+    return fm.shortDescription;
+  // If shortDescription is > 160 chars, truncate it
+  if (fm.shortDescription && fm.shortDescription.length > 160)
+    return fm.shortDescription.slice(0, 157) + "...";
+  // Build from parts (shortDescription < 60 chars or missing)
   const parts: string[] = [];
   const org = (fm.organization || fm.dept || "").trim();
   if (org) parts.push(`${org} has released a recruitment notification.`);
@@ -64,11 +70,14 @@ function buildDescription(fm: PostFrontmatter): string {
     parts.push(`Apply: ${fm.applicationBegin} to ${fm.lastDate}.`);
   else if (fm.lastDate) parts.push(`Last date: ${fm.lastDate}.`);
   if (fm.salary) parts.push(`Pay scale: ${fm.salary}.`);
+  // Prepend short shortDescription if it exists but was < 60 chars
   if (fm.shortDescription) parts.unshift(fm.shortDescription);
   const desc = parts.join(" ").trim();
-  return desc.length > 50
+  const result = desc.length > 50
     ? desc
     : `${fm.title}. Government of India recruitment notification. Apply online at the official website.`;
+  // Ensure final output is ≤ 160 chars
+  return result.length > 160 ? result.slice(0, 157) + "..." : result;
 }
 
 /** Parse "₹18,000 – ₹45,000 per month" → { min: 18000, max: 45000 } or null */
@@ -121,12 +130,31 @@ function inferLocality(orgName: string): string {
   return "New Delhi";
 }
 
+const MAJOR_ORG_URLS: Record<string, string> = {
+  "Staff Selection Commission": "https://ssc.nic.in",
+  "Railway Recruitment Board": "https://www.rrbcdg.gov.in",
+  "Union Public Service Commission": "https://upsc.gov.in",
+  "Institute of Banking Personnel Selection": "https://www.ibps.in",
+  "State Bank of India": "https://www.sbi.co.in",
+  "Reserve Bank of India": "https://www.rbi.org.in",
+  "National Bank for Agriculture and Rural Development": "https://www.nabard.org",
+  "Life Insurance Corporation": "https://www.licindia.in",
+  "India Post": "https://www.indiapost.gov.in",
+  "National Health Mission": "https://nhm.gov.in",
+  "DRDO": "https://www.drdo.gov.in",
+  "ISRO": "https://www.isro.gov.in",
+  "AIIMS": "https://www.aiims.edu",
+  "NTPC": "https://www.ntpc.co.in",
+  "ONGC": "https://www.ongcindia.com",
+};
+
 export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
   const orgName = (fm.organization || fm.dept || "Government of India").trim() || "Government of India";
   const datePosted = toIsoDate(fm.publishedAt) || toIsoDate(fm.updatedAt) || "2026-01-01";
 
-  // Only include sameAs when it's a real official website URL (not a search fallback)
-  const officialSite = fm.officialWebsite && fm.officialWebsite.startsWith("http") ? fm.officialWebsite : undefined;
+  // Prefer major org canonical URL, then fall back to fm.officialWebsite if it's a real URL
+  const orgUrl = MAJOR_ORG_URLS[fm.organization || ""] ||
+    (fm.officialWebsite && fm.officialWebsite.startsWith("http") ? fm.officialWebsite : undefined);
 
   const ld: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -141,7 +169,7 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
     hiringOrganization: {
       "@type": "Organization",
       name: orgName,
-      ...(officialSite ? { sameAs: officialSite } : {}),
+      ...(orgUrl ? { sameAs: orgUrl } : {}),
     },
     // jobLocation uses a real city (inferred from org name) — "India" is NOT a valid addressRegion
     jobLocation: {
@@ -367,6 +395,20 @@ export function buildListingPageJsonLd(
       })),
     },
   };
+}
+
+/** Generate up to 4 default FAQs from frontmatter when no FAQ content is found in the post body. */
+export function buildDefaultFaqs(fm: PostFrontmatter): Array<{ question: string; answer: string }> {
+  const faqs: Array<{ question: string; answer: string }> = [];
+  if (fm.lastDate)
+    faqs.push({ question: `What is the last date to apply for ${fm.title}?`, answer: `The last date to apply is ${fm.lastDate}.` });
+  if (fm.totalPosts)
+    faqs.push({ question: `How many vacancies are available in ${fm.organization || fm.title}?`, answer: `There are ${fm.totalPosts} vacancies.` });
+  if (fm.qualification)
+    faqs.push({ question: `What is the eligibility/qualification for ${fm.title}?`, answer: fm.qualification });
+  if (fm.salary)
+    faqs.push({ question: `What is the salary for this post?`, answer: fm.salary });
+  return faqs.slice(0, 4);
 }
 
 export function buildFaqJsonLd(
