@@ -33,8 +33,7 @@ class SarkariExamParser(SarkariResultParser):
             text = clean(tag.get_text())
             if text and len(text) > 10 and not re.search(r'sarkari\s*exam', text, re.I):
                 data.post_name = text
-                if not data.title:
-                    data.title = text
+                data.title = text
                 break
 
         # Content area

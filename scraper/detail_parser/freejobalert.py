@@ -36,13 +36,12 @@ class FreeJobAlertParser(BaseDetailParser):
     def _extract_header(self, soup: BeautifulSoup, data: DetailData) -> None:
         content = self._get_content_area(soup)
 
-        # Title from <h1> or <h2>
+        # Title from <h1> or <h2> — always override the rough slug-based title
         for tag in soup.find_all(["h1", "h2"]):
             text = clean(tag.get_text())
             if text and len(text) > 10 and not re.search(r'freejobalert|comment', text, re.I):
                 data.post_name = text
-                if not data.title:
-                    data.title = text
+                data.title = text
                 break
 
         # Short description — first substantial <p> in content
