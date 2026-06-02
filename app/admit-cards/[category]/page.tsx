@@ -46,14 +46,13 @@ export default async function AdmitCardCategoryPage({ params }: Props) {
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Admit Cards", href: "/admit-cards/" }, { label: cat.label }]} />
       <div className="mt-4 mb-6">
         <h1 className="font-heading text-2xl font-bold text-slate-900">{cat.label} Admit Card {YEAR}</h1>
+        <h2 className="text-base font-semibold text-slate-700 mt-1 mb-1">
+          {cat.fullName} Admit Cards {YEAR} — Direct Hall Ticket Download
+        </h2>
         <p className="text-slate-500 text-sm">{posts.length} admit cards found</p>
       </div>
-      {/* Category description */}
       {CATEGORY_DESCRIPTIONS[category] && (
         <div className="mb-4">
-          <h2 className="text-lg font-semibold text-slate-700 mb-2">
-            {cat.fullName} Admit Cards {YEAR}
-          </h2>
           <p className="text-slate-600 text-sm leading-relaxed">
             {CATEGORY_DESCRIPTIONS[category].description}
           </p>

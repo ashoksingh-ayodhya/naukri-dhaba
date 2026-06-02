@@ -67,10 +67,9 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Category description */}
         {CATEGORY_DESCRIPTIONS[category] && (
           <div className="mb-4">
-            <h2 className="text-lg font-semibold text-slate-700 mb-2">
+            <h2 className="text-base font-semibold text-slate-700 mb-2">
               {CATEGORY_DESCRIPTIONS[category].h2}
             </h2>
             <p className="text-slate-600 text-sm leading-relaxed">
