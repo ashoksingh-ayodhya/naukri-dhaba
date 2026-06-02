@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts } from "@/lib/content";
 import { buildMetadata, buildListingPageJsonLd } from "@/lib/seo";
 import { CATEGORIES, siteConfig } from "@/config/site";
+import { CATEGORY_DESCRIPTIONS } from "@/lib/category-descriptions";
 import JobsTable from "@/components/listings/JobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -47,6 +48,17 @@ export default async function ResultCategoryPage({ params }: Props) {
         <h1 className="font-heading text-2xl font-bold text-slate-900">{cat.fullName} Result {YEAR}</h1>
         <p className="text-slate-500 text-sm">{posts.length} results found</p>
       </div>
+      {/* Category description */}
+      {CATEGORY_DESCRIPTIONS[category] && (
+        <div className="mb-4">
+          <h2 className="text-lg font-semibold text-slate-700 mb-2">
+            {cat.fullName} Exam Results {YEAR}
+          </h2>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            {CATEGORY_DESCRIPTIONS[category].description}
+          </p>
+        </div>
+      )}
       <FilterBar baseHref="/results/" activeCategory={category} />
       <JobsTable posts={posts} title={`${cat.label} Results`} showHeader={false} />
     </div>
