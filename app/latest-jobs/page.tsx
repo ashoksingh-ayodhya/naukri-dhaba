@@ -23,7 +23,10 @@ export default function LatestJobsPage() {
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">
           Latest Government Jobs {YEAR}
         </h1>
-        <p className="text-slate-500 text-sm">{posts.length} job notifications available</p>
+        <h2 className="text-lg font-semibold text-slate-700 mt-1 mb-1">
+          Latest Central &amp; State Government Job Notifications {YEAR}
+        </h2>
+        <p className="text-slate-500 text-sm">Active &amp; upcoming vacancies — updated daily. {posts.length} notifications available.</p>
       </div>
 
       <FilterBar baseHref="/jobs/" activeCategory={undefined} />

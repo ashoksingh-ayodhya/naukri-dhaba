@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts } from "@/lib/content";
 import { buildMetadata, buildListingPageJsonLd } from "@/lib/seo";
 import { CATEGORIES, siteConfig } from "@/config/site";
+import { CATEGORY_DESCRIPTIONS } from "@/lib/category-descriptions";
 import JobsTable from "@/components/listings/JobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -65,6 +66,18 @@ export default async function CategoryPage({ params }: Props) {
             </div>
           </div>
         </div>
+
+        {/* Category description */}
+        {CATEGORY_DESCRIPTIONS[category] && (
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-slate-700 mb-2">
+              {CATEGORY_DESCRIPTIONS[category].h2}
+            </h2>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              {CATEGORY_DESCRIPTIONS[category].description}
+            </p>
+          </div>
+        )}
 
         <FilterBar baseHref="/jobs/" activeCategory={category} />
 

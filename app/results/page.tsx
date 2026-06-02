@@ -20,7 +20,8 @@ export default function ResultsPage() {
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Sarkari Result" }]} />
       <div className="mt-4 mb-6">
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Sarkari Result {YEAR}</h1>
-        <p className="text-slate-500 text-sm">{posts.length} results available</p>
+        <h2 className="text-lg font-semibold text-slate-700 mt-1 mb-1">Latest Government Exam Results {YEAR}</h2>
+        <p className="text-slate-500 text-sm">Merit lists, cut-off marks and score cards. {posts.length} results available.</p>
       </div>
       <FilterBar baseHref="/results/" activeCategory={undefined} />
       <JobsTable posts={posts} title="All Results" showHeader={false} />
