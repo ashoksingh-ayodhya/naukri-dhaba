@@ -4327,7 +4327,10 @@ def _scrape_sitemap_generic(
         if not refresh_existing and url_id in seen:
             skipped_seen += 1
             continue
-        seen.add(url_id)
+        # Do NOT add url_id to seen here — only add it after the detail page is
+        # successfully processed. Adding at discovery time causes timeout-poisoning:
+        # if GitHub Actions kills the runner before the final save_seen (which discards
+        # unprocessed items), the intermediate save_seen locks out all these URLs forever.
         slug = urlparse(url).path.rstrip('/').rsplit('/', 1)[-1]
         rough_title = slug.replace('-', ' ').replace('_', ' ').title()
         new_items[kind].append({
@@ -4575,10 +4578,11 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         kind_cap = MAX_PER_KIND.get(kind, 20)
         for item in items:
             if kind_fetch_count.get(kind, 0) >= kind_cap:
-                # Defer this item: remove from seen so next run picks it up.
-                # Sitemap items use a URL hash (_seen_id); listing items use title hash.
-                _sid = item.get('_seen_id') or item_id(item['title'], item.get('dept', ''))
-                seen.discard(_sid)
+                # Defer listing items (title-hash in seen) so next run picks them up.
+                # Sitemap items were never added to seen at discovery, so no discard needed.
+                if not item.get('_seen_id'):
+                    _sid = item_id(item['title'], item.get('dept', ''))
+                    seen.discard(_sid)
                 log.debug(f'  [defer] {kind} cap ({kind_cap}) reached — deferring: {item["title"][:50]}')
                 continue
             src_name = item.get('source', 'unknown')
@@ -4678,6 +4682,9 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 log.info(f'  Written (MDX): {mdx_path.relative_to(SITE_ROOT)}')
                 generated[kind].append(rich)
                 kind_fetch_count[kind] = kind_fetch_count.get(kind, 0) + 1
+                # Mark sitemap items seen only after successful write (not at discovery).
+                if item.get('_seen_id'):
+                    seen.add(item['_seen_id'])
 
             except Exception as exc:
                 log.warning(f'  [mdx] Failed to write MDX for {rich.get("slug")}: {exc}')
