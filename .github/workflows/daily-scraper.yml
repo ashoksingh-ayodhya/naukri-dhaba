@@ -82,6 +82,26 @@ jobs:
           git push origin HEAD:${{ github.ref_name }} || true
           echo "Pushed $COUNT MDX files."
 
+      - name: Notify Google Indexing API
+        if: steps.changes.outputs.changed != '0' && github.event.inputs.dry_run != 'true' && secrets.GOOGLE_INDEXING_SA_KEY != ''
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+          SITE_URL: https://naukridhaba.in
+        run: |
+          # Build list of new post URLs from committed MDX files
+          git diff HEAD~1 --name-only --diff-filter=A | grep "content/.*\.mdx$" | while read mdx; do
+            # content/jobs/ssc/ssc-cgl-2026.mdx → https://naukridhaba.in/jobs/ssc/ssc-cgl-2026/
+            slug=$(echo "$mdx" | sed 's|content/||; s|\.mdx$|/|; s|admit-cards|admit-cards|')
+            echo "${SITE_URL}/${slug}"
+          done > /tmp/new_urls.txt
+          COUNT=$(wc -l < /tmp/new_urls.txt)
+          echo "Notifying Google of $COUNT new URLs"
+          cat /tmp/new_urls.txt | head -5
+          python3 scraper/notify_indexing_api.py \
+            --key-json "$GOOGLE_INDEXING_SA_KEY" \
+            --urls-file /tmp/new_urls.txt
+
       - name: Trigger Next.js deploy
         if: steps.changes.outputs.changed != '0' && github.event.inputs.dry_run != 'true'
         continue-on-error: true
