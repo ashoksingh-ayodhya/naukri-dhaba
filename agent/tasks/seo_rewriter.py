@@ -155,7 +155,7 @@ def _build_how_to_apply(fm: dict) -> list[str]:
 
 
 def _build_faq(fm: dict) -> str:
-    """Return an SEO FAQ section (plain text, not JSON-LD — that's in page.tsx)."""
+    """Return an SEO FAQ section as plain text markdown for user-facing content."""
     title = fm["title"]
     org   = fm.get("organization") or fm.get("dept") or "the authority"
     last  = fm.get("lastDate") or "as per official notification"

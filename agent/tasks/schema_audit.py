@@ -23,6 +23,10 @@ from typing import Any
 SITE_URL   = "https://naukridhaba.in"
 SOURCE_URL = "https://www.sarkariresult.com"
 
+# Schema types we intentionally do NOT use — do not flag as gaps even if source has them.
+# FAQPage: deprecated by Google on 2026-05-07, no longer triggers rich results.
+IGNORED_SOURCE_SCHEMA_TYPES = {"FAQPage"}
+
 REQUIRED_JOB_FIELDS = {
     "@type", "title", "description", "hiringOrganization",
     "datePosted", "jobLocation", "employmentType",
@@ -171,11 +175,14 @@ def run(sample_slugs: list[str] | None = None) -> dict:
     for r in results["source_pages"]:
         source_types.update(r.get("types", []))
 
+    # Exclude intentionally deprecated/ignored types from gap analysis
+    actionable_source_types = source_types - IGNORED_SOURCE_SCHEMA_TYPES
+
     results["summary"] = {
         "our_schema_types":    sorted(our_types),
         "source_schema_types": sorted(source_types),
         "types_we_have_they_dont": sorted(our_types - source_types),
-        "types_they_have_we_dont": sorted(source_types - our_types),
+        "types_they_have_we_dont": sorted(actionable_source_types - our_types),
         "issue_count": len(results["issues"]),
     }
 
@@ -183,7 +190,7 @@ def run(sample_slugs: list[str] | None = None) -> dict:
     print(f"  Our schema types:    {sorted(our_types)}")
     print(f"  Source schema types: {sorted(source_types)}")
     print(f"  We have, they don't: {sorted(our_types - source_types)}")
-    print(f"  They have, we don't: {sorted(source_types - our_types)}")
+    print(f"  They have, we don't: {sorted(actionable_source_types - our_types)}  (ignored: {sorted(IGNORED_SOURCE_SCHEMA_TYPES & source_types)})")
     print(f"  Issues found: {len(results['issues'])}")
 
     return results

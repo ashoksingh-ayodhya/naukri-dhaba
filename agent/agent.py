@@ -10,7 +10,7 @@ Goals (in priority order):
        - Generate unique 200-word keyword-rich shortDescription per job
        - Replace stock howToApply with clean Naukri Dhaba copy
        - Enrich body: lead paragraph, key details table, eligibility,
-         numbered steps, 5-Q FAQ — all unique per page
+         numbered steps, FAQ — all unique per page
   1. Branding fast-pass — catch any missed Sarkari Result mentions
   2. Audit content freshness — alert if no new content in 24h
   3. Audit content counts — alert if count drops
@@ -284,7 +284,7 @@ def check_copilot_prs() -> None:
 
     log(f"  Found {len(prs)} open PR(s) to evaluate.")
 
-    resolved_issues: list[int] = []
+    resolved_issues: set[int] = set()
 
     for pr in prs:
         pr_num    = pr["number"]
@@ -370,9 +370,9 @@ def run_seo_rewrite() -> None:
         from tasks.seo_rewriter import run as seo_run
         changed = seo_run()
         if changed > 0:
-            FIXES_APPLIED.append(f"SEO rewrite: {changed} MDX files — unique content, clean branding, FAQ")
+            FIXES_APPLIED.append(f"SEO rewrite: {changed} MDX files — unique content, clean branding")
             git_commit(
-                f"fix(agent): SEO rewrite — {changed} files: unique content, branding removed, FAQ added [skip ci]",
+                f"fix(agent): SEO rewrite — {changed} files: unique content, branding removed [skip ci]",
                 ["content/"],
             )
     except Exception as exc:
@@ -558,14 +558,15 @@ def fix_schema_code() -> None:
 
     Fixes applied (idempotent — safe to run every 3h):
     - buildOrganizationJsonLd: logo → ImageObject
-    - buildAdmitJsonLd: add endDate + image
     - buildSyllabusJsonLd: add teaches field
     - app/answer-keys/[slug]/page.tsx: wire buildAnswerKeyJsonLd
     - app/syllabus/[slug]/page.tsx: wire buildSyllabusJsonLd
-    - app/jobs/[category]/[slug]/page.tsx: wire buildFaqJsonLd
     - app/jobs/[category]/page.tsx: wire buildListingPageJsonLd
     - app/results/[category]/page.tsx: wire buildListingPageJsonLd
     - app/admit-cards/[category]/page.tsx: wire buildListingPageJsonLd
+
+    NOTE: FAQPage schema deprecated by Google 2026-05-07.
+    buildAdmitJsonLd and buildResultJsonLd use NewsArticle — do NOT revert.
     """
     log("Task 8: Fixing schema code gaps (per agent/knowledge.md)...")
     try:
@@ -595,12 +596,12 @@ def fix_schema_code() -> None:
                 "The agent's `fix_schema` task (`agent/tasks/fix_schema.py`) crashed.\n\n"
                 "This means the following schema gaps remain unfixed:\n"
                 "- `buildOrganizationJsonLd`: logo must be ImageObject (not bare URL)\n"
-                "- `buildAdmitJsonLd`: missing `endDate` and `image` fields\n"
                 "- `buildSyllabusJsonLd`: missing `teaches` field\n"
                 "- `app/answer-keys/[slug]/page.tsx`: `buildAnswerKeyJsonLd` not wired\n"
                 "- `app/syllabus/[slug]/page.tsx`: `buildSyllabusJsonLd` not wired\n"
-                "- `app/jobs/[category]/[slug]/page.tsx`: `buildFaqJsonLd` not wired\n"
                 "- Category listing pages: `buildListingPageJsonLd` not wired\n\n"
+                "**NOTE:** Do NOT re-add `buildFaqJsonLd` or FAQPage schema — deprecated by Google 2026-05-07.\n"
+                "Do NOT revert `buildAdmitJsonLd` or `buildResultJsonLd` to Event/LearningResource — both are NewsArticle.\n\n"
                 "**Fix:** Debug `agent/tasks/fix_schema.py` and ensure the string patches "
                 "match the current content of `lib/seo.ts` and the page.tsx files exactly.\n\n"
                 "See `agent/knowledge.md` section 10 for full gap details."
