@@ -6,7 +6,7 @@ import { getAllPosts } from "@/lib/content";
 import { buildMetadata, buildListingPageJsonLd } from "@/lib/seo";
 import { CATEGORIES, siteConfig } from "@/config/site";
 import { CATEGORY_DESCRIPTIONS } from "@/lib/category-descriptions";
-import JobsTable from "@/components/listings/JobsTable";
+import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
@@ -80,7 +80,7 @@ export default async function CategoryPage({ params }: Props) {
 
         <FilterBar baseHref="/jobs/" activeCategory={category} />
 
-        <JobsTable posts={posts} title={`${cat.label} Jobs`} showHeader={false} />
+        <PaginatedJobsTable posts={posts} title={`${cat.label} Jobs`} showHeader={false} />
       </div>
     </>
   );

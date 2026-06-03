@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
-import JobsTable from "@/components/listings/JobsTable";
+import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const YEAR = new Date().getFullYear();
@@ -21,7 +21,7 @@ export default function SyllabusPage() {
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Syllabus {YEAR}</h1>
         <p className="text-slate-500 text-sm">{posts.length} syllabus documents available</p>
       </div>
-      <JobsTable posts={posts} title="All Syllabus" showHeader={false} />
+      <PaginatedJobsTable posts={posts} title="All Syllabus" showHeader={false} />
     </div>
   );
 }
