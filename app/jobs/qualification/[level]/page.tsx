@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPostsByQualification, QualificationLevel } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
-import JobsTable from "@/components/listings/JobsTable";
+import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const YEAR = new Date().getFullYear();
@@ -90,7 +90,7 @@ export default async function QualificationPage({ params }: Props) {
         <p className="text-slate-500 text-sm">{posts.length} vacancies found</p>
       </div>
       <p className="text-slate-600 text-sm leading-relaxed mb-6">{meta.description}</p>
-      <JobsTable posts={posts} title={meta.h1} showHeader={false} />
+      <PaginatedJobsTable posts={posts} title={meta.h1} showHeader={false} />
     </div>
   );
 }
