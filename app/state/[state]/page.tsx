@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import { STATES } from "@/config/site";
-import JobsTable from "@/components/listings/JobsTable";
+import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import Link from "next/link";
 
@@ -65,7 +65,7 @@ export default async function StatePage({ params }: Props) {
         ))}
       </div>
 
-      <JobsTable posts={statePosts} title={`${state.label} Jobs`} showHeader={false} />
+      <PaginatedJobsTable posts={statePosts} title={`${state.label} Jobs`} showHeader={false} />
     </div>
   );
 }

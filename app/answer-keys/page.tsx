@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
-import JobsTable from "@/components/listings/JobsTable";
+import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const YEAR = new Date().getFullYear();
@@ -21,7 +21,7 @@ export default function AnswerKeysPage() {
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Answer Key {YEAR}</h1>
         <p className="text-slate-500 text-sm">{posts.length} answer keys available</p>
       </div>
-      <JobsTable posts={posts} title="All Answer Keys" showHeader={false} />
+      <PaginatedJobsTable posts={posts} title="All Answer Keys" showHeader={false} />
     </div>
   );
 }

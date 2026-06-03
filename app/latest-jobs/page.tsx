@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
-import JobsTable from "@/components/listings/JobsTable";
+import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 
@@ -33,7 +33,7 @@ export default function LatestJobsPage() {
 
       <FilterBar baseHref="/jobs/" activeCategory={undefined} />
 
-      <JobsTable posts={posts} title="All Latest Jobs" showHeader={false} />
+      <PaginatedJobsTable posts={posts} title="All Latest Jobs" showHeader={false} />
     </div>
   );
 }
