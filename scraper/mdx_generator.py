@@ -171,9 +171,23 @@ def generate_mdx(detail: "DetailData") -> Path | None:
     """
     Write a .mdx file for the given DetailData.
 
-    Returns the written path, or None if skipped (date filter / no slug).
+    Returns the written path, or None if skipped (date filter / no slug / invalid title).
     """
     if not detail.slug:
+        return None
+
+    # Reject numeric-only slugs — these are URL IDs from freejobalert/rojgar scraped
+    # when the detail page returned garbled HTML and no real title was extracted.
+    if detail.slug.isdigit():
+        import sys
+        print(f"[mdx_generator] ⚠️  Skipping — numeric slug: {detail.slug!r}", file=sys.stderr)
+        return None
+
+    # Reject missing, numeric, or too-short titles.
+    title = (detail.title or "").strip()
+    if not title or title.isdigit() or len(title) < 8:
+        import sys
+        print(f"[mdx_generator] ⚠️  Skipping — invalid title: {title!r} (slug: {detail.slug})", file=sys.stderr)
         return None
 
     # Date filter: skip posts before MIN_POST_DATE
