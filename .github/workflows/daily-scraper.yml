@@ -30,7 +30,7 @@ jobs:
   scrape:
     name: Scrape → MDX → Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 80
+    timeout-minutes: 55
     env:
       TZ: Asia/Kolkata
 
@@ -153,26 +153,29 @@ jobs:
         if: always()
         run: tail -100 scraper/logs/scraper.log 2>/dev/null || echo "(no log)"
 
-      - name: Check content goals
-        id: goals
+      - name: Self-trigger if content goals not met
         if: always() && github.event.inputs.dry_run != 'true'
+        continue-on-error: true
         run: |
           JOBS=$(find content/jobs -name "*.mdx" 2>/dev/null | wc -l)
           RESULTS=$(find content/results -name "*.mdx" 2>/dev/null | wc -l)
           ADMITS=$(find content/admit-cards -name "*.mdx" 2>/dev/null | wc -l)
-          echo "jobs=$JOBS results=$RESULTS admits=$ADMITS"
-          if [ "$JOBS" -lt 3000 ] || [ "$RESULTS" -lt 2000 ] || [ "$ADMITS" -lt 1500 ]; then
-            echo "needs_more=true" >> $GITHUB_OUTPUT
-            echo "Goals not met — will dispatch next run (jobs=$JOBS results=$RESULTS admits=$ADMITS)"
+          TARGET_JOBS=3000
+          TARGET_RESULTS=2000
+          TARGET_ADMITS=1500
+          echo "Current: jobs=$JOBS results=$RESULTS admits=$ADMITS"
+          echo "Targets: jobs=$TARGET_JOBS results=$TARGET_RESULTS admits=$TARGET_ADMITS"
+          if [ "$JOBS" -lt "$TARGET_JOBS" ] || [ "$RESULTS" -lt "$TARGET_RESULTS" ] || [ "$ADMITS" -lt "$TARGET_ADMITS" ]; then
+            echo "Goals not met — scheduling next scraper run"
+            git config user.name "Naukri Dhaba Bot"
+            git config user.email "bot@naukridhaba.in"
+            date > scraper/run-now
+            git add scraper/run-now
+            git commit -m "chore: auto-trigger scraper ($JOBS jobs / $RESULTS results / $ADMITS admits) [skip ci]" || true
+            git fetch origin ${{ github.ref_name }}
+            git merge -X ours FETCH_HEAD --no-edit || true
+            git push origin HEAD:${{ github.ref_name }} || true
+            echo "Next scraper run triggered."
           else
-            echo "needs_more=false" >> $GITHUB_OUTPUT
-            echo "ALL GOALS MET — jobs=$JOBS results=$RESULTS admits=$ADMITS"
+            echo "All content goals met! jobs=$JOBS results=$RESULTS admits=$ADMITS — scraper loop complete."
           fi
-
-      - name: Self-trigger via repository_dispatch
-        if: always() && steps.goals.outputs.needs_more == 'true' && github.event.inputs.dry_run != 'true'
-        continue-on-error: true
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: scrape

@@ -4051,119 +4051,42 @@ def ping_indexnow(new_urls: list) -> None:
 import xml.etree.ElementTree as ET
 _SITEMAP_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 
-# Path segments that mark pure navigation / category pages and should never
-# appear in a real post URL.  sarkariresult.com uses /latestjob/<slug>,
-# /result/<slug>, /admitcard/<slug> etc. as detail URLs, so those prefixes
-# must NOT be listed here — they're handled by _SARKARI_PREFIX_KIND above and
-# by the listing parser which already receives the direct href from the page.
-_SKIP_PATHS = {
+# sarkariresult.com URL path segments that mean this is NOT a post page
+_SITEMAP_SKIP_PATHS = _SKIP_PATHS = {
+    'latestjob', 'result', 'admitcard', 'syllabus', 'answerkey', 'answer-key',
     'admission', 'board', 'contactus', 'about', 'privacy', 'sitemap',
     'search', 'videozone', 'top10', 'archive', 'tag', 'category', 'page',
     'author', 'feed', 'wp-content', 'wp-includes', 'wp-admin',
-    'top-online-form', 'latest-jobs', 'sarkari-result',
 }
 
-
-import gzip as _gzip
-
-
 def _fetch_raw(url: str) -> str | None:
-    """Fetch URL as raw text (for XML sitemaps). Tries CF Worker proxy then direct."""
-    import zlib as _zlib
-
-    def _decompress_bytes(data: bytes, ce: str, label: str) -> bytes:
-        """Decompress bytes per Content-Encoding ce; falls back to magic-byte sniff."""
-        # 1. gzip
-        if 'gzip' in ce or data[:2] == b'\x1f\x8b':
-            try:
-                out = _gzip.decompress(data)
-                log.info(f'[sitemap] {label}: gzip decompressed → {len(out)}b')
-                return out
-            except Exception as e:
-                log.warning(f'[sitemap] {label}: gzip decompress failed: {e}')
-        # 2. deflate (zlib)
-        if 'deflate' in ce or data[:2] in (b'\x78\x9c', b'\x78\x01', b'\x78\xda'):
-            try:
-                return _zlib.decompress(data)
-            except Exception:
-                try:
-                    return _zlib.decompress(data, -15)
-                except Exception as e:
-                    log.warning(f'[sitemap] {label}: deflate decompress failed: {e}')
-        # 3. brotli (header-declared or sniffed when bytes don't look like XML)
-        if 'br' in ce or (data[:1] and data.lstrip()[:1] != b'<'):
-            try:
-                import brotli as _br
-                out = _br.decompress(data)
-                log.info(f'[sitemap] {label}: brotli decompressed → {len(out)}b')
-                return out
-            except Exception as e:
-                if 'br' in ce:
-                    log.warning(f'[sitemap] {label}: brotli decompress failed: {e}')
-        return data
-
-    def _raw_get(target: str, extra_hdrs: dict | None = None) -> tuple[bytes, str, int]:
-        """GET a URL with stream+decode_content=False; returns (bytes, ce_header, status)."""
-        hdrs = {
-            # Exclude brotli: Cloudflare may serve brotli that the Python brotli
-            # library cannot decompress for certain window-size values.
-            'Accept-Encoding': 'gzip, deflate',
-        }
-        if extra_hdrs:
-            hdrs.update(extra_hdrs)
-        r = _session.get(target, headers=hdrs, timeout=30, proxies=_NO_PROXY,
-                         verify=False, stream=True)
-        r.raw.decode_content = False
-        raw = r.raw.read()
-        ce = r.headers.get('Content-Encoding', '').lower()
-        return raw, ce, r.status_code
-
-    def _decode_and_validate(data: bytes, label: str) -> str | None:
-        """Decode bytes to text; return None if the result doesn't look like XML."""
-        if data[:3] == b'\xef\xbb\xbf':
-            data = data[3:]
-        log.info(f'[sitemap] {label} preview: {data[:100]!r}')
-        if not data.lstrip()[:1] == b'<':
-            log.warning(f'[sitemap] {label}: data does not look like XML after decompression — skipping')
-            return None
+    """Fetch URL as raw text (for XML sitemaps). Uses cffi → CF Worker → requests."""
+    if _cffi_session:
         try:
-            return data.decode('utf-8')
+            r = _cffi_session.get(url, timeout=30)
+            if r.status_code == 200:
+                return r.text
         except Exception:
-            return data.decode('latin-1', errors='replace')
-
-    # ── Try 1: CF Worker proxy ────────────────────────────────────────────────
+            pass
     if _CF_WORKER_URL:
         try:
             proxy = f'{_CF_WORKER_URL}/?url={requests.utils.quote(url, safe="")}'
-            extra = {}
-            if _CF_WORKER_SECRET:
-                extra['X-Proxy-Secret'] = _CF_WORKER_SECRET
-            raw_bytes, ce, status = _raw_get(proxy, extra)
-            log.info(
-                f'[sitemap] CF Worker → {url[:80]}: status={status} '
-                f'size={len(raw_bytes)}b ce={ce or "none"}'
-            )
-            if status == 200 and raw_bytes:
-                data = _decompress_bytes(raw_bytes, ce, 'CF Worker')
-                result = _decode_and_validate(data, 'CF Worker')
-                if result is not None:
-                    return result
-        except Exception as e:
-            log.warning(f'[sitemap] CF Worker fetch error: {e}')
-
-    # ── Try 2: direct fetch (sitemaps are public for search-engine crawlers) ──
+            hdrs = {'X-Proxy-Secret': _CF_WORKER_SECRET} if _CF_WORKER_SECRET else {}
+            r = _session.get(proxy, headers=hdrs, timeout=30, proxies=_NO_PROXY, verify=False)
+            if r.status_code == 200:
+                try:
+                    j = r.json()
+                    return j.get('body', r.text)
+                except Exception:
+                    return r.text
+        except Exception:
+            pass
     try:
-        raw_bytes, ce, status = _raw_get(url)
-        log.info(f'[sitemap] Direct → {url[:80]}: status={status} size={len(raw_bytes)}b ce={ce or "none"}')
-        if status == 200 and raw_bytes:
-            data = _decompress_bytes(raw_bytes, ce, 'Direct')
-            result = _decode_and_validate(data, 'Direct')
-            if result is not None:
-                return result
-    except Exception as e:
-        log.warning(f'[sitemap] Direct fetch error: {e}')
-
-    log.warning(f'[sitemap] All fetch attempts failed for {url}')
+        r = _session.get(url, timeout=30, proxies=_NO_PROXY, verify=False)
+        if r.status_code == 200:
+            return r.text
+    except Exception:
+        pass
     return None
 
 
@@ -4187,120 +4110,51 @@ def _parse_sitemap(xml_text: str) -> list[tuple[str, str | None]]:
     return results
 
 
-# Category prefix → kind mapping for sarkariresult.com.
-# These prefixes appear as the first path component of BOTH listing pages
-# (/latestjob.php) AND detail pages (/latestjob/post-slug/).  We must not
-# skip detail pages just because their prefix is a known category word.
-_SARKARI_PREFIX_KIND = {
-    'latestjob':  'job',
-    'result':     'result',
-    'admitcard':  'admit',
-    'syllabus':   'syllabus',
-    'answer-key': 'answer-key',
-    'answerkey':  'answer-key',
-}
-
-def _classify_url(url: str) -> str | None:
-    """Classify a URL as job/result/admit/answer-key/syllabus, or None to skip."""
+def _classify_sitemap_url(url: str) -> str | None:
+    """Classify a sarkariresult.com URL as job/result/admit/answer-key/syllabus, or None to skip."""
     path = urlparse(url).path.lower().rstrip('/')
     parts = [p for p in path.split('/') if p]
-    if not parts:
+    if len(parts) < 2:
         return None
-
-    # sarkariresult.com uses /latestjob/<slug>, /admitcard/<slug>, etc.
-    # Map the known category prefix directly to a kind before the generic skip check.
-    if parts[0] in _SARKARI_PREFIX_KIND and len(parts) >= 2:
-        prefix_kind = _SARKARI_PREFIX_KIND[parts[0]]
-        slug = parts[1]
-        if re.search(r'[-\d]', slug):
-            return prefix_kind
-
-    # Skip pure category/navigation paths
-    _GENERIC_SKIP = {
-        'admission', 'board', 'contactus', 'about', 'privacy', 'sitemap',
-        'search', 'videozone', 'top10', 'archive', 'tag', 'category', 'page',
-        'author', 'feed', 'wp-content', 'wp-includes', 'wp-admin',
-    }
-    if parts[0] in _GENERIC_SKIP:
+    if parts[0] in _SITEMAP_SKIP_PATHS:
         return None
-
-    t = ' '.join(parts).replace('-', ' ')
-    # Must look like a real post slug — not a bare short word or pagination
-    if len(t) < 10 and not re.search(r'\d', t):
-        return None
-    if re.search(r'\badmit\b|\bhall.?ticket\b|\be.?admit\b', t):      return 'admit'
-    if re.search(r'\bsyllabus\b|\bexam.?pattern\b', t):               return 'syllabus'
-    if re.search(r'\banswer.?key\b|\bans.?key\b', t):                 return 'answer-key'
-    if re.search(r'\bresult\b|\bmerit.?list\b|\bcutoff\b|\bfinal.?list\b', t): return 'result'
+    slug = parts[-1]
+    t = (slug + ' ' + ' '.join(parts)).replace('-', ' ')
+    if re.search(r'\badmit\b|\bhall ticket\b|\be admit\b', t):
+        return 'admit'
+    if re.search(r'\bsyllabus\b|\bexam pattern\b', t):
+        return 'syllabus'
+    if re.search(r'\banswer key\b|\bans key\b', t):
+        return 'answer-key'
+    if re.search(r'\bresult\b|\bmerit list\b|\bselection list\b|\bcutoff\b|\bfinal list\b', t):
+        return 'result'
     return 'job'
 
-
-def _discover_sitemap_url(base_url: str) -> str | None:
-    """Try robots.txt to discover the real sitemap URL for a site."""
-    try:
-        robots_url = base_url.rstrip('/') + '/robots.txt'
-        xml = _fetch_raw(robots_url)
-        if xml:
-            for line in xml.splitlines():
-                if line.lower().startswith('sitemap:'):
-                    url = line.split(':', 1)[1].strip()
-                    if url.startswith('http'):
-                        return url
-    except Exception:
-        pass
-    return None
+# alias used by older code paths
+_classify_url = _classify_sitemap_url
 
 
-def _scrape_sitemap_generic(
-    sitemap_root: str,
-    source_name: str,
-    seen: set,
-    refresh_existing: bool = False,
-) -> dict[str, list[dict]]:
+def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> dict[str, list[dict]]:
     """
-    Generic XML sitemap crawler. Fetches sitemap_root, follows sub-sitemaps,
-    classifies URLs, and returns new items dict keyed by content kind.
-    Skips URLs with lastmod before MIN_POST_DATE.
+    Crawl sarkariresult.com's XML sitemap to discover all post URLs from 2023+.
+    Returns items dict to merge into all_items before detail-page scraping.
     """
     new_items: dict[str, list[dict]] = {'job': [], 'result': [], 'admit': [], 'answer-key': [], 'syllabus': []}
-    cutoff = MIN_POST_DATE
+    cutoff = MIN_POST_DATE  # "2023-01-01"
+    SITEMAP_ROOT = 'https://www.sarkariresult.com/sitemap.xml'
 
-    log.info(f'\n[sitemap:{source_name}] Crawling {sitemap_root} for posts >= {cutoff}')
-    xml = _fetch_raw(sitemap_root)
+    log.info(f'\n[sitemap] Crawling sarkariresult.com sitemap for posts >= {cutoff}')
 
-    # If root sitemap fails, try alternative URL patterns and robots.txt discovery
-    if not xml or not _parse_sitemap(xml):
-        base = '/'.join(sitemap_root.split('/')[:3])  # https://www.example.com
-        alt_urls = [
-            f'{base}/wp-sitemap.xml',
-            f'{base}/sitemap_index.xml',
-            f'{base}/post-sitemap.xml',
-        ]
-        # Also try robots.txt discovery
-        discovered = _discover_sitemap_url(base)
-        if discovered and discovered != sitemap_root:
-            alt_urls.insert(0, discovered)
-
-        for alt_url in alt_urls:
-            if alt_url == sitemap_root:
-                continue
-            log.info(f'[sitemap:{source_name}] Root failed — trying {alt_url}')
-            alt_xml = _fetch_raw(alt_url)
-            if alt_xml and _parse_sitemap(alt_xml):
-                log.info(f'[sitemap:{source_name}] Found working sitemap at {alt_url}')
-                xml = alt_xml
-                break
-        else:
-            if not xml:
-                log.warning(f'[sitemap:{source_name}] Could not fetch root sitemap — skipping')
-                return new_items
+    xml = _fetch_raw(SITEMAP_ROOT)
+    if not xml:
+        log.warning('[sitemap] Could not fetch root sitemap — skipping')
+        return new_items
 
     root_entries = _parse_sitemap(xml)
-    log.info(f'[sitemap:{source_name}] Root: {len(root_entries)} entries')
+    log.info(f'[sitemap] Root: {len(root_entries)} entries')
 
     sub_sitemaps = [(u, lm) for u, lm in root_entries if u.endswith('.xml') or 'sitemap' in u.lower()]
-    post_urls: list[tuple[str, str | None]] = [(u, lm) for u, lm in root_entries
-                                                if not (u.endswith('.xml') or 'sitemap' in u.lower())]
+    post_urls: list[tuple[str, str | None]] = [(u, lm) for u, lm in root_entries if not (u.endswith('.xml') or 'sitemap' in u.lower())]
 
     for sub_url, sub_lm in sub_sitemaps:
         if sub_lm and sub_lm < cutoff[:4]:
@@ -4310,16 +4164,17 @@ def _scrape_sitemap_generic(
         if not sub_xml:
             continue
         sub_entries = _parse_sitemap(sub_xml)
-        log.info(f'[sitemap:{source_name}] Sub {sub_url.rsplit("/", 1)[-1]}: {len(sub_entries)} entries')
+        log.info(f'[sitemap] Sub-sitemap {sub_url.rsplit("/", 1)[-1]}: {len(sub_entries)} entries')
         for u, lm in sub_entries:
-            if (lm >= cutoff) if lm else True:
+            keep = lm >= cutoff if lm else True
+            if keep:
                 post_urls.append((u, lm))
 
-    log.info(f'[sitemap:{source_name}] Total candidate URLs: {len(post_urls)}')
+    log.info(f'[sitemap] Total candidate URLs: {len(post_urls)}')
 
     added = skipped_seen = skipped_kind = 0
     for url, lm in post_urls:
-        kind = _classify_url(url)
+        kind = _classify_sitemap_url(url)
         if kind is None:
             skipped_kind += 1
             continue
@@ -4338,21 +4193,15 @@ def _scrape_sitemap_generic(
             'dept':       '',
             'date_str':   lm or '',
             'detail_url': url,
-            'source':     source_name,
-            '_seen_id':   url_id,
-            'page_type':  kind,  # critical: ensures generate_mdx writes to correct directory
+            'source':     'sarkariresult',
         })
         added += 1
 
-    log.info(f'[sitemap:{source_name}] {added} new  ({skipped_seen} seen, {skipped_kind} non-post skipped)')
+    log.info(f'[sitemap] {added} new items added  ({skipped_seen} already seen, {skipped_kind} non-post URLs skipped)')
     for k, lst in new_items.items():
         if lst:
             log.info(f'  {k}: {len(lst)}')
     return new_items
-
-
-def scrape_sarkariresult_sitemap(seen: set, refresh_existing: bool = False) -> dict[str, list[dict]]:
-    return _scrape_sitemap_generic('https://www.sarkariresult.com/sitemap.xml', 'sarkariresult', seen, refresh_existing)
 
 
 # ══════════════════════════════════════════════════════════
@@ -4413,9 +4262,6 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
         log.info(f'{"─"*40}')
 
         for kind, url in source['urls'].items():
-            # Pagination base URLs per source per content type.
-            # For WordPress sites the pattern is: base_url + "page/N/"
-            # sarkariresult uses a different path (/latestjob/page/ vs /latestjob.php)
             all_archive_bases = {
                 'sarkariresult': {
                     'job':        'https://www.sarkariresult.com/latestjob/page/',
@@ -4444,8 +4290,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     'syllabus':   'https://www.sarkariexam.com/category/syllabus/page/',
                 },
             }
-            # Deeper archives for result/admit — they have long history and we need many more
-            max_archive_pages = 60 if kind in ('result', 'admit') else 40
+            max_archive_pages = 50
             archive_base = all_archive_bases.get(src_name, {}).get(kind, '')
 
             pages_to_fetch = [url]
@@ -4453,7 +4298,6 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 pages_to_fetch += [f'{archive_base}{p}/' for p in range(2, max_archive_pages + 1)]
 
             consecutive_empty = 0
-            consecutive_all_seen = 0
             for page_url in pages_to_fetch:
                 log.info(f'\nFetching {kind.upper()} listing: {page_url}')
                 soup = fetch(page_url)
@@ -4483,12 +4327,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                 for item in raw:
                     if not kind_matches_title(item.get('title', ''), kind):
                         continue
-                    # Reject navigation/category/archive URLs (not real post pages)
-                    detail_path_parts = [p for p in urlparse(item.get('detail_url', '')).path.split('/') if p]
-                    if any(p in _SKIP_PATHS for p in detail_path_parts):
-                        log.debug(f'  [skip] nav/category URL: {item.get("detail_url", "")}')
-                        continue
-                    _cutoff_year = int(MIN_POST_DATE[:4])  # respect MIN_POST_DATE
+                    _cutoff_year = int(MIN_POST_DATE[:4])  # respect MIN_POST_DATE (2023)
                     iso = to_iso_date(item.get('date_str', ''))
                     if iso and int(iso[:4]) < _cutoff_year:
                         log.debug(f'  [skip] pre-{_cutoff_year} item: {item["title"][:50]} ({iso})')
@@ -4504,46 +4343,27 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
                     accepted += 1
                 log.info(f'  Accepted new {kind}s from {src_name}: {accepted}')
 
-                # Unified "no new content" counter: increments for both empty pages
-                # and all-seen pages.  Previously the two counters could cancel each
-                # other out (an empty page reset consecutive_all_seen and vice-versa),
-                # causing pagination to never stop even after 50+ useless pages.
-                if accepted > 0:
-                    consecutive_empty = 0
-                    consecutive_all_seen = 0
-                else:
-                    if len(raw) == 0:
-                        consecutive_empty += 1
-                        if consecutive_empty >= 3:
-                            log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
-                            break
-                    consecutive_all_seen += 1
-                    # Allow deeper dig for result/admit archives before giving up
-                    _all_seen_limit = 10 if kind in ('result', 'admit') else 5
-                    if consecutive_all_seen >= _all_seen_limit:
-                        log.info(f'  [{src_name}] {_all_seen_limit} consecutive no-new pages — stopping {kind} pagination')
+                # Stop paginating if 3 consecutive pages return 0 raw items (404/empty)
+                if len(raw) == 0:
+                    consecutive_empty += 1
+                    if consecutive_empty >= 3:
+                        log.info(f'  [{src_name}] 3 consecutive empty pages — stopping {kind} pagination')
                         break
+                else:
+                    consecutive_empty = 0
 
     if successful_listings == 0:
         log.error('All source listings failed — no data fetched this run.')
         return 0  # exit 0 so GitHub Actions step stays green; commit step skips (0 MDX files)
 
-    # ── Sitemap-based historical backfill (all major sources via CF Worker) ──
-    _SITEMAP_SOURCES = [
-        ('https://www.sarkariresult.com/sitemap.xml',  'sarkariresult'),
-        ('https://www.freejobalert.com/sitemap.xml',   'freejobalert'),
-        ('https://www.sarkariexam.com/sitemap.xml',    'sarkariexam'),
-        ('https://www.rojgarresult.com/sitemap.xml',   'rojgarresult'),
-    ]
-    for _sm_url, _sm_src in _SITEMAP_SOURCES:
-        sitemap_new = _scrape_sitemap_generic(_sm_url, _sm_src, seen, refresh_existing=refresh_existing)
-        for kind, items in sitemap_new.items():
-            for item in items:
-                all_items[kind].append(item)
-                source_counts.setdefault(_sm_src, {'job': 0, 'result': 0, 'admit': 0, 'answer-key': 0, 'syllabus': 0})
-                source_counts[_sm_src][kind] = source_counts[_sm_src].get(kind, 0) + 1
-    # Save seen so sitemap URL IDs persist even if detail fetching times out.
+    # ── Sitemap-based historical backfill (sarkariresult.com) ──
+    sitemap_new = scrape_sarkariresult_sitemap(seen, refresh_existing=refresh_existing)
     save_seen(seen)
+    for kind, items in sitemap_new.items():
+        for item in items:
+            all_items[kind].append(item)
+            source_counts.setdefault('sarkariresult', {'job': 0, 'result': 0, 'admit': 0, 'answer-key': 0, 'syllabus': 0})
+            source_counts['sarkariresult'][kind] = source_counts['sarkariresult'].get(kind, 0) + 1
 
     # Per-source summary table
     log.info('\n' + '─' * 60)
@@ -4693,10 +4513,7 @@ def run(refresh_existing: bool = False, rebuild_only: bool = False) -> int:
             except Exception as exc:
                 log.warning(f'  [mdx] Failed to write MDX for {rich.get("slug")}: {exc}')
 
-    total_fetched = sum(kind_fetch_count.values())
-    total_discovered = sum(len(v) for v in all_items.values())
-    log.info(f'\nDetail pages fetched this run: {total_fetched} / {total_discovered} discovered')
-    log.info(f'  Per-kind: ' + ', '.join(f'{k}={kind_fetch_count.get(k,0)}/{MAX_PER_KIND.get(k,0)}' for k in MAX_PER_KIND))
+    log.info(f'\nDetail pages fetched this run: {detail_fetch_count} / {sum(len(v) for v in all_items.values())} discovered (cap={MAX_DETAIL_PER_RUN})')
 
     # ── 2b. Save staging manifest ──────────────────────────
     if staging_manifest:

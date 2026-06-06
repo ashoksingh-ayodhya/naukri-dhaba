@@ -123,55 +123,45 @@ sameAs: [twitter, telegram]
 
 ---
 
-### Required: `buildResultJsonLd()` — LearningResource schema
+### Required: `buildResultJsonLd()` — NewsArticle schema
 Applied to: `app/results/[category]/[slug]/page.tsx`
 
 **Required fields:**
 ```
-@type: "LearningResource"
-name: fm.title
+@type: "NewsArticle"
+headline: fm.title
 description: (generated)
 url: canonical URL
 datePublished: ISO date
 dateModified: ISO date (if updatedAt present)
-provider: { @type: "Organization", name: orgName }
-educationalLevel: "Government Exam"
+publisher: { @type: "Organization", name: siteConfig.name, logo: { @type: "ImageObject", url: logoUrl } }
+author: { @type: "Organization", name: siteConfig.name }
 inLanguage: "en-IN"
 isAccessibleForFree: true
 ```
 
-**Status:** ✅ Implemented and wired
+**Status:** ✅ Implemented and wired (changed from LearningResource on 2026-05-07)
 
 ---
 
-### Required: `buildAdmitJsonLd()` — Event schema
+### Required: `buildAdmitJsonLd()` — NewsArticle schema
 Applied to: `app/admit-cards/[category]/[slug]/page.tsx`
 
 **Required fields:**
 ```
-@type: "Event"
-name: fm.title
+@type: "NewsArticle"
+headline: fm.title
 description: (generated)
 url: canonical URL
-startDate: examDate ISO || datePosted
-endDate: examDate ISO || datePosted   ← MISSING — add this
-eventStatus: "https://schema.org/EventScheduled"
-eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode"
-location:
-  @type: "Place"
-  name: "As per Admit Card"
-  address: { @type: "PostalAddress", addressCountry: "IN" }
-organizer: { @type: "Organization", name: orgName, url: officialWebsite || siteUrl }
-image: siteConfig.ogImage   ← MISSING — add this
-offers:
-  @type: "Offer"
-  price: "0"
-  priceCurrency: "INR"
-  availability: "https://schema.org/InStock"
+datePublished: ISO date
+dateModified: ISO date (if updatedAt present)
+publisher: { @type: "Organization", name: siteConfig.name, logo: { @type: "ImageObject", url: logoUrl } }
+author: { @type: "Organization", name: siteConfig.name }
+inLanguage: "en-IN"
+isAccessibleForFree: true
 ```
 
-**Known gaps:** `endDate` and `image` are missing.
-**Fix target:** `lib/seo.ts` → `buildAdmitJsonLd()`
+**Status:** ✅ Implemented and wired (changed from Event schema on 2026-05-07 — Event schema had required fields Google stopped supporting for admit cards)
 
 ---
 
@@ -223,22 +213,24 @@ hasCourseInstance:
 
 ---
 
-### Required: `buildFaqJsonLd()` — FAQPage schema
+### Required: `buildHowToJsonLd()` — HowTo schema *(replaces deprecated FAQPage)*
 Applied to: `app/jobs/[category]/[slug]/page.tsx`
 
-FAQs are embedded in MDX body by the SEO rewriter as:
-```
-**Q:** Question text here?
-**A:** Answer text here.
+> ⚠️ **FAQPage schema was deprecated by Google on 2026-05-07** and no longer triggers
+> rich results. Do NOT use `buildFaqJsonLd` or FAQPage anywhere on the site.
+
+Job detail pages emit HowTo schema using the `fm.howToApply` steps array:
+```tsx
+{fm.howToApply && fm.howToApply.length > 0 && (
+  <script type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(
+      buildHowToJsonLd(`How to Apply for ${fm.title}`, fm.howToApply)
+    ) }} />
+)}
 ```
 
-The page must extract these and emit FAQPage schema. Extract pattern:
-```
-/\*\*Q:\*\*\s*(.+?)\s*\n\s*\*\*A:\*\*\s*(.+?)(?=\n\s*\*\*Q:|$)/gs
-```
-
-**Status:** Function exists in `lib/seo.ts`. NOT wired into job detail page.
-**Fix target:** Wire `buildFaqJsonLd` into `app/jobs/[category]/[slug]/page.tsx`.
+**Status:** ✅ `buildHowToJsonLd` wired into job detail page (wired 2026-05-07)
+**Do NOT revert** to `buildFaqJsonLd` or re-add FAQPage blocks.
 
 ---
 
@@ -278,11 +270,12 @@ Applied to: ALL detail pages
 | Schema Type | lib/seo.ts | Wired in page |
 |-------------|-----------|----------------|
 | JobPosting | ✅ | ✅ job detail |
-| LearningResource (result) | ✅ | ✅ result detail |
-| Event (admit card) | ✅ (gaps: endDate, image) | ✅ admit-card detail |
+| NewsArticle (result) | ✅ | ✅ result detail |
+| NewsArticle (admit card) | ✅ | ✅ admit-card detail |
 | LearningResource (answer key) | ✅ | ❌ NOT wired |
 | Course (syllabus) | ✅ (gap: teaches) | ❌ NOT wired |
-| FAQPage | ✅ | ❌ NOT wired into job page |
+| HowTo (job apply steps) | ✅ | ✅ job detail (uses fm.howToApply) |
+| FAQPage | ~~DEPRECATED 2026-05-07~~ | ~~DO NOT USE~~ |
 | CollectionPage+ItemList | ✅ | ❌ NOT wired into listing pages |
 | WebSite | ✅ | ✅ homepage |
 | Organization | ✅ (gap: logo ImageObject) | ✅ homepage |
@@ -368,16 +361,18 @@ agent/state.json        — Runtime state (counts, copilot_issues, etc.)
 
 ---
 
-## 10. KNOWN OPEN GAPS (as of 2026-05-25)
+## 10. KNOWN OPEN GAPS (as of 2026-06-03)
 
 These must be fixed by the agent's `fix_schema` task:
 
 1. **`buildOrganizationJsonLd`** — `logo` is bare string, must be `ImageObject`
-2. **`buildAdmitJsonLd`** — missing `endDate` and `image` fields
-3. **`buildSyllabusJsonLd`** — missing `teaches` field
-4. **`app/answer-keys/[slug]/page.tsx`** — `buildAnswerKeyJsonLd` not wired
-5. **`app/syllabus/[slug]/page.tsx`** — `buildSyllabusJsonLd` not wired
-6. **`app/jobs/[category]/[slug]/page.tsx`** — `buildFaqJsonLd` not wired
-7. **`app/jobs/[category]/page.tsx`** — `buildListingPageJsonLd` not wired
-8. **`app/results/[category]/page.tsx`** — `buildListingPageJsonLd` not wired
-9. **`app/admit-cards/[category]/page.tsx`** — `buildListingPageJsonLd` not wired
+2. **`buildSyllabusJsonLd`** — missing `teaches` field
+3. **`app/answer-keys/[slug]/page.tsx`** — `buildAnswerKeyJsonLd` not wired
+4. **`app/syllabus/[slug]/page.tsx`** — `buildSyllabusJsonLd` not wired
+5. **`app/jobs/[category]/page.tsx`** — `buildListingPageJsonLd` not wired
+6. **`app/results/[category]/page.tsx`** — `buildListingPageJsonLd` not wired
+7. **`app/admit-cards/[category]/page.tsx`** — `buildListingPageJsonLd` not wired
+
+**RESOLVED (do not re-open):**
+- ~~`buildAdmitJsonLd` endDate/image~~ — schema changed to NewsArticle on 2026-05-07
+- ~~`buildFaqJsonLd` not wired~~ — FAQPage deprecated by Google on 2026-05-07; replaced by HowTo schema (`buildHowToJsonLd`) using `fm.howToApply`

@@ -76,6 +76,9 @@ export default async function JobDetailPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJobJsonLd(fm, pageUrl)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(breadcrumbs)) }} />
+      {fm.howToApply && fm.howToApply.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildHowToJsonLd(fm.title, fm.howToApply, pageUrl)) }} />
+      )}
       {(() => {
         const faqs: Array<{question: string; answer: string}> = [];
         const faqRe = /\*\*Q:\*\*\s*(.+?)\s*\n\s*\*\*A:\*\*\s*([\s\S]+?)(?=\n\s*\*\*Q:|$)/g;

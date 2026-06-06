@@ -434,3 +434,23 @@ export function buildHowToJsonLd(
     })),
   };
 }
+
+export function buildHowToJsonLd(
+  title: string,
+  steps: string[],
+  url: string
+): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `How to Apply for ${title}`,
+    description: `Step-by-step guide to apply for ${title} government job.`,
+    url,
+    step: steps.map((text, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: text.length > 60 ? text.slice(0, 57) + "…" : text,
+      text,
+    })),
+  };
+}

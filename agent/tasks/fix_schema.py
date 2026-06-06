@@ -6,14 +6,19 @@ Agent task: audit and fix schema markup gaps in lib/seo.ts and page components.
 
 Reads agent/knowledge.md as its spec, then applies idempotent targeted patches:
   1. lib/seo.ts — buildOrganizationJsonLd logo as ImageObject
-  2. lib/seo.ts — buildAdmitJsonLd: add endDate + image
-  3. lib/seo.ts — buildSyllabusJsonLd: add teaches field
-  4. app/answer-keys/[slug]/page.tsx — wire buildAnswerKeyJsonLd
-  5. app/syllabus/[slug]/page.tsx — wire buildSyllabusJsonLd
-  6. app/jobs/[category]/[slug]/page.tsx — wire buildFaqJsonLd
-  7. app/jobs/[category]/page.tsx — wire buildListingPageJsonLd
-  8. app/results/[category]/page.tsx — wire buildListingPageJsonLd
-  9. app/admit-cards/[category]/page.tsx — wire buildListingPageJsonLd
+  2. lib/seo.ts — buildSyllabusJsonLd: add teaches field
+  3. app/answer-keys/[slug]/page.tsx — wire buildAnswerKeyJsonLd
+  4. app/syllabus/[slug]/page.tsx — wire buildSyllabusJsonLd
+  5. app/jobs/[category]/page.tsx — wire buildListingPageJsonLd
+  6. app/results/[category]/page.tsx — wire buildListingPageJsonLd
+  7. app/admit-cards/[category]/page.tsx — wire buildListingPageJsonLd
+
+NOTE: FAQPage schema was deprecated by Google on 2026-05-07. buildFaqJsonLd is
+removed from job detail pages. Job pages now use buildHowToJsonLd (HowTo schema)
+wrapping the fm.howToApply steps array.
+
+NOTE: buildAdmitJsonLd and buildResultJsonLd both use NewsArticle schema (not
+Event / LearningResource). Do NOT revert these to old schema types.
 
 Returns: number of individual patches applied (0 = already up to date).
 Called by agent.py as: from tasks.fix_schema import run
@@ -78,26 +83,6 @@ def fix_organization_logo() -> bool:
         "seo.ts: buildOrganizationJsonLd — logo → ImageObject",
     )
 
-
-def fix_admit_end_date_and_image() -> bool:
-    """
-    buildAdmitJsonLd: endDate is required by Google Event schema.
-    image improves rich result display in search.
-    """
-    return _patch(
-        SEO_TS,
-        (
-            "    startDate: examDateIso || datePosted,\n"
-            "    eventStatus:"
-        ),
-        (
-            "    startDate: examDateIso || datePosted,\n"
-            "    endDate: examDateIso || datePosted,\n"
-            "    image: `${siteConfig.url}${siteConfig.ogImage}`,\n"
-            "    eventStatus:"
-        ),
-        "seo.ts: buildAdmitJsonLd — add endDate + image",
-    )
 
 
 def fix_syllabus_teaches() -> bool:
@@ -170,62 +155,6 @@ def wire_syllabus_schema() -> bool:
     )
     return c1 or c2
 
-
-def wire_faq_schema_job_page() -> bool:
-    """
-    Wire buildFaqJsonLd into the job detail page.
-    FAQs are written into MDX body as **Q:**/**A:** pairs by the SEO rewriter.
-    The regex extracts them at build time and emits FAQPage JSON-LD.
-    """
-    page = APP_DIR / "jobs" / "[category]" / "[slug]" / "page.tsx"
-
-    c1 = _patch(
-        page,
-        'import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";',
-        'import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd, buildFaqJsonLd } from "@/lib/seo";',
-        "jobs/[category]/[slug]/page.tsx — import buildFaqJsonLd",
-    )
-
-    # Guard: only wire FAQ block if it's not already there.
-    # The old pattern is a prefix of the new pattern so we must check explicitly.
-    try:
-        text = page.read_text(encoding="utf-8")
-    except FileNotFoundError:
-        return c1
-
-    faq_block = (
-        '      {(() => {\n'
-        '        const faqs: Array<{question: string; answer: string}> = [];\n'
-        '        const faqRe = /\\*\\*Q:\\*\\*\\s*(.+?)\\s*\\n\\s*\\*\\*A:\\*\\*\\s*([\\s\\S]+?)(?=\\n\\s*\\*\\*Q:|$)/g;\n'
-        '        let m;\n'
-        '        while ((m = faqRe.exec(content || "")) !== null) {\n'
-        '          faqs.push({ question: m[1].trim(), answer: m[2].trim() });\n'
-        '        }\n'
-        '        return faqs.length > 0 ? (\n'
-        '          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(faqs)) }} />\n'
-        '        ) : null;\n'
-        '      })()}'
-    )
-
-    label = "jobs/[category]/[slug]/page.tsx — wire buildFaqJsonLd"
-    if "faqRe" in text:
-        print(f"[fix_schema] ✓ Already applied: {label}")
-        return c1
-
-    breadcrumb_tag = '      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(breadcrumbs)) }} />'
-    if breadcrumb_tag not in text:
-        print(f"[fix_schema] ⚠️  Pattern not found for: {label}", file=sys.stderr)
-        return c1
-
-    new_text = text.replace(
-        breadcrumb_tag,
-        breadcrumb_tag + "\n" + faq_block,
-        1,
-    )
-    page.write_text(new_text, encoding="utf-8")
-    _applied.append(label)
-    print(f"[fix_schema] ✅ Applied: {label}", flush=True)
-    return True
 
 
 def _wire_listing_page(
@@ -350,13 +279,11 @@ def run() -> int:
 
     print("[fix_schema] --- lib/seo.ts ---", flush=True)
     fix_organization_logo()
-    fix_admit_end_date_and_image()
     fix_syllabus_teaches()
 
     print("[fix_schema] --- page components ---", flush=True)
     wire_answer_key_schema()
     wire_syllabus_schema()
-    wire_faq_schema_job_page()
     wire_listing_pages()
 
     n = len(_applied)

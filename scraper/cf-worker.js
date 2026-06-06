@@ -36,7 +36,7 @@ const BROWSER_HEADERS = {
   Accept:
     "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
   "Accept-Language": "en-IN,en-US;q=0.9,en;q=0.8",
-  "Accept-Encoding": "gzip, deflate",
+  "Accept-Encoding": "identity",
   "Cache-Control": "no-cache",
   "Sec-Fetch-Dest": "document",
   "Sec-Fetch-Mode": "navigate",
@@ -95,9 +95,10 @@ export default {
 
       const body = await resp.arrayBuffer();
       const ct = resp.headers.get("Content-Type") || "text/html; charset=utf-8";
-      // Forward Content-Encoding so the Python client can auto-decompress.
-      // Without this, the client sees raw gzip bytes with no hint to decompress.
-      const ce = resp.headers.get("Content-Encoding") || "";
+      // Do NOT forward Content-Encoding: Cloudflare Workers auto-decompress
+      // the response body when calling fetch(), so the bytes in `body` are
+      // already plain text. Forwarding gzip/br would cause the Python client
+      // to double-decompress and receive garbage binary instead of HTML.
 
       const outHeaders = {
         "Content-Type": ct,
@@ -106,7 +107,6 @@ export default {
         "X-Origin-Status": String(resp.status),
         "Access-Control-Allow-Origin": "*",
       };
-      if (ce) outHeaders["Content-Encoding"] = ce;
 
       return new Response(body, {
         status: resp.status,
