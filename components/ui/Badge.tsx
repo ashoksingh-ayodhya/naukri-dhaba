@@ -1,4 +1,4 @@
-import { isNew, isDeadlineSoon, isExpired } from "@/lib/content";
+import { isNew, isDeadlineSoon, isExpired } from "@/lib/dateBadges";
 
 interface StatusBadgeProps {
   publishedAt?: string;

@@ -88,13 +88,29 @@ def is_within_date_range(post_date: str) -> bool:
 
 # ── YAML helpers ──────────────────────────────────────────────────────────────
 
+def _yaml_escape(value) -> str:
+    """Escape a value for safe embedding inside a double-quoted YAML scalar.
+
+    Scraped text sometimes contains literal newlines/tabs/backslashes, which
+    break double-quoted YAML scalars (a raw newline mid-string is read as the
+    end of the line, and a stray "---" on the continuation line is parsed as
+    a document separator → "unexpected end of stream" at build time).
+    """
+    return (
+        str(value)
+        .replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\r", "\\r")
+        .replace("\t", "\\t")
+    )
+
+
 def _yaml_str(value: str) -> str:
     """Safely quote a YAML string value."""
     if not value:
         return '""'
-    # Escape double quotes inside
-    escaped = value.replace('"', '\\"')
-    return f'"{escaped}"'
+    return f'"{_yaml_escape(value)}"'
 
 
 def _yaml_list(items: list) -> str:
@@ -104,8 +120,7 @@ def _yaml_list(items: list) -> str:
     lines = [""]
     for item in items:
         if isinstance(item, str):
-            escaped = item.replace('"', '\\"')
-            lines.append(f'  - "{escaped}"')
+            lines.append(f'  - "{_yaml_escape(item)}"')
         else:
             lines.append(f"  - {json.dumps(item, ensure_ascii=False)}")
     return "\n".join(lines)
@@ -117,9 +132,7 @@ def _yaml_dict(d: dict) -> str:
         return "{}"
     parts = []
     for k, v in d.items():
-        ek = k.replace('"', '\\"')
-        ev = str(v).replace('"', '\\"')
-        parts.append(f'"{ek}": "{ev}"')
+        parts.append(f'"{_yaml_escape(k)}": "{_yaml_escape(v)}"')
     return "{" + ", ".join(parts) + "}"
 
 

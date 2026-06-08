@@ -2,18 +2,9 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import type { PostFrontmatter, PostMeta, ListingPost, PageType } from "./types";
+import { parseDDMMYYYY } from "./dateBadges";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content");
-
-function parseDDMMYYYY(dateStr: string | undefined): Date | null {
-  if (!dateStr) return null;
-  // Accept both DD/MM/YYYY and DD-MM-YYYY (scraper writes either)
-  const match = dateStr.match(/(\d{2})[\/\-](\d{2})[\/\-](\d{4})/);
-  if (!match) return null;
-  const [, dd, mm, yyyy] = match;
-  const d = new Date(`${yyyy}-${mm}-${dd}`);
-  return isNaN(d.getTime()) ? null : d;
-}
 
 function sortByActiveFirst<T extends { lastDate?: string; updatedAt?: string; publishedAt?: string }>(items: T[]): T[] {
   const now = new Date();
@@ -187,27 +178,6 @@ export function getLatestPosts(limit = 30): ListingPost[] {
 
 export function getLatestByType(type: PageType, limit = 20): ListingPost[] {
   return getAllPosts(type).slice(0, limit);
-}
-
-export function isNew(publishedAt: string): boolean {
-  const today = new Date();
-  const pub = new Date(publishedAt);
-  const diffMs = today.getTime() - pub.getTime();
-  const diffDays = diffMs / (1000 * 60 * 60 * 24);
-  return diffDays <= 3;
-}
-
-export function isDeadlineSoon(lastDate: string | undefined): boolean {
-  const deadline = parseDDMMYYYY(lastDate);
-  if (!deadline) return false;
-  const diffDays = (deadline.getTime() - Date.now()) / (1000 * 60 * 60 * 24);
-  return diffDays >= 0 && diffDays <= 7;
-}
-
-export function isExpired(lastDate: string | undefined): boolean {
-  const deadline = parseDDMMYYYY(lastDate);
-  if (!deadline) return false;
-  return deadline < new Date();
 }
 
 export type QualificationLevel =
