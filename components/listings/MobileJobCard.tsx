@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { StatusBadge, CategoryBadge } from '@/components/ui/Badge'
-import { isExpired } from '@/lib/content'
+import { isExpired } from '@/lib/dateBadges'
 import type { ListingPost } from '@/lib/types'
 
 export default function MobileJobCard({ post }: { post: ListingPost }) {

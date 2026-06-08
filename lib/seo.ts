@@ -421,22 +421,6 @@ export function buildDefaultFaqs(fm: PostFrontmatter): Array<{ question: string;
 /** HowTo schema for how-to-apply steps — replaces deprecated FAQPage (dead since May 7 2026) */
 export function buildHowToJsonLd(
   title: string,
-  steps: string[]
-): object {
-  return {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: title,
-    step: steps.map((text, i) => ({
-      "@type": "HowToStep",
-      position: i + 1,
-      text,
-    })),
-  };
-}
-
-export function buildHowToJsonLd(
-  title: string,
   steps: string[],
   url: string
 ): object {
