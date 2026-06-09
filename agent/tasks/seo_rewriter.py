@@ -28,6 +28,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+import yaml
+
 log = logging.getLogger("NaukriDhaba")
 
 CONTENT_ROOT = Path(__file__).parent.parent.parent / "content"
@@ -333,6 +335,16 @@ def rewrite_file(fpath: Path, dry_run: bool = False):
         return False
 
     front = parts[1]
+
+    # Guard: if the existing frontmatter can't be parsed skip this file entirely.
+    # Raw newlines in field values (e.g. from scraped fee tables) produce a line
+    # starting with "--- " which looks like a YAML document separator; split("---",2)
+    # above would then truncate the frontmatter. Detect this and bail out.
+    try:
+        yaml.safe_load(front)
+    except yaml.YAMLError:
+        log.warning(f"  [rewriter] SKIP {slug}: frontmatter is not valid YAML — needs manual repair")
+        return False
     # body  = parts[2]  # we replace the body entirely for job pages
 
     # Extract all fields
@@ -419,6 +431,15 @@ def rewrite_file(fpath: Path, dry_run: bool = False):
             f"  [rewriter] BLOCKED write to {slug}: rewriter changed title "
             f"from '{title}' to '{new_title}'"
         )
+        return _BLOCKED_WRITE
+
+    # Final guard: ensure the output YAML is valid before writing
+    try:
+        new_parts = new_content.split("---", 2)
+        if len(new_parts) >= 3:
+            yaml.safe_load(new_parts[1])
+    except yaml.YAMLError as e:
+        log.error(f"  [rewriter] BLOCKED write to {slug}: output YAML invalid: {e}")
         return _BLOCKED_WRITE
 
     if not dry_run:
