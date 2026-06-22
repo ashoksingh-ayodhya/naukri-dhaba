@@ -30,7 +30,7 @@ jobs:
   scrape:
     name: Scrape → MDX → Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 300
     env:
       TZ: Asia/Kolkata
 
@@ -55,6 +55,7 @@ jobs:
         run: python -m playwright install chromium --with-deps
 
       - name: Run scraper → writes MDX files to content/
+        continue-on-error: true
         working-directory: scraper
         env:
           NAUKRI_DHABA_SITE_URL: https://naukridhaba.in

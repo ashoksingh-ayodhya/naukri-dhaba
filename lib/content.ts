@@ -6,23 +6,36 @@ import { parseDDMMYYYY } from "./dateBadges";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content");
 
+// Posts published more than this many days ago with no lastDate are treated as stale, not "active"
+const STALE_DAYS = 365;
+
 function sortByActiveFirst<T extends { lastDate?: string; updatedAt?: string; publishedAt?: string }>(items: T[]): T[] {
   const now = new Date();
+  const staleThreshold = new Date(now.getTime() - STALE_DAYS * 24 * 60 * 60 * 1000);
+
   return items.sort((a, b) => {
     const aDeadline = parseDDMMYYYY(a.lastDate);
     const bDeadline = parseDDMMYYYY(b.lastDate);
-    const aActive = !aDeadline || aDeadline >= now;
-    const bActive = !bDeadline || bDeadline >= now;
+    const aPubDate = a.publishedAt ? new Date(a.publishedAt) : null;
+    const bPubDate = b.publishedAt ? new Date(b.publishedAt) : null;
 
-    // Active posts before expired
+    // A post is "active" only if: it has a future deadline, OR it has no deadline but was published recently
+    const aActive = aDeadline
+      ? aDeadline >= now
+      : aPubDate ? aPubDate >= staleThreshold : false;
+    const bActive = bDeadline
+      ? bDeadline >= now
+      : bPubDate ? bPubDate >= staleThreshold : false;
+
+    // Active posts before expired/stale
     if (aActive !== bActive) return aActive ? -1 : 1;
 
-    // Among active: soonest deadline first
+    // Among active: soonest deadline first, then newest published
     if (aActive && bActive && aDeadline && bDeadline) {
       return aDeadline.getTime() - bDeadline.getTime();
     }
 
-    // Among expired or no deadline: newest published first
+    // Among expired or stale: newest published first
     const da = a.updatedAt || a.publishedAt || "";
     const db = b.updatedAt || b.publishedAt || "";
     return db.localeCompare(da);

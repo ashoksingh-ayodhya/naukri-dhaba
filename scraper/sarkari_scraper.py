@@ -623,6 +623,23 @@ def is_source_url(url: str) -> bool:
     return any(host == sh or host.endswith('.' + sh) for sh in SOURCE_HOSTS)
 
 
+# Path patterns that are scraper filter/search pages, not real job detail pages
+_JUNK_URL_RE = re.compile(
+    r'/search-jobs/'            # freejobalert qualification/keyword search pages
+    r'|/jobs-in-[a-z]'         # freejobalert location filter pages
+    r'|/[a-z0-9-]+-government-jobs/?$'  # e.g. /6th-pass-government-jobs/
+    r'|/government-jobs/?$',
+    re.I,
+)
+
+
+def is_junk_listing_url(url: str) -> bool:
+    """Return True for scraper filter/search pages that are not real job detail pages."""
+    if not url:
+        return False
+    return bool(_JUNK_URL_RE.search(urlparse(url).path))
+
+
 def is_official_url(url: str) -> bool:
     if not url or url == '#':
         return False
@@ -1989,6 +2006,9 @@ def parse_listing(soup: BeautifulSoup, page_type: str, source_base: str = BASE) 
 
         detail_url = urljoin(source_base, link_tag['href'])
 
+        if is_junk_listing_url(detail_url):
+            continue
+
         # Skip header rows / navigation rows
         if title.lower() in ('post name', 'latest jobs', 'results', 'admit card', '#', ''):
             continue
@@ -2105,6 +2125,9 @@ def _parse_listing_from_lists(soup: BeautifulSoup, page_type: str, source_base: 
         href = anchor.get('href', '')
         detail_url = normalize_url(href, base_url=source_base)
         if detail_url == '#':
+            continue
+
+        if is_junk_listing_url(detail_url):
             continue
 
         parsed = urlparse(detail_url)

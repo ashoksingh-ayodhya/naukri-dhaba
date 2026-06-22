@@ -115,8 +115,7 @@ def main():
 
     # 5. RSS feeds
     print("\n[5] RSS FEEDS")
-    check("/feed/jobs.xml", "Jobs RSS", min_size=200, expect_type="xml")
-    check("/feed/results.xml", "Results RSS", min_size=200, expect_type="xml")
+    check("/feed.xml", "RSS feed", min_size=200, expect_type="xml")
 
     # 6. Sample detail pages — extract from homepage
     print("\n[6] SAMPLE DETAIL PAGES")
