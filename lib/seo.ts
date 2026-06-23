@@ -92,18 +92,44 @@ function parseSalaryRange(raw: string | undefined): { min: number; max: number }
   return { min: values[0], max: values[values.length - 1] };
 }
 
-/** Map a qualification string to a schema.org credentialCategory */
-function credentialCategory(qual: string | undefined): string {
-  if (!qual) return "degree";
+/** Map a qualification string to a valid schema.org/Google JobPosting credentialCategory enum value */
+function credentialCategory(qual: string | undefined): string | null {
+  if (!qual) return null;
   const q = qual.toLowerCase();
-  if (q.includes("10th") || q.includes("matriculation") || q.includes("sslc")) return "highschool";
-  if (q.includes("12th") || q.includes("intermediate") || q.includes("hsc")) return "highschool";
+  if (q.includes("10th") || q.includes("matriculation") || q.includes("sslc")) return "high school";
+  if (q.includes("12th") || q.includes("intermediate") || q.includes("hsc")) return "high school";
   if (q.includes("diploma")) return "associate degree";
   if (q.includes("degree") || q.includes("graduate") || q.includes("b.sc") ||
       q.includes("b.a") || q.includes("b.com") || q.includes("b.e") || q.includes("b.tech")) return "bachelor degree";
   if (q.includes("post graduate") || q.includes("m.sc") || q.includes("m.a") ||
       q.includes("m.tech") || q.includes("mba")) return "postgraduate degree";
-  return "degree";
+  return null;
+}
+
+/** Derive a valid Indian state addressRegion from the hiring org name. */
+function inferRegion(orgName: string): string {
+  const o = orgName.toLowerCase();
+  if (o.includes("madhya pradesh") || o.includes("mppsc")) return "Madhya Pradesh";
+  if (o.includes("uttar pradesh") || o.includes("uppsc") || o.includes("upsssc")) return "Uttar Pradesh";
+  if (o.includes("rajasthan") || o.includes("rpsc") || o.includes("rsmssb")) return "Rajasthan";
+  if (o.includes("bihar") || o.includes("bpsc") || o.includes("bssc")) return "Bihar";
+  if (o.includes("gujarat") || o.includes("gpsc")) return "Gujarat";
+  if (o.includes("maharashtra") || o.includes("mpsc")) return "Maharashtra";
+  if (o.includes("karnataka") || o.includes("kpsc")) return "Karnataka";
+  if (o.includes("tamil nadu") || o.includes("tnpsc")) return "Tamil Nadu";
+  if (o.includes("andhra pradesh") || o.includes("appsc")) return "Andhra Pradesh";
+  if (o.includes("telangana") || o.includes("tspsc")) return "Telangana";
+  if (o.includes("kerala")) return "Kerala";
+  if (o.includes("west bengal") || o.includes("wbpsc") || o.includes("wbssc")) return "West Bengal";
+  if (o.includes("punjab") || o.includes("ppsc")) return "Punjab";
+  if (o.includes("haryana") || o.includes("hpsc") || o.includes("hssc")) return "Haryana";
+  if (o.includes("himachal") || o.includes("hppsc")) return "Himachal Pradesh";
+  if (o.includes("jharkhand") || o.includes("jpsc") || o.includes("jssc")) return "Jharkhand";
+  if (o.includes("odisha") || o.includes("opsc") || o.includes("ossc")) return "Odisha";
+  if (o.includes("chhattisgarh") || o.includes("cgpsc") || o.includes("cgvyapam")) return "Chhattisgarh";
+  if (o.includes("assam") || o.includes("apsc") || o.includes("slrc")) return "Assam";
+  if (o.includes("uttarakhand") || o.includes("ukpsc") || o.includes("uksssc")) return "Uttarakhand";
+  return "Delhi";
 }
 
 /** Derive a valid addressLocality from the hiring org name (for state PSC jobs). */
@@ -173,12 +199,13 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
       name: orgName,
       ...(orgUrl ? { sameAs: orgUrl } : {}),
     },
-    // jobLocation uses a real city (inferred from org name) — "India" is NOT a valid addressRegion
+    // jobLocation uses a real city + state (inferred from org name) — "India" is NOT a valid addressRegion
     jobLocation: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
         addressLocality: inferLocality(orgName),
+        addressRegion: inferRegion(orgName),
         addressCountry: "IN",
       },
     },
@@ -213,11 +240,12 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
     };
   }
 
-  // educationRequirements
+  // educationRequirements — only set credentialCategory when it maps to a valid enum value
   if (fm.qualification) {
+    const category = credentialCategory(fm.qualification);
     ld.educationRequirements = {
       "@type": "EducationalOccupationalCredential",
-      credentialCategory: credentialCategory(fm.qualification),
+      ...(category ? { credentialCategory: category } : {}),
       competencyRequired: fm.qualification,
     };
   }
@@ -231,13 +259,8 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
     };
   }
 
-  // Age requirements as experienceRequirements
-  if (fm.ageMin && fm.ageMax) {
-    ld.experienceRequirements = {
-      "@type": "OccupationalExperienceRequirements",
-      monthsOfExperience: 0,
-    };
-  }
+  // Note: age limits are NOT work experience — no experienceRequirements mapping.
+  // monthsOfExperience must be a positive number per Google's spec; age has no valid mapping here.
 
   // directApply — false means candidates go to official site
   if (fm.applyUrl && fm.applyUrl !== "#") ld.directApply = false;
