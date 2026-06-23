@@ -634,10 +634,23 @@ _JUNK_URL_RE = re.compile(
 
 
 def is_junk_listing_url(url: str) -> bool:
-    """Return True for scraper filter/search pages that are not real job detail pages."""
+    """Return True for scraper filter/search/category pages that are not real job detail pages."""
     if not url:
         return False
-    return bool(_JUNK_URL_RE.search(urlparse(url).path))
+    parsed = urlparse(url)
+    host, path = parsed.netloc.lower(), parsed.path
+    if _JUNK_URL_RE.search(path):
+        return True
+    # sarkariexam puts real posts at the site root; "/category/<slug>/" is always
+    # a listing/index page (e.g. /category/exam-result/, /category/top-online-form/).
+    if host.endswith('sarkariexam.com') and '/category/' in path:
+        return True
+    # freejobalert puts every real job/result/admit/answer-key/syllabus post under
+    # "/articles/<slug>-<id>"; everything else is nav/menu (state pages, qualification
+    # filters, "/exam-pattern/", "/latest-notifications/", "/admit-card/", etc.).
+    if host.endswith('freejobalert.com') and '/articles/' not in path:
+        return True
+    return False
 
 
 def is_official_url(url: str) -> bool:
