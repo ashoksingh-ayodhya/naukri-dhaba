@@ -108,9 +108,12 @@ class DetailData:
             "advertisement_number": self.advertisement_number,
             "short_description": self.short_description,
             # Legacy date fields — pick from dates dict
-            "app_begin": self.dates.get("Application Begin", "Check Notification"),
+            "app_begin": self._first_date_match(
+                ["Application Begin", "Application Start Date", "Apply Start Date"]
+            ) or "Check Notification",
             "last_date": self._first_date_match(
                 ["Last Date for Registration", "Last Date for Apply Online",
+                 "Last Date to Apply Online", "Last Date to Apply",
                  "Last Date", "Closing Date"]
             ) or "Check Notification",
             "exam_date": self._first_date_match(

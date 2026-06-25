@@ -20,6 +20,7 @@ from .utils import (
     clean, classify_link, is_junk_row,
     looks_like_date_value, looks_like_fee_value,
     extract_age_reference_date,
+    known_org_from_title, NOT_AN_ORG_NAME_RE,
 )
 
 log = logging.getLogger("NaukriDhaba")
@@ -43,6 +44,9 @@ class SarkariResultParser(BaseDetailParser):
                 data.title = text
                 break
 
+        # Known armed-forces recruiters are unambiguous from the title.
+        data.organization_full_name = known_org_from_title(data.title)
+
         # Organization name and advt number from bold/colored text blocks
         for tag in soup.find_all(["b", "strong", "span", "p", "font"]):
             text = clean(tag.get_text())
@@ -51,8 +55,9 @@ class SarkariResultParser(BaseDetailParser):
 
             # Organization: look for pattern like "Uttar Pradesh ... Commission (UPSSSC)"
             if re.search(r'(commission|board|council|ministry|department|university|corporation|authority)\b', text, re.I):
-                if not re.search(r'sarkari|www\.|\.com', text, re.I):
-                    if not data.organization_full_name or len(text) > len(data.organization_full_name):
+                if not re.search(r'sarkari|www\.|\.com', text, re.I) and not NOT_AN_ORG_NAME_RE.search(text):
+                    is_known = bool(known_org_from_title(data.title))
+                    if not is_known and (not data.organization_full_name or len(text) > len(data.organization_full_name)):
                         data.organization_full_name = text
 
             # Advt number: "Advt No. : 05-Exam/2024"
