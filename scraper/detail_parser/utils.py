@@ -34,12 +34,24 @@ def classify_link(label: str) -> str:
 
 
 # ── Date detection ────────────────────────────────────────────
+_MONTH_NAMES = (
+    r'jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|'
+    r'jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?'
+)
 DATE_VALUE_RE = re.compile(
-    r'(\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|today|tomorrow|declared|released|available|schedule|soon)',
+    r'(\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|'
+    r'\d{1,2}\s*(?:' + _MONTH_NAMES + r')\s*\d{2,4}|'
+    r'today|tomorrow|declared|released|available|schedule|soon)',
     re.I,
 )
 
-FEE_VALUE_RE = re.compile(r'(free|no\s*application|rs\.?|inr|/-|₹|\d)', re.I)
+# Requires an actual currency/fee marker — a bare digit is too permissive and
+# matches dates, DOB ranges, and age values, causing those rows to be
+# misclassified as fees instead of dates/qualification.
+FEE_VALUE_RE = re.compile(
+    r'(free|nil|no\s*(?:application\s*)?fee|rs\.?\s*\d|inr\s*\d|₹\s*\d|\d\s*/-)',
+    re.I,
+)
 
 
 def looks_like_date_value(text: str) -> bool:
@@ -48,6 +60,35 @@ def looks_like_date_value(text: str) -> bool:
 
 def looks_like_fee_value(text: str) -> bool:
     return bool(FEE_VALUE_RE.search(text))
+
+
+# ── Organization name validation ───────────────────────────────
+# Recruiting body is unambiguous from the title for the armed forces — check
+# this before any generic bold-text/table scan, which can otherwise latch
+# onto unrelated "Commission"/"Board" mentions (e.g. "Short Service
+# Commission") describing the tenure of service rather than naming the
+# organization.
+KNOWN_ORG_FROM_TITLE: list[tuple[re.Pattern, str]] = [
+    (re.compile(r'indian\s+navy', re.I), 'Indian Navy'),
+    (re.compile(r'indian\s+army', re.I), 'Indian Army'),
+    (re.compile(r'indian\s+air\s*force', re.I), 'Indian Air Force'),
+    (re.compile(r'indian\s+coast\s+guard', re.I), 'Indian Coast Guard'),
+]
+
+# Phrases that mean the matched text is describing a tenure/duration of
+# service rather than naming the recruiting organization itself.
+NOT_AN_ORG_NAME_RE = re.compile(
+    r'\binitially\b|\btenure\b|\d+\s*years?\b|\bcourse\b|\bmonths?\b',
+    re.I,
+)
+
+
+def known_org_from_title(title: str) -> str:
+    """Return a canonical org name if the title unambiguously names one."""
+    for pattern, org_name in KNOWN_ORG_FROM_TITLE:
+        if pattern.search(title):
+            return org_name
+    return ""
 
 
 # ── Section header detection ──────────────────────────────────

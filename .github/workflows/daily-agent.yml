@@ -53,8 +53,12 @@ jobs:
         run: |
           git config user.name "Naukri Dhaba Agent"
           git config user.email "bot@naukridhaba.in"
-          # agent.py already committed fixes; just push them
-          git fetch origin ${{ github.ref_name }}
-          git merge -X ours FETCH_HEAD --no-edit || true
-          git push origin HEAD:${{ github.ref_name }} || true
+          # agent.py already committed fixes; just push them. On conflict take
+          # THEIRS (remote) so a concurrent scraper/deploy push is preserved
+          # rather than silently reverted by the agent's older tree.
+          for attempt in 1 2 3 4 5; do
+            git fetch origin ${{ github.ref_name }} || true
+            git merge -X theirs FETCH_HEAD --no-edit || true
+            git push origin HEAD:${{ github.ref_name }} && break || sleep $((attempt * 5))
+          done
           echo "Push done."

@@ -18,6 +18,7 @@ from .utils import (
     clean, classify_link, is_junk_row,
     looks_like_date_value, looks_like_fee_value,
     extract_age_reference_date,
+    known_org_from_title, NOT_AN_ORG_NAME_RE,
 )
 
 log = logging.getLogger("NaukriDhaba")
@@ -51,13 +52,18 @@ class FreeJobAlertParser(BaseDetailParser):
                 data.short_description = text
                 break
 
+        # Known armed-forces recruiters are unambiguous from the title.
+        title_text = data.title or clean(soup.get_text(" ", strip=True))[:200]
+        data.organization_full_name = known_org_from_title(title_text)
+
         # Org name from bold text
-        for tag in content.find_all(["b", "strong"]):
-            text = clean(tag.get_text())
-            if re.search(r'(commission|board|council|ministry|department|university)', text, re.I):
-                if not re.search(r'freejobalert|www\.', text, re.I):
-                    data.organization_full_name = text
-                    break
+        if not data.organization_full_name:
+            for tag in content.find_all(["b", "strong"]):
+                text = clean(tag.get_text())
+                if re.search(r'(commission|board|council|ministry|department|university)', text, re.I):
+                    if not re.search(r'freejobalert|www\.', text, re.I) and not NOT_AN_ORG_NAME_RE.search(text):
+                        data.organization_full_name = text
+                        break
 
         # Advt number
         for tag in content.find_all(["p", "b", "strong", "span"]):
@@ -83,7 +89,7 @@ class FreeJobAlertParser(BaseDetailParser):
                     if not is_junk_row(label):
                         data.dates[label] = val
 
-                elif looks_like_fee_value(val) and re.search(r'(general|sc|st|obc|ews|ph|female|all)', label, re.I):
+                elif looks_like_fee_value(val) and re.search(r'\b(general|sc|st|obc|ews|ph|female|all)\b', label, re.I):
                     data.fees[label] = val
 
                 elif re.search(r'(through|via|challan|pay\s*the)', val, re.I):
@@ -172,10 +178,19 @@ class FreeJobAlertParser(BaseDetailParser):
                     val_cell = cells[-1]
                     items = val_cell.find_all("li")
                     if items:
-                        data.qualification_items = [clean(li.get_text()) for li in items if clean(li.get_text())]
-                        data.qualification = "; ".join(data.qualification_items)
+                        candidate_items = [clean(li.get_text()) for li in items if clean(li.get_text())]
+                        candidate = "; ".join(candidate_items)
                     else:
-                        data.qualification = clean(val_cell.get_text())
+                        candidate = clean(val_cell.get_text())
+                        candidate_items = []
+
+                    # Skip rows that are actually DOB/age-eligibility ranges
+                    # (e.g. branch-wise "02 Jul 2002 to 01 Jan 2008") mislabeled
+                    # under an "Eligibility" header — these aren't education
+                    # qualifications and would otherwise overwrite the real value.
+                    if candidate and not looks_like_date_value(candidate):
+                        data.qualification_items = candidate_items
+                        data.qualification = candidate
 
     def _extract_salary(self, soup: BeautifulSoup, data: DetailData) -> None:
         content = self._get_content_area(soup)
