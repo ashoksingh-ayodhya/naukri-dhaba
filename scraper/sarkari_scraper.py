@@ -1754,20 +1754,32 @@ def _fetch_via_worker(url: str) -> BeautifulSoup | None:
             except Exception:
                 pass
         else:
-            # May be brotli — attempt decompression if content doesn't parse as valid text.
-            # Brotli streams don't have a standard magic number so we just try.
+            # May be brotli or raw deflate — attempt decompression if content doesn't parse as valid text.
+            # Plain HTML starts with '<' (after optional whitespace/BOM). Plain JSON starts with '{' or '['.
+            # If the raw bytes don't start with these characters, try decompression.
+            is_plain_text = False
             try:
-                raw_text_check = raw[:200].decode('utf-8', errors='strict')
-                # Starts with valid UTF-8 text — no decompression needed
-                if not raw_text_check.lstrip().startswith(('<', '{', '[')):
-                    raise ValueError('not typical HTML/JSON/XML start')
-            except (UnicodeDecodeError, ValueError):
+                prefix = raw[:100].lstrip()
+                # Check for standard HTML or JSON start
+                if prefix.startswith(b'<') or prefix.startswith(b'{') or prefix.startswith(b'['):
+                    # Check if it decodes as valid UTF-8
+                    prefix.decode('utf-8', errors='strict')
+                    is_plain_text = True
+            except Exception:
+                pass
+
+            if not is_plain_text:
                 try:
                     import brotli as _brotli
                     raw = _brotli.decompress(raw)
                     log.info(f'CF Worker: brotli-decompressed response for {url}')
                 except Exception:
-                    pass
+                    try:
+                        import zlib
+                        raw = zlib.decompress(raw, -zlib.MAX_WBITS)
+                        log.info(f'CF Worker: raw deflate-decompressed response for {url}')
+                    except Exception:
+                        pass
 
         size = len(raw)
         log.info(f'CF Worker OK for {url} (origin status: {origin_status}, size: {size} bytes)')
