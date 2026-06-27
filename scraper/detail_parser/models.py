@@ -8,8 +8,17 @@ vacancy rows render automatically without hardcoded field limits.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from datetime import datetime
+
+# Labels that look like a "last date" but are NOT the application deadline —
+# used to keep fuzzy matching from grabbing e.g. "Update Fee Payment Last Date"
+# or "NOC Submission Last Date" instead of the real apply-by date.
+_LAST_DATE_DECOYS = (
+    "fee", "payment", "correction", "noc", "exam", "objection",
+    "challan", "edit", "complaint", "hall ticket", "admit",
+)
 
 
 @dataclass
@@ -114,7 +123,9 @@ class DetailData:
             "last_date": self._first_date_match(
                 ["Last Date for Registration", "Last Date for Apply Online",
                  "Last Date to Apply Online", "Last Date to Apply",
-                 "Last Date", "Closing Date"]
+                 "Last Date for Apply", "Last Date for Submission",
+                 "Last Date", "Closing Date"],
+                exclude=_LAST_DATE_DECOYS,
             ) or "Check Notification",
             "exam_date": self._first_date_match(
                 ["Exam Date", "Examination Date"]
@@ -160,11 +171,32 @@ class DetailData:
         }
         return d
 
-    def _first_date_match(self, keys: list[str]) -> str:
-        """Return the first matching date from self.dates."""
+    def _first_date_match(self, keys: list[str], exclude: tuple = ()) -> str:
+        """Return the first matching date value from self.dates.
+
+        Tries exact key matches first (preserving caller priority order),
+        then falls back to normalized substring matching so source-specific
+        phrasings ("Last Date for Apply" vs "Last Date to Apply Online")
+        still resolve. Any dates-dict key containing an `exclude` term is
+        skipped during the fuzzy pass to avoid decoy rows such as
+        "Update Fee Payment Last Date".
+        """
+        # 1. Exact match — honours the caller's priority ordering.
         for k in keys:
             if k in self.dates:
                 return self.dates[k]
+
+        # 2. Fuzzy fallback — normalized substring match.
+        def norm(s: str) -> str:
+            return re.sub(r"\s+", " ", s).strip().lower()
+
+        nkeys = [norm(k) for k in keys]
+        for dk, dv in self.dates.items():
+            ndk = norm(dk)
+            if any(term in ndk for term in exclude):
+                continue
+            if any(nk in ndk for nk in nkeys):
+                return dv
         return ""
 
     def to_json(self) -> str:
