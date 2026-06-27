@@ -5,7 +5,7 @@
     <link>https://naukridhaba.in</link>
     <description>Get latest government job notifications, exam results, admit cards, answer keys and syllabus. Naukri Dhaba covers SSC, Railway, Banking, UPSC, Police, Defence and all state govt jobs.</description>
     <language>en-IN</language>
-    <lastBuildDate>Sat, 27 Jun 2026 07:56:26 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 27 Jun 2026 09:05:51 GMT</lastBuildDate>
     <atom:link href="https://naukridhaba.in/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://naukridhaba.in/logo.svg</url>
@@ -100,6 +100,15 @@
       <pubDate>Sat, 27 Jun 2026 00:00:00 GMT</pubDate>
       <category>Admit Cards</category>
       
+      
+    </item>
+    <item>
+      <title>APPSC Departmental Tests Admit Card 2026 - Hall Ticket Release Date &amp; Download Link</title>
+      <link>https://naukridhaba.in/admit-cards/state-psc/appsc-departmental-tests-admit-card-2026/</link>
+      <guid isPermaLink="true">https://naukridhaba.in/admit-cards/state-psc/appsc-departmental-tests-admit-card-2026/</guid>
+      <pubDate>Sat, 27 Jun 2026 00:00:00 GMT</pubDate>
+      <category>Admit Cards</category>
+      <author>Direct Link - APPSC Departmental Tests Admit Card 2026</author>
       
     </item>
     <item>
@@ -452,15 +461,6 @@
       <category>Jobs</category>
       <author>Short Description : North Eastern Electric Power Corporation Limited (NEEPCO)</author>
       <description>Last Date: 13/07/2026</description>
-    </item>
-    <item>
-      <title>Rajasthan RSSB CET Senior Secondary Online Form 2026</title>
-      <link>https://naukridhaba.in/jobs/government/rajasthan-rssb-cet-senior-secondary-online-form-2026/</link>
-      <guid isPermaLink="true">https://naukridhaba.in/jobs/government/rajasthan-rssb-cet-senior-secondary-online-form-2026/</guid>
-      <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
-      <category>Jobs</category>
-      <author>Short Description : Rajasthan Staff Selection Board (RSSB)</author>
-      <description>Last Date: 23/07/2026</description>
     </item>
   </channel>
 </rss>
