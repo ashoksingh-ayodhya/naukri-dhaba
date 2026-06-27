@@ -78,9 +78,14 @@ jobs:
           git config user.email "bot@naukridhaba.in"
           COUNT=$(git diff --cached --name-only | grep "\.mdx$" | wc -l)
           git commit -m "chore: scrape $(date +'%d %b %Y') — $COUNT new posts [skip ci]"
-          git fetch origin ${{ github.ref_name }}
-          git merge -X ours FETCH_HEAD --no-edit || true
-          git push origin HEAD:${{ github.ref_name }} || true
+          # Preserve work other bots pushed since checkout: on conflict take
+          # THEIRS (remote), never silently discard it. New scraped files have
+          # no remote counterpart, so they still merge in cleanly.
+          for attempt in 1 2 3 4 5; do
+            git fetch origin ${{ github.ref_name }} || true
+            git merge -X theirs FETCH_HEAD --no-edit || true
+            git push origin HEAD:${{ github.ref_name }} && break || sleep $((attempt * 5))
+          done
           echo "Pushed $COUNT MDX files."
 
       - name: Ping Google & Bing sitemaps
@@ -145,7 +150,7 @@ jobs:
             git commit -m "$MSG" || true
             for attempt in 1 2 3; do
               git fetch origin ${{ github.ref_name }} || true
-              git merge -X ours FETCH_HEAD --no-edit || true
+              git merge -X theirs FETCH_HEAD --no-edit || true
               git push origin HEAD:${{ github.ref_name }} && break || sleep $((attempt * 5))
             done || true
           fi
@@ -173,9 +178,11 @@ jobs:
             date > scraper/run-now
             git add scraper/run-now
             git commit -m "chore: auto-trigger scraper ($JOBS jobs / $RESULTS results / $ADMITS admits) [skip ci]" || true
-            git fetch origin ${{ github.ref_name }}
-            git merge -X ours FETCH_HEAD --no-edit || true
-            git push origin HEAD:${{ github.ref_name }} || true
+            for attempt in 1 2 3 4 5; do
+              git fetch origin ${{ github.ref_name }} || true
+              git merge -X theirs FETCH_HEAD --no-edit || true
+              git push origin HEAD:${{ github.ref_name }} && break || sleep $((attempt * 5))
+            done
             echo "Next scraper run triggered."
           else
             echo "All content goals met! jobs=$JOBS results=$RESULTS admits=$ADMITS — scraper loop complete."
