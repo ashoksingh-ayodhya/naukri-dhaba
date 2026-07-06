@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 import Header from "@/components/layout/Header";
@@ -8,19 +7,8 @@ import Footer from "@/components/layout/Footer";
 import BottomNav from "@/components/layout/BottomNav";
 import SmoothScroller from "@/components/ui/SmoothScroller";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-heading",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
+const spaceGrotesk = { variable: "" };
+const inter = { variable: "" };
 
 const GTM_ID = "GTM-5L4D9C9M";
 const GA4_ID = "G-E3C5CLPP6B";
