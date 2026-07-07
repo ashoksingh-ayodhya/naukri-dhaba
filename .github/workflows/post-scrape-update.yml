@@ -54,6 +54,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Scraper extraction regression tests
+        run: python3 scraper/test_date_extraction.py
+
       - name: Build Next.js (static export)
         run: npm run build
         env:
@@ -62,7 +65,10 @@ jobs:
       - name: Sync latest main (scraper may have pushed MDX since checkout)
         run: |
           git fetch origin main
-          git merge -X ours FETCH_HEAD --no-edit || true
+          # Prefer THEIRS (remote) on conflict so a concurrent scraper/agent
+          # push is preserved, not silently reverted. The fresh build is copied
+          # over the tree in the next step regardless.
+          git merge -X theirs FETCH_HEAD --no-edit || true
 
       - name: Copy built output to repo root
         run: cp -r out/. .

@@ -46,12 +46,23 @@ export function buildMetadata({
   };
 }
 
+const MONTH_NAMES: Record<string, string> = {
+  jan: "01", feb: "02", mar: "03", apr: "04", may: "05", jun: "06",
+  jul: "07", aug: "08", sep: "09", oct: "10", nov: "11", dec: "12",
+};
+
 function toIsoDate(raw: string | undefined): string | undefined {
   if (!raw) return undefined;
   if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
   // Accept both DD/MM/YYYY and DD-MM-YYYY separators — handles "13/02/2026 (Extended)" etc.
   const m = raw.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
   if (m) return `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+  // Accept textual month-name dates — "27 July 2026" (common on freejobalert).
+  const t = raw.match(/(\d{1,2})\s+([A-Za-z]{3,})\s+(\d{4})/);
+  if (t) {
+    const month = MONTH_NAMES[t[2].slice(0, 3).toLowerCase()];
+    if (month) return `${t[3]}-${month}-${t[1].padStart(2, "0")}`;
+  }
   return undefined;
 }
 
@@ -106,56 +117,80 @@ function credentialCategory(qual: string | undefined): string | null {
   return null;
 }
 
-/** Derive a valid Indian state addressRegion from the hiring org name. */
-function inferRegion(orgName: string): string {
-  const o = orgName.toLowerCase();
-  if (o.includes("madhya pradesh") || o.includes("mppsc")) return "Madhya Pradesh";
-  if (o.includes("uttar pradesh") || o.includes("uppsc") || o.includes("upsssc")) return "Uttar Pradesh";
-  if (o.includes("rajasthan") || o.includes("rpsc") || o.includes("rsmssb")) return "Rajasthan";
-  if (o.includes("bihar") || o.includes("bpsc") || o.includes("bssc")) return "Bihar";
-  if (o.includes("gujarat") || o.includes("gpsc")) return "Gujarat";
-  if (o.includes("maharashtra") || o.includes("mpsc")) return "Maharashtra";
-  if (o.includes("karnataka") || o.includes("kpsc")) return "Karnataka";
-  if (o.includes("tamil nadu") || o.includes("tnpsc")) return "Tamil Nadu";
-  if (o.includes("andhra pradesh") || o.includes("appsc")) return "Andhra Pradesh";
-  if (o.includes("telangana") || o.includes("tspsc")) return "Telangana";
-  if (o.includes("kerala")) return "Kerala";
-  if (o.includes("west bengal") || o.includes("wbpsc") || o.includes("wbssc")) return "West Bengal";
-  if (o.includes("punjab") || o.includes("ppsc")) return "Punjab";
-  if (o.includes("haryana") || o.includes("hpsc") || o.includes("hssc")) return "Haryana";
-  if (o.includes("himachal") || o.includes("hppsc")) return "Himachal Pradesh";
-  if (o.includes("jharkhand") || o.includes("jpsc") || o.includes("jssc")) return "Jharkhand";
-  if (o.includes("odisha") || o.includes("opsc") || o.includes("ossc")) return "Odisha";
-  if (o.includes("chhattisgarh") || o.includes("cgpsc") || o.includes("cgvyapam")) return "Chhattisgarh";
-  if (o.includes("assam") || o.includes("apsc") || o.includes("slrc")) return "Assam";
-  if (o.includes("uttarakhand") || o.includes("ukpsc") || o.includes("uksssc")) return "Uttarakhand";
-  return "Delhi";
-}
+type OrgAddress = {
+  locality: string;
+  region: string;
+  postalCode?: string;
+  streetAddress?: string;
+};
 
-/** Derive a valid addressLocality from the hiring org name (for state PSC jobs). */
-function inferLocality(orgName: string): string {
-  const o = orgName.toLowerCase();
-  if (o.includes("madhya pradesh") || o.includes("mppsc")) return "Bhopal";
-  if (o.includes("uttar pradesh") || o.includes("uppsc") || o.includes("upsssc")) return "Lucknow";
-  if (o.includes("rajasthan") || o.includes("rpsc") || o.includes("rsmssb")) return "Jaipur";
-  if (o.includes("bihar") || o.includes("bpsc") || o.includes("bssc")) return "Patna";
-  if (o.includes("gujarat") || o.includes("gpsc")) return "Gandhinagar";
-  if (o.includes("maharashtra") || o.includes("mpsc")) return "Mumbai";
-  if (o.includes("karnataka") || o.includes("kpsc")) return "Bengaluru";
-  if (o.includes("tamil nadu") || o.includes("tnpsc")) return "Chennai";
-  if (o.includes("andhra pradesh") || o.includes("appsc")) return "Amaravati";
-  if (o.includes("telangana") || o.includes("tspsc")) return "Hyderabad";
-  if (o.includes("kerala") || o.includes("kerala psc")) return "Thiruvananthapuram";
-  if (o.includes("west bengal") || o.includes("wbpsc") || o.includes("wbssc")) return "Kolkata";
-  if (o.includes("punjab") || o.includes("ppsc")) return "Chandigarh";
-  if (o.includes("haryana") || o.includes("hpsc") || o.includes("hssc")) return "Chandigarh";
-  if (o.includes("himachal") || o.includes("hppsc")) return "Shimla";
-  if (o.includes("jharkhand") || o.includes("jpsc") || o.includes("jssc")) return "Ranchi";
-  if (o.includes("odisha") || o.includes("opsc") || o.includes("ossc")) return "Bhubaneswar";
-  if (o.includes("chhattisgarh") || o.includes("cgpsc") || o.includes("cgvyapam")) return "Raipur";
-  if (o.includes("assam") || o.includes("apsc") || o.includes("slrc")) return "Guwahati";
-  if (o.includes("uttarakhand") || o.includes("ukpsc") || o.includes("uksssc")) return "Dehradun";
-  return "New Delhi";
+/**
+ * Exact-match central organizations (key == fm.organization, same keys as MAJOR_ORG_URLS).
+ * Only orgs with a single, confidently verified HQ are included. Deliberately omitted:
+ * Railway Recruitment Board (21 decentralized zonal boards, no single accurate HQ),
+ * India Post (PIN conflicts across sources, 110001 vs 110116), and National Health Mission
+ * (no dedicated building — operates inside the Ministry's Nirman Bhawan).
+ */
+const CENTRAL_ORG_ADDRESS: Record<string, OrgAddress> = {
+  "Staff Selection Commission": { locality: "New Delhi", region: "Delhi", postalCode: "110003", streetAddress: "Block No. 12, CGO Complex, Lodhi Road" },
+  "Union Public Service Commission": { locality: "New Delhi", region: "Delhi", postalCode: "110069", streetAddress: "Dholpur House, Shahjahan Road" },
+  "Institute of Banking Personnel Selection": { locality: "Mumbai", region: "Maharashtra", postalCode: "400101", streetAddress: "IBPS House, 90 Feet D.P. Road, Off Western Express Highway, Kandivali (East)" },
+  "State Bank of India": { locality: "Mumbai", region: "Maharashtra", postalCode: "400021", streetAddress: "State Bank Bhavan, Madame Cama Road, Nariman Point" },
+  "Reserve Bank of India": { locality: "Mumbai", region: "Maharashtra", postalCode: "400001", streetAddress: "Central Office Building, Shahid Bhagat Singh Marg, Fort" },
+  "National Bank for Agriculture and Rural Development": { locality: "Mumbai", region: "Maharashtra", postalCode: "400051", streetAddress: "Plot C-24, 'G' Block, Bandra Kurla Complex, Bandra (East)" },
+  "Life Insurance Corporation": { locality: "Mumbai", region: "Maharashtra", postalCode: "400021", streetAddress: "Yogakshema, Jeevan Bima Marg, Nariman Point" },
+  "DRDO": { locality: "New Delhi", region: "Delhi", postalCode: "110011", streetAddress: "DRDO Bhawan, Rajaji Marg" },
+  "ISRO": { locality: "Bengaluru", region: "Karnataka", postalCode: "560094", streetAddress: "Antariksh Bhavan, New BEL Road" },
+  "AIIMS": { locality: "New Delhi", region: "Delhi", postalCode: "110029", streetAddress: "Sri Aurobindo Marg, Ansari Nagar" },
+  "NTPC": { locality: "New Delhi", region: "Delhi", postalCode: "110003", streetAddress: "NTPC Bhawan, SCOPE Complex, 7 Institutional Area, Lodhi Road" },
+  "ONGC": { locality: "Dehradun", region: "Uttarakhand", postalCode: "248003", streetAddress: "Tel Bhavan" },
+  "Indian Navy": { locality: "New Delhi", region: "Delhi", postalCode: "110011", streetAddress: "Integrated Headquarters, Ministry of Defence (Navy), Sena Bhawan" },
+  "Indian Army": { locality: "New Delhi", region: "Delhi", postalCode: "110011", streetAddress: "Integrated Headquarters, Ministry of Defence (Army), South Block" },
+  "Indian Air Force": { locality: "New Delhi", region: "Delhi", postalCode: "110011", streetAddress: "Integrated Headquarters, Ministry of Defence (Air Force), Vayu Bhawan" },
+  "Indian Coast Guard": { locality: "New Delhi", region: "Delhi", postalCode: "110001", streetAddress: "Coast Guard Headquarters, National Stadium Complex" },
+};
+
+/**
+ * Substring-matched state PSCs / selection boards, checked in order — more specific
+ * acronyms first so e.g. RPSC (Ajmer) and RSMSSB (Jaipur), both Rajasthan, don't
+ * collapse onto one address. APPSC is deliberately omitted: its HQ is reported to be
+ * moving from Hyderabad to Vijayawada and the exact current street address is unconfirmed.
+ */
+const STATE_ORG_ADDRESS: Array<{ test: (o: string) => boolean; address: OrgAddress }> = [
+  { test: (o) => o.includes("mppsc") || o.includes("madhya pradesh"), address: { locality: "Indore", region: "Madhya Pradesh", postalCode: "452001", streetAddress: "Residency Area, Daly College Road" } },
+  { test: (o) => o.includes("upsssc"), address: { locality: "Lucknow", region: "Uttar Pradesh", postalCode: "226010", streetAddress: "3rd Floor, PICUP Bhawan, Vibhuti Khand, Gomti Nagar" } },
+  { test: (o) => o.includes("uppsc") || o.includes("uttar pradesh"), address: { locality: "Prayagraj", region: "Uttar Pradesh", postalCode: "211001", streetAddress: "10, Kasturba Gandhi Marg, Civil Lines" } },
+  { test: (o) => o.includes("rpsc"), address: { locality: "Ajmer", region: "Rajasthan", postalCode: "305001", streetAddress: "Ghooghra Ghati, Jaipur Road" } },
+  { test: (o) => o.includes("rsmssb") || o.includes("rajasthan"), address: { locality: "Jaipur", region: "Rajasthan", postalCode: "302018", streetAddress: "SIAM Premises, Tonk Road, Durgapura" } },
+  { test: (o) => o.includes("bssc"), address: { locality: "Patna", region: "Bihar", postalCode: "800014", streetAddress: "Near Veterinary College, Sheikhpura" } },
+  { test: (o) => o.includes("bpsc") || o.includes("bihar"), address: { locality: "Patna", region: "Bihar", postalCode: "800001", streetAddress: "15, Nehru Path (Bailey Road)" } },
+  { test: (o) => o.includes("gpsc") || o.includes("gujarat"), address: { locality: "Gandhinagar", region: "Gujarat", postalCode: "382010", streetAddress: "Sector 10-A, Near CHH-3 Circle" } },
+  { test: (o) => o.includes("mpsc") || o.includes("maharashtra"), address: { locality: "Mumbai", region: "Maharashtra", postalCode: "400001", streetAddress: "3rd Floor, Bank of India Building, Opp. High Court, M.G. Road, Fort" } },
+  { test: (o) => o.includes("kpsc") || o.includes("karnataka"), address: { locality: "Bengaluru", region: "Karnataka", postalCode: "560001", streetAddress: "Udyoga Soudha" } },
+  { test: (o) => o.includes("tnpsc") || o.includes("tamil nadu"), address: { locality: "Chennai", region: "Tamil Nadu", postalCode: "600003", streetAddress: "TNPSC Road, V.O.C. Nagar, Park Town" } },
+  { test: (o) => o.includes("appsc") || o.includes("andhra pradesh"), address: { locality: "Vijayawada", region: "Andhra Pradesh" } },
+  { test: (o) => o.includes("tspsc") || o.includes("telangana"), address: { locality: "Hyderabad", region: "Telangana", postalCode: "500001", streetAddress: "Prathibha Bhavan, M.J. Road, Nampally" } },
+  { test: (o) => o.includes("kerala"), address: { locality: "Thiruvananthapuram", region: "Kerala", postalCode: "695004", streetAddress: "Thulasi Hills, Pattom Palace P.O." } },
+  { test: (o) => o.includes("wbpsc") || o.includes("wbssc") || o.includes("west bengal"), address: { locality: "Kolkata", region: "West Bengal", postalCode: "700026", streetAddress: "161-A, S.P. Mukherjee Road" } },
+  { test: (o) => o.includes("ppsc") || o.includes("punjab"), address: { locality: "Patiala", region: "Punjab", postalCode: "147001", streetAddress: "Baradari Garden" } },
+  { test: (o) => o.includes("hpsc") || o.includes("hssc") || o.includes("haryana"), address: { locality: "Panchkula", region: "Haryana", postalCode: "134112", streetAddress: "Bays 1-10, Block B, Sector 4" } },
+  { test: (o) => o.includes("hppsc") || o.includes("himachal"), address: { locality: "Shimla", region: "Himachal Pradesh", postalCode: "171002", streetAddress: "Nigam Vihar" } },
+  { test: (o) => o.includes("jpsc") || o.includes("jssc") || o.includes("jharkhand"), address: { locality: "Ranchi", region: "Jharkhand", postalCode: "834001", streetAddress: "Circular Road, Deputy Para, Ahirtoli" } },
+  { test: (o) => o.includes("opsc") || o.includes("ossc") || o.includes("odisha"), address: { locality: "Cuttack", region: "Odisha", postalCode: "753001", streetAddress: "19, Dr. P.K. Parija Road, Buxi Bazar" } },
+  { test: (o) => o.includes("cgpsc") || o.includes("cgvyapam") || o.includes("chhattisgarh"), address: { locality: "Raipur", region: "Chhattisgarh", postalCode: "492001", streetAddress: "Shankar Nagar Road, Bhagat Singh Square" } },
+  { test: (o) => o.includes("apsc") || o.includes("slrc") || o.includes("assam"), address: { locality: "Guwahati", region: "Assam", postalCode: "781022", streetAddress: "Jawahar Nagar, Khanapara" } },
+  { test: (o) => o.includes("uksssc"), address: { locality: "Dehradun", region: "Uttarakhand", postalCode: "248008", streetAddress: "Thano Road, near Maharana Pratap Sports College, Raipur" } },
+  { test: (o) => o.includes("ukpsc") || o.includes("uttarakhand"), address: { locality: "Haridwar", region: "Uttarakhand", postalCode: "249404", streetAddress: "Singh Dwar, Kankhal" } },
+];
+
+/** Resolve the most accurate known address for a hiring org name — falls back to New Delhi. */
+function resolveOrgAddress(rawOrgName: string): OrgAddress {
+  const exact = CENTRAL_ORG_ADDRESS[rawOrgName.trim()];
+  if (exact) return exact;
+  const o = rawOrgName.toLowerCase();
+  const matched = STATE_ORG_ADDRESS.find((rule) => rule.test(o));
+  if (matched) return matched.address;
+  return { locality: "New Delhi", region: "Delhi" };
 }
 
 const MAJOR_ORG_URLS: Record<string, string> = {
@@ -184,6 +219,8 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
   const orgUrl = MAJOR_ORG_URLS[fm.organization || ""] ||
     (fm.officialWebsite && fm.officialWebsite.startsWith("http") ? fm.officialWebsite : undefined);
 
+  const orgAddress = resolveOrgAddress(orgName);
+
   const ld: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
@@ -204,9 +241,11 @@ export function buildJobJsonLd(fm: PostFrontmatter, url: string): object {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
-        addressLocality: inferLocality(orgName),
-        addressRegion: inferRegion(orgName),
+        addressLocality: orgAddress.locality,
+        addressRegion: orgAddress.region,
         addressCountry: "IN",
+        ...(orgAddress.postalCode ? { postalCode: orgAddress.postalCode } : {}),
+        ...(orgAddress.streetAddress ? { streetAddress: orgAddress.streetAddress } : {}),
       },
     },
     applicantLocationRequirements: {

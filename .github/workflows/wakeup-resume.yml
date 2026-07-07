@@ -122,7 +122,7 @@ jobs:
             git commit -m "chore: wakeup state — jobs=${{ steps.counts.outputs.jobs }} results=${{ steps.counts.outputs.results }} admits=${{ steps.counts.outputs.admits }} [skip ci]"
             for attempt in 1 2 3; do
               git fetch origin main || true
-              git merge -X ours FETCH_HEAD --no-edit || true
+              git merge -X theirs FETCH_HEAD --no-edit || true
               git push origin HEAD:main && break || sleep $((attempt * 5))
             done
           fi
