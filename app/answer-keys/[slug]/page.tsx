@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
   const { frontmatter: fm } = post;
   const org = (fm.organization || fm.dept || "").trim();
-  const desc = fm.shortDescription ||
-    `Download ${org ? org + " " : ""}answer key ${new Date().getFullYear()}. Check official answer key, raise objections and download PDF from the official website.`;
+  const desc = fm.shortDescription || `${org ? org + " " : ""}${fm.title}: download the official answer key and check responses on the official website.`;
+  const title = /answer key|answer sheet/i.test(fm.title) ? fm.title : `${fm.title} Answer Key`;
   return buildMetadata({
-    title: `${fm.title} Answer Key ${new Date().getFullYear()}`,
+    title,
     description: desc.slice(0, 160),
     path: `/answer-keys/${slug}/`,
   });

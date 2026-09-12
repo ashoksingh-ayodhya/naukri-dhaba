@@ -1,3 +1,4 @@
+import { formatFee } from "@/lib/format";
 import type { PostFrontmatter } from "@/lib/types";
 
 export default function ApplicationFee({ fm }: { fm: PostFrontmatter }) {
@@ -20,7 +21,7 @@ export default function ApplicationFee({ fm }: { fm: PostFrontmatter }) {
                 <td className="px-4 py-2.5 text-sm font-medium text-slate-700 w-1/2 border-r border-slate-100">
                   {label}
                 </td>
-                <td className="px-4 py-2.5 text-sm text-slate-800 font-semibold">₹{value}</td>
+                <td className="px-4 py-2.5 text-sm text-slate-800 font-semibold">{formatFee(value)}</td>
               </tr>
             ))}
           </tbody>

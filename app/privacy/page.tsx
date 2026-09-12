@@ -50,12 +50,9 @@ export default function PrivacyPage() {
 
         <h2>Advertising</h2>
         <p>
-          We may display advertisements served by Google AdSense or similar networks. These networks
-          may use cookies to serve ads based on your prior visits to our site or other sites. You can
-          opt out of personalized advertising by visiting{" "}
-          <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">
-            Google Ads Settings
-          </a>.
+          Naukri Dhaba does not display advertisements and does not use advertising cookies or
+          ad-tracking networks. The site is free to use and exists only to present official
+          government job, result and admit card information in a clean, readable way.
         </p>
 
         <h2>Data Security</h2>

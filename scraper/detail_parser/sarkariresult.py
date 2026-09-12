@@ -49,16 +49,17 @@ class SarkariResultParser(BaseDetailParser):
             if not text or len(text) < 10:
                 continue
 
-            # Organization: look for pattern like "Uttar Pradesh ... Commission (UPSSSC)"
-            if re.search(r'(commission|board|council|ministry|department|university|corporation|authority)\b', text, re.I):
-                if not re.search(r'sarkari|www\.|\.com', text, re.I):
-                    if not data.organization_full_name or len(text) > len(data.organization_full_name):
-                        data.organization_full_name = text
+            # Organization: a short name like "Uttar Pradesh ... Commission (UPSSSC)", never a paragraph
+            if (not data.organization_full_name
+                    and len(text) <= 90 and len(text.split()) <= 12 and ':' not in text
+                    and re.search(r'(commission|board|council|ministry|department|university|corporation|authority|limited|bank|institute|force|army|navy)\b', text, re.I)
+                    and not re.search(r'sarkari|www\.|\.com|age relaxation|last date|apply|click|\d{2}/\d{2}/\d{4}', text, re.I)):
+                data.organization_full_name = text
 
             # Advt number: "Advt No. : 05-Exam/2024"
-            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*([\w\-/]+)', text, re.I)
+            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*([\w\-/().]+(?:\s\d+)?)', text, re.I)
             if m and not data.advertisement_number:
-                data.advertisement_number = clean(m.group(1))
+                data.advertisement_number = clean(m.group(1)).strip('|:-,. ')
 
         # Walk all tables to find header rows
         for table in soup.find_all("table"):
@@ -71,7 +72,7 @@ class SarkariResultParser(BaseDetailParser):
 
                 if "name of post" in label and val:
                     data.post_name = val
-                    if not data.title or len(val) > len(data.title):
+                    if not data.title:  # the <h1> is the canonical short title; this row is descriptive
                         data.title = val
 
                 elif re.search(r'post\s*date|update', label) and val:
@@ -195,7 +196,7 @@ class SarkariResultParser(BaseDetailParser):
                 parts = line.split(":", 1)
                 label = clean(parts[0])
                 val = clean(parts[1])
-                if looks_like_fee_value(val) and not is_junk_row(label):
+                if looks_like_fee_value(val) and not is_junk_row(label) and self._is_fee_label(label) and len(label) <= 50:
                     data.fees[label] = val
                 elif re.search(r'(through|via|mode|challan|pay\s*the)', line, re.I):
                     data.fee_payment_method = line
@@ -280,6 +281,19 @@ class SarkariResultParser(BaseDetailParser):
                         data.age_max = int(nums[1])
                     elif len(nums) == 1:
                         data.age_max = int(nums[0])
+
+        # Bullet layout: <li>Minimum Age : 18 Years</li><li>Maximum Age : 40 Years</li>
+        for li in soup.find_all("li"):
+            text = clean(li.get_text())
+            m = re.match(r'(?i)^(minimum|maximum|min\.?|max\.?)\s*age\s*[:\-]?\s*(\d{1,2})', text)
+            if m:
+                if m.group(1).lower().startswith("min"):
+                    data.age_min = data.age_min or int(m.group(2))
+                else:
+                    data.age_max = data.age_max or int(m.group(2))
+            elif re.match(r'(?i)^age\s*limit\s*[:\-]?\s*(\d{1,2})\s*(?:to|-|–)\s*(\d{1,2})', text):
+                m2 = re.match(r'(?i)^age\s*limit\s*[:\-]?\s*(\d{1,2})\s*(?:to|-|–)\s*(\d{1,2})', text)
+                data.age_min, data.age_max = int(m2.group(1)), int(m2.group(2))
 
         # Age relaxation notes — look for bullet points after age limit header
         for tag in soup.find_all(["li", "p"]):
@@ -408,15 +422,18 @@ class SarkariResultParser(BaseDetailParser):
                 if len(cells) < 2:
                     continue
                 label = clean(cells[0].get_text()).lower()
-                if re.search(r'qualification|education|eligibility', label):
+                if re.search(r'qualification|education|eligibility', label) and not re.search(r'check|result|link|click', label):
                     val_cell = cells[-1]
-                    # Get bullet items if present
+                    val_text = clean(val_cell.get_text())
+                    # Link rows ("Check Eligibility | Click Here") are not qualification text
+                    if val_cell.find("a") and (len(val_text) < 25 or re.search(r'click\s*here', val_text, re.I)):
+                        continue
                     items = val_cell.find_all("li")
                     if items:
                         data.qualification_items = [clean(li.get_text()) for li in items if clean(li.get_text())]
                         data.qualification = "; ".join(data.qualification_items)
-                    else:
-                        data.qualification = clean(val_cell.get_text())
+                    elif len(val_text) >= 8:
+                        data.qualification = val_text
 
     def _extract_salary(self, soup: BeautifulSoup, data: DetailData) -> None:
         """Extract salary/pay scale from table rows."""

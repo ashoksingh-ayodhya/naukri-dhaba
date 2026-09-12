@@ -57,9 +57,9 @@ class SarkariExamParser(SarkariResultParser):
         # Advt number
         for tag in content.find_all(["p", "b", "strong", "span"]):
             text = clean(tag.get_text())
-            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*(.+)', text, re.I)
+            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*([\w\-/().]+(?:\s\d+)?)', text, re.I)
             if m and not data.advertisement_number:
-                data.advertisement_number = clean(m.group(1))
+                data.advertisement_number = clean(m.group(1)).strip('|:-,. ')
                 break
 
         # Post date from meta or time tag

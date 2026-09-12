@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
   const { frontmatter: fm } = post;
   const org = (fm.organization || fm.dept || "").trim();
-  const desc = fm.shortDescription ||
-    `Download ${org ? org + " " : ""}syllabus ${new Date().getFullYear()}. Check exam pattern, subject-wise topics, marking scheme and preparation tips.`;
+  const desc = fm.shortDescription || `${org ? org + " " : ""}${fm.title}: subject-wise syllabus, exam pattern and marking scheme.`;
+  const title = /syllabus|exam pattern/i.test(fm.title) ? fm.title : `${fm.title} Syllabus`;
   return buildMetadata({
-    title: `${fm.title} Syllabus ${new Date().getFullYear()}`,
+    title,
     description: desc.slice(0, 160),
     path: `/syllabus/${slug}/`,
   });

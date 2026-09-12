@@ -33,8 +33,7 @@ class RojgarResultParser(SarkariResultParser):
             text = clean(tag.get_text())
             if text and len(text) > 15 and not re.search(r'rojgar\s*result', text, re.I):
                 data.post_name = text
-                if not data.title:
-                    data.title = text
+                data.title = text
                 break
 
         # Organization and advt from bold/strong text
@@ -48,9 +47,9 @@ class RojgarResultParser(SarkariResultParser):
                     if not data.organization_full_name or len(text) > len(data.organization_full_name):
                         data.organization_full_name = text
 
-            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*(.+)', text, re.I)
+            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*([\w\-/().]+(?:\s\d+)?)', text, re.I)
             if m and not data.advertisement_number:
-                data.advertisement_number = clean(m.group(1))
+                data.advertisement_number = clean(m.group(1)).strip('|:-,. ')
 
         # Table-based header rows
         for table in soup.find_all("table"):
@@ -94,7 +93,7 @@ class RojgarResultParser(SarkariResultParser):
                     if anchors:
                         label = clean(cells[0].get_text())
                         if label and not is_junk_row(label):
-                            from scraper.detail_parser.utils import classify_link
+                            from .utils import classify_link
                             for a in anchors:
                                 href = a.get("href", "").strip()
                                 if href and href != "#":

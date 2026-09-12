@@ -1,4 +1,5 @@
 import { StatusBadge, CategoryBadge } from "@/components/ui/Badge";
+import { formatFee } from "@/lib/format";
 import type { PostFrontmatter } from "@/lib/types";
 
 export default function PostHeader({ fm }: { fm: PostFrontmatter }) {
@@ -67,7 +68,7 @@ export default function PostHeader({ fm }: { fm: PostFrontmatter }) {
             <span className="text-amber-600 text-lg">💰</span>
             <div>
               <div className="text-xs text-slate-500">Fee (General)</div>
-              <div className="text-sm font-bold text-slate-800">₹{fm.feeGeneral}/-</div>
+              <div className="text-sm font-bold text-slate-800">{formatFee(fm.feeGeneral)}</div>
             </div>
           </div>
         )}

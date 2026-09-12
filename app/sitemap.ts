@@ -3,6 +3,7 @@ export const dynamic = "force-static";
 import type { MetadataRoute } from "next";
 import { siteConfig, CATEGORIES, STATES } from "@/config/site";
 import { getAllPosts } from "@/lib/content";
+import { parseDDMMYYYY } from "@/lib/dateBadges";
 
 const QUALIFICATION_LEVELS = ["10th-pass", "12th-pass", "diploma", "graduate", "engineering", "postgraduate"];
 
@@ -48,14 +49,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
+  // Crawl budget goes to postings that can still be applied for; closed ones fade out.
+  const now = new Date();
   const allPosts = getAllPosts();
   const postRoutes: MetadataRoute.Sitemap = allPosts.map((post) => {
     const d = new Date(post.updatedAt || post.publishedAt);
+    const deadline = post.type === "job" ? parseDDMMYYYY(post.lastDate) : null;
+    const expiredJob = deadline !== null && deadline < now;
     return {
       url: `${base}${post.href}`,
       lastModified: isNaN(d.getTime()) ? new Date() : d,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
+      changeFrequency: expiredJob ? ("monthly" as const) : ("weekly" as const),
+      priority: post.type === "job" ? (expiredJob ? 0.3 : 0.8) : 0.6,
     };
   });
 
