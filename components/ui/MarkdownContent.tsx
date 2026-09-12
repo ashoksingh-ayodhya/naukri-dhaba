@@ -34,7 +34,13 @@ export default function MarkdownContent({ content }: Props) {
     const trimmed = line.trim();
     if (!trimmed) { flushLists(); continue; }
 
-    if (trimmed.startsWith("## ")) {
+    if (/^-{3,}$/.test(trimmed)) {
+      flushLists();
+      elements.push(<hr key={key++} className="my-4 border-slate-200" />);
+    } else if (trimmed.startsWith("### ")) {
+      flushLists();
+      elements.push(<h3 key={key++} className="font-heading font-semibold text-base text-slate-900 mt-4 mb-1">{trimmed.slice(4)}</h3>);
+    } else if (trimmed.startsWith("## ")) {
       flushLists();
       elements.push(<h2 key={key++} className="font-heading font-bold text-lg text-slate-900 mt-4 mb-2">{trimmed.slice(3)}</h2>);
     } else if (trimmed.startsWith("# ")) {
@@ -58,7 +64,9 @@ export default function MarkdownContent({ content }: Props) {
 
 function renderInline(text: string): string {
   return text
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>")
+    .replace(/(https?:\/\/[^\s<)]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
     .replace(/`([^`]+)`/g, '<code class="bg-slate-100 px-1 rounded text-xs">$1</code>');
 }

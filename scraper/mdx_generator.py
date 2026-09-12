@@ -321,7 +321,7 @@ def _iso_or_none(val: object) -> str | None:
     iso = to_iso(val)
     if not iso:
         return None
-    if iso < MIN_POST_DATE or iso > (datetime.now().date() + timedelta(days=1)).isoformat():
+    if iso < "2010-01-01" or iso > (datetime.now().date() + timedelta(days=1)).isoformat():
         return None
     return iso
 
@@ -437,7 +437,11 @@ def normalize_frontmatter(raw: dict, *, base_url: str | None = None, keep_catego
     if official and not any(l["link_type"] == "official_website" for l in links):
         links.append({"label": "Official Website", "url": official, "link_type": "official_website"})
 
-    published = _iso_or_none(raw.get("publishedAt")) or _iso_or_none(scraped_at) or datetime.now().date().isoformat()
+    # A post we cannot date is not publishable: the scraper always passes scraped_at,
+    # so this only rejects legacy files that never had a date.
+    published = _iso_or_none(raw.get("publishedAt")) or _iso_or_none(scraped_at)
+    if not published:
+        return None
     updated = _iso_or_none(raw.get("updatedAt"))
     if updated and updated < published:
         updated = None

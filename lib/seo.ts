@@ -76,8 +76,13 @@ function feeText(v: string | undefined): string {
   return /^\d+$/.test(v) ? `₹${Number(v).toLocaleString("en-IN")}` : v;
 }
 
+const GENERIC_DEPT = new Set(["GOVERNMENT", "GOVT", "POLICE", "DEFENCE", "TEACHING", "PSU", "STATE PSC", "POSTAL", "MEDICAL", "RAILWAY", "BANK", "BANKING"]);
+
 function orgName(fm: PostFrontmatter): string {
-  return (fm.organization || fm.dept || "").trim();
+  const org = (fm.organization || "").trim();
+  if (org) return org;
+  const dept = (fm.dept || "").trim();
+  return GENERIC_DEPT.has(dept.toUpperCase()) ? "" : dept;
 }
 
 /** Plain-text summary used for Article-type schema descriptions (≤ 300 chars). */

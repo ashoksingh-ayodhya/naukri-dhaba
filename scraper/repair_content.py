@@ -6,6 +6,7 @@
 - regenerates shortDescription + body with the fact-only content writer
 - moves files whose title says they are a different type (admit card filed under jobs, …)
 - deletes junk pages (empty titles, listing pages scraped as posts, unparsable files)
+- deletes posts published before MIN_POST_DATE or that cannot be dated at all
 - rebuilds scraper/seen_items.json from the surviving files' sourceUrl
 
     python scraper/repair_content.py [--dry-run]
@@ -22,7 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from content_writer import write_body  # noqa: E402
-from mdx_generator import CONTENT_ROOT, DIR_TYPE_MAP, FLAT_TYPES, mdx_path_for, normalize_frontmatter, parse_mdx, render_mdx  # noqa: E402
+from mdx_generator import CONTENT_ROOT, DIR_TYPE_MAP, FLAT_TYPES, MIN_POST_DATE, mdx_path_for, normalize_frontmatter, parse_mdx, render_mdx  # noqa: E402
 from sarkari_scraper import SEEN_FILE, url_id  # noqa: E402
 from taxonomy import CATEGORY_SLUGS  # noqa: E402
 from validate_content import validate_frontmatter  # noqa: E402
@@ -55,6 +56,12 @@ def repair(dry_run: bool) -> Counter:
         if fm is None:
             stats["deleted_junk"] += 1
             print(f"DELETE (junk) {rel}: {raw.get('title')!r}")
+            if not dry_run:
+                path.unlink()
+            continue
+        if fm["publishedAt"] < MIN_POST_DATE:
+            stats["deleted_pre_cutoff"] += 1
+            print(f"DELETE (published {fm['publishedAt']} < {MIN_POST_DATE}) {rel}")
             if not dry_run:
                 path.unlink()
             continue

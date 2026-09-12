@@ -19,8 +19,16 @@ TYPE_LABEL = {
 }
 
 
+_GENERIC_DEPT = {"GOVERNMENT", "GOVT", "POLICE", "DEFENCE", "TEACHING", "PSU", "STATE PSC", "POSTAL", "MEDICAL",
+                 "RAILWAY", "BANK", "BANKING", "SSC", "UPSC"}
+
+
 def _org(fm: dict) -> str:
-    return clean(fm.get("organization") or fm.get("dept") or "")
+    org = clean(fm.get("organization"))
+    if org:
+        return org
+    dept = clean(fm.get("dept"))
+    return "" if dept.upper() in _GENERIC_DEPT else dept
 
 
 def _fee_phrase(fm: dict) -> str:
