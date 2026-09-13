@@ -1,239 +1,111 @@
 # Naukri Dhaba
 
-**India's Trusted Sarkari Naukri Portal** — [naukridhaba.in](https://naukridhaba.in)
+**Clean, ad-free government job updates** — [naukridhaba.in](https://naukridhaba.in)
 
-Government job notifications, exam results, admit cards, answer keys and syllabi for SSC, Railway, Banking, UPSC, Police, Defence and all state government jobs.
+Job notifications, exam results, admit cards, answer keys and syllabi for SSC, Railway, Banking, UPSC, Police, Defence, State PSCs and other government recruiters. No ads, no sign-up — just the facts from official notifications, presented clearly.
 
 ---
 
-## Tech Stack
+## Tech stack
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | Next.js 15 (App Router, static export) |
+| Framework | Next.js 15 (App Router, `output: "export"`) |
 | Styling | Tailwind CSS |
-| Content | MDX files + YAML frontmatter |
-| Hosting | Cloudflare Pages (free tier) |
-| Scraper | Python 3.11 (GitHub Actions) |
-| Proxy | Cloudflare Worker (`nd-proxy`) |
-| Analytics | Google Tag Manager + GA4 |
-| Ads | Google AdSense |
+| Content | MDX files with YAML frontmatter under `content/` |
+| Hosting | GitHub Pages (serves the repository root of `main`) |
+| Scraper | Python 3.11, run twice daily by GitHub Actions |
+| Proxy | Optional Cloudflare Worker (`scraper/cf-worker.js`) for source sites that block CI IPs |
+| Analytics | GA4 via Google Tag Manager (consent-gated). **No advertising.** |
 
 ---
 
-## Architecture
+## How content flows
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  GitHub Actions (4× daily)                              │
-│  scraper/sarkari_scraper.py                             │
-│       │                                                  │
-│       ▼                                                  │
-│  CF Worker Proxy ──► Source Sites                       │
-│  (nd-proxy.workers.dev)   (sarkariresult, freejobalert, │
-│                            rojgarresult, sarkariexam)   │
-│       │                                                  │
-│       ▼                                                  │
-│  MDX files → content/{jobs,results,admit-cards}/        │
-│       │                                                  │
-│       ▼                                                  │
-│  git commit + push → main                               │
-│       │                                                  │
-│       ▼                                                  │
-│  Cloudflare Pages (auto-deploy on push)                 │
-│  Next.js static build → HTML/CSS/JS                     │
-│       │                                                  │
-│       ▼                                                  │
-│  naukridhaba.in (Cloudflare CDN)                        │
-└─────────────────────────────────────────────────────────┘
+GitHub Actions  ─ "Scrape content" (07:00 & 19:00 IST)
+  scraper/sarkari_scraper.py
+    listings → classify title → skip known posts → detail page → parse → normalise
+    → content/{jobs,results,admit-cards,answer-keys,syllabus}/…/slug.mdx
+    → scraper/validate_content.py (every file must pass)
+    → commit to main
+        │
+        ▼
+GitHub Actions  ─ "Build and deploy" (after a scrape, or on source changes)
+  validate content → tsc → next build → scripts/publish-out.sh → commit out/ to main root
+        │
+        ▼
+GitHub Pages → naukridhaba.in
 ```
 
-### Content Model
-
-Every post is a `.mdx` file under `content/`:
+### Content model
 
 ```
 content/
-  jobs/
-    ssc/          ← category slug
-      ssc-cgl-2026.mdx
-    railway/
-    banking/
-    ...
-  results/
-    ssc/
-    railway/
-    ...
-  admit-cards/
-    ssc/
-    ...
-  answer-keys/
-  syllabus/
+  jobs/<category>/<slug>.mdx
+  results/<category>/<slug>.mdx
+  admit-cards/<category>/<slug>.mdx
+  answer-keys/<slug>.mdx
+  syllabus/<slug>.mdx
 ```
 
-Each MDX file has YAML frontmatter with fields like `title`, `slug`, `organization`, `lastDate`, `totalPosts`, `qualification`, `salary`, `applyUrl`, etc. The body contains structured sections rendered by dedicated React components.
-
----
-
-## Local Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run dev server
-npm run dev
-
-# Build static export
-npm run build
-
-# Type check
-npx tsc --noEmit
-```
-
-> **Note:** `images: { unoptimized: true }` in `next.config.ts` is intentional — required for static export on Cloudflare Pages. Do not change it.
+Frontmatter mirrors `lib/types.ts` (`PostFrontmatter`). All copy on a page (`shortDescription`, body, FAQ) is generated **only from scraped fields** by `scraper/content_writer.py` — nothing is invented, no dates or years are guessed.
 
 ---
 
 ## Scraper
 
-The Python scraper lives in `scraper/` and runs automatically via GitHub Actions 4× daily (7 AM, 1 PM, 7 PM, 1 AM IST).
+| File | Purpose |
+|------|---------|
+| `sarkari_scraper.py` | Orchestrator: discovery, time budget, seen-tracking, refresh of open jobs |
+| `site_config.py` | Source sites and their listing URLs |
+| `listing.py` | Listing-page row extraction |
+| `classify.py` | Title → job / result / admit / answer-key / syllabus |
+| `detail_parser/` | Per-source detail-page parsers |
+| `mdx_generator.py` | `normalize_frontmatter()` — the single place scraped values are cleaned — and MDX writing |
+| `content_writer.py` | Fact-only description / body / FAQ |
+| `urls.py`, `portals.py`, `taxonomy.py`, `textutil.py` | URL policy, official portals, categories, date/text helpers |
+| `validate_content.py` | Content validator (CI gate, also run after every write) |
+| `repair_content.py` | Idempotent repair of existing files (re-normalise, reclassify, remove junk) |
+| `tests/` | Regression tests incl. an end-to-end run against a local HTTP server |
 
-### How it works
-
-1. Fetches listing pages from 4 sources via CF Worker proxy
-2. For each new item, fetches the detail page and parses structured data
-3. Generates an MDX file via `mdx_generator.py`
-4. Tracks seen items in `scraper/seen_items.json` (MD5 hashes)
-5. Commits new MDX files and pushes to main
-6. Self-triggers another run via `repository_dispatch` until content goals are met (3000 jobs / 2000 results / 1500 admit cards)
+Rules enforced by the validator: no aggregator branding anywhere, no links to aggregator or social hosts, ISO `publishedAt`, `DD/MM/YYYY` deadlines, type matches directory, slug matches filename, no "Click Here" qualifications.
 
 ### Running locally
 
 ```bash
-cd scraper
-pip install -r requirements.txt
-python sarkari_scraper.py
+pip install -r scraper/requirements.txt
+python -m unittest discover -s scraper/tests
+python scraper/sarkari_scraper.py --dry-run        # fetch + parse, write nothing
+python scraper/sarkari_scraper.py                  # daily run
+python scraper/sarkari_scraper.py --sitemap        # add historical backfill
+python scraper/validate_content.py
 ```
 
-Requires `CF_WORKER_PROXY_URL` and `CF_WORKER_SECRET` environment variables (stored as GitHub Secrets — do not commit).
-
-### Key files
-
-| File | Purpose |
-|------|---------|
-| `sarkari_scraper.py` | Main entry point — orchestrates all sources |
-| `mdx_generator.py` | Converts structured data to MDX |
-| `seen_items.json` | Deduplication store (MD5 hashes) |
-| `detail_parser/` | Per-source HTML parsers |
-| `cf-worker.js` | Cloudflare Worker proxy source code |
-| `notify_indexing_api.py` | Google Indexing API notifier |
-| `site_config.py` | Category mappings used by scraper |
+Optional environment: `CF_WORKER_PROXY_URL`, `CF_WORKER_SECRET` (GitHub Secrets; see `scraper/cf-worker.js`), `GOOGLE_INDEXING_SA_KEY` for the Indexing API.
 
 ---
 
-## GitHub Actions Workflows
+## Site
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| `daily-scraper.yml` | Cron 4×/day + `repository_dispatch: scrape` | Run scraper, commit content, ping sitemaps |
-| `daily-agent.yml` | Cron every 3h | SEO rewriter, branding fixes, freshness alerts |
-| `wakeup-resume.yml` | Cron every 6h | Check content progress, update RESUME.md |
-| `health-check.yml` | After scraper completes | Verify site is live and returning 200 |
-| `post-scrape-update.yml` | `repository_dispatch: deploy` | Trigger Cloudflare Pages rebuild |
-
----
-
-## Project Structure
-
-```
-naukri-dhaba/
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx            # Homepage
-│   ├── latest-jobs/        # All jobs listing
-│   ├── jobs/
-│   │   ├── [category]/     # Category listing + detail pages
-│   │   └── qualification/  # Qualification-based pages (10th, graduate, etc.)
-│   ├── results/            # Exam results
-│   ├── admit-cards/        # Hall tickets
-│   ├── answer-keys/        # Answer keys
-│   ├── syllabus/           # Exam syllabi
-│   ├── state/[state]/      # State-wise job pages
-│   ├── search/             # Search page (server + client split)
-│   ├── feed.xml/           # RSS feed
-│   └── sitemap.ts          # Dynamic XML sitemap
-├── components/
-│   ├── detail/             # Job detail page sections
-│   ├── home/               # Homepage widgets
-│   ├── layout/             # Header, Footer, BottomNav
-│   ├── listings/           # JobsTable, PaginatedJobsTable, JobRow, MobileJobCard
-│   └── ui/                 # Badge, Breadcrumb, ShareButtons, etc.
-├── config/
-│   └── site.ts             # Site config, categories, states
-├── content/                # MDX content files (generated by scraper)
-├── lib/
-│   ├── content.ts          # MDX reader, sorting, filtering
-│   ├── seo.ts              # Schema.org JSON-LD builders
-│   ├── types.ts            # TypeScript types
-│   └── category-descriptions.ts  # SEO descriptions per category
-├── scraper/                # Python scraper
-├── agent/                  # SEO rewriter agent
-├── public/                 # Static assets
-├── FOUNDATION.md           # Architecture decisions and rules
-├── RISK-ASSESSMENT.md      # Risk matrix with priorities
-├── SEO-COMPETITOR-AUDIT.md # Competitor analysis and SEO backlog
-└── RESUME.md               # Auto-generated: current state for next session
+```bash
+npm ci
+npm run dev
+npx tsc --noEmit
+npm run build      # static export → out/
 ```
 
----
+`images: { unoptimized: true }` and `output: "export"` in `next.config.ts` are required for static hosting.
 
-## Key Decisions & Rules
-
-- **Static export only** — no server-side rendering. Everything is pre-built at deploy time. Client components use `"use client"` for interactivity.
-- **`output: "export"` + `images: { unoptimized: true }`** — do not change, required for Cloudflare Pages.
-- **MDX is the CMS** — no database, no CMS platform. Content is files. This works until ~7000 posts (Cloudflare's 20K file limit).
-- **Sorting** — active jobs (deadline ≥ today) first, soonest deadline first. Expired jobs last, newest published first.
-- **Date format** — scraper writes both `DD/MM/YYYY` and `DD-MM-YYYY`. Both are handled by `parseDDMMYYYY()` in `lib/content.ts`.
-- **No secrets in repo** — `CF_WORKER_PROXY_URL`, `CF_WORKER_SECRET`, `GOOGLE_INDEXING_SA_KEY` are GitHub Secrets only.
-
-See `FOUNDATION.md` for the full architecture reference.
+Structured data per page type: `JobPosting` (jobs, full HTML description, `validThrough` from the deadline), `NewsArticle` (results, admit cards), `LearningResource` (answer keys, syllabi), `BreadcrumbList` everywhere, `CollectionPage`/`ItemList` on category pages, `WebSite` + `Organization` on the home page.
 
 ---
 
-## Content Categories
+## Workflows
 
-| Slug | Label | Full Name |
-|------|-------|-----------|
-| `ssc` | SSC | Staff Selection Commission |
-| `railway` | Railway | Railway Recruitment Boards |
-| `banking` | Banking | Banking & Insurance |
-| `upsc` | UPSC | Union Public Service Commission |
-| `police` | Police | Police & Paramilitary |
-| `defence` | Defence | Army, Navy & Air Force |
-| `teaching` | Teaching | Teaching & Education |
-| `psu` | PSU | Public Sector Undertakings |
-| `state-psc` | State PSC | State Public Service Commissions |
-| `postal` | Postal | India Post & Postal Services |
-| `medical` | Medical | Medical & Health Dept |
-| `government` | Govt | Other Government Jobs |
+| Workflow | Trigger | What it does |
+|----------|---------|--------------|
+| `scrape.yml` | 07:00 & 19:00 IST, manual | tests → scrape (45-min budget) → validate → commit content |
+| `deploy.yml` | after a scrape, source/content push, PR, manual | validate → type-check → build → publish `out/` to repo root |
 
----
-
-## Deployment
-
-Cloudflare Pages deploys automatically on every push to `main`. No manual steps required.
-
-Build command: `npm run build`  
-Output directory: `out`  
-Node version: 20
-
-**Build limits (free tier):** 500 builds/month. Scraper commits use `[skip ci]` to avoid triggering unnecessary builds.
-
----
-
-## Links
-
-- Site: [naukridhaba.in](https://naukridhaba.in)
-- Twitter: [@naukridhaba](https://twitter.com/naukridhaba)
-- Telegram: [t.me/naukridhaba](https://t.me/naukridhaba)
-- WhatsApp: [whatsapp.com/channel/naukridhaba](https://whatsapp.com/channel/naukridhaba)
+The scraper never marks a post as seen until it has been written and validated, so a timeout or crash never loses posts.

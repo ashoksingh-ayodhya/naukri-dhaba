@@ -29,10 +29,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
   const { frontmatter: fm } = post;
   const org = (fm.organization || fm.dept || "").trim();
-  const desc = fm.shortDescription ||
-    `${org ? org + " " : ""}result ${new Date().getFullYear()} declared. Check merit list, cut-off marks and scorecard. Download result PDF from official website.`;
+  const desc = fm.shortDescription || `${org ? org + " " : ""}${fm.title}: check the result, merit list and cut-off on the official website.`;
+  const title = /result|merit list|score ?card|marks|cut.?off/i.test(fm.title) ? fm.title : `${fm.title} Result`;
   return buildMetadata({
-    title: `${fm.title} Result`,
+    title,
     description: desc.slice(0, 160),
     path: `/results/${category}/${slug}/`,
   });

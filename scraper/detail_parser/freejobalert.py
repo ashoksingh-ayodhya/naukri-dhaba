@@ -62,9 +62,9 @@ class FreeJobAlertParser(BaseDetailParser):
         # Advt number
         for tag in content.find_all(["p", "b", "strong", "span"]):
             text = clean(tag.get_text())
-            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*(.+)', text, re.I)
+            m = re.search(r'(?:advt|advertisement|notification)\s*(?:no\.?|number)\s*[:\-]?\s*([\w\-/().]+(?:\s\d+)?)', text, re.I)
             if m and not data.advertisement_number:
-                data.advertisement_number = clean(m.group(1))
+                data.advertisement_number = clean(m.group(1)).strip('|:-,. ')
                 break
 
     def _extract_dates_and_fees(self, soup: BeautifulSoup, data: DetailData) -> None:
@@ -168,8 +168,10 @@ class FreeJobAlertParser(BaseDetailParser):
                 if len(cells) < 2:
                     continue
                 label = clean(cells[0].get_text()).lower()
-                if re.search(r'qualification|education|eligibility', label):
+                if re.search(r'qualification|education|eligibility', label) and not re.search(r'check|result|link|click', label):
                     val_cell = cells[-1]
+                    if val_cell.find("a") and len(clean(val_cell.get_text())) < 25:
+                        continue
                     items = val_cell.find_all("li")
                     if items:
                         data.qualification_items = [clean(li.get_text()) for li in items if clean(li.get_text())]

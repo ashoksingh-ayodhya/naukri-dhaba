@@ -45,10 +45,8 @@ class BaseDetailParser(ABC):
             scraped_at=datetime.now().isoformat(),
         )
 
-        # Slug pre-set from item — may be a numeric ID (e.g. freejobalert article number).
-        # Will be regenerated after _extract_header finds a real title.
-        _initial_slug_is_numeric = data.slug.isdigit()
-
+        rough_title = bool(item.get("_rough_title")) or data.slug.isdigit()
+        listing_title = data.title
         if not data.slug and data.title:
             data.slug = _slugify(data.title)
 
@@ -58,8 +56,10 @@ class BaseDetailParser(ABC):
 
         self._extract_header(soup, data)
 
-        # If slug was a bare numeric ID and we now have a real title, re-generate slug.
-        if _initial_slug_is_numeric and data.title and not data.title.isdigit():
+        # A slug-derived or numeric listing title is replaced by the real heading once we have it.
+        if rough_title and data.title == listing_title and data.post_name and len(data.post_name) > 10:
+            data.title = data.post_name
+        if data.title and not data.title.isdigit():
             data.slug = _slugify(data.title)
         self._extract_dates_and_fees(soup, data)
         self._extract_age(soup, data)

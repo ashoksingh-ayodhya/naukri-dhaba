@@ -9,13 +9,15 @@ const CONTENT_ROOT = path.join(process.cwd(), "content");
 // Posts published more than this many days ago with no lastDate are treated as stale, not "active"
 const STALE_DAYS = 365;
 
-function sortByActiveFirst<T extends { lastDate?: string; updatedAt?: string; publishedAt?: string }>(items: T[]): T[] {
+function sortByActiveFirst<T extends { type?: PageType; lastDate?: string; updatedAt?: string; publishedAt?: string }>(items: T[]): T[] {
   const now = new Date();
   const staleThreshold = new Date(now.getTime() - STALE_DAYS * 24 * 60 * 60 * 1000);
 
   return items.sort((a, b) => {
-    const aDeadline = parseDDMMYYYY(a.lastDate);
-    const bDeadline = parseDDMMYYYY(b.lastDate);
+    // lastDate is an application deadline: it only says "open/closed" for job posts.
+    // For results, admit cards etc. it is history, so those sort purely by recency.
+    const aDeadline = a.type === "job" ? parseDDMMYYYY(a.lastDate) : null;
+    const bDeadline = b.type === "job" ? parseDDMMYYYY(b.lastDate) : null;
     const aPubDate = a.publishedAt ? new Date(a.publishedAt) : null;
     const bPubDate = b.publishedAt ? new Date(b.publishedAt) : null;
 

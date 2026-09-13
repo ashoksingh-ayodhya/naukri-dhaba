@@ -12,9 +12,15 @@ npm install puppeteer-core
 Add `node_modules/`, `package.json`, `package-lock.json` to `.gitignore`.
 
 ### 2. Chrome binary path
-Playwright's chromium was already downloaded and works:
+A Chromium is pre-installed in the sandbox (check this first — CDN downloads are blocked here):
 ```
-/root/.cache/ms-playwright/chromium-1194/chrome-linux/chrome
+/opt/pw-browsers/chromium-1194/chrome-linux/chrome
+```
+Older sessions had it at `/root/.cache/ms-playwright/chromium-1194/chrome-linux/chrome`.
+
+Serve the static export instead of opening `file://` URLs, otherwise `/_next/` assets do not load:
+```bash
+python3 -m http.server 8123 --directory out
 ```
 If this path stops working, reinstall:
 ```bash

@@ -5,7 +5,7 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact Us — Naukri Dhaba",
-  description: "Contact Naukri Dhaba for queries about government job notifications, corrections, partnership or advertising. Reach us on Telegram or WhatsApp.",
+  description: "Contact Naukri Dhaba for queries about government job notifications, corrections or missing notifications. Reach us on Telegram or WhatsApp.",
   path: "/contact/",
 });
 
@@ -68,10 +68,6 @@ export default function ContactPage() {
             <li className="flex gap-2">
               <span className="text-green-500 shrink-0 font-bold">→</span>
               <span><strong>Missing notifications:</strong> We cover all major central and state recruitments. If we missed one, send us the official notification link on Telegram.</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="text-green-500 shrink-0 font-bold">→</span>
-              <span><strong>Advertising:</strong> For advertising or sponsored content enquiries, reach out via Telegram.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-green-500 shrink-0 font-bold">→</span>

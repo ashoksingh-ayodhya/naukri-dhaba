@@ -3,7 +3,7 @@ export const dynamicParams = false;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPost, getAllPostMeta, getAllPosts } from "@/lib/content";
-import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd, buildHowToJsonLd } from "@/lib/seo";
+import { buildMetadata, buildJobJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 import { siteConfig, CATEGORIES } from "@/config/site";
 import MarkdownContent from "@/components/ui/MarkdownContent";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -37,16 +37,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { frontmatter: fm } = post;
   const cat = CATEGORIES.find((c) => c.slug === category);
 
-  const descParts: string[] = [];
   const org = (fm.organization || fm.dept || "").trim();
-  if (org) descParts.push(`${org} recruitment ${new Date().getFullYear()}.`);
-  if (fm.totalPosts) descParts.push(`${fm.totalPosts} vacancies.`);
-  if (fm.qualification) descParts.push(`Eligibility: ${fm.qualification}.`);
+  const descParts: string[] = [];
+  if (org) descParts.push(`${org} has released the ${fm.title} notification.`);
+  if (fm.totalPosts) descParts.push(`${fm.totalPosts} posts.`);
   if (fm.lastDate) descParts.push(`Last date: ${fm.lastDate}.`);
   const desc = fm.shortDescription ||
-    (descParts.length > 0
-      ? descParts.join(" ") + ` Apply online at ${siteConfig.name}.`
-      : `${fm.title} — Check eligibility, last date and apply online. ${cat?.fullName || ""} recruitment notification.`);
+    (descParts.length > 0 ? descParts.join(" ") : `${fm.title} — eligibility, important dates, fee and official apply link. ${cat?.fullName || ""} recruitment notification.`);
 
   return buildMetadata({
     title: fm.title,
@@ -76,9 +73,6 @@ export default async function JobDetailPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJobJsonLd(fm, pageUrl)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbJsonLd(breadcrumbs)) }} />
-      {fm.howToApply && fm.howToApply.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildHowToJsonLd(fm.title, fm.howToApply, pageUrl)) }} />
-      )}
 
       <div className="max-w-7xl mx-auto px-4 py-6">
         <Breadcrumb crumbs={breadcrumbs} />

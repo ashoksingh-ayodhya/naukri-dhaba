@@ -29,10 +29,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
   const { frontmatter: fm } = post;
   const org = (fm.organization || fm.dept || "").trim();
-  const desc = fm.shortDescription ||
-    `Download ${org ? org + " " : ""}admit card ${new Date().getFullYear()}. Get hall ticket, exam date, reporting time, exam centre and instructions PDF from the official website.`;
+  const desc = fm.shortDescription || `${org ? org + " " : ""}${fm.title}: download the admit card, exam date and exam centre details from the official website.`;
+  const title = /admit card|hall ticket|exam city|call letter|exam date|exam schedule/i.test(fm.title) ? fm.title : `${fm.title} Admit Card`;
   return buildMetadata({
-    title: `${fm.title} Admit Card`,
+    title,
     description: desc.slice(0, 160),
     path: `/admit-cards/${category}/${slug}/`,
   });
