@@ -7,6 +7,8 @@ on:
   workflow_run:
     workflows: ["Scrape content"]
     types: [completed]
+  schedule:
+    - cron: "30 21 * * *"  # 03:00 IST daily safety net — publishes whatever is on main
   push:
     branches: [main]
     paths:
@@ -35,7 +37,8 @@ permissions:
 
 jobs:
   build:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    # Runs even when the scrape failed: content on main is always valid (the
+    # validator gates it), and a failed scrape must never block publishing.
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
