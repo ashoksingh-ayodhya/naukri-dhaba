@@ -21,6 +21,7 @@ from detail_parser import parse_detail_page  # noqa: E402
 from detail_parser.link_resolver import resolve_links  # noqa: E402
 from listing import parse_listing  # noqa: E402
 from mdx_generator import detail_to_raw, normalize_frontmatter, parse_mdx, render_mdx  # noqa: E402
+from repair_content import _completeness, duplicate_keys  # noqa: E402
 from textutil import find_dates, normalize_fee, strip_brand, to_iso  # noqa: E402
 from urls import clean_link_url  # noqa: E402
 from validate_content import validate_frontmatter  # noqa: E402
@@ -200,6 +201,35 @@ class ParserTests(unittest.TestCase):
         rows = parse_listing(BeautifulSoup(html, "lxml"), "job", "https://www.freejobalert.com")
         self.assertEqual(len(rows), 2)
         self.assertTrue(all("/articles/" in r["detail_url"] for r in rows))
+
+
+class DedupeTests(unittest.TestCase):
+    BASE = {"type": "admit", "slug": "x-admit-card-2024", "publishedAt": "2024-01-12", "source": "sarkariexam"}
+
+    def _fm(self, **over):
+        return {**self.BASE, "title": "CTET Admit Card 2024", **over}
+
+    def test_same_source_url_is_a_duplicate(self):
+        a = duplicate_keys(self._fm(slug="rbi-assistant-feb26", sourceUrl="https://www.sarkariresult.com/bank/rbi-assistant-feb26/"))
+        b = duplicate_keys(self._fm(slug="rbi-assistant-mains-admit-card-2026", sourceUrl="https://www.sarkariresult.com/bank/rbi-assistant-feb26"))
+        self.assertTrue(set(a) & set(b), "same source page under two slugs must collide")
+
+    def test_same_title_different_date_is_not_a_duplicate(self):
+        """CTET January 2024 and CTET July 2024 share a title but are different posts."""
+        jan = duplicate_keys(self._fm(slug="ctet-january-2024-admit-card-out", publishedAt="2024-01-12"))
+        jul = duplicate_keys(self._fm(slug="ctet-july-2024-admit-card-out", publishedAt="2024-06-07"))
+        self.assertFalse(set(jan) & set(jul))
+
+    def test_republished_article_is_a_duplicate(self):
+        a = duplicate_keys(self._fm(slug="niepa-ldc-admit-card-2025-3006644", sourceUrl="https://www.freejobalert.com/articles/a-3006644", source="freejobalert"))
+        b = duplicate_keys(self._fm(slug="niepa-ldc-admit-card-2025-3008436", sourceUrl="https://www.freejobalert.com/articles/a-3008436", source="freejobalert"))
+        self.assertTrue(set(a) & set(b))
+
+    def test_keeps_the_more_complete_file(self):
+        sparse = self._fm(slug="lic-hfl-junior-assistant-admit-card-2026-out")
+        rich = self._fm(slug="lic-hfl-junior-assistant-admit-card-2026", totalPosts="180", lastDate="30/04/2026",
+                        importantLinks=[{"label": "Admit Card", "url": "https://x.gov.in/a", "link_type": "admit"}])
+        self.assertGreater(_completeness(rich), _completeness(sparse))
 
 
 class _Handler(BaseHTTPRequestHandler):

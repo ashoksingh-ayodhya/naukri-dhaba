@@ -3,6 +3,7 @@ import { getAllPosts } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import ListingSchema from "@/components/seo/ListingSchema";
 
 const YEAR = new Date().getFullYear();
 
@@ -16,6 +17,7 @@ export default function AnswerKeysPage() {
   const posts = getAllPosts("answer-key");
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
+      <ListingSchema title={`Answer Key ${YEAR}`} path={"/answer-keys/"} posts={posts} crumbs={[{ label: "Home", href: "/" }, { label: "Answer Keys" }]} />
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Answer Keys" }]} />
       <div className="mt-4 mb-6">
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Answer Key {YEAR}</h1>
