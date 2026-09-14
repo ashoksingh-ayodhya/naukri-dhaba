@@ -6,6 +6,7 @@ import { getPostsByQualification, QualificationLevel } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import ListingSchema from "@/components/seo/ListingSchema";
 
 const YEAR = new Date().getFullYear();
 
@@ -74,16 +75,16 @@ export default async function QualificationPage({ params }: Props) {
   if (!meta) notFound();
 
   const posts = getPostsByQualification(level as QualificationLevel);
+  const crumbs = [
+    { label: "Home", href: "/" },
+    { label: "Jobs", href: "/jobs/" },
+    { label: meta.h1 },
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
-      <Breadcrumb
-        crumbs={[
-          { label: "Home", href: "/" },
-          { label: "Jobs", href: "/jobs/" },
-          { label: meta.h1 },
-        ]}
-      />
+      <ListingSchema title={meta.h1} path={`/jobs/qualification/${level}/`} posts={posts} crumbs={crumbs} />
+      <Breadcrumb crumbs={crumbs} />
       <div className="mt-4 mb-6">
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">{meta.h1}</h1>
         <h2 className="text-base font-semibold text-slate-700 mt-1 mb-1">{meta.h2}</h2>

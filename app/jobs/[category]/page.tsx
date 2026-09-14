@@ -3,12 +3,13 @@ export const dynamicParams = false;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts } from "@/lib/content";
-import { buildMetadata, buildListingPageJsonLd } from "@/lib/seo";
-import { CATEGORIES, siteConfig } from "@/config/site";
+import { buildMetadata } from "@/lib/seo";
+import { CATEGORIES } from "@/config/site";
 import { CATEGORY_DESCRIPTIONS } from "@/lib/category-descriptions";
 import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import ListingSchema from "@/components/seo/ListingSchema";
 
 const YEAR = new Date().getFullYear();
 
@@ -37,15 +38,14 @@ export default async function CategoryPage({ params }: Props) {
   if (!cat) notFound();
 
   const posts = getAllPosts("job", category);
-  const _listUrl = `${siteConfig.url}/jobs/${category}/`;
-  const _items = posts.slice(0, 50).map((p: {title: string; slug: string}) => ({
-    name: p.title,
-    url: `${siteConfig.url}/jobs/${category}/${p.slug}/`,
-  }));
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildListingPageJsonLd(`${cat?.fullName || category} Jobs ${YEAR}`, _listUrl, _items)) }} />
+      <ListingSchema title={`${cat?.fullName || category} Jobs ${YEAR}`} path={`/jobs/${category}/`} posts={posts} crumbs={[
+            { label: "Home", href: "/" },
+            { label: "Jobs", href: "/jobs/" },
+            { label: cat.label },
+          ]} />
       <div className="max-w-7xl mx-auto px-4 py-6">
         <Breadcrumb
           crumbs={[

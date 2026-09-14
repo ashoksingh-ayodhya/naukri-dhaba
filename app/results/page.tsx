@@ -4,6 +4,7 @@ import { buildMetadata } from "@/lib/seo";
 import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import ListingSchema from "@/components/seo/ListingSchema";
 
 const YEAR = new Date().getFullYear();
 
@@ -17,7 +18,8 @@ export default function ResultsPage() {
   const posts = getAllPosts("result");
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
-      <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Sarkari Result" }]} />
+      <ListingSchema title={`Sarkari Result ${YEAR}`} path={"/results/"} posts={posts} crumbs={[{ label: "Home", href: "/" }, { label: "Results" }]} />
+      <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Results" }]} />
       <div className="mt-4 mb-6">
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-1">Sarkari Result {YEAR}</h1>
         <h2 className="text-base font-semibold text-slate-700 mt-1 mb-1">

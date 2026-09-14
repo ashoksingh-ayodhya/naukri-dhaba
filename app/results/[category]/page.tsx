@@ -3,12 +3,13 @@ export const dynamicParams = false;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts } from "@/lib/content";
-import { buildMetadata, buildListingPageJsonLd } from "@/lib/seo";
-import { CATEGORIES, siteConfig } from "@/config/site";
+import { buildMetadata } from "@/lib/seo";
+import { CATEGORIES } from "@/config/site";
 import { CATEGORY_DESCRIPTIONS } from "@/lib/category-descriptions";
 import PaginatedJobsTable from "@/components/listings/PaginatedJobsTable";
 import FilterBar from "@/components/listings/FilterBar";
 import Breadcrumb from "@/components/ui/Breadcrumb";
+import ListingSchema from "@/components/seo/ListingSchema";
 
 const YEAR = new Date().getFullYear();
 
@@ -34,14 +35,9 @@ export default async function ResultCategoryPage({ params }: Props) {
   const cat = CATEGORIES.find((c) => c.slug === category);
   if (!cat) notFound();
   const posts = getAllPosts("result", category);
-  const _listUrl = `${siteConfig.url}/results/${category}/`;
-  const _items = posts.slice(0, 50).map((p: {title: string; slug: string}) => ({
-    name: p.title,
-    url: `${siteConfig.url}/results/${category}/${p.slug}/`,
-  }));
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildListingPageJsonLd(`${cat?.fullName || category} Results ${YEAR}`, _listUrl, _items)) }} />
+      <ListingSchema title={`${cat?.fullName || category} Results ${YEAR}`} path={`/results/${category}/`} posts={posts} crumbs={[{ label: "Home", href: "/" }, { label: "Results", href: "/results/" }, { label: cat.label }]} />
       <div className="max-w-7xl mx-auto px-4 py-6">
       <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Results", href: "/results/" }, { label: cat.label }]} />
       <div className="mt-4 mb-6">
